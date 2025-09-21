@@ -5,6 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../config/firebase";
 
@@ -76,6 +77,17 @@ export const FirebaseAuthProvider = ({ children }) => {
     }
   };
 
+  // Reset password function
+  const resetPassword = async (email) => {
+    try {
+      setError(null);
+      await sendPasswordResetEmail(auth, email);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   // Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -96,6 +108,7 @@ export const FirebaseAuthProvider = ({ children }) => {
     register,
     login,
     logout,
+    resetPassword,
     clearError,
   };
 

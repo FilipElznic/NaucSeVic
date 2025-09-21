@@ -10,9 +10,10 @@ import {
   FirebaseAuthProvider,
   useFirebaseAuth,
 } from "./contexts/FirebaseAuthContext";
-import LandingPage from "./components/LandingPage";
+import LandingPage from "./pages/LandingPage";
 import Prihlaseni from "./pages/Prihlaseni";
 import Registrace from "./pages/Registrace";
+import Layout from "./components/Layout";
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -49,12 +50,21 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <LandingPage />
+            </Layout>
+          }
+        />
         <Route
           path="/prihlaseni"
           element={
             <PublicRoute>
-              <Prihlaseni />
+              <Layout showNavbar={false} showFooter={false}>
+                <Prihlaseni />
+              </Layout>
             </PublicRoute>
           }
         />
@@ -62,7 +72,9 @@ const AppRoutes = () => {
           path="/registrace"
           element={
             <PublicRoute>
-              <Registrace />
+              <Layout showNavbar={false} showFooter={false}>
+                <Registrace />
+              </Layout>
             </PublicRoute>
           }
         />
