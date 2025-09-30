@@ -7,7 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docker:build": "docker build -t nauc-se-vic .",
+    "docker:build-dev": "docker build -f Dockerfile.dev -t nauc-se-vic:dev .",
+    "docker:run": "docker run -p 3000:80 nauc-se-vic",
+    "docker:run-dev": "docker run -p 5173:5173 -v .:/app -v /app/node_modules nauc-se-vic:dev",
+    "docker:compose": "docker-compose up",
+    "docker:compose-dev": "docker-compose --profile dev up",
+    "docker:stop": "docker-compose down"
   },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",

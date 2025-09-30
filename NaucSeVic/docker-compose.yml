@@ -1,0 +1,28 @@
+services:
+  nauc-se-vic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    container_name: nauc-se-vic-app
+
+  # Development service (use with --profile dev)
+  nauc-se-vic-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped
+    container_name: nauc-se-vic-dev
+    profiles:
+      - dev
