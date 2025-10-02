@@ -11,7 +11,6 @@ export { default as FeatureSection } from "./FeatureSection";
 export { default as StatsSection } from "./StatsSection";
 export { default as TestimonialSection } from "./TestimonialSection";
 export { default as PricingSection } from "./PricingSection";
-export { default as CTASection } from "./CTASection";
 
 // Layout Components Export
 export { default as Navbar } from "./Navbar";

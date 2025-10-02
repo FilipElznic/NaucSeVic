@@ -4,7 +4,7 @@ import FeatureSection from "../components/ui/FeatureSection";
 import StatsSection from "../components/ui/StatsSection";
 import TestimonialSection from "../components/ui/TestimonialSection";
 import PricingSection from "../components/ui/PricingSection";
-import CTASection from "../components/ui/CTASection";
+
 import SectionSeparator from "../components/ui/SectionSeparator";
 
 function LandingPage() {
@@ -30,9 +30,6 @@ function LandingPage() {
 
       {/* Pricing Section */}
       <PricingSection />
-
-      {/* Call to Action Section */}
-      <CTASection />
     </div>
   );
 }
