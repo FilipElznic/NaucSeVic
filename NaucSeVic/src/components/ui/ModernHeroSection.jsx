@@ -3,7 +3,7 @@ import { ArrowRight, BookOpen, Users, Award, Play } from "lucide-react";
 
 const ModernHeroSection = () => {
   return (
-    <section className="relative w-full min-h-screen overflow-hidden bg-zinc-950">
+    <section className="relative w-full min-h-screen overflow-hidden bg-white dark:bg-zinc-950">
       {/* Content */}
       <div className="relative z-20 w-full min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">

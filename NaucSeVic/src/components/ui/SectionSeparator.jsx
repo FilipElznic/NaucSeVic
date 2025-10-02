@@ -43,13 +43,13 @@ const SectionSeparator = ({
 
   const Diagonal = () => (
     <svg
-      className="w-full h-12 md:h-16"
+      className="w-full h-12 md:h-16 bg-zinc-50 dark:bg-transparent"
       viewBox="0 0 1200 120"
       preserveAspectRatio="none"
     >
       <polygon
         points="1200,0 0,0 0,120 1200,30"
-        className="fill-current text-gray-50 dark:text-zinc-900"
+        className="fill-current text-white dark:text-zinc-900"
       />
     </svg>
   );

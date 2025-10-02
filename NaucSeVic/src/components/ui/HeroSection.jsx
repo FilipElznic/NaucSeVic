@@ -5,7 +5,6 @@ const HeroSection = () => {
   return (
     <section className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-900" />
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto">
