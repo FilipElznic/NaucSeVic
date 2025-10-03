@@ -13,22 +13,15 @@ import {
 import LandingPage from "./pages/LandingPage";
 import Prihlaseni from "./pages/Prihlaseni";
 import Registrace from "./pages/Registrace";
+import ModernLogin from "./pages/ModernLogin";
+import ModernRegister from "./pages/ModernRegister";
+import Dashboard from "./pages/Dashboard";
+import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-// Protected Route component
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useFirebaseAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
-
-  return user ? children : <Navigate to="/prihlaseni" />;
-};
+// Protected Route component is now imported from components
 
 // Public Route component (for auth pages)
 const PublicRoute = ({ children }) => {
@@ -58,8 +51,28 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+
+        {/* Modern Auth Pages */}
         <Route
           path="/prihlaseni"
+          element={
+            <PublicRoute>
+              <ModernLogin />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/registrace"
+          element={
+            <PublicRoute>
+              <ModernRegister />
+            </PublicRoute>
+          }
+        />
+
+        {/* Legacy Auth Pages (keep for compatibility) */}
+        <Route
+          path="/prihlaseni-old"
           element={
             <PublicRoute>
               <Layout showNavbar={false} showFooter={false}>
@@ -69,13 +82,41 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/registrace"
+          path="/registrace-old"
           element={
             <PublicRoute>
               <Layout showNavbar={false} showFooter={false}>
                 <Registrace />
               </Layout>
             </PublicRoute>
+          }
+        />
+
+        {/* Protected Dashboard */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Legal Pages */}
+        <Route
+          path="/terms"
+          element={
+            <Layout>
+              <TermsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/privacy"
+          element={
+            <Layout>
+              <PrivacyPage />
+            </Layout>
           }
         />
       </Routes>

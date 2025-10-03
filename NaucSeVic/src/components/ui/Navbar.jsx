@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import { useDarkMode } from "../../contexts/DarkModeContext";
+import { BookOpen, User, LogOut, LayoutDashboard } from "lucide-react";
 
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -19,23 +21,55 @@ const Navbar = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
-            <span className="text-2xl font-bold text-gray-900 dark:text-white">
-              NaucSeVic
-            </span>
+            <Link to="/" className="flex items-center space-x-2">
+              <BookOpen className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                NaucSeVic
+              </span>
+            </Link>
           </div>
+
           <div className="flex items-center space-x-4">
-            {/* User Info */}
-            {user && (
+            {/* Auth Section */}
+            {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-gray-900 dark:text-white">
-                  Vítejte, {user.displayName || user.email}
-                </span>
+                <Link
+                  to="/dashboard"
+                  className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-white/20 dark:bg-gray-800/50 hover:bg-white/30 dark:hover:bg-gray-700/70 text-gray-900 dark:text-white transition-all duration-300"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  <span>Dashboard</span>
+                </Link>
+
+                <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-green-500/20 text-green-700 dark:text-green-300">
+                  <User className="h-4 w-4" />
+                  <span className="text-sm font-medium">
+                    {user.displayName || user.email?.split("@")[0]}
+                  </span>
+                </div>
+
                 <button
                   onClick={handleLogout}
-                  className="px-3 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-600 dark:text-red-400 transition-all duration-300"
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-600 dark:text-red-400 transition-all duration-300"
                 >
-                  Odhlásit se
+                  <LogOut className="h-4 w-4" />
+                  <span>Odhlásit</span>
                 </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link
+                  to="/prihlaseni"
+                  className="px-4 py-2 rounded-lg bg-white/20 dark:bg-gray-800/50 hover:bg-white/30 dark:hover:bg-gray-700/70 text-gray-900 dark:text-white transition-all duration-300"
+                >
+                  Přihlásit se
+                </Link>
+                <Link
+                  to="/registrace"
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  Registrace
+                </Link>
               </div>
             )}
 
