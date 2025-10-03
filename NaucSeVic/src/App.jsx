@@ -11,8 +11,6 @@ import {
   useFirebaseAuth,
 } from "./contexts/FirebaseAuthContext";
 import LandingPage from "./pages/LandingPage";
-import Prihlaseni from "./pages/Prihlaseni";
-import Registrace from "./pages/Registrace";
 import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
 import Dashboard from "./pages/Dashboard";
@@ -66,28 +64,6 @@ const AppRoutes = () => {
           element={
             <PublicRoute>
               <ModernRegister />
-            </PublicRoute>
-          }
-        />
-
-        {/* Legacy Auth Pages (keep for compatibility) */}
-        <Route
-          path="/prihlaseni-old"
-          element={
-            <PublicRoute>
-              <Layout showNavbar={false} showFooter={false}>
-                <Prihlaseni />
-              </Layout>
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/registrace-old"
-          element={
-            <PublicRoute>
-              <Layout showNavbar={false} showFooter={false}>
-                <Registrace />
-              </Layout>
             </PublicRoute>
           }
         />
