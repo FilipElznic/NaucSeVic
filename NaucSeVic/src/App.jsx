@@ -14,6 +14,8 @@ import LandingPage from "./pages/LandingPage";
 import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
 import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import Tasks from "./pages/Tasks";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import Layout from "./components/Layout";
@@ -74,6 +76,30 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Home for logged-in users */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Home />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Tasks by subject */}
+        <Route
+          path="/tasks/:subject"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Tasks />
+              </Layout>
             </ProtectedRoute>
           }
         />
