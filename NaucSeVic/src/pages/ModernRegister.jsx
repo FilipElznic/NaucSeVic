@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import { toast, ToastContainer } from "react-toastify";
 import {
   Eye,

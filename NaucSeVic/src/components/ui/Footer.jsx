@@ -1,5 +1,5 @@
 import React from "react";
-import { useDarkMode } from "../../contexts/DarkModeContext";
+import { useDarkMode } from "../../hooks/useDarkMode";
 
 const Footer = () => {
   const { darkMode } = useDarkMode();

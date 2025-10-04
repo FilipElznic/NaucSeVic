@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,21 +8,21 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../config/firebase";
-
-const FirebaseAuthContext = createContext();
-
-export const useFirebaseAuth = () => {
-  const context = useContext(FirebaseAuthContext);
-  if (!context) {
-    throw new Error(
-      "useFirebaseAuth must be used within a FirebaseAuthProvider"
-    );
-  }
-  return context;
-};
+import {
+  createUserProfile,
+  getUserProfile,
+  updateUserLastActive,
+} from "../services/userService";
+import {
+  initializeAppDatabase,
+  checkInitializationStatus,
+  markAsInitialized,
+} from "../utils/initializeApp";
+import { FirebaseAuthContext } from "./FirebaseAuthContext.js";
 
 export const FirebaseAuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -41,6 +41,10 @@ export const FirebaseAuthProvider = ({ children }) => {
       if (displayName) {
         await updateProfile(result.user, { displayName });
       }
+
+      // Create user profile in Firestore
+      const username = displayName || email.split("@")[0];
+      await createUserProfile(result.user.uid, email, username);
 
       return result.user;
     } catch (err) {
@@ -90,8 +94,42 @@ export const FirebaseAuthProvider = ({ children }) => {
 
   // Listen for authentication state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
+
+      if (user) {
+        try {
+          // Get or create user profile
+          let profile;
+          try {
+            profile = await getUserProfile(user.uid);
+          } catch {
+            // Create profile if it doesn't exist
+            const username = user.displayName || user.email.split("@")[0];
+            profile = await createUserProfile(user.uid, user.email, username);
+          }
+
+          setUserProfile(profile);
+
+          // Update last active
+          await updateUserLastActive(user.uid);
+
+          // Initialize database if not done yet
+          if (!checkInitializationStatus()) {
+            console.log("Initializing database for first time...");
+            const initialized = await initializeAppDatabase();
+            if (initialized) {
+              markAsInitialized();
+              console.log("Database initialization completed");
+            }
+          }
+        } catch (err) {
+          console.error("Error handling user profile:", err);
+        }
+      } else {
+        setUserProfile(null);
+      }
+
       setLoading(false);
     });
 
@@ -103,6 +141,7 @@ export const FirebaseAuthProvider = ({ children }) => {
 
   const value = {
     user,
+    userProfile,
     loading,
     error,
     register,

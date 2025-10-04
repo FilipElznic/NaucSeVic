@@ -5,11 +5,11 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { DarkModeProvider } from "./contexts/DarkModeContext";
-import {
-  FirebaseAuthProvider,
-  useFirebaseAuth,
-} from "./contexts/FirebaseAuthContext";
+import { DarkModeProvider } from "./contexts/DarkModeContext.jsx";
+import { FirebaseAuthProvider } from "./contexts/FirebaseAuthContext.jsx";
+import { useFirebaseAuth } from "./hooks/useFirebaseAuth";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import LandingPage from "./pages/LandingPage";
 import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
@@ -18,8 +18,14 @@ import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import GeometryExplorer from "./pages/GeometryExplorer";
+import PhysicsLab from "./pages/PhysicsLab";
+import ActivityTracker from "./pages/ActivityTracker";
+import ProgressStats from "./pages/ProgressStats";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UserDashboard from "./components/UserDashboard";
+import AchievementComponent from "./components/AchievementComponent";
 
 // Protected Route component is now imported from components
 
@@ -104,6 +110,70 @@ const AppRoutes = () => {
           }
         />
 
+        {/* User Dashboard */}
+        <Route
+          path="/user-dashboard"
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Achievements */}
+        <Route
+          path="/achievements"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AchievementComponent />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* New Database Feature Pages */}
+        <Route
+          path="/geometry-explorer"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <GeometryExplorer />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/physics-lab"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <PhysicsLab />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/activity-tracker"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ActivityTracker />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/progress-stats"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ProgressStats />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
         {/* Legal Pages */}
         <Route
           path="/terms"
@@ -131,6 +201,17 @@ function App() {
     <DarkModeProvider>
       <FirebaseAuthProvider>
         <AppRoutes />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </FirebaseAuthProvider>
     </DarkModeProvider>
   );

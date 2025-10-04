@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useFirebaseAuth();

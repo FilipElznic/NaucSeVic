@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import { toast, ToastContainer } from "react-toastify";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, BookOpen } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";

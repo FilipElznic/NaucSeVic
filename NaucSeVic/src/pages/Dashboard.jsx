@@ -1,6 +1,7 @@
 import React from "react";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useFirebaseAuth } from "../hooks/useFirebaseAuth";
 import { useNavigate } from "react-router-dom";
+import DatabaseInitializer from "../components/DatabaseInitializer";
 import {
   BookOpen,
   Users,
@@ -312,6 +313,11 @@ const Dashboard = () => {
                 <span>75% splněno</span>
               </div>
             </div>
+          </div>
+
+          {/* Database Initializer */}
+          <div className="lg:col-span-2">
+            <DatabaseInitializer />
           </div>
         </div>
       </div>

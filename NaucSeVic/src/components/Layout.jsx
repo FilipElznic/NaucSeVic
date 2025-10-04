@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./ui/Navbar";
 import Footer from "./ui/Footer";
-import { useDarkMode } from "../contexts/DarkModeContext";
+import { useDarkMode } from "../hooks/useDarkMode";
 
 const Layout = ({ children, showNavbar = true, showFooter = true }) => {
   const { darkMode } = useDarkMode();
