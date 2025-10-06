@@ -20,6 +20,7 @@ import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CloudFunctionDemo from "./components/CloudFunctionDemo";
 
 // Protected Route component is now imported from components
 
@@ -99,6 +100,18 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <Layout>
                 <Tasks />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Cloud Functions Demo */}
+        <Route
+          path="/cloud-functions"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <CloudFunctionDemo />
               </Layout>
             </ProtectedRoute>
           }
