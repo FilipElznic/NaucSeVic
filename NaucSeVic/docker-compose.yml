@@ -19,10 +19,13 @@ services:
       - "5173:5173"
     volumes:
       - .:/app
-      - /app/node_modules
+      - nauc-se-vic-node-modules:/app/node_modules
     environment:
       - NODE_ENV=development
     restart: unless-stopped
     container_name: nauc-se-vic-dev
     profiles:
       - dev
+
+volumes:
+  nauc-se-vic-node-modules:

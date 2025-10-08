@@ -1,6 +1,6 @@
 /**
- * SECURED Cloud Functions for NaucSeVic project
- * Import function triggers from their respective submodules
+ * SECURE Cloud Functions for NaucSeVic project
+ * This file contains properly secured functions with validation and auth
  */
 
 const { setGlobalOptions } = require("firebase-functions");
@@ -14,6 +14,13 @@ const admin = require("firebase-admin");
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
+
+// Security configuration
+setGlobalOptions({
+  maxInstances: 10,
+  region: "us-central1",
+  enforceAppCheck: true, // Require App Check for security
+});
 
 // Input validation helpers
 const validateInput = (data, requiredFields) => {
@@ -48,13 +55,6 @@ const checkRateLimit = (userId, action, maxRequests = 10, windowMs = 60000) => {
   validRequests.push(now);
   rateLimitMap.set(key, validRequests);
 };
-
-// Security configuration with cost control
-setGlobalOptions({
-  maxInstances: 10,
-  region: "us-central1", // Set your preferred region
-  enforceAppCheck: false, // Set to true when App Check is configured
-});
 
 // SECURED: Hello World function with validation
 exports.helloWorld = onCall(async (request) => {
