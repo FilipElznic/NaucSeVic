@@ -156,67 +156,62 @@ exports.createUserProfile = onCall(async (request) => {
       throw new Error("Authentication required");
     }
 
-    const { uid, profileData } = request.data || {};
-
-    // Validate that user can only create their own profile
-    if (uid !== request.auth.uid) {
-      throw new Error("Unauthorized: Can only create your own profile");
-    }
+    const { name, surname } = request.data || {};
 
     // Rate limiting per user
     checkRateLimit(request.auth.uid, "createProfile", 3, 300000); // 3 per 5min
 
-    // Input validation
-    validateInput({ uid }, ["uid"]);
-
-    if (!profileData || typeof profileData !== "object") {
-      throw new Error("Invalid profile data");
-    }
-
-    // Sanitize profile data
-    const allowedFields = ["displayName", "bio", "preferences"];
-    const sanitizedProfile = {};
-
-    for (const field of allowedFields) {
-      if (profileData[field]) {
-        sanitizedProfile[field] = sanitizeString(profileData[field]);
-      }
-    }
-
     // Check if profile already exists
     const existingProfile = await admin
       .firestore()
-      .collection("users")
-      .doc(uid)
+      .collection("userProfiles")
+      .doc(request.auth.uid)
       .get();
 
     if (existingProfile.exists) {
       throw new Error("Profile already exists");
     }
 
-    // Create profile with server-side validation
+    // Sanitize input data
+    const sanitizedName = name ? sanitizeString(name) : "";
+    const sanitizedSurname = surname ? sanitizeString(surname) : "";
+
+    // Create user profile with the exact layout requested
+    const userProfile = {
+      attemptedTasks: {},
+      profile: {
+        coins: 0,
+        email: request.auth.token.email || "",
+        name: sanitizedName,
+        surname: sanitizedSurname,
+        xp: 0,
+      },
+      progress: {},
+      // Metadata
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      isActive: true,
+    };
+
+    // Create the user profile document
     await admin
       .firestore()
-      .collection("users")
-      .doc(uid)
-      .set({
-        ...sanitizedProfile,
-        uid: uid,
-        email: request.auth.token.email || null,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-        isActive: true,
-      });
+      .collection("userProfiles")
+      .doc(request.auth.uid)
+      .set(userProfile);
 
-    logger.info("User profile created", {
-      uid,
-      fields: Object.keys(sanitizedProfile),
+    logger.info("User profile created manually", {
+      userId: request.auth.uid,
+      email: userProfile.profile.email,
+      name: userProfile.profile.name,
+      surname: userProfile.profile.surname,
     });
 
     return {
       success: true,
       message: "Profile created successfully",
-      uid: uid,
+      userId: request.auth.uid,
+      profile: userProfile.profile,
     };
   } catch (error) {
     logger.error("Error creating user profile", {
@@ -227,67 +222,444 @@ exports.createUserProfile = onCall(async (request) => {
   }
 });
 
-// SECURED: Task creation with validation and authorization
-exports.createTask = onCall(async (request) => {
+// SECURED: Record task attempt and update user progress
+exports.recordTaskAttempt = onCall(async (request) => {
   try {
     // Authentication required
     if (!request.auth || !request.auth.uid) {
       throw new Error("Authentication required");
     }
 
-    const { title, description, category } = request.data || {};
+    const { taskId, taskRef, isCorrect, userAnswer, type, xpEarned } =
+      request.data || {};
 
     // Rate limiting per user
-    checkRateLimit(request.auth.uid, "createTask", 20, 300000); // 20 per 5min
+    checkRateLimit(request.auth.uid, "recordTaskAttempt", 100, 60000); // 100 per minute
 
     // Input validation
-    validateInput({ title }, ["title"]);
+    validateInput({ taskId, isCorrect, userAnswer, type }, [
+      "taskId",
+      "isCorrect",
+      "userAnswer",
+      "type",
+    ]);
 
-    // Sanitize inputs
-    const sanitizedTitle = sanitizeString(title);
-    const sanitizedDescription = sanitizeString(description || "");
-    const sanitizedCategory = sanitizeString(category || "general");
+    const userId = request.auth.uid;
+    const now = admin.firestore.FieldValue.serverTimestamp();
+    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
 
-    // Validate category against allowed values
-    const allowedCategories = ["general", "work", "personal", "study"];
-    if (!allowedCategories.includes(sanitizedCategory)) {
-      throw new Error("Invalid category");
+    // Calculate XP and coins earned
+    const finalXpEarned = xpEarned || (isCorrect ? 10 : 5); // Default XP values
+    const coinsEarned = isCorrect ? 5 : 0; // Coins only for correct answers
+
+    // Create task attempt record
+    const taskAttempt = {
+      attemptedAt: now,
+      isCorrect: !!isCorrect,
+      taskRef: taskRef || null,
+      type: sanitizeString(type),
+      userAnswer: parseInt(userAnswer) || 0,
+      xpEarned: finalXpEarned,
+    };
+
+    // Update user profile with task attempt and progress
+    const userProfileRef = admin
+      .firestore()
+      .collection("userProfiles")
+      .doc(userId);
+
+    await admin.firestore().runTransaction(async (transaction) => {
+      const userDoc = await transaction.get(userProfileRef);
+
+      if (!userDoc.exists) {
+        throw new Error("User profile not found");
+      }
+
+      const userData = userDoc.data();
+      const currentProgress = userData.progress || {};
+      const todayProgress = currentProgress[today] || {
+        xpGained: 0,
+        coinsGained: 0,
+        tasksFinished: 0,
+        loginTime: now,
+      };
+
+      // Update today's progress
+      todayProgress.xpGained += finalXpEarned;
+      todayProgress.coinsGained += coinsEarned;
+      if (isCorrect) {
+        todayProgress.tasksFinished += 1;
+      }
+
+      // Update user profile
+      transaction.update(userProfileRef, {
+        [`attemptedTasks.${taskId}`]: taskAttempt,
+        [`progress.${today}`]: todayProgress,
+        "profile.xp": admin.firestore.FieldValue.increment(finalXpEarned),
+        "profile.coins": admin.firestore.FieldValue.increment(coinsEarned),
+        updatedAt: now,
+      });
+    });
+
+    logger.info("Task attempt recorded", {
+      userId,
+      taskId,
+      isCorrect,
+      xpEarned: finalXpEarned,
+      coinsEarned,
+    });
+
+    return {
+      success: true,
+      taskAttempt,
+      xpEarned: finalXpEarned,
+      coinsEarned,
+      isCorrect: !!isCorrect,
+    };
+  } catch (error) {
+    logger.error("Error recording task attempt", {
+      error: error.message,
+      userId: request.auth && request.auth.uid,
+    });
+    throw new Error(error.message || "Failed to record task attempt");
+  }
+});
+
+// SECURED: Create educational task with proper schema validation
+exports.createEducationalTask = onCall(async (request) => {
+  try {
+    // Authentication required (only admins should create tasks)
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const {
+      name,
+      description,
+      type,
+      difficulty,
+      subject,
+      xp,
+      explanation,
+      hints,
+      correctAnswer,
+      correctAnswers,
+      options,
+    } = request.data || {};
+
+    // Rate limiting per user
+    checkRateLimit(request.auth.uid, "createTask", 5, 300000); // 5 per 5min
+
+    // Input validation
+    validateInput({ name, description, type, difficulty, xp, explanation }, [
+      "name",
+      "description",
+      "type",
+      "difficulty",
+      "xp",
+      "explanation",
+    ]);
+
+    // Validate type
+    const allowedTypes = ["multipleChoice", "written", "multiAnswer"];
+    if (!allowedTypes.includes(type)) {
+      throw new Error("Invalid task type");
+    }
+
+    // Validate difficulty
+    const allowedDifficulties = ["easy", "medium", "hard"];
+    if (!allowedDifficulties.includes(difficulty)) {
+      throw new Error("Invalid difficulty level");
+    }
+
+    // Type-specific validation
+    if (type === "multipleChoice" && (!options || !correctAnswer)) {
+      throw new Error(
+        "Multiple choice tasks require options and correctAnswer"
+      );
+    }
+    if (type === "multiAnswer" && !correctAnswers) {
+      throw new Error("Multi answer tasks require correctAnswers array");
+    }
+    if (type === "written" && !correctAnswer) {
+      throw new Error("Written tasks require correctAnswer");
     }
 
     // Create task with proper structure
-    const taskDoc = await admin.firestore().collection("tasks").add({
-      title: sanitizedTitle,
-      description: sanitizedDescription,
-      category: sanitizedCategory,
-      userId: request.auth.uid,
-      userEmail: request.auth.token.email,
-      completed: false,
-      priority: "normal",
+    const taskData = {
+      name: sanitizeString(name),
+      description: sanitizeString(description),
+      type: type,
+      difficulty: difficulty,
+      xp: parseInt(xp) || 10,
+      explanation: sanitizeString(explanation),
+      hints: Array.isArray(hints) ? hints.map((h) => sanitizeString(h)) : [],
+      createdBy: request.auth.uid,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+      isActive: true,
+    };
 
-    logger.info("Task created", {
+    // Add optional subject
+    if (subject) {
+      taskData.subject = sanitizeString(subject);
+    }
+
+    // Add type-specific fields
+    if (type === "multipleChoice") {
+      taskData.correctAnswer = sanitizeString(correctAnswer);
+      taskData.options = Array.isArray(options)
+        ? options.map((o) => sanitizeString(o))
+        : [];
+    } else if (type === "multiAnswer") {
+      taskData.correctAnswers = Array.isArray(correctAnswers)
+        ? correctAnswers.map((a) => sanitizeString(a))
+        : [];
+      if (options) {
+        taskData.options = Array.isArray(options)
+          ? options.map((o) => sanitizeString(o))
+          : [];
+      }
+    } else if (type === "written") {
+      taskData.correctAnswer = sanitizeString(correctAnswer);
+    }
+
+    const taskDoc = await admin.firestore().collection("tasks").add(taskData);
+
+    logger.info("Educational task created", {
       taskId: taskDoc.id,
-      userId: request.auth.uid,
-      category: sanitizedCategory,
+      type: type,
+      difficulty: difficulty,
+      subject: subject || "general",
+      createdBy: request.auth.uid,
     });
 
     return {
       success: true,
       taskId: taskDoc.id,
-      message: "Task created successfully",
+      message: "Educational task created successfully",
     };
   } catch (error) {
-    logger.error("Error creating task", {
+    logger.error("Error creating educational task", {
       error: error.message,
       userId: request.auth && request.auth.uid,
     });
-    throw new Error(error.message || "Failed to create task");
+    throw new Error(error.message || "Failed to create educational task");
   }
 });
 
-// SECURED: Firestore trigger with validation
+// SECURED: Get tasks by difficulty and subject
+exports.getTasks = onCall(async (request) => {
+  try {
+    // Authentication required
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const { difficulty, subject, limit = 10 } = request.data || {};
+
+    // Rate limiting per user
+    checkRateLimit(request.auth.uid, "getTasks", 50, 60000); // 50 per minute
+
+    let query = admin
+      .firestore()
+      .collection("tasks")
+      .where("isActive", "==", true)
+      .orderBy("createdAt", "desc")
+      .limit(parseInt(limit) || 10);
+
+    // Add filters
+    if (difficulty) {
+      const allowedDifficulties = ["easy", "medium", "hard"];
+      if (allowedDifficulties.includes(difficulty)) {
+        query = query.where("difficulty", "==", difficulty);
+      }
+    }
+
+    if (subject) {
+      query = query.where("subject", "==", sanitizeString(subject));
+    }
+
+    const snapshot = await query.get();
+    const tasks = [];
+
+    snapshot.forEach((doc) => {
+      const taskData = doc.data();
+      // Remove sensitive fields (correct answers) from response
+      const publicTask = {
+        id: doc.id,
+        name: taskData.name,
+        description: taskData.description,
+        type: taskData.type,
+        difficulty: taskData.difficulty,
+        subject: taskData.subject,
+        xp: taskData.xp,
+        hints: taskData.hints,
+        // Include options for multiple choice/answer but not correct answers
+        options: taskData.options || undefined,
+      };
+      tasks.push(publicTask);
+    });
+
+    return {
+      success: true,
+      tasks: tasks,
+      count: tasks.length,
+    };
+  } catch (error) {
+    logger.error("Error getting tasks", {
+      error: error.message,
+      userId: request.auth && request.auth.uid,
+    });
+    throw new Error(error.message || "Failed to get tasks");
+  }
+});
+
+// SECURED: Submit task answer and validate
+exports.submitTaskAnswer = onCall(async (request) => {
+  try {
+    // Authentication required
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const { taskId, userAnswer } = request.data || {};
+
+    // Rate limiting per user
+    checkRateLimit(request.auth.uid, "submitTaskAnswer", 60, 60000); // 60 per minute
+
+    // Input validation
+    validateInput({ taskId, userAnswer }, ["taskId", "userAnswer"]);
+
+    const userId = request.auth.uid;
+    const now = admin.firestore.FieldValue.serverTimestamp();
+
+    // Get the task
+    const taskDoc = await admin
+      .firestore()
+      .collection("tasks")
+      .doc(taskId)
+      .get();
+
+    if (!taskDoc.exists) {
+      throw new Error("Task not found");
+    }
+
+    const taskData = taskDoc.data();
+    let isCorrect = false;
+    let xpEarned = 0;
+    let coinsEarned = 0;
+
+    // Validate answer based on task type
+    if (taskData.type === "multipleChoice" || taskData.type === "written") {
+      isCorrect =
+        sanitizeString(userAnswer).toLowerCase() ===
+        sanitizeString(taskData.correctAnswer).toLowerCase();
+    } else if (taskData.type === "multiAnswer") {
+      // For multi-answer, userAnswer should be an array
+      const userAnswers = Array.isArray(userAnswer) ? userAnswer : [userAnswer];
+      const correctAnswers = taskData.correctAnswers || [];
+
+      // Check if all user answers are correct and no extra/missing answers
+      isCorrect =
+        userAnswers.length === correctAnswers.length &&
+        userAnswers.every((answer) =>
+          correctAnswers.some(
+            (correct) =>
+              sanitizeString(answer).toLowerCase() ===
+              sanitizeString(correct).toLowerCase()
+          )
+        );
+    }
+
+    // Calculate rewards
+    if (isCorrect) {
+      xpEarned = taskData.xp || 10;
+      coinsEarned = Math.floor(taskData.xp / 2) || 5;
+    } else {
+      xpEarned = Math.floor((taskData.xp || 10) * 0.2); // 20% XP for attempt
+      coinsEarned = 0;
+    }
+
+    // Create task attempt record
+    const taskAttempt = {
+      attemptedAt: now,
+      isCorrect: isCorrect,
+      taskRef: admin.firestore().collection("tasks").doc(taskId),
+      type: taskData.type,
+      userAnswer: userAnswer,
+      xpEarned: xpEarned,
+    };
+
+    // Update user profile
+    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+    const userProfileRef = admin
+      .firestore()
+      .collection("userProfiles")
+      .doc(userId);
+
+    await admin.firestore().runTransaction(async (transaction) => {
+      const userDoc = await transaction.get(userProfileRef);
+
+      if (!userDoc.exists) {
+        throw new Error("User profile not found");
+      }
+
+      const userData = userDoc.data();
+      const currentProgress = userData.progress || {};
+      const todayProgress = currentProgress[today] || {
+        xpGained: 0,
+        coinsGained: 0,
+        tasksFinished: 0,
+        loginTime: now,
+      };
+
+      // Update today's progress
+      todayProgress.xpGained += xpEarned;
+      todayProgress.coinsGained += coinsEarned;
+      if (isCorrect) {
+        todayProgress.tasksFinished += 1;
+      }
+
+      // Update user profile with task attempt and progress
+      transaction.update(userProfileRef, {
+        [`attemptedTasks.${taskId}`]: taskAttempt,
+        [`progress.${today}`]: todayProgress,
+        "profile.xp": admin.firestore.FieldValue.increment(xpEarned),
+        "profile.coins": admin.firestore.FieldValue.increment(coinsEarned),
+        updatedAt: now,
+      });
+    });
+
+    logger.info("Task answer submitted", {
+      userId,
+      taskId,
+      isCorrect,
+      xpEarned,
+      coinsEarned,
+      taskType: taskData.type,
+    });
+
+    return {
+      success: true,
+      isCorrect: isCorrect,
+      xpEarned: xpEarned,
+      coinsEarned: coinsEarned,
+      explanation: taskData.explanation,
+      correctAnswer: isCorrect
+        ? null
+        : taskData.correctAnswer || taskData.correctAnswers,
+    };
+  } catch (error) {
+    logger.error("Error submitting task answer", {
+      error: error.message,
+      userId: request.auth && request.auth.uid,
+    });
+    throw new Error(error.message || "Failed to submit task answer");
+  }
+});
+
+// SECURED: Firestore trigger with validation for user registration
 exports.onUserCreated = onDocumentCreated("users/{userId}", async (event) => {
   try {
     const userId = event.params.userId;
@@ -298,27 +670,58 @@ exports.onUserCreated = onDocumentCreated("users/{userId}", async (event) => {
       return;
     }
 
-    logger.info("New user created", {
+    logger.info("New user created - creating profile", {
       userId,
       email: userData.email,
-      hasDisplayName: !!userData.displayName,
+      displayName: userData.displayName || userData.name || "Unknown",
     });
 
-    // Initialize user settings
+    // Create user profile with the exact layout requested
+    const userProfile = {
+      attemptedTasks: {}, // Empty object - will be populated as user attempts tasks
+      profile: {
+        coins: 0, // Starting coins
+        email: userData.email || "",
+        name: userData.displayName || userData.name || "",
+        surname: userData.surname || "", // Will be empty initially unless provided
+        xp: 0, // Starting XP
+      },
+      progress: {}, // Empty object - will be populated with daily progress
+      // Additional metadata
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      isActive: true,
+    };
+
+    // Create the user profile document
+    await admin
+      .firestore()
+      .collection("userProfiles")
+      .doc(userId)
+      .set(userProfile);
+
+    // Also create user settings for app preferences
     await admin.firestore().collection("userSettings").doc(userId).set({
       userId,
       theme: "light",
       notifications: true,
-      language: "en",
+      language: "cs", // Default to Czech
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
-    // Send welcome email (if you have email service configured)
-    // await sendWelcomeEmail(userData.email);
+    logger.info("User profile created successfully", {
+      userId,
+      email: userData.email,
+      initialCoins: userProfile.profile.coins,
+      initialXp: userProfile.profile.xp,
+    });
 
     return;
   } catch (error) {
-    logger.error("Error in onUserCreated trigger", error);
+    logger.error("Error in onUserCreated trigger", {
+      error: error.message,
+      userId: event.params.userId,
+    });
     return;
   }
 });

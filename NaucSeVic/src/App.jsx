@@ -21,6 +21,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CloudFunctionDemo from "./components/CloudFunctionDemo";
+import TaskCreator from "./components/TaskCreator";
 
 // Protected Route component is now imported from components
 
@@ -112,6 +113,18 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <Layout>
                 <CloudFunctionDemo />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Task Creator */}
+        <Route
+          path="/create-task"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <TaskCreator />
               </Layout>
             </ProtectedRoute>
           }

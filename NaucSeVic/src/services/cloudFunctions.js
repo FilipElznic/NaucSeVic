@@ -30,14 +30,56 @@ class CloudFunctionsService {
     }
   }
 
-  // Create task
-  async createTask(taskData) {
+  // Create educational task
+  async createEducationalTask(taskData) {
     try {
-      const createTaskFunction = httpsCallable(functions, "createTask");
+      const createTaskFunction = httpsCallable(
+        functions,
+        "createEducationalTask"
+      );
       const result = await createTaskFunction(taskData);
       return result.data;
     } catch (error) {
-      console.error("Error creating task:", error);
+      console.error("Error creating educational task:", error);
+      throw error;
+    }
+  }
+
+  // Get tasks by filters
+  async getTasks(filters = {}) {
+    try {
+      const getTasksFunction = httpsCallable(functions, "getTasks");
+      const result = await getTasksFunction(filters);
+      return result.data;
+    } catch (error) {
+      console.error("Error getting tasks:", error);
+      throw error;
+    }
+  }
+
+  // Submit task answer
+  async submitTaskAnswer(taskId, userAnswer) {
+    try {
+      const submitAnswerFunction = httpsCallable(functions, "submitTaskAnswer");
+      const result = await submitAnswerFunction({ taskId, userAnswer });
+      return result.data;
+    } catch (error) {
+      console.error("Error submitting task answer:", error);
+      throw error;
+    }
+  }
+
+  // Record task attempt (legacy function)
+  async recordTaskAttempt(attemptData) {
+    try {
+      const recordAttemptFunction = httpsCallable(
+        functions,
+        "recordTaskAttempt"
+      );
+      const result = await recordAttemptFunction(attemptData);
+      return result.data;
+    } catch (error) {
+      console.error("Error recording task attempt:", error);
       throw error;
     }
   }

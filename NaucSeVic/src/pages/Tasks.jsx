@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Calculator,
@@ -11,10 +11,17 @@ import {
   Play,
   Lock,
   CheckCircle,
+  Settings,
+  PlusCircle,
 } from "lucide-react";
+import TaskManager from "../components/TaskManager";
+import TaskSolver from "../components/TaskSolver";
+import { toast } from "react-toastify";
 
 const Tasks = () => {
   const { subject } = useParams();
+  const [currentView, setCurrentView] = useState("tasks"); // 'tasks', 'manage', 'solve'
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const subjectConfig = {
     math: {
@@ -187,130 +194,211 @@ const Tasks = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Tasks List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Dostupné úlohy
-          </h2>
-          <p className="text-gray-600 dark:text-zinc-400">
-            Vyberte si úlohu a začněte se učit
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {tasks.map((task) => (
-            <div
-              key={task.id}
-              className={`bg-white dark:bg-zinc-800 rounded-xl border transition-all duration-300 ${
-                task.locked
-                  ? "border-gray-200 dark:border-zinc-700 opacity-60"
-                  : task.completed
-                  ? `${currentSubject.borderColor} shadow-sm`
-                  : "border-gray-200 dark:border-zinc-700 hover:shadow-lg hover:scale-[1.02]"
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-center space-x-4 mt-8">
+            <button
+              onClick={() => setCurrentView("tasks")}
+              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                currentView === "tasks"
+                  ? "bg-white text-gray-900"
+                  : "bg-white/10 text-white hover:bg-white/20"
               }`}
             >
-              <div className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center mb-3">
-                      <div
-                        className={`${currentSubject.bgColor} p-2 rounded-lg mr-4`}
-                      >
-                        {task.completed ? (
-                          <CheckCircle
-                            className={`h-6 w-6 ${currentSubject.iconColor}`}
-                          />
-                        ) : task.locked ? (
-                          <Lock className="h-6 w-6 text-gray-400 dark:text-zinc-500" />
-                        ) : (
-                          <BookOpen
-                            className={`h-6 w-6 ${currentSubject.iconColor}`}
-                          />
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                          {task.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-zinc-400">
-                          {task.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(
-                          task.difficulty
-                        )}`}
-                      >
-                        {task.difficulty}
-                      </span>
-                      <div className="flex items-center text-gray-600 dark:text-zinc-400">
-                        <Clock className="h-4 w-4 mr-1" />
-                        <span className="text-sm">{task.duration}</span>
-                      </div>
-                      <div className="flex items-center text-gray-600 dark:text-zinc-400">
-                        <Star className="h-4 w-4 mr-1" />
-                        <span className="text-sm">{task.points} bodů</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="ml-6">
-                    {task.locked ? (
-                      <div className="bg-gray-100 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 px-6 py-3 rounded-lg font-medium">
-                        <Lock className="h-4 w-4 mr-2 inline" />
-                        Uzamčeno
-                      </div>
-                    ) : task.completed ? (
-                      <div
-                        className={`${currentSubject.bgColor} ${currentSubject.iconColor} px-6 py-3 rounded-lg font-medium`}
-                      >
-                        <CheckCircle className="h-4 w-4 mr-2 inline" />
-                        Dokončeno
-                      </div>
-                    ) : (
-                      <button
-                        className={`bg-gradient-to-r ${currentSubject.color} text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300 flex items-center`}
-                      >
-                        <Play className="h-4 w-4 mr-2" />
-                        Začít
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Coming Soon */}
-        <div className="mt-12 text-center">
-          <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 p-8">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Více úloh již brzy!
-            </h3>
-            <p className="text-gray-600 dark:text-zinc-400 mb-6">
-              Pracujeme na dalších úlohách a cvičeních pro{" "}
-              {currentSubject.title.toLowerCase()}. Buďte připraveni na nové
-              výzvy!
-            </p>
-            <Link
-              to="/home"
-              className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-medium"
+              <BookOpen className="w-5 h-5 mr-2 inline" />
+              Procvičovat úlohy
+            </button>
+            <button
+              onClick={() => setCurrentView("manage")}
+              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                currentView === "manage"
+                  ? "bg-white text-gray-900"
+                  : "bg-white/10 text-white hover:bg-white/20"
+              }`}
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Zpět na domovskou stránku
-            </Link>
+              <Settings className="w-5 h-5 mr-2 inline" />
+              Spravovat úlohy
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {currentView === "tasks" && (
+          <TaskList
+            tasks={tasks}
+            currentSubject={currentSubject}
+            getDifficultyColor={getDifficultyColor}
+            setSelectedTask={setSelectedTask}
+            setCurrentView={setCurrentView}
+          />
+        )}
+        {currentView === "manage" && <TaskManager />}
+        {currentView === "solve" && selectedTask && (
+          <TaskSolver
+            task={selectedTask}
+            onComplete={() => setCurrentView("tasks")}
+            onClose={() => setCurrentView("tasks")}
+          />
+        )}
+      </div>
     </div>
+  );
+};
+
+// TaskList component extracted from original tasks display
+const TaskList = ({
+  tasks,
+  currentSubject,
+  getDifficultyColor,
+  setSelectedTask,
+  setCurrentView,
+}) => {
+  return (
+    <>
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Dostupné úlohy
+        </h2>
+        <p className="text-gray-600 dark:text-zinc-400">
+          Vyberte si úlohu a začněte se učit
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        {tasks.map((task) => (
+          <div
+            key={task.id}
+            className={`bg-white dark:bg-zinc-800 rounded-xl border transition-all duration-300 ${
+              task.locked
+                ? "border-gray-200 dark:border-zinc-700 opacity-60"
+                : task.completed
+                ? `${currentSubject.borderColor} shadow-sm`
+                : "border-gray-200 dark:border-zinc-700 hover:shadow-lg hover:scale-[1.02]"
+            }`}
+          >
+            <div className="p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center mb-3">
+                    <div
+                      className={`${currentSubject.bgColor} p-2 rounded-lg mr-4`}
+                    >
+                      {task.completed ? (
+                        <CheckCircle
+                          className={`h-6 w-6 ${currentSubject.iconColor}`}
+                        />
+                      ) : task.locked ? (
+                        <Lock className="h-6 w-6 text-gray-400 dark:text-zinc-500" />
+                      ) : (
+                        <BookOpen
+                          className={`h-6 w-6 ${currentSubject.iconColor}`}
+                        />
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        {task.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-zinc-400">
+                        {task.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(
+                        task.difficulty
+                      )}`}
+                    >
+                      {task.difficulty}
+                    </span>
+                    <div className="flex items-center text-gray-600 dark:text-zinc-400">
+                      <Clock className="h-4 w-4 mr-1" />
+                      <span className="text-sm">{task.duration}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600 dark:text-zinc-400">
+                      <Star className="h-4 w-4 mr-1" />
+                      <span className="text-sm">{task.points} bodů</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="ml-6">
+                  {task.locked ? (
+                    <div className="bg-gray-100 dark:bg-zinc-700 text-gray-500 dark:text-zinc-400 px-6 py-3 rounded-lg font-medium">
+                      <Lock className="h-4 w-4 mr-2 inline" />
+                      Uzamčeno
+                    </div>
+                  ) : task.completed ? (
+                    <div
+                      className={`${currentSubject.bgColor} ${currentSubject.iconColor} px-6 py-3 rounded-lg font-medium`}
+                    >
+                      <CheckCircle className="h-4 w-4 mr-2 inline" />
+                      Dokončeno
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        // For now, just create a demo task to show TaskSolver
+                        const demoTask = {
+                          id: "demo",
+                          name: task.title,
+                          description: task.description,
+                          type: "multipleChoice",
+                          difficulty: task.difficulty.toLowerCase(),
+                          subject: "Demo",
+                          xp: task.points,
+                          explanation:
+                            "Toto je demo vysvětlení správné odpovědi.",
+                          hints: ["Zkuste si rozmyslet postup krok za krokem."],
+                          correctAnswer: "Správná odpověď",
+                          options: [
+                            "Možnost A",
+                            "Správná odpověď",
+                            "Možnost C",
+                            "Možnost D",
+                          ],
+                        };
+                        setSelectedTask(demoTask);
+                        setCurrentView("solve");
+                      }}
+                      className={`bg-gradient-to-r ${currentSubject.color} text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300 flex items-center`}
+                    >
+                      <Play className="h-4 w-4 mr-2" />
+                      Začít
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Coming Soon */}
+      <div className="mt-12 text-center">
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl border border-gray-200 dark:border-zinc-700 p-8">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Více úloh již brzy!
+          </h3>
+          <p className="text-gray-600 dark:text-zinc-400 mb-6">
+            Pracujeme na dalších úlohách a cvičeních pro{" "}
+            {currentSubject.title.toLowerCase()}. Buďte připraveni na nové
+            výzvy!
+          </p>
+          <Link
+            to="/home"
+            className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-medium"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Zpět na domovskou stránku
+          </Link>
+        </div>
+      </div>
+    </>
   );
 };
 
