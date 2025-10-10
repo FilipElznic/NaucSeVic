@@ -30,6 +30,18 @@ class CloudFunctionsService {
     }
   }
 
+  // Set admin role (super admin only)
+  async setAdminRole(targetUid) {
+    try {
+      const setAdminFunction = httpsCallable(functions, "setAdminRole");
+      const result = await setAdminFunction({ targetUid });
+      return result.data;
+    } catch (error) {
+      console.error("Error setting admin role:", error);
+      throw error;
+    }
+  }
+
   // Create educational task
   async createEducationalTask(taskData) {
     try {

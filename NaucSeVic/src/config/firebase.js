@@ -25,7 +25,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 // Initialize Cloud Functions and get a reference to the service
-export const functions = getFunctions(app);
+export const functions = getFunctions(app, "europe-west1");
 
 // Connect to Functions emulator in development
 if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATOR === "true") {

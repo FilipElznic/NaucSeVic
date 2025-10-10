@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin System Test - NaucSeVic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .status-success {
+        color: #10b981;
+      }
+      .status-error {
+        color: #ef4444;
+      }
+      .status-pending {
+        color: #f59e0b;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">
+          🛡️ Admin System Test
+        </h1>
+        <p class="text-gray-600">Test všech admin funkcí systému NaucSeVic</p>
+
+        <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+          <h3 class="font-semibold text-blue-800">Frontend App běží na:</h3>
+          <a
+            href="http://localhost:5173/"
+            target="_blank"
+            class="text-blue-600 hover:text-blue-800 underline"
+          >
+            http://localhost:5173/ →
+          </a>
+        </div>
+      </div>
+
+      <!-- System Status -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">📊 Stav Systému</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 bg-green-50 rounded-lg">
+            <h3 class="font-semibold text-green-800">✅ Implementováno</h3>
+            <ul class="text-green-700 mt-2 space-y-1 text-sm">
+              <li>• Firebase Cloud Functions (10 funkcí)</li>
+              <li>• Admin Frontend Komponenty</li>
+              <li>• useAdminCheck Hook</li>
+              <li>• AdminRoute Protection</li>
+              <li>• Admin UI v Navbaru</li>
+              <li>• Backend Validace</li>
+              <li>• Custom Claims System</li>
+            </ul>
+          </div>
+
+          <div class="p-4 bg-yellow-50 rounded-lg">
+            <h3 class="font-semibold text-yellow-800">⏳ Čeká na test</h3>
+            <ul class="text-yellow-700 mt-2 space-y-1 text-sm">
+              <li>• Udělení admin práv uživateli</li>
+              <li>• Test admin login</li>
+              <li>• Test vytváření úloh</li>
+              <li>• Test admin management</li>
+              <li>• Ověření bezpečnosti</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Info -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">👤 Testovací Uživatel</h2>
+
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <strong>Email:</strong> elznicfilip@gmail.com<br />
+              <strong>Display Name:</strong> player123<br />
+              <strong>UID:</strong>
+              <code class="bg-gray-200 px-1 text-xs"
+                >AgM49Ohc3LRIM2P73MjVtBngrdd2</code
+              >
+            </div>
+            <div>
+              <strong>Status:</strong>
+              <span class="status-pending">⏳ Potřebuje admin práva</span><br />
+              <strong>Registrován:</strong> ✅<br />
+              <strong>Email ověřen:</strong> ❌
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">⚡ Rychlé Akce</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button
+            onclick="openFirebaseConsole()"
+            class="p-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+          >
+            🔥 Firebase Console
+          </button>
+
+          <button
+            onclick="openFrontend()"
+            class="p-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            🌐 Otevřít Frontend
+          </button>
+
+          <button
+            onclick="testAPI()"
+            class="p-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+          >
+            🧪 Test API
+          </button>
+        </div>
+      </div>
+
+      <!-- API Test Results -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">🔗 Cloud Functions API</h2>
+
+        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+          <strong>Base URL:</strong>
+          <code class="bg-gray-200 px-2 py-1 rounded text-sm"
+            >https://api-u5phmhmqua-uc.a.run.app</code
+          >
+        </div>
+
+        <div id="api-results" class="space-y-4">
+          <!-- API test results will appear here -->
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">📋 Návod na Test</h2>
+
+        <ol class="list-decimal list-inside space-y-3 text-gray-700">
+          <li>
+            <strong>Udělit admin práva:</strong>
+            <ul class="ml-6 mt-2 list-disc list-inside text-sm">
+              <li>Otevřit Firebase Console → Authentication → Users</li>
+              <li>Najít uživatele <code>elznicfilip@gmail.com</code></li>
+              <li>Nastavit Custom Claims: <code>{"admin": true}</code></li>
+            </ul>
+          </li>
+
+          <li>
+            <strong>Test frontend:</strong>
+            <ul class="ml-6 mt-2 list-disc list-inside text-sm">
+              <li>
+                Přejít na
+                <a href="http://localhost:5173/" class="text-blue-600 underline"
+                  >localhost:5173</a
+                >
+              </li>
+              <li>Přihlásit se jako <code>elznicfilip@gmail.com</code></li>
+              <li>Zkontrolovat admin badge v navbaru</li>
+              <li>Otestovat admin odkazy (Vytvořit úkol, Admin)</li>
+            </ul>
+          </li>
+
+          <li>
+            <strong>Test funkcí:</strong>
+            <ul class="ml-6 mt-2 list-disc list-inside text-sm">
+              <li>Přístup k <code>/create-task</code> (pouze admin)</li>
+              <li>Přístup k <code>/admin</code> (pouze admin)</li>
+              <li>Vytvoření testové úlohy</li>
+              <li>Test admin management</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <script>
+      function openFirebaseConsole() {
+        window.open(
+          "https://console.firebase.google.com/project/naucsevic/authentication/users",
+          "_blank"
+        );
+      }
+
+      function openFrontend() {
+        window.open("http://localhost:5173/", "_blank");
+      }
+
+      async function testAPI() {
+        const resultsDiv = document.getElementById("api-results");
+        resultsDiv.innerHTML =
+          '<div class="text-blue-600">🔄 Testování API...</div>';
+
+        const baseURL = "https://api-u5phmhmqua-uc.a.run.app";
+
+        const tests = [
+          {
+            name: "Health Check",
+            url: baseURL,
+            public: true,
+          },
+          {
+            name: "Get Educational Tasks",
+            url: baseURL + "/getEducationalTasks",
+            public: true,
+          },
+        ];
+
+        let results = "";
+
+        for (const test of tests) {
+          try {
+            const response = await fetch(test.url);
+            const status = response.status;
+
+            if (status === 200) {
+              results += `<div class="p-3 bg-green-50 rounded border border-green-200">
+                                      <span class="status-success">✅</span> ${test.name}: OK (${status})
+                                    </div>`;
+            } else {
+              results += `<div class="p-3 bg-yellow-50 rounded border border-yellow-200">
+                                      <span class="status-pending">⚠️</span> ${test.name}: ${status}
+                                    </div>`;
+            }
+          } catch (error) {
+            results += `<div class="p-3 bg-red-50 rounded border border-red-200">
+                                  <span class="status-error">❌</span> ${test.name}: Error - ${error.message}
+                                </div>`;
+          }
+        }
+
+        resultsDiv.innerHTML = results;
+      }
+
+      // Auto-test API on page load
+      setTimeout(testAPI, 1000);
+    </script>
+  </body>
+</html>

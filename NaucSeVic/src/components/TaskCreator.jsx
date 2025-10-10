@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Plus, Save, X, AlertCircle, CheckCircle } from "lucide-react";
+import { Plus, Save, X, AlertCircle, CheckCircle, Shield } from "lucide-react";
 import { cloudFunctionsService } from "../services/cloudFunctions";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useAdminCheck } from "../hooks/useAdminCheck";
 import { toast } from "react-toastify";
 
 const TaskCreator = ({ onTaskCreated, onClose }) => {
   const { user } = useFirebaseAuth();
+  const { isAdmin, loading: adminLoading } = useAdminCheck();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -202,10 +204,23 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-          <Plus className="mr-2" />
-          Vytvořit novou úlohu
-        </h2>
+        <div className="flex items-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            <Plus className="mr-2" />
+            Vytvořit novou úlohu
+          </h2>
+          {isAdmin && (
+            <div className="ml-4 px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-sm flex items-center">
+              <Shield className="w-4 h-4 mr-1" />
+              Admin
+            </div>
+          )}
+          {adminLoading && (
+            <div className="ml-4 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-sm">
+              Ověřuji oprávnění...
+            </div>
+          )}
+        </div>
         {onClose && (
           <button
             onClick={onClose}

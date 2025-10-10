@@ -24,9 +24,22 @@ const validateInput = (data, requiredFields) => {
   }
 };
 
-const sanitizeString = (str) => {
-  if (typeof str !== "string") return "";
-  return str.trim().substring(0, 1000); // Limit length and trim
+// Helper function to sanitize string inputs
+const sanitizeString = (input) => {
+  if (typeof input !== "string") return "";
+  return input.trim().substring(0, 1000); // Max 1000 chars
+};
+
+// Helper function to check if user is admin
+const isAdmin = async (uid) => {
+  try {
+    const userRecord = await admin.auth().getUser(uid);
+    // Check custom claims for admin role
+    return userRecord.customClaims && userRecord.customClaims.admin === true;
+  } catch (error) {
+    logger.error("Error checking admin status", { uid, error: error.message });
+    return false;
+  }
 };
 
 // Rate limiting helper (basic implementation)
@@ -52,7 +65,7 @@ const checkRateLimit = (userId, action, maxRequests = 10, windowMs = 60000) => {
 // Security configuration with cost control
 setGlobalOptions({
   maxInstances: 10,
-  region: "us-central1", // Set your preferred region
+  region: "europe-west1", // EU region (Belgium)
   enforceAppCheck: false, // Set to true when App Check is configured
 });
 
@@ -331,6 +344,12 @@ exports.createEducationalTask = onCall(async (request) => {
     // Authentication required (only admins should create tasks)
     if (!request.auth || !request.auth.uid) {
       throw new Error("Authentication required");
+    }
+
+    // Check if user is admin
+    const userIsAdmin = await isAdmin(request.auth.uid);
+    if (!userIsAdmin) {
+      throw new Error("Admin privileges required to create tasks");
     }
 
     const {

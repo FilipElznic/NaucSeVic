@@ -16,12 +16,15 @@ import ModernRegister from "./pages/ModernRegister";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
+import AllTasks from "./pages/AllTasks";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 import CloudFunctionDemo from "./components/CloudFunctionDemo";
 import TaskCreator from "./components/TaskCreator";
+import AdminManagement from "./components/AdminManagement";
 
 // Protected Route component is now imported from components
 
@@ -94,6 +97,18 @@ const AppRoutes = () => {
           }
         />
 
+        {/* All Tasks */}
+        <Route
+          path="/all-tasks"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AllTasks />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
         {/* Tasks by subject */}
         <Route
           path="/tasks/:subject"
@@ -118,14 +133,30 @@ const AppRoutes = () => {
           }
         />
 
-        {/* Task Creator */}
+        {/* Task Creator - Admin Only */}
         <Route
           path="/create-task"
           element={
             <ProtectedRoute>
-              <Layout>
-                <TaskCreator />
-              </Layout>
+              <AdminRoute>
+                <Layout>
+                  <TaskCreator />
+                </Layout>
+              </AdminRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Management - Admin Only */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminRoute>
+                <Layout>
+                  <AdminManagement />
+                </Layout>
+              </AdminRoute>
             </ProtectedRoute>
           }
         />

@@ -160,7 +160,7 @@ exports.createUserProfile = onCall(async (request) => {
 
     // Validate that user can only create their own profile
     if (uid !== request.auth.uid) {
-      throw new Error("Unauthorized: Can only create your own profile"),
+      throw new Error("Unauthorized: Can only create your own profile");
     }
 
     // Rate limiting per user
