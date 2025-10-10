@@ -81,7 +81,7 @@ const ModernRegister = () => {
       clearError();
       await register(email, password, `${firstName} ${lastName}`);
       toast.success("Registrace byla úspěšná! Vítejte!");
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       toast.error(`Registrace selhala: ${err.message}`);
       console.error("Registration error:", err);

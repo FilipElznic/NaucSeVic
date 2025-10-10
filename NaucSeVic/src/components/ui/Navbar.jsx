@@ -7,10 +7,8 @@ import {
   BookOpen,
   User,
   LogOut,
-  LayoutDashboard,
   Shield,
   Plus,
-  Home,
   BookMarked,
   Cloud,
   FileText,
@@ -53,20 +51,6 @@ const Navbar = () => {
   // Navigation items for authenticated users
   const navigationItems = [
     {
-      name: "Dashboard",
-      href: "/dashboard",
-      icon: LayoutDashboard,
-      protected: true,
-      adminOnly: false,
-    },
-    {
-      name: "Domů",
-      href: "/home",
-      icon: Home,
-      protected: true,
-      adminOnly: false,
-    },
-    {
       name: "Všechny úkoly",
       href: "/all-tasks",
       icon: BookMarked,
@@ -78,7 +62,7 @@ const Navbar = () => {
       href: "/cloud-functions",
       icon: Cloud,
       protected: true,
-      adminOnly: false,
+      adminOnly: true,
     },
     {
       name: "Vytvořit úkol",

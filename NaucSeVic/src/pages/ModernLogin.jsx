@@ -39,8 +39,8 @@ const ModernLogin = () => {
       await login(email, password);
       toast.success("Přihlášení bylo úspěšné!");
 
-      // Redirect to intended page or dashboard
-      const from = location.state?.from?.pathname || "/dashboard";
+      // Redirect to intended page or home
+      const from = location.state?.from?.pathname || "/";
       navigate(from, { replace: true });
     } catch (err) {
       toast.error(`Přihlášení selhalo: ${err.message}`);
