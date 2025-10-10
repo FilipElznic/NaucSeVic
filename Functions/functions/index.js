@@ -483,11 +483,9 @@ exports.getTasks = onCall(async (request) => {
     let query = admin
       .firestore()
       .collection("tasks")
-      .where("isActive", "==", true)
-      .orderBy("createdAt", "desc")
-      .limit(parseInt(limit) || 10);
+      .where("isActive", "==", true);
 
-    // Add filters
+    // Add filters first (before orderBy)
     if (difficulty) {
       const allowedDifficulties = ["easy", "medium", "hard"];
       if (allowedDifficulties.includes(difficulty)) {
@@ -498,6 +496,9 @@ exports.getTasks = onCall(async (request) => {
     if (subject) {
       query = query.where("subject", "==", sanitizeString(subject));
     }
+
+    // Add limit (temporarily removed orderBy to avoid index requirement)
+    query = query.limit(parseInt(limit) || 10);
 
     const snapshot = await query.get();
     const tasks = [];

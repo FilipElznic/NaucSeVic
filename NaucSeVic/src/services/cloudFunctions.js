@@ -70,10 +70,13 @@ class CloudFunctionsService {
   }
 
   // Submit task answer
-  async submitTaskAnswer(taskId, userAnswer) {
+  async submitTaskAnswer(taskId, answerData) {
     try {
       const submitAnswerFunction = httpsCallable(functions, "submitTaskAnswer");
-      const result = await submitAnswerFunction({ taskId, userAnswer });
+      const result = await submitAnswerFunction({
+        taskId,
+        ...answerData,
+      });
       return result.data;
     } catch (error) {
       console.error("Error submitting task answer:", error);

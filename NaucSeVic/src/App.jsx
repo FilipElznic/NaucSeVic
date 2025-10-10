@@ -13,8 +13,6 @@ import {
 import LandingPage from "./pages/LandingPage";
 import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
-import Dashboard from "./pages/Dashboard";
-import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 import AllTasks from "./pages/AllTasks";
 import TermsPage from "./pages/TermsPage";
@@ -72,28 +70,6 @@ const AppRoutes = () => {
             <PublicRoute>
               <ModernRegister />
             </PublicRoute>
-          }
-        />
-
-        {/* Protected Dashboard */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Home for logged-in users */}
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <Home />
-              </Layout>
-            </ProtectedRoute>
           }
         />
 

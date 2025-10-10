@@ -88,6 +88,71 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
     }
   };
 
+  // Helper funkce pro automatické přidání správné odpovědi do možností
+  const ensureCorrectAnswerInOptions = () => {
+    if (formData.type === "multipleChoice") {
+      const validOptions = formData.options.filter((opt) => opt.trim());
+      const correctAnswer = formData.correctAnswer.trim();
+
+      if (
+        correctAnswer &&
+        !validOptions.some(
+          (option) =>
+            option.trim().toLowerCase() === correctAnswer.toLowerCase()
+        )
+      ) {
+        // Najdi první prázdnou pozici nebo přidej na konec
+        const newOptions = [...formData.options];
+        const emptyIndex = newOptions.findIndex((opt) => !opt.trim());
+
+        if (emptyIndex !== -1) {
+          newOptions[emptyIndex] = correctAnswer;
+        } else {
+          newOptions.push(correctAnswer);
+        }
+
+        setFormData((prev) => ({ ...prev, options: newOptions }));
+        toast.info("Správná odpověď byla automaticky přidána mezi možnosti");
+      }
+    } else if (formData.type === "multiAnswer") {
+      const validOptions = formData.options.filter((opt) => opt.trim());
+      const validCorrectAnswers = formData.correctAnswers.filter((ans) =>
+        ans.trim()
+      );
+
+      if (validOptions.length > 0 && validCorrectAnswers.length > 0) {
+        const missingAnswers = validCorrectAnswers.filter(
+          (correctAnswer) =>
+            !validOptions.some(
+              (option) =>
+                option.trim().toLowerCase() ===
+                correctAnswer.trim().toLowerCase()
+            )
+        );
+
+        if (missingAnswers.length > 0) {
+          const newOptions = [...formData.options];
+
+          missingAnswers.forEach((missing) => {
+            const emptyIndex = newOptions.findIndex((opt) => !opt.trim());
+            if (emptyIndex !== -1) {
+              newOptions[emptyIndex] = missing;
+            } else {
+              newOptions.push(missing);
+            }
+          });
+
+          setFormData((prev) => ({ ...prev, options: newOptions }));
+          toast.info(
+            `Správné odpovědi byly automaticky přidány mezi možnosti: ${missingAnswers.join(
+              ", "
+            )}`
+          );
+        }
+      }
+    }
+  };
+
   const validateForm = () => {
     if (!formData.name.trim()) {
       toast.error("Název úlohy je povinný");
@@ -95,6 +160,10 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
     }
     if (!formData.description.trim()) {
       toast.error("Popis úlohy je povinný");
+      return false;
+    }
+    if (!formData.subject.trim()) {
+      toast.error("Předmět je povinný");
       return false;
     }
     if (!formData.explanation.trim()) {
@@ -107,8 +176,21 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
         toast.error("Správná odpověď je povinná");
         return false;
       }
-      if (formData.options.filter((opt) => opt.trim()).length < 2) {
+
+      const validOptions = formData.options.filter((opt) => opt.trim());
+      if (validOptions.length < 2) {
         toast.error("Musíte zadat alespoň 2 možnosti");
+        return false;
+      }
+
+      // Kontrola, že správná odpověď je mezi možnostmi
+      const correctAnswerExists = validOptions.some(
+        (option) =>
+          option.trim().toLowerCase() ===
+          formData.correctAnswer.trim().toLowerCase()
+      );
+      if (!correctAnswerExists) {
+        toast.error("Správná odpověď musí být jednou z nabízených možností");
         return false;
       }
     } else if (formData.type === "written") {
@@ -117,9 +199,31 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
         return false;
       }
     } else if (formData.type === "multiAnswer") {
-      if (formData.correctAnswers.filter((ans) => ans.trim()).length < 1) {
+      const validCorrectAnswers = formData.correctAnswers.filter((ans) =>
+        ans.trim()
+      );
+      if (validCorrectAnswers.length < 1) {
         toast.error("Musíte zadat alespoň jednu správnou odpověď");
         return false;
+      }
+
+      // Kontrola, že všechny správné odpovědi jsou mezi možnostmi (pokud jsou zadány)
+      const validOptions = formData.options.filter((opt) => opt.trim());
+      if (validOptions.length > 0) {
+        const allCorrectAnswersInOptions = validCorrectAnswers.every(
+          (correctAnswer) =>
+            validOptions.some(
+              (option) =>
+                option.trim().toLowerCase() ===
+                correctAnswer.trim().toLowerCase()
+            )
+        );
+        if (!allCorrectAnswersInOptions) {
+          toast.error(
+            "Všechny správné odpovědi musí být mezi nabízenými možnostmi"
+          );
+          return false;
+        }
       }
     }
 
@@ -133,6 +237,9 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
       toast.error("Musíte být přihlášeni pro vytvoření úlohy");
       return;
     }
+
+    // Automaticky přidej správnou odpověď do možností, pokud tam chybí
+    ensureCorrectAnswerInOptions();
 
     if (!validateForm()) return;
 
@@ -151,12 +258,19 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
           .map((hint) => hint.trim()),
       };
 
-      // Add type-specific fields
+      // Add type-specific fields with validation
       if (formData.type === "multipleChoice") {
         taskData.correctAnswer = formData.correctAnswer.trim();
         taskData.options = formData.options
           .filter((opt) => opt.trim())
           .map((opt) => opt.trim());
+
+        // Final validation: correct answer must be in options
+        if (!taskData.options.includes(taskData.correctAnswer)) {
+          toast.error("Kritická chyba: Správná odpověď není v možnostech");
+          setLoading(false);
+          return;
+        }
       } else if (formData.type === "written") {
         taskData.correctAnswer = formData.correctAnswer.trim();
       } else if (formData.type === "multiAnswer") {
@@ -167,6 +281,20 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
           taskData.options = formData.options
             .filter((opt) => opt.trim())
             .map((opt) => opt.trim());
+
+          // Final validation: all correct answers must be in options
+          const missingAnswers = taskData.correctAnswers.filter(
+            (correctAnswer) => !taskData.options.includes(correctAnswer)
+          );
+          if (missingAnswers.length > 0) {
+            toast.error(
+              `Kritická chyba: Správné odpovědi nejsou v možnostech: ${missingAnswers.join(
+                ", "
+              )}`
+            );
+            setLoading(false);
+            return;
+          }
         }
       }
 
@@ -250,14 +378,19 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Předmět
+              Předmět *
             </label>
             <select
               value={formData.subject}
               onChange={(e) => handleInputChange("subject", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white ${
+                !formData.subject.trim()
+                  ? "border-red-300 dark:border-red-600"
+                  : "border-gray-300 dark:border-gray-600"
+              }`}
+              required
             >
-              <option value="">Vyberte předmět</option>
+              <option value="">Vyberte předmět *</option>
               {subjects.map((subject) => (
                 <option key={subject} value={subject}>
                   {subject}
@@ -340,15 +473,25 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Správná odpověď *
               </label>
-              <input
-                type="text"
-                value={formData.correctAnswer}
-                onChange={(e) =>
-                  handleInputChange("correctAnswer", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                placeholder="Zadejte správnou odpověď..."
-              />
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={formData.correctAnswer}
+                  onChange={(e) =>
+                    handleInputChange("correctAnswer", e.target.value)
+                  }
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  placeholder="Zadejte správnou odpověď..."
+                />
+                <button
+                  type="button"
+                  onClick={ensureCorrectAnswerInOptions}
+                  className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm"
+                  title="Přidat správnou odpověď do možností"
+                >
+                  ✓ Přidat
+                </button>
+              </div>
             </div>
 
             <div>
