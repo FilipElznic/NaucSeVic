@@ -83,11 +83,6 @@ const Navbar = () => {
   // Subject items for tasks
   const subjectItems = [
     {
-      name: "Matematika",
-      href: "/tasks/math",
-      description: "Algebra, geometrie, analýza",
-    },
-    {
       name: "Geometrie",
       href: "/tasks/geometry",
       description: "Planimetrie, stereometrie",

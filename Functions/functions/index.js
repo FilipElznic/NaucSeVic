@@ -177,7 +177,7 @@ exports.createUserProfile = onCall(async (request) => {
     // Check if profile already exists
     const existingProfile = await admin
       .firestore()
-      .collection("userProfiles")
+      .collection("users")
       .doc(request.auth.uid)
       .get();
 
@@ -189,27 +189,33 @@ exports.createUserProfile = onCall(async (request) => {
     const sanitizedName = name ? sanitizeString(name) : "";
     const sanitizedSurname = surname ? sanitizeString(surname) : "";
 
-    // Create user profile with the exact layout requested
+    // Create today's date for initial progress entry
+    const today = new Date().toISOString().split("T")[0];
+
+    // Create user profile with the exact structure requested
     const userProfile = {
-      attemptedTasks: {},
       profile: {
-        coins: 0,
-        email: request.auth.token.email || "",
         name: sanitizedName,
         surname: sanitizedSurname,
+        email: request.auth.token.email || "",
         xp: 0,
+        coins: 0,
       },
-      progress: {},
-      // Metadata
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      isActive: true,
+      completedTasks: {},
+      progress: {
+        [today]: {
+          loginTime: admin.firestore.FieldValue.serverTimestamp(),
+          xpGained: 0,
+          coinsGained: 0,
+          tasksFinished: 0,
+        },
+      },
     };
 
-    // Create the user profile document
+    // Create the user document in "users" collection
     await admin
       .firestore()
-      .collection("userProfiles")
+      .collection("users")
       .doc(request.auth.uid)
       .set(userProfile);
 
@@ -276,13 +282,10 @@ exports.recordTaskAttempt = onCall(async (request) => {
     };
 
     // Update user profile with task attempt and progress
-    const userProfileRef = admin
-      .firestore()
-      .collection("userProfiles")
-      .doc(userId);
+    const userRef = admin.firestore().collection("users").doc(userId);
 
     await admin.firestore().runTransaction(async (transaction) => {
-      const userDoc = await transaction.get(userProfileRef);
+      const userDoc = await transaction.get(userRef);
 
       if (!userDoc.exists) {
         throw new Error("User profile not found");
@@ -304,13 +307,12 @@ exports.recordTaskAttempt = onCall(async (request) => {
         todayProgress.tasksFinished += 1;
       }
 
-      // Update user profile
-      transaction.update(userProfileRef, {
-        [`attemptedTasks.${taskId}`]: taskAttempt,
+      // Update user profile with new structure
+      transaction.update(userRef, {
+        [`completedTasks.${taskId}`]: taskAttempt,
         [`progress.${today}`]: todayProgress,
         "profile.xp": admin.firestore.FieldValue.increment(finalXpEarned),
         "profile.coins": admin.firestore.FieldValue.increment(coinsEarned),
-        updatedAt: now,
       });
     });
 
@@ -613,13 +615,10 @@ exports.submitTaskAnswer = onCall(async (request) => {
 
     // Update user profile
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
-    const userProfileRef = admin
-      .firestore()
-      .collection("userProfiles")
-      .doc(userId);
+    const userRef = admin.firestore().collection("users").doc(userId);
 
     await admin.firestore().runTransaction(async (transaction) => {
-      const userDoc = await transaction.get(userProfileRef);
+      const userDoc = await transaction.get(userRef);
 
       if (!userDoc.exists) {
         throw new Error("User profile not found");
@@ -642,12 +641,11 @@ exports.submitTaskAnswer = onCall(async (request) => {
       }
 
       // Update user profile with task attempt and progress
-      transaction.update(userProfileRef, {
-        [`attemptedTasks.${taskId}`]: taskAttempt,
+      transaction.update(userRef, {
+        [`completedTasks.${taskId}`]: taskAttempt,
         [`progress.${today}`]: todayProgress,
         "profile.xp": admin.firestore.FieldValue.increment(xpEarned),
         "profile.coins": admin.firestore.FieldValue.increment(coinsEarned),
-        updatedAt: now,
       });
     });
 
@@ -679,70 +677,93 @@ exports.submitTaskAnswer = onCall(async (request) => {
   }
 });
 
-// SECURED: Firestore trigger with validation for user registration
-exports.onUserCreated = onDocumentCreated("users/{userId}", async (event) => {
+// SECURED: Initialize user profile after registration
+exports.initializeUserProfile = onCall(async (request) => {
   try {
-    const userId = event.params.userId;
-    const userData = event.data && event.data.data();
-
-    if (!userData) {
-      logger.warn("User created trigger: No user data", { userId });
-      return;
+    // Authentication required
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
     }
 
-    logger.info("New user created - creating profile", {
+    const userId = request.auth.uid;
+    const { firstName, lastName } = request.data || {};
+
+    // Rate limiting per user
+    checkRateLimit(userId, "initializeProfile", 3, 300000); // 3 per 5min
+
+    logger.info("Initializing user profile", {
       userId,
-      email: userData.email,
-      displayName: userData.displayName || userData.name || "Unknown",
+      email: request.auth.token.email,
+      firstName: firstName || "Unknown",
+      lastName: lastName || "",
     });
 
-    // Create user profile with the exact layout requested
+    // Check if profile already exists
+    const existingUser = await admin
+      .firestore()
+      .collection("users")
+      .doc(userId)
+      .get();
+
+    if (existingUser.exists) {
+      return {
+        success: true,
+        message: "Profile already exists",
+        profile: existingUser.data().profile,
+      };
+    }
+
+    // Sanitize input data
+    const sanitizedFirstName = firstName ? sanitizeString(firstName) : "";
+    const sanitizedLastName = lastName ? sanitizeString(lastName) : "";
+
+    // Create today's date for initial progress entry
+    const today = new Date().toISOString().split("T")[0];
+
+    // Create user profile with the exact structure requested
     const userProfile = {
-      attemptedTasks: {}, // Empty object - will be populated as user attempts tasks
       profile: {
-        coins: 0, // Starting coins
-        email: userData.email || "",
-        name: userData.displayName || userData.name || "",
-        surname: userData.surname || "", // Will be empty initially unless provided
-        xp: 0, // Starting XP
+        name: sanitizedFirstName,
+        surname: sanitizedLastName,
+        email: request.auth.token.email || "",
+        xp: 0,
+        coins: 0,
       },
-      progress: {}, // Empty object - will be populated with daily progress
-      // Additional metadata
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      isActive: true,
+      completedTasks: {},
+      progress: {
+        [today]: {
+          loginTime: admin.firestore.FieldValue.serverTimestamp(),
+          xpGained: 0,
+          coinsGained: 0,
+          tasksFinished: 0,
+        },
+      },
     };
 
-    // Create the user profile document
-    await admin
-      .firestore()
-      .collection("userProfiles")
-      .doc(userId)
-      .set(userProfile);
-
-    // Also create user settings for app preferences
-    await admin.firestore().collection("userSettings").doc(userId).set({
-      userId,
-      theme: "light",
-      notifications: true,
-      language: "cs", // Default to Czech
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+    // Create the user document in "users" collection
+    await admin.firestore().collection("users").doc(userId).set(userProfile);
 
     logger.info("User profile created successfully", {
       userId,
-      email: userData.email,
-      initialCoins: userProfile.profile.coins,
-      initialXp: userProfile.profile.xp,
+      email: request.auth.token.email,
+      name: sanitizedFirstName,
+      surname: sanitizedLastName,
+      initialCoins: 0,
+      initialXp: 0,
     });
 
-    return;
+    return {
+      success: true,
+      message: "Profile created successfully",
+      userId: userId,
+      profile: userProfile.profile,
+    };
   } catch (error) {
-    logger.error("Error in onUserCreated trigger", {
+    logger.error("Error initializing user profile", {
       error: error.message,
-      userId: event.params.userId,
+      userId: request.auth && request.auth.uid,
     });
-    return;
+    throw new Error(error.message || "Failed to initialize profile");
   }
 });
 

@@ -15,7 +15,22 @@ class CloudFunctionsService {
     }
   }
 
-  // Create user profile
+  // Initialize user profile after registration
+  async initializeUserProfile(firstName, lastName) {
+    try {
+      const initProfileFunction = httpsCallable(
+        functions,
+        "initializeUserProfile"
+      );
+      const result = await initProfileFunction({ firstName, lastName });
+      return result.data;
+    } catch (error) {
+      console.error("Error initializing user profile:", error);
+      throw error;
+    }
+  }
+
+  // Create user profile (legacy function)
   async createUserProfile(uid, profileData) {
     try {
       const createProfileFunction = httpsCallable(

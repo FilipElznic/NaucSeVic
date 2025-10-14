@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { cloudFunctionsService } from "../services/cloudFunctions";
 import { toast, ToastContainer } from "react-toastify";
 import {
   Eye,
@@ -79,8 +80,21 @@ const ModernRegister = () => {
     try {
       setIsLoading(true);
       clearError();
+
+      // Register the user with Firebase Auth
       await register(email, password, `${firstName} ${lastName}`);
-      toast.success("Registrace byla úspěšná! Vítejte!");
+
+      // Initialize user profile in database
+      try {
+        await cloudFunctionsService.initializeUserProfile(firstName, lastName);
+        toast.success("Registrace byla úspěšná! Váš profil byl vytvořen.");
+      } catch (profileError) {
+        console.error("Profile creation error:", profileError);
+        toast.warning(
+          "Registrace úspěšná, ale profil nebyl vytvořen. Bude vytvořen později."
+        );
+      }
+
       navigate("/");
     } catch (err) {
       toast.error(`Registrace selhala: ${err.message}`);
