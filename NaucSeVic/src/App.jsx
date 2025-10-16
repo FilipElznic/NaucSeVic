@@ -84,9 +84,9 @@ const AppRoutes = () => {
           }
         />
 
-        {/* Tasks by subject */}
+        {/* Subjects */}
         <Route
-          path="/tasks/:subject"
+          path="/predmety/:subject"
           element={
             <ProtectedRoute>
               <Layout>

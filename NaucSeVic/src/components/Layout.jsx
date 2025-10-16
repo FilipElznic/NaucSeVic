@@ -8,7 +8,7 @@ const Layout = ({ children, showNavbar = true, showFooter = true }) => {
 
   return (
     <div
-      className={`min-h-screen ${
+      className={`min-h-screen flex flex-col ${
         darkMode ? "bg-black" : "bg-white"
       } transition-colors duration-300`}
     >

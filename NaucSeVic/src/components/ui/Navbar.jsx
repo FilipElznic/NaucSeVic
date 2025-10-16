@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import { useDarkMode } from "../../contexts/DarkModeContext";
 import { useAdminCheck } from "../../hooks/useAdminCheck";
+import { useUserProfile } from "../../hooks/useUserProfile";
 import {
   BookOpen,
   User,
@@ -16,12 +17,15 @@ import {
   Menu,
   X,
   ChevronDown,
+  Star,
+  Coins,
 } from "lucide-react";
 
 const Navbar = () => {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const { user, logout } = useFirebaseAuth();
   const { isAdmin } = useAdminCheck();
+  const { xp, coins, userName } = useUserProfile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [subjectsDropdownOpen, setSubjectsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -77,13 +81,13 @@ const Navbar = () => {
   const subjectItems = [
     {
       name: "Geometrie",
-      href: "/tasks/geometry",
+      href: "/predmety/geometrie",
       description: "Planimetrie, stereometrie",
     },
     {
       name: "Fyzika",
-      href: "/tasks/physics",
-      description: "Mechanika, optika, elektřina",
+      href: "/predmety/fyzika",
+      description: "Mechanika, elektřina, optika",
     },
   ];
 
@@ -109,7 +113,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="absolute top-0 left-0 w-full z-50 bg-white/10 dark:bg-black/20 backdrop-blur-md">
+    <nav className="relative w-full z-50 bg-white/10 dark:bg-black/20 backdrop-blur-md">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
@@ -123,7 +127,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden xl:flex items-center space-x-4">
             {user && (
               <>
                 {/* Main Navigation */}
@@ -186,17 +190,30 @@ const Navbar = () => {
                 )}
 
                 {/* User Info */}
-                <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-green-500/20 text-green-700 dark:text-green-300">
-                  <User className="h-4 w-4" />
-                  <span className="text-sm font-medium">
-                    {user.displayName || user.email?.split("@")[0]}
-                  </span>
-                  {isAdmin && (
-                    <Shield
-                      className="h-3 w-3 text-yellow-500"
-                      title="Administrátor"
-                    />
-                  )}
+                <div className="flex items-center space-x-3">
+                  {/* User Name and Stats */}
+                  <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-green-500/20 text-green-700 dark:text-green-300">
+                    <User className="h-4 w-4" />
+                    <span className="text-sm font-medium">{userName}</span>
+                    {isAdmin && (
+                      <Shield
+                        className="h-3 w-3 text-yellow-500"
+                        title="Administrátor"
+                      />
+                    )}
+                  </div>
+
+                  {/* XP Display */}
+                  <div className="flex items-center space-x-1 px-2 py-1 rounded-lg bg-blue-500/20 text-blue-700 dark:text-blue-300">
+                    <Star className="h-3 w-3" />
+                    <span className="text-xs font-medium">{xp} XP</span>
+                  </div>
+
+                  {/* Coins Display */}
+                  <div className="flex items-center space-x-1 px-2 py-1 rounded-lg bg-yellow-500/20 text-yellow-700 dark:text-yellow-300">
+                    <Coins className="h-3 w-3" />
+                    <span className="text-xs font-medium">{coins}</span>
+                  </div>
                 </div>
 
                 {/* Logout Button */}
@@ -267,7 +284,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden flex items-center space-x-2">
+          <div className="xl:hidden flex items-center space-x-2">
             {/* Dark Mode Toggle Mobile */}
             <button
               onClick={toggleDarkMode}
@@ -322,22 +339,35 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white/5 dark:bg-black/30 rounded-lg backdrop-blur-md">
               {user ? (
                 <>
                   {/* User Info Mobile */}
-                  <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-green-500/20 text-green-700 dark:text-green-300 mb-2">
-                    <User className="h-4 w-4" />
-                    <span className="text-sm font-medium">
-                      {user.displayName || user.email?.split("@")[0]}
-                    </span>
-                    {isAdmin && (
-                      <Shield
-                        className="h-3 w-3 text-yellow-500"
-                        title="Administrátor"
-                      />
-                    )}
+                  <div className="space-y-2 mb-3">
+                    <div className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-green-500/20 text-green-700 dark:text-green-300">
+                      <User className="h-4 w-4" />
+                      <span className="text-sm font-medium">{userName}</span>
+                      {isAdmin && (
+                        <Shield
+                          className="h-3 w-3 text-yellow-500"
+                          title="Administrátor"
+                        />
+                      )}
+                    </div>
+
+                    {/* XP and Coins Row */}
+                    <div className="flex items-center space-x-3 px-3">
+                      <div className="flex items-center space-x-1 px-2 py-1 rounded-lg bg-blue-500/20 text-blue-700 dark:text-blue-300">
+                        <Star className="h-3 w-3" />
+                        <span className="text-xs font-medium">{xp} XP</span>
+                      </div>
+
+                      <div className="flex items-center space-x-1 px-2 py-1 rounded-lg bg-yellow-500/20 text-yellow-700 dark:text-yellow-300">
+                        <Coins className="h-3 w-3" />
+                        <span className="text-xs font-medium">{coins}</span>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Navigation Items Mobile */}
