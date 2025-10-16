@@ -330,342 +330,388 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-            <Plus className="mr-2" />
-            Vytvořit novou úlohu
-          </h2>
-          {isAdmin && (
-            <div className="ml-4 px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-sm flex items-center">
-              <Shield className="w-4 h-4 mr-1" />
-              Admin
+    <div className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-900 min-h-screen">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-gray-200 dark:border-zinc-700 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center">
+              <div className="flex items-center justify-center w-10 h-10 bg-indigo-600 rounded-lg mr-3">
+                <Plus className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Vytvořit novou úlohu
+                </h2>
+                {isAdmin && (
+                  <div className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                    <Shield className="w-3 h-3 mr-1" />
+                    Admin
+                  </div>
+                )}
+                {adminLoading && (
+                  <div className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                    Ověřuji oprávnění...
+                  </div>
+                )}
+              </div>
             </div>
-          )}
-          {adminLoading && (
-            <div className="ml-4 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-sm">
-              Ověřuji oprávnění...
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-all duration-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Basic Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                  Název úlohy *
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                  placeholder="Zadejte název úlohy..."
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                  Předmět *
+                </label>
+                <select
+                  value={formData.subject}
+                  onChange={(e) => handleInputChange("subject", e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white ${
+                    !formData.subject.trim()
+                      ? "border-red-300 dark:border-red-600"
+                      : "border-gray-300 dark:border-zinc-600"
+                  }`}
+                  required
+                >
+                  <option value="">Vyberte předmět *</option>
+                  {subjects.map((subject) => (
+                    <option key={subject} value={subject}>
+                      {subject}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          )}
-        </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        )}
-      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Basic Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Název úlohy *
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-              placeholder="Zadejte název úlohy..."
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Předmět *
-            </label>
-            <select
-              value={formData.subject}
-              onChange={(e) => handleInputChange("subject", e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white ${
-                !formData.subject.trim()
-                  ? "border-red-300 dark:border-red-600"
-                  : "border-gray-300 dark:border-gray-600"
-              }`}
-              required
-            >
-              <option value="">Vyberte předmět *</option>
-              {subjects.map((subject) => (
-                <option key={subject} value={subject}>
-                  {subject}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Description */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Popis úlohy *
-          </label>
-          <textarea
-            value={formData.description}
-            onChange={(e) => handleInputChange("description", e.target.value)}
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            placeholder="Popište, co má student udělat..."
-            required
-          />
-        </div>
-
-        {/* Type and Difficulty */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Typ úlohy *
-            </label>
-            <select
-              value={formData.type}
-              onChange={(e) => handleInputChange("type", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            >
-              {taskTypes.map((type) => (
-                <option key={type.value} value={type.value}>
-                  {type.icon} {type.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Obtížnost *
-            </label>
-            <select
-              value={formData.difficulty}
-              onChange={(e) => handleInputChange("difficulty", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            >
-              {difficulties.map((diff) => (
-                <option key={diff.value} value={diff.value}>
-                  {diff.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              XP body *
-            </label>
-            <input
-              type="number"
-              min="1"
-              max="100"
-              value={formData.xp}
-              onChange={(e) => handleInputChange("xp", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            />
-          </div>
-        </div>
-
-        {/* Type-specific fields */}
-        {formData.type === "multipleChoice" && (
-          <div className="space-y-4">
+            {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Správná odpověď *
+              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                Popis úlohy *
               </label>
-              <div className="flex space-x-2">
+              <textarea
+                value={formData.description}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                placeholder="Popište, co má student udělat..."
+                required
+              />
+            </div>
+
+            {/* Type and Difficulty */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                  Typ úlohy *
+                </label>
+                <select
+                  value={formData.type}
+                  onChange={(e) => handleInputChange("type", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                >
+                  {taskTypes.map((type) => (
+                    <option key={type.value} value={type.value}>
+                      {type.icon} {type.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                  Obtížnost *
+                </label>
+                <select
+                  value={formData.difficulty}
+                  onChange={(e) =>
+                    handleInputChange("difficulty", e.target.value)
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                >
+                  {difficulties.map((diff) => (
+                    <option key={diff.value} value={diff.value}>
+                      {diff.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                  XP body *
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={formData.xp}
+                  onChange={(e) => handleInputChange("xp", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                />
+              </div>
+            </div>
+
+            {/* Type-specific fields */}
+            {formData.type === "multipleChoice" && (
+              <div className="space-y-4 p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                  📝 Výběr z možností
+                </h3>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                    Správná odpověď *
+                  </label>
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      value={formData.correctAnswer}
+                      onChange={(e) =>
+                        handleInputChange("correctAnswer", e.target.value)
+                      }
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                      placeholder="Zadejte správnou odpověď..."
+                    />
+                    <button
+                      type="button"
+                      onClick={ensureCorrectAnswerInOptions}
+                      className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                      title="Přidat správnou odpověď do možností"
+                    >
+                      ✓ Přidat
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-4">
+                    Možnosti odpovědí *
+                  </label>
+                  <div className="space-y-2">
+                    {formData.options.map((option, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <span className="flex-shrink-0 w-6 h-6 bg-indigo-600 text-white rounded text-sm flex items-center justify-center font-medium">
+                          {String.fromCharCode(65 + index)}
+                        </span>
+                        <input
+                          type="text"
+                          value={option}
+                          onChange={(e) =>
+                            handleArrayChange("options", index, e.target.value)
+                          }
+                          className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                          placeholder={`Možnost ${String.fromCharCode(
+                            65 + index
+                          )}...`}
+                        />
+                        {formData.options.length > 2 && (
+                          <button
+                            type="button"
+                            onClick={() => removeArrayItem("options", index)}
+                            className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => addArrayItem("options")}
+                    className="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm"
+                  >
+                    + Přidat možnost
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {formData.type === "written" && (
+              <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+                  ✍️ Psaná odpověď
+                </h3>
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                  Správná odpověď *
+                </label>
                 <input
                   type="text"
                   value={formData.correctAnswer}
                   onChange={(e) =>
                     handleInputChange("correctAnswer", e.target.value)
                   }
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
                   placeholder="Zadejte správnou odpověď..."
                 />
+              </div>
+            )}
+
+            {formData.type === "multiAnswer" && (
+              <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+                  ✅ Více správných odpovědí
+                </h3>
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-4">
+                  Správné odpovědi *
+                </label>
+                <div className="space-y-2">
+                  {formData.correctAnswers.map((answer, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <span className="flex-shrink-0 w-6 h-6 bg-indigo-600 text-white rounded text-sm flex items-center justify-center font-medium">
+                        {index + 1}
+                      </span>
+                      <input
+                        type="text"
+                        value={answer}
+                        onChange={(e) =>
+                          handleArrayChange(
+                            "correctAnswers",
+                            index,
+                            e.target.value
+                          )
+                        }
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                        placeholder={`Správná odpověď ${index + 1}...`}
+                      />
+                      {formData.correctAnswers.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeArrayItem("correctAnswers", index)
+                          }
+                          className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
                 <button
                   type="button"
-                  onClick={ensureCorrectAnswerInOptions}
-                  className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm"
-                  title="Přidat správnou odpověď do možností"
+                  onClick={() => addArrayItem("correctAnswers")}
+                  className="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm"
                 >
-                  ✓ Přidat
+                  + Přidat správnou odpověď
                 </button>
               </div>
+            )}
+
+            {/* Explanation */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                Vysvětlení *
+              </label>
+              <textarea
+                value={formData.explanation}
+                onChange={(e) =>
+                  handleInputChange("explanation", e.target.value)
+                }
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                placeholder="Vysvětlete správnou odpověď..."
+                required
+              />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Možnosti odpovědí *
-              </label>
-              {formData.options.map((option, index) => (
-                <div key={index} className="flex items-center space-x-2 mb-2">
-                  <input
-                    type="text"
-                    value={option}
-                    onChange={(e) =>
-                      handleArrayChange("options", index, e.target.value)
-                    }
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                    placeholder={`Možnost ${index + 1}...`}
-                  />
-                  {formData.options.length > 2 && (
-                    <button
-                      type="button"
-                      onClick={() => removeArrayItem("options", index)}
-                      className="p-2 text-red-500 hover:text-red-700"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-              ))}
+            {/* Hints */}
+            <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
+                💡 Nápovědy (volitelné)
+              </h3>
+              <div className="space-y-2">
+                {formData.hints.map((hint, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <span className="flex-shrink-0 w-6 h-6 bg-yellow-500 text-white rounded text-sm flex items-center justify-center font-medium">
+                      {index + 1}
+                    </span>
+                    <input
+                      type="text"
+                      value={hint}
+                      onChange={(e) =>
+                        handleArrayChange("hints", index, e.target.value)
+                      }
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                      placeholder={`Nápověda ${index + 1}...`}
+                    />
+                    {formData.hints.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem("hints", index)}
+                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
               <button
                 type="button"
-                onClick={() => addArrayItem("options")}
-                className="mt-2 px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => addArrayItem("hints")}
+                className="mt-3 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 text-sm"
               >
-                Přidat možnost
+                + Přidat nápovědu
               </button>
             </div>
-          </div>
-        )}
 
-        {formData.type === "written" && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Správná odpověď *
-            </label>
-            <input
-              type="text"
-              value={formData.correctAnswer}
-              onChange={(e) =>
-                handleInputChange("correctAnswer", e.target.value)
-              }
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-              placeholder="Zadejte správnou odpověď..."
-            />
-          </div>
-        )}
-
-        {formData.type === "multiAnswer" && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Správné odpovědi *
-            </label>
-            {formData.correctAnswers.map((answer, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-2">
-                <input
-                  type="text"
-                  value={answer}
-                  onChange={(e) =>
-                    handleArrayChange("correctAnswers", index, e.target.value)
-                  }
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                  placeholder={`Správná odpověď ${index + 1}...`}
-                />
-                {formData.correctAnswers.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeArrayItem("correctAnswers", index)}
-                    className="p-2 text-red-500 hover:text-red-700"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              type="button"
-              onClick={() => addArrayItem("correctAnswers")}
-              className="mt-2 px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Přidat správnou odpověď
-            </button>
-          </div>
-        )}
-
-        {/* Explanation */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Vysvětlení *
-          </label>
-          <textarea
-            value={formData.explanation}
-            onChange={(e) => handleInputChange("explanation", e.target.value)}
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            placeholder="Vysvětlete správnou odpověď..."
-            required
-          />
-        </div>
-
-        {/* Hints */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Nápovědy (volitelné)
-          </label>
-          {formData.hints.map((hint, index) => (
-            <div key={index} className="flex items-center space-x-2 mb-2">
-              <input
-                type="text"
-                value={hint}
-                onChange={(e) =>
-                  handleArrayChange("hints", index, e.target.value)
-                }
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                placeholder={`Nápověda ${index + 1}...`}
-              />
-              {formData.hints.length > 1 && (
+            {/* Submit Button */}
+            <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-zinc-700">
+              {onClose && (
                 <button
                   type="button"
-                  onClick={() => removeArrayItem("hints", index)}
-                  className="p-2 text-red-500 hover:text-red-700"
+                  onClick={onClose}
+                  className="px-6 py-2 text-gray-600 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
                 >
-                  <X className="w-4 h-4" />
+                  Zrušit
                 </button>
               )}
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center transition-colors"
+              >
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                    Vytvářím...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-5 h-5 mr-3" />
+                    Vytvořit úlohu
+                  </>
+                )}
+              </button>
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => addArrayItem("hints")}
-            className="mt-2 px-4 py-2 text-sm bg-gray-500 text-white rounded hover:bg-gray-600"
-          >
-            Přidat nápovědu
-          </button>
+          </form>
         </div>
-
-        {/* Submit Button */}
-        <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-          {onClose && (
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-6 py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              Zrušit
-            </button>
-          )}
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
-          >
-            {loading ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Vytvářím...
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4 mr-2" />
-                Vytvořit úlohu
-              </>
-            )}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };

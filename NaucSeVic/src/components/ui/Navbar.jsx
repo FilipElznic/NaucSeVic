@@ -71,13 +71,6 @@ const Navbar = () => {
       protected: true,
       adminOnly: true,
     },
-    {
-      name: "Admin",
-      href: "/admin",
-      icon: Shield,
-      protected: true,
-      adminOnly: true,
-    },
   ];
 
   // Subject items for tasks

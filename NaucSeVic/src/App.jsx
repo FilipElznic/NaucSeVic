@@ -22,7 +22,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import CloudFunctionDemo from "./components/CloudFunctionDemo";
 import TaskCreator from "./components/TaskCreator";
-import AdminManagement from "./components/AdminManagement";
 
 // Protected Route component is now imported from components
 
@@ -117,20 +116,6 @@ const AppRoutes = () => {
               <AdminRoute>
                 <Layout>
                   <TaskCreator />
-                </Layout>
-              </AdminRoute>
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Admin Management - Admin Only */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <AdminRoute>
-                <Layout>
-                  <AdminManagement />
                 </Layout>
               </AdminRoute>
             </ProtectedRoute>

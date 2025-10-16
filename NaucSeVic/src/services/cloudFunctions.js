@@ -30,7 +30,7 @@ class CloudFunctionsService {
     }
   }
 
-  // Create user profile (legacy function)
+  // Create user profile
   async createUserProfile(uid, profileData) {
     try {
       const createProfileFunction = httpsCallable(

@@ -547,6 +547,13 @@ exports.submitTaskAnswer = onCall(async (request) => {
 
     const { taskId, userAnswer } = request.data || {};
 
+    logger.info("Submit task answer called", {
+      taskId,
+      userAnswer,
+      userId: request.auth.uid,
+      requestData: request.data,
+    });
+
     // Rate limiting per user
     checkRateLimit(request.auth.uid, "submitTaskAnswer", 60, 60000); // 60 per minute
 

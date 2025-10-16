@@ -274,20 +274,26 @@ const AllTasks = () => {
 
     setSubmitting(true);
     try {
-      let answerData = {};
+      let userAnswerData;
 
       if (selectedTask.type === "written") {
-        answerData = { answer: userAnswer.trim() };
+        userAnswerData = userAnswer.trim();
       } else if (selectedTask.type === "multipleChoice") {
-        answerData = { answer: selectedOptions[0] };
+        userAnswerData = selectedOptions[0];
       } else if (selectedTask.type === "multiAnswer") {
-        answerData = { answers: selectedOptions };
+        userAnswerData = selectedOptions;
       }
 
       // Call submit answer API
+      console.log("Submitting answer:", {
+        taskId: selectedTask.id,
+        userAnswer: userAnswerData,
+        taskType: selectedTask.type,
+      });
+
       const result = await cloudFunctionsService.submitTaskAnswer(
         selectedTask.id,
-        answerData
+        { userAnswer: userAnswerData }
       );
 
       if (result.success) {
@@ -371,7 +377,7 @@ const AllTasks = () => {
     });
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 py-8">
+    <div className="min-h-screen h-[200vh] pt-[100px] bg-white dark:bg-zinc-950 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
