@@ -13,7 +13,7 @@ import {
 import LandingPage from "./pages/LandingPage";
 import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
-import Tasks from "./pages/Tasks";
+import Predmety from "./pages/Predmety";
 import AllTasks from "./pages/AllTasks";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
@@ -22,6 +22,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import CloudFunctionDemo from "./components/CloudFunctionDemo";
 import TaskCreator from "./components/TaskCreator";
+import Matematika from "./components/subjects/Matematika";
+import Geometrie from "./components/subjects/Geometrie";
+import Fyzika from "./components/subjects/Fyzika";
 
 // Protected Route component is now imported from components
 
@@ -84,13 +87,45 @@ const AppRoutes = () => {
           }
         />
 
-        {/* Subjects */}
+        {/* Subjects Main Page */}
         <Route
-          path="/predmety/:subject"
+          path="/predmety"
           element={
             <ProtectedRoute>
               <Layout>
-                <Tasks />
+                <Predmety />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Individual Subjects */}
+        <Route
+          path="/predmety/matematika"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Matematika />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/predmety/geometrie"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Geometrie />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/predmety/fyzika"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Fyzika />
               </Layout>
             </ProtectedRoute>
           }
