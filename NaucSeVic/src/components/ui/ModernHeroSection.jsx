@@ -1,7 +1,10 @@
 import React from "react";
 import { ArrowRight, BookOpen, Users, Award, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ModernHeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative w-full min-h-screen overflow-hidden bg-white dark:bg-zinc-950">
       {/* Content */}
@@ -36,7 +39,10 @@ const ModernHeroSection = () => {
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
 
-            <button className="group inline-flex items-center justify-center px-8 py-4 border border-white/30 dark:border-zinc-600/50 text-lg font-medium rounded-xl text-gray-800 dark:text-zinc-200 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-zinc-700/90 transition-all duration-300 shadow-xl hover:shadow-2xl">
+            <button
+              onClick={() => navigate("/demo")}
+              className="group inline-flex items-center justify-center px-8 py-4 border border-white/30 dark:border-zinc-600/50 text-lg font-medium rounded-xl text-gray-800 dark:text-zinc-200 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-zinc-700/90 transition-all duration-300 shadow-xl hover:shadow-2xl"
+            >
               <Play className="mr-2 h-5 w-5" />
               Prohlédnout demo
             </button>

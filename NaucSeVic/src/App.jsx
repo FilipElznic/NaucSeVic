@@ -15,6 +15,8 @@ import ModernLogin from "./pages/ModernLogin";
 import ModernRegister from "./pages/ModernRegister";
 import Predmety from "./pages/Predmety";
 import AllTasks from "./pages/AllTasks";
+import Demo from "./pages/Demo";
+import NotFound from "./pages/NotFound";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import Layout from "./components/Layout";
@@ -25,6 +27,7 @@ import TaskCreator from "./components/TaskCreator";
 import Matematika from "./components/subjects/Matematika";
 import Geometrie from "./components/subjects/Geometrie";
 import Fyzika from "./components/subjects/Fyzika";
+import CharacterHelper from "./pages/CharacterHelper";
 
 // Protected Route component is now imported from components
 
@@ -174,6 +177,27 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+
+        {/* Demo Page */}
+        <Route
+          path="/demo"
+          element={
+            <Layout>
+              <Demo />
+            </Layout>
+          }
+        />
+        <Route
+          path="/CharacterHelper"
+          element={
+            <Layout>
+              <CharacterHelper />
+            </Layout>
+          }
+        />
+
+        {/* 404 Page - Must be last */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
