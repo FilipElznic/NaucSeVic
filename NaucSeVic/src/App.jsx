@@ -27,7 +27,6 @@ import TaskCreator from "./components/TaskCreator";
 import Matematika from "./components/subjects/Matematika";
 import Geometrie from "./components/subjects/Geometrie";
 import Fyzika from "./components/subjects/Fyzika";
-import CharacterHelper from "./pages/CharacterHelper";
 
 // Protected Route component is now imported from components
 
@@ -184,14 +183,6 @@ const AppRoutes = () => {
           element={
             <Layout>
               <Demo />
-            </Layout>
-          }
-        />
-        <Route
-          path="/CharacterHelper"
-          element={
-            <Layout>
-              <CharacterHelper />
             </Layout>
           }
         />
