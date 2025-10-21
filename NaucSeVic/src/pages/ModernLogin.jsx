@@ -109,8 +109,50 @@ const ModernLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-indigo-900 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-indigo-900 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+
+      {/* Animated Waves - Bottom */}
+      <div className="absolute bottom-0 left-0 w-full opacity-30 dark:opacity-10">
+        <svg
+          className="w-full h-64"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient
+              id="wave-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
+            </linearGradient>
+          </defs>
+          <path
+            fill="url(#wave-gradient)"
+            d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,90.7C960,96,1056,128,1152,138.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+          <path
+            fill="url(#wave-gradient)"
+            d="M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,224C672,224,768,192,864,181.3C960,171,1056,181,1152,192C1248,203,1344,213,1392,218.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            opacity="0.5"
+          />
+        </svg>
+      </div>
+
+      {/* Corner Quarter Circles */}
+      <div className="absolute top-0 left-0 w-64 h-64">
+        <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-200 dark:border-indigo-900/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      </div>
+      <div className="absolute bottom-0 right-0 w-64 h-64">
+        <div className="absolute bottom-0 right-0 w-full h-full border-4 border-purple-200 dark:border-purple-900/30 rounded-full translate-x-1/2 translate-y-1/2" />
+      </div>
+
+      <div className="max-w-md w-full space-y-8 relative z-10">
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-6">
@@ -129,7 +171,11 @@ const ModernLogin = () => {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-200 dark:border-zinc-700 p-8">
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-200 dark:border-zinc-700 p-8 relative overflow-hidden">
+          {/* Decorative circles in form */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/10 to-purple-400/10 rounded-full -translate-y-16 translate-x-16" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/10 to-green-400/10 rounded-full translate-y-12 -translate-x-12" />
+
           <form
             onSubmit={forgotPassword ? handleForgotPassword : handleEmailSignIn}
             className="space-y-6"

@@ -169,38 +169,82 @@ const ModernRegister = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-indigo-900 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <div className="flex justify-center mb-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl">
-              <BookOpen className="h-8 w-8 text-white" />
-            </div>
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+    <div className="h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-indigo-900 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-400/10 to-purple-400/10 rounded-full -translate-y-48 translate-x-48 blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-400/10 to-green-400/10 rounded-full translate-y-40 -translate-x-40 blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-br from-purple-400/5 to-pink-400/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
+
+      {/* Animated Waves - Bottom */}
+      <div className="absolute bottom-0 left-0 w-full opacity-30 dark:opacity-10">
+        <svg
+          className="w-full h-64"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient
+              id="wave-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
+            </linearGradient>
+          </defs>
+          <path
+            fill="url(#wave-gradient)"
+            d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,90.7C960,96,1056,128,1152,138.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+          <path
+            fill="url(#wave-gradient)"
+            d="M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,224C672,224,768,192,864,181.3C960,171,1056,181,1152,192C1248,203,1344,213,1392,218.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            opacity="0.5"
+          />
+        </svg>
+      </div>
+
+      {/* Corner Quarter Circles */}
+      <div className="absolute top-0 left-0 w-64 h-64">
+        <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-200 dark:border-indigo-900/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      </div>
+      <div className="absolute bottom-0 right-0 w-64 h-64">
+        <div className="absolute bottom-0 right-0 w-full h-full border-4 border-purple-200 dark:border-purple-900/30 rounded-full translate-x-1/2 translate-y-1/2" />
+      </div>
+
+      <div className="max-w-2xl w-full relative z-10 overflow-y-auto max-h-[95vh] py-4">
+        {/* Compact Header */}
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
             Vytvořte si účet
           </h2>
-          <p className="text-gray-600 dark:text-zinc-400">
-            Připojte se k tisícům studentů, kteří se už učí s námi
+          <p className="text-sm text-gray-600 dark:text-zinc-400">
+            Začněte se učit ještě dnes
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-200 dark:border-zinc-700 p-8">
-          <form onSubmit={handleEmailSignUp} className="space-y-6">
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-200 dark:border-zinc-700 p-6 relative overflow-hidden">
+          {/* Decorative circles in form */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/10 to-purple-400/10 rounded-full -translate-y-16 translate-x-16" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/10 to-green-400/10 rounded-full translate-y-12 -translate-x-12" />
+
+          <form onSubmit={handleEmailSignUp} className="space-y-4">
             {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label
                   htmlFor="firstName"
-                  className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2"
+                  className="block text-xs font-medium text-gray-700 dark:text-zinc-300 mb-1"
                 >
                   Jméno
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
+                    <User className="h-4 w-4 text-gray-400 dark:text-zinc-500" />
                   </div>
                   <input
                     id="firstName"
@@ -209,7 +253,7 @@ const ModernRegister = () => {
                     required
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
+                    className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
                     placeholder="Jan"
                   />
                 </div>
@@ -218,7 +262,7 @@ const ModernRegister = () => {
               <div>
                 <label
                   htmlFor="lastName"
-                  className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2"
+                  className="block text-xs font-medium text-gray-700 dark:text-zinc-300 mb-1"
                 >
                   Příjmení
                 </label>
@@ -229,7 +273,7 @@ const ModernRegister = () => {
                   required
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
                   placeholder="Novák"
                 />
               </div>
@@ -239,13 +283,13 @@ const ModernRegister = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2"
+                className="block text-xs font-medium text-gray-700 dark:text-zinc-300 mb-1"
               >
                 Email adresa
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
+                  <Mail className="h-4 w-4 text-gray-400 dark:text-zinc-500" />
                 </div>
                 <input
                   id="email"
@@ -254,208 +298,127 @@ const ModernRegister = () => {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
                   placeholder="vas@email.cz"
                 />
               </div>
             </div>
 
-            {/* Password Field */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2"
-              >
-                Heslo
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
-                </div>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
-                  )}
-                </button>
-              </div>
-
-              {/* Password Requirements */}
-              {formData.password && (
-                <div className="mt-2 space-y-1">
-                  <div className="text-xs space-y-1">
-                    <div
-                      className={`flex items-center ${
-                        passwordRequirements.length
-                          ? "text-green-600"
-                          : "text-gray-400 dark:text-zinc-500"
-                      }`}
-                    >
-                      <Check
-                        className={`h-3 w-3 mr-1 ${
-                          passwordRequirements.length
-                            ? "text-green-600"
-                            : "text-gray-400"
-                        }`}
-                      />
-                      Alespoň 6 znaků
-                    </div>
-                    <div
-                      className={`flex items-center ${
-                        passwordRequirements.uppercase
-                          ? "text-green-600"
-                          : "text-gray-400 dark:text-zinc-500"
-                      }`}
-                    >
-                      <Check
-                        className={`h-3 w-3 mr-1 ${
-                          passwordRequirements.uppercase
-                            ? "text-green-600"
-                            : "text-gray-400"
-                        }`}
-                      />
-                      Velké písmeno
-                    </div>
-                    <div
-                      className={`flex items-center ${
-                        passwordRequirements.lowercase
-                          ? "text-green-600"
-                          : "text-gray-400 dark:text-zinc-500"
-                      }`}
-                    >
-                      <Check
-                        className={`h-3 w-3 mr-1 ${
-                          passwordRequirements.lowercase
-                            ? "text-green-600"
-                            : "text-gray-400"
-                        }`}
-                      />
-                      Malé písmeno
-                    </div>
-                    <div
-                      className={`flex items-center ${
-                        passwordRequirements.number
-                          ? "text-green-600"
-                          : "text-gray-400 dark:text-zinc-500"
-                      }`}
-                    >
-                      <Check
-                        className={`h-3 w-3 mr-1 ${
-                          passwordRequirements.number
-                            ? "text-green-600"
-                            : "text-gray-400"
-                        }`}
-                      />
-                      Číslice
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2"
-              >
-                Potvrdit heslo
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
-                </div>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
-                  )}
-                </button>
-              </div>
-              {formData.confirmPassword &&
-                formData.password !== formData.confirmPassword && (
-                  <p className="mt-1 text-xs text-red-600">
-                    Hesla se neshodují
-                  </p>
-                )}
-            </div>
-
-            {/* Terms Agreement */}
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  id="terms"
-                  type="checkbox"
-                  checked={agreedToTerms}
-                  onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 dark:border-zinc-600 rounded"
-                />
-              </div>
-              <div className="ml-3 text-sm">
+            {/* Password Fields in Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
                 <label
-                  htmlFor="terms"
-                  className="text-gray-600 dark:text-zinc-400"
+                  htmlFor="password"
+                  className="block text-xs font-medium text-gray-700 dark:text-zinc-300 mb-1"
                 >
-                  Souhlasím s{" "}
-                  <Link
-                    to="/terms"
-                    className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300"
-                  >
-                    podmínkami použití
-                  </Link>{" "}
-                  a{" "}
-                  <Link
-                    to="/privacy"
-                    className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300"
-                  >
-                    zásadami ochrany soukromí
-                  </Link>
+                  Heslo
                 </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-4 w-4 text-gray-400 dark:text-zinc-500" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full pl-9 pr-10 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
+                    )}
+                  </button>
+                </div>
               </div>
+
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-xs font-medium text-gray-700 dark:text-zinc-300 mb-1"
+                >
+                  Potvrdit heslo
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-4 w-4 text-gray-400 dark:text-zinc-500" />
+                  </div>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    className="w-full pl-9 pr-10 py-2 text-sm border border-gray-300 dark:border-zinc-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Compact Terms */}
+            <div className="flex items-start">
+              <input
+                id="terms"
+                type="checkbox"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-1 h-4 w-4 text-indigo-600 border-gray-300 dark:border-zinc-600 rounded focus:ring-indigo-500"
+              />
+              <label
+                htmlFor="terms"
+                className="ml-2 text-xs text-gray-600 dark:text-zinc-400"
+              >
+                Souhlasím s{" "}
+                <Link
+                  to="/terms"
+                  className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                >
+                  podmínkami
+                </Link>{" "}
+                a{" "}
+                <Link
+                  to="/privacy"
+                  className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                >
+                  ochranou soukromí
+                </Link>
+              </label>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading || !isPasswordValid || !agreedToTerms}
-              className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="w-full flex items-center justify-center px-6 py-2.5 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
             >
               {isLoading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
               ) : (
                 <>
                   Vytvořit účet
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
             </button>

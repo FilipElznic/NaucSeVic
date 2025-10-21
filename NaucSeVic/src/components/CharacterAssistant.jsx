@@ -68,6 +68,7 @@ function CharacterAssistant({
       {/* Blur Background */}
       {enableBlur && (
         <motion.div
+          key="blur-background"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -77,6 +78,7 @@ function CharacterAssistant({
       )}
 
       <motion.div
+        key="character-assistant"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
