@@ -6,6 +6,9 @@ function CharacterAssistant({
   texts = [],
   language = "cs",
   enableBlur = false,
+  onStepChange,
+  onHide,
+  positions = [],
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
@@ -13,6 +16,12 @@ function CharacterAssistant({
   const [isVisible, setIsVisible] = useState(true);
 
   const currentText = texts[currentIndex] || "";
+  const currentPosition = positions[currentIndex] || "bottom-right";
+
+  // Report step changes to parent
+  useEffect(() => {
+    onStepChange?.(currentIndex);
+  }, [currentIndex, onStepChange]);
 
   // Typing animation effect
   useEffect(() => {
@@ -52,6 +61,7 @@ function CharacterAssistant({
 
   const handleHide = () => {
     setIsVisible(false);
+    onHide?.();
   };
 
   if (!isVisible) return null;
@@ -62,6 +72,18 @@ function CharacterAssistant({
   };
 
   const currentLabels = labels[language] || labels.cs;
+
+  // Position mapping
+  const getPositionClasses = (position) => {
+    const positionMap = {
+      "top-left": "top-8 left-8",
+      "top-right": "top-8 right-8",
+      "bottom-left": "bottom-8 left-8",
+      "bottom-right": "bottom-8 right-8",
+      center: "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
+    };
+    return positionMap[position] || positionMap["bottom-right"];
+  };
 
   return (
     <AnimatePresence>
@@ -78,12 +100,12 @@ function CharacterAssistant({
       )}
 
       <motion.div
-        key="character-assistant"
+        key={`character-assistant-${currentIndex}`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.4 }}
-        className="fixed bottom-8 left-8 z-50 max-w-md"
+        className={`fixed ${getPositionClasses(currentPosition)} z-50 max-w-md`}
         role="complementary"
         aria-label={language === "cs" ? "Asistent" : "Assistant"}
       >
