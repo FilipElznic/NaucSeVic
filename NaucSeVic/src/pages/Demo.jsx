@@ -19,17 +19,17 @@ function Demo() {
     {
       selector: "#tour-step-3",
       text: "Uprostřed obrazovky je samotná otázka, kterou máte vyřešit.",
-      position: "top-left",
+      position: "bottom-left",
     },
     {
       selector: "#tour-step-4",
       text: "Pro odpověď si vyberte jednu z těchto tří možností kliknutím na tlačítko.",
-      position: "top-left",
+      position: "bottom-left",
     },
     {
       selector: "#tour-step-5",
       text: "A nakonec, zde dole můžete sledovat svůj celkový postup v testu. Hodně štěstí!",
-      position: "top-left",
+      position: "bottom-left",
     },
   ];
 
@@ -84,7 +84,7 @@ function Demo() {
       )}
 
       {/* ZMĚNA ZDE: Používáme "grid place-items-center" místo "flex items-center justify-center" */}
-      <div className="min-h-screen grid place-items-center bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black transition-colors duration-200">
+      <div className="min-h-screen grid place-items-center bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 transition-colors duration-200">
         <main className="w-full max-w-4xl mx-auto px-6 py-16">
           {/* Header Section */}
           <div className="text-center mb-12">
