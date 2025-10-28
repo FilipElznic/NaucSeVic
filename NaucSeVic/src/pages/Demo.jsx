@@ -83,8 +83,7 @@ function Demo() {
         />
       )}
 
-      {/* ZMĚNA ZDE: Používáme "grid place-items-center" místo "flex items-center justify-center" */}
-      <div className="min-h-screen grid place-items-center bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 transition-colors duration-200">
+      <div className="min-h-screen grid place-items-center bg-gradient-to-b from-zinc-50 to-zinc-100 dark:from-zinc-950  dark:to-zinc-900 transition-colors duration-200">
         <main className="w-full max-w-4xl mx-auto px-6 py-16">
           {/* Header Section */}
           <div className="text-center mb-12">
