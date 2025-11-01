@@ -67,24 +67,62 @@ const TaskSolver = ({ task, onComplete, onClose }) => {
     }
 
     setLoading(true);
+
+    // Test toast to verify toasts are working
+    toast.info("Odesílám odpověď...", { autoClose: 1000 });
+
     try {
       const response = await cloudFunctionsService.submitTaskAnswer(
         task.id,
         answer
       );
-      setResult(response);
+
+      console.log("Full response from backend:", response);
+      console.log("Response type:", typeof response);
+      console.log("Response keys:", response ? Object.keys(response) : "null");
+      console.log("isCorrect value:", response?.isCorrect);
+      console.log("xpEarned value:", response?.xpEarned);
+
+      // Check if response has the expected structure
+      if (!response || typeof response !== "object") {
+        console.error("Invalid response structure:", response);
+        toast.error("Neplatná odpověď ze serveru");
+        setLoading(false);
+        return;
+      }
+
+      setResult({
+        correct: response.isCorrect || false,
+        xpAwarded: response.xpEarned || 0,
+        coinsAwarded: response.coinsEarned || 0,
+        explanation: response.explanation || task.explanation,
+        correctAnswer: response.correctAnswer,
+      });
       setSubmitted(true);
 
-      if (response.correct) {
+      console.log("About to show toast, isCorrect:", response.isCorrect);
+
+      if (response.isCorrect) {
+        console.log("Showing SUCCESS toast");
         toast.success(
-          `Správně! +${response.xpAwarded} XP, +${response.coinsAwarded} mincí`
+          `🎉 Správně! +${response.xpEarned || 0} XP, +${
+            response.coinsEarned || 0
+          } mincí`,
+          {
+            position: "top-right",
+            autoClose: 5000,
+          }
         );
       } else {
-        toast.error("Nesprávná odpověď. Zkuste to znovu!");
+        console.log("Showing ERROR toast");
+        toast.error("❌ Nesprávná odpověď. Zkuste to znovu!", {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
     } catch (error) {
       console.error("Error submitting answer:", error);
-      toast.error("Chyba při odesílání odpovědi");
+      toast.error(`Chyba při odesílání odpovědi: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -241,26 +279,32 @@ const TaskSolver = ({ task, onComplete, onClose }) => {
 
             {task.type === "multiAnswer" && (
               <div className="space-y-3">
-                {(task.options || task.correctAnswers)?.map((option, index) => (
-                  <label
-                    key={index}
-                    className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                      selectedAnswers.includes(option)
-                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900"
-                        : "border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedAnswers.includes(option)}
-                      onChange={() => handleMultiAnswerToggle(option)}
-                      className="mr-3"
-                    />
-                    <span className="text-gray-900 dark:text-white">
-                      {option}
-                    </span>
-                  </label>
-                ))}
+                {task.options && task.options.length > 0 ? (
+                  task.options.map((option, index) => (
+                    <label
+                      key={index}
+                      className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
+                        selectedAnswers.includes(option)
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900"
+                          : "border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedAnswers.includes(option)}
+                        onChange={() => handleMultiAnswerToggle(option)}
+                        className="mr-3 w-4 h-4"
+                      />
+                      <span className="text-gray-900 dark:text-white">
+                        {option}
+                      </span>
+                    </label>
+                  ))
+                ) : (
+                  <div className="text-red-500 dark:text-red-400 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    ⚠️ Chyba: Úloha nemá definované možnosti odpovědí
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -207,23 +207,25 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
         return false;
       }
 
-      // Kontrola, že všechny správné odpovědi jsou mezi možnostmi (pokud jsou zadány)
       const validOptions = formData.options.filter((opt) => opt.trim());
-      if (validOptions.length > 0) {
-        const allCorrectAnswersInOptions = validCorrectAnswers.every(
-          (correctAnswer) =>
-            validOptions.some(
-              (option) =>
-                option.trim().toLowerCase() ===
-                correctAnswer.trim().toLowerCase()
-            )
+      if (validOptions.length < 2) {
+        toast.error("Musíte zadat alespoň 2 možnosti odpovědí");
+        return false;
+      }
+
+      // Kontrola, že všechny správné odpovědi jsou mezi možnostmi
+      const allCorrectAnswersInOptions = validCorrectAnswers.every(
+        (correctAnswer) =>
+          validOptions.some(
+            (option) =>
+              option.trim().toLowerCase() === correctAnswer.trim().toLowerCase()
+          )
+      );
+      if (!allCorrectAnswersInOptions) {
+        toast.error(
+          "Všechny správné odpovědi musí být mezi nabízenými možnostmi"
         );
-        if (!allCorrectAnswersInOptions) {
-          toast.error(
-            "Všechny správné odpovědi musí být mezi nabízenými možnostmi"
-          );
-          return false;
-        }
+        return false;
       }
     }
 
@@ -277,24 +279,29 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
         taskData.correctAnswers = formData.correctAnswers
           .filter((ans) => ans.trim())
           .map((ans) => ans.trim());
-        if (formData.options.some((opt) => opt.trim())) {
-          taskData.options = formData.options
-            .filter((opt) => opt.trim())
-            .map((opt) => opt.trim());
+        taskData.options = formData.options
+          .filter((opt) => opt.trim())
+          .map((opt) => opt.trim());
 
-          // Final validation: all correct answers must be in options
-          const missingAnswers = taskData.correctAnswers.filter(
-            (correctAnswer) => !taskData.options.includes(correctAnswer)
+        // Final validation: options must be provided
+        if (taskData.options.length < 2) {
+          toast.error("Kritická chyba: Musíte zadat alespoň 2 možnosti");
+          setLoading(false);
+          return;
+        }
+
+        // Final validation: all correct answers must be in options
+        const missingAnswers = taskData.correctAnswers.filter(
+          (correctAnswer) => !taskData.options.includes(correctAnswer)
+        );
+        if (missingAnswers.length > 0) {
+          toast.error(
+            `Kritická chyba: Správné odpovědi nejsou v možnostech: ${missingAnswers.join(
+              ", "
+            )}`
           );
-          if (missingAnswers.length > 0) {
-            toast.error(
-              `Kritická chyba: Správné odpovědi nejsou v možnostech: ${missingAnswers.join(
-                ", "
-              )}`
-            );
-            setLoading(false);
-            return;
-          }
+          setLoading(false);
+          return;
         }
       }
 
@@ -618,6 +625,46 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
                   className="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm"
                 >
                   + Přidat správnou odpověď
+                </button>
+
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2 mt-6">
+                  Možnosti odpovědí (všechny možnosti včetně nesprávných) *
+                </label>
+                <div className="space-y-2">
+                  {formData.options.map((option, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <span className="flex-shrink-0 w-6 h-6 bg-gray-500 text-white rounded text-sm flex items-center justify-center font-medium">
+                        {String.fromCharCode(65 + index)}
+                      </span>
+                      <input
+                        type="text"
+                        value={option}
+                        onChange={(e) =>
+                          handleArrayChange("options", index, e.target.value)
+                        }
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
+                        placeholder={`Možnost ${String.fromCharCode(
+                          65 + index
+                        )}...`}
+                      />
+                      {formData.options.length > 2 && (
+                        <button
+                          type="button"
+                          onClick={() => removeArrayItem("options", index)}
+                          className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addArrayItem("options")}
+                  className="mt-3 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm"
+                >
+                  + Přidat možnost
                 </button>
               </div>
             )}

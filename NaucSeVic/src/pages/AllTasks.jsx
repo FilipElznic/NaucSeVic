@@ -22,12 +22,14 @@ import {
 } from "lucide-react";
 import { cloudFunctionsService } from "../services/cloudFunctions";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { userService } from "../services/userService";
 import { toast } from "react-toastify";
 
 const AllTasks = () => {
   const { user } = useFirebaseAuth();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [completedTaskIds, setCompletedTaskIds] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
@@ -176,12 +178,20 @@ const AllTasks = () => {
 
   useEffect(() => {
     loadTasks();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadTasks = async () => {
     setLoading(true);
 
     try {
+      // Load user's completed tasks if logged in
+      let userCompletedTasks = {};
+      if (user) {
+        userCompletedTasks = await userService.getCompletedTasks(user.uid);
+        setCompletedTaskIds(userCompletedTasks);
+        console.log("User completed tasks:", userCompletedTasks);
+      }
+
       // Try to call getTasks cloud function
       const response = await cloudFunctionsService.getTasks({
         limit: 100,
@@ -209,11 +219,9 @@ const AllTasks = () => {
             rating: task.rating || 4.5,
             createdAt: task.createdAt ? new Date(task.createdAt) : new Date(),
             isCompleted: task.isCompleted || false,
-            // Add user-specific completion status if user is logged in
+            // Check if user has completed this specific task
             isCompletedByUser:
-              user && task.completedByUsers
-                ? task.completedByUsers.includes(user.uid)
-                : false,
+              user && userCompletedTasks[task.id]?.isCorrect === true,
           }))
         : [];
 
@@ -293,35 +301,65 @@ const AllTasks = () => {
 
       const result = await cloudFunctionsService.submitTaskAnswer(
         selectedTask.id,
-        { userAnswer: userAnswerData }
+        userAnswerData
       );
 
-      if (result.success) {
-        toast.success("Odpověď byla odeslána!");
+      console.log("Result from backend:", result);
+
+      if (result.isCorrect !== undefined) {
+        // Show toast first
+        if (result.isCorrect) {
+          toast.success(
+            `🎉 Správně! +${result.xpEarned} XP, +${result.coinsEarned} mincí`,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            }
+          );
+        } else {
+          toast.error("❌ Nesprávná odpověď. Zkuste to znovu!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+
         // Update task completion status
         setTasks((prev) =>
           prev.map((task) =>
             task.id === selectedTask.id
-              ? { ...task, isCompletedByUser: true }
+              ? { ...task, isCompletedByUser: result.isCorrect }
               : task
           )
         );
-        handleCloseTask();
+
+        // Update completed tasks state
+        if (result.isCorrect) {
+          setCompletedTaskIds((prev) => ({
+            ...prev,
+            [selectedTask.id]: { isCorrect: true },
+          }));
+        }
+
+        // Close modal after delay if correct
+        if (result.isCorrect) {
+          setTimeout(() => {
+            handleCloseTask();
+          }, 2000);
+        }
       } else {
-        toast.error("Chyba při odesílání odpovědi");
+        toast.error("Neplatná odpověď ze serveru");
       }
     } catch (error) {
       console.error("Error submitting answer:", error);
-      // For demo purposes, show success even if API fails
-      toast.success("Odpověď byla odeslána! (Demo mode)");
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === selectedTask.id
-            ? { ...task, isCompletedByUser: true }
-            : task
-        )
-      );
-      handleCloseTask();
+      toast.error(`Chyba při odesílání odpovědi: ${error.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -538,12 +576,24 @@ const AllTasks = () => {
                     {/* Action Button */}
                     <button
                       onClick={() => handleTaskClick(task)}
-                      className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                      disabled={task.isCompletedByUser}
+                      className={`w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl transition-all duration-300 shadow-lg ${
+                        task.isCompletedByUser
+                          ? "bg-green-500 cursor-not-allowed opacity-75"
+                          : "text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl transform hover:scale-105"
+                      }`}
                     >
-                      <Play className="mr-2 h-4 w-4" />
-                      {task.isCompletedByUser || task.isCompleted
-                        ? "Zkusit znovu"
-                        : "Začít úkol"}
+                      {task.isCompletedByUser ? (
+                        <>
+                          <CheckCircle className="mr-2 h-4 w-4" />
+                          Splněno
+                        </>
+                      ) : (
+                        <>
+                          <Play className="mr-2 h-4 w-4" />
+                          Začít úkol
+                        </>
+                      )}
                     </button>
                   </div>
                 );
