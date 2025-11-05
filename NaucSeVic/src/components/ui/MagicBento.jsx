@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import { gsap } from "gsap";
+import { Brain, Clock, Target, Zap, Users, BookOpen } from "lucide-react";
 
 // Inline styles
 const styles = `
@@ -78,15 +79,17 @@ const styles = `
 }
 
 .magic-bento-card__title {
-  font-weight: 400;
-  font-size: 16px;
-  margin: 0 0 0.25em;
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 0 0.5em;
+  letter-spacing: -0.02em;
 }
 
 .magic-bento-card__description {
-  font-size: 12px;
-  line-height: 1.2;
-  opacity: 0.9;
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.85;
+  font-weight: 300;
 }
 
 .magic-bento-card--text-autohide .magic-bento-card__title,
@@ -226,42 +229,59 @@ const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = "132, 0, 255";
 const MOBILE_BREAKPOINT = 768;
 
+const iconMap = {
+  Brain,
+  Clock,
+  Target,
+  Zap,
+  Users,
+  BookOpen,
+};
+
 const cardData = [
   {
     color: "#060010",
-    title: "Analytics",
-    description: "Track user behavior",
-    label: "Insights",
+    title: "Inteligentní učení",
+    description:
+      "AI-powered personalizace obsahu podle vašich potřeb a tempa učení.",
+    label: "Brain",
+    icon: "Brain",
   },
   {
     color: "#060010",
-    title: "Dashboard",
-    description: "Centralized data view",
-    label: "Overview",
+    title: "Flexibilní čas",
+    description: "Učte se kdykoliv a kdekoliv podle vlastního rozvrhu.",
+    label: "Clock",
+    icon: "Clock",
   },
   {
     color: "#060010",
-    title: "Collaboration",
-    description: "Work together seamlessly",
-    label: "Teamwork",
+    title: "Cílené výsledky",
+    description: "Sledujte svůj pokrok a dosahujte stanovených cílů efektivně.",
+    label: "Target",
+    icon: "Target",
   },
   {
     color: "#060010",
-    title: "Automation",
-    description: "Streamline workflows",
-    label: "Efficiency",
+    title: "Rychlý pokrok",
+    description: "Inovativní metody pro rychlejší a efektivnější učení.",
+    label: "Zap",
+    icon: "Zap",
   },
   {
     color: "#060010",
-    title: "Integration",
-    description: "Connect favorite tools",
-    label: "Connectivity",
+    title: "Komunita",
+    description: "Připojte se k tisícům studentů a učte se společně.",
+    label: "Users",
+    icon: "Users",
   },
   {
     color: "#060010",
-    title: "Security",
-    description: "Enterprise-grade protection",
-    label: "Protection",
+    title: "Bohatý obsah",
+    description:
+      "Stovky kurzů a tisíce hodin kvalitního vzdělávacího materiálu.",
+    label: "BookOpen",
+    icon: "BookOpen",
   },
 ];
 
@@ -795,7 +815,14 @@ const MagicBento = ({
                 enableMagnetism={enableMagnetism}
               >
                 <div className="magic-bento-card__header">
-                  <div className="magic-bento-card__label">{card.label}</div>
+                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl">
+                    {card.icon &&
+                      iconMap[card.icon] &&
+                      (() => {
+                        const IconComponent = iconMap[card.icon];
+                        return <IconComponent className="h-6 w-6 text-white" />;
+                      })()}
+                  </div>
                 </div>
                 <div className="magic-bento-card__content">
                   <h2 className="magic-bento-card__title">{card.title}</h2>
@@ -920,7 +947,14 @@ const MagicBento = ({
               }}
             >
               <div className="magic-bento-card__header">
-                <div className="magic-bento-card__label">{card.label}</div>
+                <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl">
+                  {card.icon &&
+                    iconMap[card.icon] &&
+                    (() => {
+                      const IconComponent = iconMap[card.icon];
+                      return <IconComponent className="h-6 w-6 text-white" />;
+                    })()}
+                </div>
               </div>
               <div className="magic-bento-card__content">
                 <h2 className="magic-bento-card__title">{card.title}</h2>
