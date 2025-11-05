@@ -113,7 +113,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="relative w-full z-50 bg-white/10 dark:bg-zinc-950 backdrop-blur-md">
+    <nav className="relative w-full z-50 bg-transparent">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
@@ -340,7 +340,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="xl:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/5 dark:bg-black/30 rounded-lg backdrop-blur-md">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/10 dark:bg-black/50 rounded-lg backdrop-blur-md border border-white/10 dark:border-white/5">
               {user ? (
                 <>
                   {/* User Info Mobile */}

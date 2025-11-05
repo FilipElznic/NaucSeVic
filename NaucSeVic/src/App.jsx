@@ -55,7 +55,7 @@ const AppRoutes = () => {
         <Route
           path="/"
           element={
-            <Layout>
+            <Layout showNavbar={false}>
               <LandingPage />
             </Layout>
           }
