@@ -10,8 +10,6 @@ import SectionSeparator from "../components/ui/SectionSeparator";
 function LandingPage() {
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <TestComponent />
-      {/* Modern Hero Section with Spline Animation */}
       <ModernHeroSection />
 
       {/* Features Section */}

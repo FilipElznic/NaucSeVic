@@ -85,7 +85,7 @@ function LaserFlowBoxExample() {
           />
         </div>
 
-        <div className="absolute z-10 top-40 left-24 w-full px-4 md:px-8 lg:px-16 text-left">
+        <div className="absolute z-10 top-52 left-44 w-full px-4 md:px-8 lg:px-16 text-left">
           <div className="w-full h-full ">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
               Pro všechny, kdo <br></br>chtějí{" "}
