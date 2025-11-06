@@ -61,7 +61,7 @@ function ModernHeroSection() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[70vw] h-[80vh] bg-gray-50 dark:bg-black flex justify-center text-white text-2xl z-[6] overflow-hidden">
           {/* Border with fade effect */}
           <div
-            className="absolute inset-0 border-t-2 border-x-2 border-purple-500/50 dark:border-purple-600/50 pointer-events-none"
+            className="absolute inset-0 border-t-2 border-x-2 border-white dark:border-gray-500 pointer-events-none rounded-lg"
             style={{
               maskImage:
                 "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
