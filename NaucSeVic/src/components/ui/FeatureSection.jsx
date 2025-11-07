@@ -9,12 +9,6 @@ const FeatureSection = () => {
         {/* Left side - Text content */}
         <div className="w-3/4 space-y-6 flex items-center justify-center ">
           <div className="space-y-4 w-3/4">
-            <div className="inline-flex items-center px-4 py-2 rounded-full border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/20">
-              <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-                Proč si vybrat nás
-              </span>
-            </div>
-
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
               Vzdělávání <br></br>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600">
@@ -27,12 +21,7 @@ const FeatureSection = () => {
               pro vytvoření unikátního učebního zážitku přizpůsobeného právě
               vám.
             </p>
-            <StarBorder
-              as="button"
-              className="custom-class"
-              color="cyan"
-              speed="5s"
-            >
+            <StarBorder as="button" color="purple" speed="1s">
               Začít se učit
             </StarBorder>
           </div>

@@ -245,7 +245,7 @@ const cardData = [
     label: "Brain",
     icon: "Brain",
     lightColor: "#ffffff", // Light blue
-    darkColor: "#000000", // Deep indigo
+    darkColor: "#060010", // Deep indigo
   },
   {
     title: "Flexibilní čas",
@@ -253,7 +253,7 @@ const cardData = [
     label: "Clock",
     icon: "Clock",
     lightColor: "#ffffff", // Light blue
-    darkColor: "#000000", // Deep purple
+    darkColor: "#060010", // Deep purple
   },
   {
     title: "Cílené výsledky",
@@ -261,7 +261,7 @@ const cardData = [
     label: "Target",
     icon: "Target",
     lightColor: "#ffffff", // Light blue
-    darkColor: "#000000", // Deep yellow/brown
+    darkColor: "#060010", // Deep yellow/brown
   },
   {
     title: "Rychlý pokrok",
@@ -269,7 +269,7 @@ const cardData = [
     label: "Zap",
     icon: "Zap",
     lightColor: "#ffffff", // Light blue
-    darkColor: "#000000", // Deep red
+    darkColor: "#060010", // Deep red
   },
   {
     title: "Komunita",
@@ -277,7 +277,7 @@ const cardData = [
     label: "Users",
     icon: "Users",
     lightColor: "#ffffff", // Light blue
-    darkColor: "#000000", // Deep green
+    darkColor: "#060010", // Deep green
   },
   {
     title: "Bohatý obsah",
@@ -286,7 +286,7 @@ const cardData = [
     label: "BookOpen",
     icon: "BookOpen",
     lightColor: "#ffffff", // Light blue
-    darkColor: "#000000", // Deep orange
+    darkColor: "#060010", // Deep orange
   },
 ];
 
