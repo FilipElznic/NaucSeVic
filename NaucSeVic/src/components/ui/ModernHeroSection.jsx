@@ -58,10 +58,10 @@ function ModernHeroSection() {
           horizontalSizing={0.25}
         />
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[70vw] h-[80vh] bg-gray-50 dark:bg-black flex justify-center text-white text-2xl z-[6] overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[70vw] h-[80vh] bg-gray-50 dark:bg-black flex justify-center text-white text-2xl z-[6] overflow-hidden  rounded-lg">
           {/* Border with fade effect */}
           <div
-            className="absolute inset-0 border-t-2 border-x-2 border-white dark:border-gray-500 pointer-events-none rounded-lg"
+            className="absolute inset-0 border-t-2 border-x-2 border-zinc-400 dark:border-gray-400 pointer-events-none  rounded-lg"
             style={{
               maskImage:
                 "linear-gradient(to bottom, black 0%, black 70%, transparent 100%)",
@@ -70,7 +70,7 @@ function ModernHeroSection() {
             }}
           ></div>
           {/* Content fade overlay */}
-          <div className="absolute inset-x-0 bottom-0 h-[50vh] bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-10"></div>
+          <div className="absolute inset-x-0 bottom-0 h-[60vh] bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-10"></div>
           <MagicBento
             textAutoHide={true}
             enableStars={true}

@@ -1,5 +1,6 @@
 import CardSwap, { Card } from "./CardLanding";
 import { Brain, Zap, Target } from "lucide-react";
+import StarBorder from "./StarBorder/StarBorder";
 
 const FeatureSection = () => {
   return (
@@ -26,6 +27,14 @@ const FeatureSection = () => {
               pro vytvoření unikátního učebního zážitku přizpůsobeného právě
               vám.
             </p>
+            <StarBorder
+              as="button"
+              className="custom-class"
+              color="cyan"
+              speed="5s"
+            >
+              Začít se učit
+            </StarBorder>
           </div>
         </div>
 

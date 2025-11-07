@@ -11,14 +11,12 @@ const styles = `
   --purple-primary: rgba(132, 0, 255, 1);
   --purple-glow: rgba(132, 0, 255, 0.2);
   --purple-border: rgba(132, 0, 255, 0.8);
-  --border-color: #392e4e;
-  --background-dark: #060010;
   color-scheme: light dark;
 }
 
 .card-grid {
   display: grid;
-  gap: 0.5em;
+  gap: 1em;
   padding: 0.75em;
   max-width: 54em;
   font-size: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
@@ -35,8 +33,6 @@ const styles = `
   max-width: 100%;
   padding: 1.25em;
   border-radius: 20px;
-  border: 1px solid var(--border-color);
-  background: var(--background-dark);
   font-weight: 300;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -52,11 +48,14 @@ const styles = `
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
+.dark .magic-bento-card:hover {
+  box-shadow: 0 8px 25px rgba(132, 0, 255, 0.3);
+}
+
 .magic-bento-card__header,
 .magic-bento-card__content {
   display: flex;
   position: relative;
-  color: var(--white);
 }
 
 .magic-bento-card__header {
@@ -240,48 +239,54 @@ const iconMap = {
 
 const cardData = [
   {
-    color: "#060010",
     title: "Inteligentní učení",
     description:
       "AI-powered personalizace obsahu podle vašich potřeb a tempa učení.",
     label: "Brain",
     icon: "Brain",
+    lightColor: "#ffffff", // Light blue
+    darkColor: "#000000", // Deep indigo
   },
   {
-    color: "#060010",
     title: "Flexibilní čas",
     description: "Učte se kdykoliv a kdekoliv podle vlastního rozvrhu.",
     label: "Clock",
     icon: "Clock",
+    lightColor: "#ffffff", // Light blue
+    darkColor: "#000000", // Deep purple
   },
   {
-    color: "#060010",
     title: "Cílené výsledky",
     description: "Sledujte svůj pokrok a dosahujte stanovených cílů efektivně.",
     label: "Target",
     icon: "Target",
+    lightColor: "#ffffff", // Light blue
+    darkColor: "#000000", // Deep yellow/brown
   },
   {
-    color: "#060010",
     title: "Rychlý pokrok",
     description: "Inovativní metody pro rychlejší a efektivnější učení.",
     label: "Zap",
     icon: "Zap",
+    lightColor: "#ffffff", // Light blue
+    darkColor: "#000000", // Deep red
   },
   {
-    color: "#060010",
     title: "Komunita",
     description: "Připojte se k tisícům studentů a učte se společně.",
     label: "Users",
     icon: "Users",
+    lightColor: "#ffffff", // Light blue
+    darkColor: "#000000", // Deep green
   },
   {
-    color: "#060010",
     title: "Bohatý obsah",
     description:
       "Stovky kurzů a tisíce hodin kvalitního vzdělávacího materiálu.",
     label: "BookOpen",
     icon: "BookOpen",
+    lightColor: "#ffffff", // Light blue
+    darkColor: "#000000", // Deep orange
   },
 ];
 
@@ -775,6 +780,24 @@ const MagicBento = ({
   const gridRef = useRef(null);
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+
+    checkDarkMode();
+
+    // Watch for dark mode changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
@@ -791,13 +814,15 @@ const MagicBento = ({
 
       <BentoCardGrid gridRef={gridRef}>
         {cardData.map((card, index) => {
-          const baseClassName = `magic-bento-card ${
+          const baseClassName = `magic-bento-card bg-gray-50 dark:bg-gradient-to-br text-gray-900 dark:text-white border border-zinc-800 dark:border-white ${
             textAutoHide ? "magic-bento-card--text-autohide" : ""
           } ${enableBorderGlow ? "magic-bento-card--border-glow" : ""}`;
           const cardProps = {
             className: baseClassName,
             style: {
-              backgroundColor: card.color,
+              "--light-bg": card.lightColor,
+              "--dark-bg": card.darkColor,
+              backgroundColor: isDark ? card.darkColor : card.lightColor,
               "--glow-color": glowColor,
             },
           };
@@ -815,7 +840,7 @@ const MagicBento = ({
                 enableMagnetism={enableMagnetism}
               >
                 <div className="magic-bento-card__header">
-                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl">
+                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg">
                     {card.icon &&
                       iconMap[card.icon] &&
                       (() => {
@@ -947,7 +972,7 @@ const MagicBento = ({
               }}
             >
               <div className="magic-bento-card__header">
-                <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl">
+                <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg">
                   {card.icon &&
                     iconMap[card.icon] &&
                     (() => {
