@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import {
@@ -19,6 +19,8 @@ import {
   BookOpen,
   Check,
 } from "lucide-react";
+import { gsap } from "gsap";
+import FloatingOrbs from "../components/ui/FloatingOrbs";
 import "react-toastify/dist/ReactToastify.css";
 
 const ModernRegister = () => {
@@ -35,6 +37,27 @@ const ModernRegister = () => {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const { register, clearError } = useFirebaseAuth();
   const navigate = useNavigate();
+  const cardRef = useRef(null);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    // Animate on mount
+    if (headerRef.current) {
+      gsap.fromTo(
+        headerRef.current,
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+      );
+    }
+
+    if (cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.8, delay: 0.2, ease: "power2.out" }
+      );
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -169,11 +192,8 @@ const ModernRegister = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-indigo-900 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-400/10 to-purple-400/10 rounded-full -translate-y-48 translate-x-48 blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-400/10 to-green-400/10 rounded-full translate-y-40 -translate-x-40 blur-3xl" />
-      <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-br from-purple-400/5 to-pink-400/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
+    <div className="h-screen bg-white dark:bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <FloatingOrbs count={5} colors={["indigo", "purple", "pink"]} />
 
       {/* Animated Waves - Bottom */}
       <div className="absolute bottom-0 left-0 w-full opacity-30 dark:opacity-10">
@@ -217,20 +237,28 @@ const ModernRegister = () => {
 
       <div className="max-w-2xl w-full relative z-10 overflow-y-auto max-h-[95vh] py-4">
         {/* Compact Header */}
-        <div className="text-center mb-6">
+        <div ref={headerRef} className="text-center mb-6">
+          <div className="flex justify-center mb-4">
+            <div className="flex items-center justify-center w-14 h-14 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl shadow-lg">
+              <BookOpen className="h-7 w-7 text-white" />
+            </div>
+          </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
             Vytvořte si účet
           </h2>
-          <p className="text-sm text-gray-600 dark:text-zinc-400">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Začněte se učit ještě dnes
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-200 dark:border-zinc-700 p-6 relative overflow-hidden">
-          {/* Decorative circles in form */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/10 to-purple-400/10 rounded-full -translate-y-16 translate-x-16" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/10 to-green-400/10 rounded-full translate-y-12 -translate-x-12" />
+        <div
+          ref={cardRef}
+          className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 p-6 relative overflow-hidden group hover:border-purple-500/30 dark:hover:border-purple-500/30 transition-all duration-500"
+        >
+          {/* Gradient corners */}
+          <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-transparent" />
+          <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-purple-500/20 to-transparent" />
 
           <form onSubmit={handleEmailSignUp} className="space-y-4">
             {/* Name Fields */}
@@ -411,7 +439,7 @@ const ModernRegister = () => {
             <button
               type="submit"
               disabled={isLoading || !isPasswordValid || !agreedToTerms}
-              className="w-full flex items-center justify-center px-6 py-2.5 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+              className="w-full flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             >
               {isLoading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -442,7 +470,7 @@ const ModernRegister = () => {
                 type="button"
                 onClick={handleGoogleSignUp}
                 disabled={isLoading}
-                className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl shadow-sm bg-white dark:bg-zinc-700 text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/30 dark:hover:border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                   <path
@@ -469,7 +497,7 @@ const ModernRegister = () => {
                 type="button"
                 onClick={handleGithubSignUp}
                 disabled={isLoading}
-                className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl shadow-sm bg-white dark:bg-zinc-700 text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/30 dark:hover:border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               >
                 <svg
                   className="w-5 h-5 mr-2"
@@ -488,12 +516,12 @@ const ModernRegister = () => {
           </div>
 
           {/* Footer Links */}
-          <div className="mt-6 text-center pt-6 border-t border-gray-200 dark:border-zinc-700">
-            <p className="text-sm text-gray-600 dark:text-zinc-400">
+          <div className="mt-6 text-center pt-6 border-t border-gray-200 dark:border-gray-800">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               Už máte účet?{" "}
               <Link
                 to="/prihlaseni"
-                className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300"
+                className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
               >
                 Přihlaste se
               </Link>
@@ -505,7 +533,7 @@ const ModernRegister = () => {
         <div className="text-center">
           <Link
             to="/"
-            className="text-sm text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300"
+            className="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
           >
             ← Zpět na hlavní stránku
           </Link>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import {
@@ -9,6 +9,8 @@ import {
 import { auth } from "../config/firebase";
 import { toast, ToastContainer } from "react-toastify";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, BookOpen } from "lucide-react";
+import { gsap } from "gsap";
+import FloatingOrbs from "../components/ui/FloatingOrbs";
 import "react-toastify/dist/ReactToastify.css";
 
 const ModernLogin = () => {
@@ -20,6 +22,8 @@ const ModernLogin = () => {
   const { login, resetPassword, clearError } = useFirebaseAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const cardRef = useRef(null);
+  const headerRef = useRef(null);
 
   useEffect(() => {
     // Check if user was redirected from a protected route
@@ -28,6 +32,23 @@ const ModernLogin = () => {
         position: "top-right",
         autoClose: 5000,
       });
+    }
+
+    // Animate on mount
+    if (headerRef.current) {
+      gsap.fromTo(
+        headerRef.current,
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+      );
+    }
+
+    if (cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, scale: 0.95 },
+        { opacity: 1, scale: 1, duration: 0.8, delay: 0.2, ease: "power2.out" }
+      );
     }
   }, [location]);
 
@@ -109,8 +130,8 @@ const ModernLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-indigo-900 flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Decorative Background Elements */}
+    <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <FloatingOrbs count={5} colors={["indigo", "purple", "pink"]} />
 
       {/* Animated Waves - Bottom */}
       <div className="absolute bottom-0 left-0 w-full opacity-30 dark:opacity-10">
@@ -154,16 +175,16 @@ const ModernLogin = () => {
 
       <div className="max-w-md w-full space-y-8 relative z-10">
         {/* Header */}
-        <div className="text-center">
+        <div ref={headerRef} className="text-center">
           <div className="flex justify-center mb-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl">
+            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl shadow-lg">
               <BookOpen className="h-8 w-8 text-white" />
             </div>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             {forgotPassword ? "Obnovit heslo" : "Vítejte zpět"}
           </h2>
-          <p className="text-gray-600 dark:text-zinc-400">
+          <p className="text-gray-600 dark:text-gray-400">
             {forgotPassword
               ? "Zadejte svůj email pro obnovení hesla"
               : "Přihlaste se do svého účtu"}
@@ -171,10 +192,13 @@ const ModernLogin = () => {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-200 dark:border-zinc-700 p-8 relative overflow-hidden">
-          {/* Decorative circles in form */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-400/10 to-purple-400/10 rounded-full -translate-y-16 translate-x-16" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/10 to-green-400/10 rounded-full translate-y-12 -translate-x-12" />
+        <div
+          ref={cardRef}
+          className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 p-8 relative overflow-hidden group hover:border-purple-500/30 dark:hover:border-purple-500/30 transition-all duration-500"
+        >
+          {/* Gradient corners */}
+          <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-transparent" />
+          <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-purple-500/20 to-transparent" />
 
           <form
             onSubmit={forgotPassword ? handleForgotPassword : handleEmailSignIn}
@@ -245,7 +269,7 @@ const ModernLogin = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             >
               {isLoading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
@@ -278,7 +302,7 @@ const ModernLogin = () => {
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={isLoading}
-                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl shadow-sm bg-white dark:bg-zinc-700 text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/30 dark:hover:border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
                   >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                       <path
@@ -305,7 +329,7 @@ const ModernLogin = () => {
                     type="button"
                     onClick={handleGithubSignIn}
                     disabled={isLoading}
-                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl shadow-sm bg-white dark:bg-zinc-700 text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/30 dark:hover:border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
                   >
                     <svg
                       className="w-5 h-5 mr-2"
@@ -350,12 +374,12 @@ const ModernLogin = () => {
             )}
 
             {!forgotPassword && (
-              <div className="text-center pt-4 border-t border-gray-200 dark:border-zinc-700">
-                <p className="text-sm text-gray-600 dark:text-zinc-400">
+              <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Nemáte účet?{" "}
                   <Link
                     to="/registrace"
-                    className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300"
+                    className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
                   >
                     Zaregistrujte se
                   </Link>
@@ -369,7 +393,7 @@ const ModernLogin = () => {
         <div className="text-center">
           <Link
             to="/"
-            className="text-sm text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300"
+            className="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
           >
             ← Zpět na hlavní stránku
           </Link>
