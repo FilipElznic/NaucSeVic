@@ -61,13 +61,7 @@ const Navbar = () => {
       protected: true,
       adminOnly: false,
     },
-    {
-      name: "Cloud Demo",
-      href: "/cloud-functions",
-      icon: Cloud,
-      protected: true,
-      adminOnly: true,
-    },
+
     {
       name: "Vytvořit úkol",
       href: "/create-task",

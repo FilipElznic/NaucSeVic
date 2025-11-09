@@ -24,7 +24,6 @@ import PrivacyPage from "./pages/PrivacyPage";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
-import CloudFunctionDemo from "./components/CloudFunctionDemo";
 import TaskCreator from "./components/TaskCreator";
 import Matematika from "./components/subjects/Matematika";
 import Geometrie from "./components/subjects/Geometrie";
@@ -130,18 +129,6 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <Layout>
                 <Fyzika />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Cloud Functions Demo */}
-        <Route
-          path="/cloud-functions"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <CloudFunctionDemo />
               </Layout>
             </ProtectedRoute>
           }
