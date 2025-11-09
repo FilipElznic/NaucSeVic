@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { gsap } from "gsap";
 import FloatingOrbs from "../components/ui/FloatingOrbs";
+import { useDarkMode } from "../contexts/DarkModeContext";
 import "react-toastify/dist/ReactToastify.css";
 
 const ModernRegister = () => {
@@ -36,6 +37,7 @@ const ModernRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const { register, clearError } = useFirebaseAuth();
+  const { darkMode } = useDarkMode();
   const navigate = useNavigate();
   const cardRef = useRef(null);
   const headerRef = useRef(null);
@@ -87,22 +89,44 @@ const ModernRegister = () => {
     const { firstName, lastName, email, password, confirmPassword } = formData;
 
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      toast.error("Prosím vyplňte všechna pole");
+      toast.error("Prosím vyplňte všechna pole", {
+        position: "top-right",
+        autoClose: 5000,
+      });
       return;
     }
 
     if (!agreedToTerms) {
-      toast.error("Musíte souhlasit s podmínkami používání");
+      toast.error("Musíte souhlasit s podmínkami používání", {
+        position: "top-right",
+        autoClose: 5000,
+      });
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error("Hesla se neshodují");
+      toast.error("Hesla se neshodují. Zkontrolujte prosím obě pole.", {
+        position: "top-right",
+        autoClose: 5000,
+      });
       return;
     }
 
     if (!isPasswordValid) {
-      toast.error("Heslo nesplňuje požadavky");
+      const missingRequirements = [];
+      if (!passwordRequirements.length)
+        missingRequirements.push("minimálně 6 znaků");
+      if (!passwordRequirements.uppercase)
+        missingRequirements.push("velké písmeno");
+      if (!passwordRequirements.lowercase)
+        missingRequirements.push("malé písmeno");
+      if (!passwordRequirements.number) missingRequirements.push("číslo");
+
+      console.log("Register: Missing requirements:", missingRequirements);
+      toast.error(`Heslo musí obsahovat: ${missingRequirements.join(", ")}`, {
+        position: "top-right",
+        autoClose: 7000,
+      });
       return;
     }
 
@@ -126,8 +150,27 @@ const ModernRegister = () => {
 
       navigate("/");
     } catch (err) {
-      toast.error(`Registrace selhala: ${err.message}`);
       console.error("Registration error:", err);
+
+      // Provide user-friendly error messages
+      let errorMessage = "Registrace selhala";
+
+      if (err.code === "auth/email-already-in-use") {
+        errorMessage = "Tento email je již registrován. Zkuste se přihlásit.";
+      } else if (err.code === "auth/invalid-email") {
+        errorMessage = "Neplatný formát emailu. Zkontrolujte prosím email.";
+      } else if (err.code === "auth/weak-password") {
+        errorMessage = "Heslo je příliš slabé. Použijte silnější heslo.";
+      } else if (err.code === "auth/network-request-failed") {
+        errorMessage = "Chyba připojení. Zkontrolujte internetové připojení.";
+      } else if (err.message) {
+        errorMessage = `Registrace selhala: ${err.message}`;
+      }
+
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 6000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -405,6 +448,104 @@ const ModernRegister = () => {
               </div>
             </div>
 
+            {/* Password Requirements Indicator */}
+            {formData.password && (
+              <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg p-3 space-y-2">
+                <p className="text-xs font-medium text-gray-700 dark:text-zinc-300 mb-2">
+                  Požadavky na heslo:
+                </p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex items-center space-x-2">
+                    {passwordRequirements.length ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <div className="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-zinc-600" />
+                    )}
+                    <span
+                      className={
+                        passwordRequirements.length
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-gray-500 dark:text-zinc-400"
+                      }
+                    >
+                      Minimálně 6 znaků
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {passwordRequirements.uppercase ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <div className="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-zinc-600" />
+                    )}
+                    <span
+                      className={
+                        passwordRequirements.uppercase
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-gray-500 dark:text-zinc-400"
+                      }
+                    >
+                      Velké písmeno
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {passwordRequirements.lowercase ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <div className="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-zinc-600" />
+                    )}
+                    <span
+                      className={
+                        passwordRequirements.lowercase
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-gray-500 dark:text-zinc-400"
+                      }
+                    >
+                      Malé písmeno
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {passwordRequirements.number ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <div className="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-zinc-600" />
+                    )}
+                    <span
+                      className={
+                        passwordRequirements.number
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-gray-500 dark:text-zinc-400"
+                      }
+                    >
+                      Číslo
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Password Match Indicator */}
+            {formData.password && formData.confirmPassword && (
+              <div
+                className={`flex items-center space-x-2 text-sm p-2 rounded-lg ${
+                  formData.password === formData.confirmPassword
+                    ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400"
+                    : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"
+                }`}
+              >
+                {formData.password === formData.confirmPassword ? (
+                  <>
+                    <Check className="h-4 w-4" />
+                    <span className="text-xs">Hesla se shodují</span>
+                  </>
+                ) : (
+                  <>
+                    <div className="h-4 w-4 rounded-full border-2 border-current" />
+                    <span className="text-xs">Hesla se neshodují</span>
+                  </>
+                )}
+              </div>
+            )}
+
             {/* Compact Terms */}
             <div className="flex items-start">
               <input
@@ -450,6 +591,19 @@ const ModernRegister = () => {
                 </>
               )}
             </button>
+
+            {/* Helper text for disabled button */}
+            {!isLoading && (!isPasswordValid || !agreedToTerms) && (
+              <div className="text-center">
+                <p className="text-xs text-gray-500 dark:text-zinc-400">
+                  {!agreedToTerms && !isPasswordValid
+                    ? "Vyplňte požadavky na heslo a odsouhlaste podmínky"
+                    : !agreedToTerms
+                    ? "Musíte souhlasit s podmínkami používání"
+                    : "Heslo musí splňovat všechny požadavky"}
+                </p>
+              </div>
+            )}
           </form>
 
           {/* Social Sign Up Options */}
@@ -544,13 +698,17 @@ const ModernRegister = () => {
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme={darkMode ? "dark" : "light"}
+        style={{ zIndex: 9999 }}
+        toastStyle={{
+          zIndex: 9999,
+        }}
       />
     </div>
   );
