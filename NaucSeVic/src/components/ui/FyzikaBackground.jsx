@@ -153,14 +153,14 @@ const fragmentShader = `
     vec2 uv = vUv * 2.0 - 1.0; uv.y *= -1.0;
     vec4 color = cppn_fn(uv, 0.1 * sin(0.3 * iTime), 0.1 * sin(0.69 * iTime), 0.1 * sin(0.44 * iTime));
     
-    // Light mode: create bright, soft pastel colors
-    // Invert the colors and make them much lighter
+    // Light mode: create darker, more saturated colors
+    // Invert and darken the colors
     vec3 invertedColor = 1.0 - color.rgb;
-    // Brighten significantly and add a warm tint
-    vec3 lightColor = mix(vec3(0.95, 0.97, 1.0), invertedColor * 0.4 + 0.6, 0.3);
+    // Make colors darker and more saturated
+    vec3 lightColor = invertedColor * 0.6 + 0.1 ;
     
     // Blend between light and dark based on isDarkMode
-    gl_FragColor = vec4(mix(lightColor, color.rgb, isDarkMode), 1.0);
+    gl_FragColor = vec4(mix(lightColor, color.rgb, isDarkMode), 1000.0);
   }
 `;
 
@@ -241,7 +241,7 @@ function ShaderBackground() {
         className={`pointer-events-none absolute inset-0 bg-gradient-to-t ${
           darkMode
             ? "from-black/30 via-transparent to-black/20"
-            : "from-white/20 via-transparent to-white/10"
+            : "from-black/30 via-transparent to-black/20"
         }`}
       />
     </div>

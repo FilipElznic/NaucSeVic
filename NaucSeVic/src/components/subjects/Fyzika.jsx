@@ -18,9 +18,7 @@ const Fyzika = () => {
       </div>
 
       <div
-        className="h-screen w-full 
-      
-      bg-gradient-to-b from-transparent via-white to-white
+        className="h-screen w-full bg-gradient-to-b from-white/30 via-white/60 to-white backdrop-blur-sm
       dark:bg-gradient-to-b dark:from-transparent dark:via-black dark:to-black z-50"
       ></div>
       <div className="h-screen w-full bg-white dark:bg-black z-50"></div>
