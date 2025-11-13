@@ -57,8 +57,6 @@ const StatsSection = () => {
 
   return (
     <section className="py-32 bg-white dark:bg-black relative overflow-hidden">
-      <FloatingOrbs count={4} colors={["indigo", "purple", "pink"]} />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-20">
@@ -71,7 +69,7 @@ const StatsSection = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-12 md:gap-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-12 md:gap-16 bg-transparent">
           {stats.map((stat, index) => (
             <div key={index} className="text-center group">
               {/* Icon */}
@@ -100,6 +98,7 @@ const StatsSection = () => {
             </div>
           ))}
         </div>
+        <FloatingOrbs count={1} colors={["indigo", "purple", "pink"]} />
       </div>
     </section>
   );
