@@ -18,10 +18,10 @@ const Fyzika = () => {
       </div>
 
       <div
-        className="h-screen w-full bg-gradient-to-b from-white/30 via-white/60 to-white backdrop-blur-sm
+        className="h-screen w-full bg-gradient-to-b from-transparent via-white/30 to-white/80 backdrop-blur-sm
       dark:bg-gradient-to-b dark:from-transparent dark:via-black dark:to-black z-50"
       ></div>
-      <div className="h-screen w-full bg-white dark:bg-black z-50"></div>
+      <div className="h-[200vh] w-full dark:from-black dark:to-black bg-gradient-to-b from-white/80 to-white  z-50"></div>
     </div>
   );
 };

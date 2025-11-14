@@ -359,27 +359,27 @@ export default function Hero({
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 pb-24 pt-36 sm:gap-8 sm:pt-44 md:px-10 lg:px-16">
         <div
           ref={badgeRef}
-          className="inline-flex items-center gap-2 rounded-full border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 px-3 py-1.5 backdrop-blur-sm"
+          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm"
         >
-          <span className="text-[10px] uppercase tracking-[0.08em] text-black/70 dark:text-white/70">
+          <span className="text-[10px] uppercase tracking-[0.08em] text-white/70">
             {badgeLabel}
           </span>
-          <span className="h-1 w-1 rounded-full bg-black/40 dark:bg-white/40" />
-          <span className="text-xs tracking-tight text-black/80 dark:text-white/80">
+          <span className="h-1 w-1 rounded-full bg-white/40" />
+          <span className="text-xs tracking-tight text-white/80">
             {badgeText}
           </span>
         </div>
 
         <h1
           ref={headerRef}
-          className="max-w-2xl text-left text-5xl leading-[1.05] tracking-tight text-black dark:text-white sm:text-6xl md:text-7xl"
+          className="max-w-2xl text-left text-5xl leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl"
         >
           {title}
         </h1>
 
         <p
           ref={paraRef}
-          className="max-w-xl text-left text-base leading-relaxed tracking-tight text-black/75 dark:text-white/75 sm:text-lg"
+          className="max-w-xl text-left text-base leading-relaxed tracking-tight text-white/75 sm:text-lg"
         >
           {description}
         </p>
@@ -391,8 +391,8 @@ export default function Hero({
               href={button.href}
               className={`rounded-2xl border px-5 py-3 text-sm tracking-tight transition-colors focus:outline-none focus:ring-2 duration-300 ${
                 button.primary
-                  ? "border-black/10 dark:border-white/10 bg-black/10 dark:bg-white/10 text-black dark:text-white backdrop-blur-sm hover:bg-black/20 dark:hover:bg-white/20 focus:ring-black/30 dark:focus:ring-white/30"
-                  : "border-black/10 dark:border-white/10 text-black/80 dark:text-white/80 hover:bg-black/5 dark:hover:bg-white/5 focus:ring-black/30 dark:focus:ring-white/30"
+                  ? "border-white/10 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 focus:ring-white/30"
+                  : "border-white/10 text-white/80 hover:bg-white/5 focus:ring-white/30"
               }`}
             >
               {button.text}
@@ -402,7 +402,7 @@ export default function Hero({
 
         <ul
           ref={microRef}
-          className="mt-8 flex flex-wrap gap-6 text-xs tracking-tight text-black/60 dark:text-white/60"
+          className="mt-8 flex flex-wrap gap-6 text-xs tracking-tight text-white/60"
         >
           {microDetails.map((detail, index) => {
             const refMap = [microItem1Ref, microItem2Ref, microItem3Ref];
@@ -412,8 +412,7 @@ export default function Hero({
                 ref={refMap[index]}
                 className="flex items-center gap-2"
               >
-                <span className="h-1 w-1 rounded-full bg-black/40 dark:bg-white/40" />{" "}
-                {detail}
+                <span className="h-1 w-1 rounded-full bg-white/40" /> {detail}
               </li>
             );
           })}

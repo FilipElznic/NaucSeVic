@@ -8,7 +8,7 @@ const Footer = () => {
     <footer
       className={`${
         darkMode ? "bg-zinc-950 text-gray-100" : "bg-gray-100 text-gray-600"
-      } transition-colors duration-300`}
+      } transition-colors duration-300 z-[1000]`}
     >
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
