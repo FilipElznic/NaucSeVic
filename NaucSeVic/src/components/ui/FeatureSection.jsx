@@ -7,7 +7,7 @@ const FeatureSection = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const update = () => setIsMobile(window.innerWidth <= 600);
+    const update = () => setIsMobile(window.innerWidth <= 1250);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);

@@ -37,7 +37,7 @@ function ModernHeroSection() {
       </div>
 
       {isMobile ? (
-        <div className="relative min-h-screen bg-white dark:bg-black pt-24 px-6 flex flex-col items-center text-center">
+        <div className="relative min-h-screen bg-white dark:bg-black pt-24 px-6 flex flex-col items-center justify-center text-center">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white leading-tight">
             Pro všechny, kdo chtějí
             <br />

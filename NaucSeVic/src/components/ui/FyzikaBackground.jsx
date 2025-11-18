@@ -372,7 +372,7 @@ export default function Hero({
 
         <h1
           ref={headerRef}
-          className="max-w-2xl text-left text-5xl leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl"
+          className="max-w-2xl font-bold text-left text-5xl  text-white sm:text-6xl md:text-7xl"
         >
           {title}
         </h1>
