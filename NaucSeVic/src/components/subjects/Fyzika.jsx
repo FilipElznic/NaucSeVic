@@ -1,4 +1,49 @@
 import Hero from "../ui/FyzikaBackground";
+import { Atom, Telescope, CircuitBoard } from "lucide-react";
+
+const gradientSteps = [
+  "from-indigo-400 to-purple-400",
+  "from-indigo-500 to-purple-500",
+  "from-indigo-600 to-purple-600",
+  "from-indigo-700 to-purple-700",
+  "from-indigo-800 to-purple-800",
+];
+
+const timelineSteps = [
+  {
+    id: 1,
+    label: "KROK 01",
+    title: "Interaktivní kurzy",
+    description:
+      "Komplexní průvodce fyzikálními tématy. Získejte pevné teoretické základy díky strukturovaným textům a názorným ukázkám.",
+
+    accent: gradientSteps[0],
+    chips: ["Teorie", "Vektory", "Principy"],
+    color: gradientSteps[0],
+  },
+  {
+    id: 2,
+    label: "KROK 02",
+    title: "Virtuální laboratoř",
+    description:
+      "Hrajte si s fyzikou. Budujte experimenty, přepínejte parametry a sledujte, jak se mění energie a jevy v reálném čase.",
+    icon: Atom, // Zde se hodí Atom nebo Flask (zkumavka) pro simulace
+    accent: gradientSteps[1],
+    chips: ["Simulace", "Experimenty", "Vizualizace"],
+    color: gradientSteps[1],
+  },
+  {
+    id: 3,
+    label: "KROK 03",
+    title: "Procvičování v praxi",
+    description:
+      "Ověřte si, co jste se naučili. Vyřešte připravené příklady, získejte jistotu ve výpočtech a připravte se na zkoušky.",
+
+    accent: gradientSteps[2],
+    chips: ["Příklady", "Testy", "Řešení"],
+    color: gradientSteps[2],
+  },
+];
 
 const Fyzika = () => {
   return (
@@ -17,12 +62,93 @@ const Fyzika = () => {
         />
       </div>
 
-      <div
-        className="h-screen w-full bg-gradient-to-b from-transparent via-white/30 to-white/80 backdrop-blur-sm
-      dark:bg-gradient-to-b dark:from-transparent dark:via-black dark:to-black z-50"
-      ></div>
-      <div className="h-[200vh] w-full dark:from-black dark:to-black bg-gradient-to-b from-white/80 to-white  z-50"></div>
+      <div className="relative min-h-[140vh] w-full flex-col bg-gradient-to-b from-transparent via-white/20 to-white/80 dark:from-transparent dark:via-slate-900/80 dark:to-black  z-50 flex items-center justify-center px-6 py-24 overflow-hidden">
+        <div className="text-center space-y-6 mb-20 ">
+          <p className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-200/80 dark:text-slate-300/70">
+            <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/60 to-white"></span>
+            Harmonogram misí
+            <span className="h-px w-12 bg-gradient-to-l from-transparent via-white/60 to-white"></span>
+          </p>
+          <h1 className="text-4xl md:text-6xl font-semibold text-white drop-shadow-[0_5px_45px_rgba(59,130,246,0.35)]">
+            Vnímejte časovou osu fyzikálních průlomů
+          </h1>
+          <p className="text-base md:text-lg text-white/70 max-w-3xl mx-auto">
+            Každý krok vás posune k hlubšímu pochopení reality. Kombinujeme
+            interaktivní simulace, analytické nástroje a AI asistenty, aby každá
+            fáze studia působila jako futuristická mise.
+          </p>
+        </div>{" "}
+        <div className="container  ">
+          <div className="max-w-5xl w-full py-8 relative flex flex-col items-center justify-center ">
+            <div className="relative ">
+              {timelineSteps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <div
+                    key={step.id}
+                    className="relative flex gap-8 pb-16 last:pb-0"
+                  >
+                    {index < timelineSteps.length - 1 && (
+                      <div
+                        className="absolute left-[54px] w-px bg-gradient-to-b from-white/10  to-white"
+                        style={{ top: "140px", height: "calc(100% - 160px)" }}
+                      ></div>
+                    )}
+
+                    <div className="flex flex-col items-center relative z-10">
+                      <div
+                        className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${step.color} p-[1px] shadow-[0_0_45px_rgba(148,163,184,0.45)] `}
+                      >
+                        <div className="w-full h-full rounded-3xl bg-slate-950/80 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-2xl font-semibold text-white">
+                          {String(step.id).padStart(2, "0")}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="inline-flex items-center text-xs tracking-[0.35em] text-white/70 uppercase mb-4">
+                        {step.label}
+                      </div>
+                      <div className="group relative rounded-3xl border border-white/10 bg-white/10 dark:bg-slate-900/60 backdrop-blur-2xl p-8 shadow-[0_20px_80px_rgba(15,23,42,0.55)]">
+                        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-500/10 via-transparent to-sky-500/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <div className="relative z-10 flex flex-col gap-6">
+                          <div className="flex flex-wrap items-center gap-4">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/20 flex items-center justify-center text-white">
+                              <Icon className="w-8 h-8" />
+                            </div>
+                            <div>
+                              <h3 className="text-2xl md:text-3xl font-semibold text-white">
+                                {step.title}
+                              </h3>
+                              <p className="text-white/70 text-sm md:text-base max-w-2xl">
+                                {step.description}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-3">
+                            {step.chips.map((chip) => (
+                              <span
+                                key={chip}
+                                className="text-xs tracking-wider uppercase border border-white/20 text-white/80 px-4 py-1 rounded-full bg-white/5 backdrop-blur"
+                              >
+                                {chip}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="h-[200vh] w-full dark:from-black dark:to-black bg-gradient-to-b from-white/80 to-white z-50"></div>
     </div>
   );
 };
+
 export default Fyzika;
