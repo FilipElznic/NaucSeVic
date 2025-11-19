@@ -1,5 +1,14 @@
 import Hero from "../ui/FyzikaBackground";
-import { Atom, Telescope, CircuitBoard } from "lucide-react";
+import {
+  Atom,
+  Telescope,
+  CircuitBoard,
+  BookOpen,
+  FlaskConical,
+  Target,
+} from "lucide-react";
+
+import ucitel from "../../../public/ucitel.png";
 
 const gradientSteps = [
   "from-indigo-400 to-purple-400",
@@ -16,7 +25,7 @@ const timelineSteps = [
     title: "Interaktivní kurzy",
     description:
       "Komplexní průvodce fyzikálními tématy. Získejte pevné teoretické základy díky strukturovaným textům a názorným ukázkám.",
-
+    icon: Telescope,
     accent: gradientSteps[0],
     chips: ["Teorie", "Vektory", "Principy"],
     color: gradientSteps[0],
@@ -38,10 +47,54 @@ const timelineSteps = [
     title: "Procvičování v praxi",
     description:
       "Ověřte si, co jste se naučili. Vyřešte připravené příklady, získejte jistotu ve výpočtech a připravte se na zkoušky.",
-
+    icon: CircuitBoard,
     accent: gradientSteps[2],
     chips: ["Příklady", "Testy", "Řešení"],
     color: gradientSteps[2],
+  },
+];
+
+const learningSections = [
+  {
+    id: "course",
+    eyebrow: "Kompletní kurz",
+    title: "Modulární kurz fyziky",
+    description:
+      "13 kapitol od mechaniky po moderní fyziku. Postupujte tempem, které vám vyhovuje, s průběžným hodnocením a mentoringem.",
+    icon: BookOpen,
+    gradient: "from-indigo-500/90 via-purple-600/80 to-purple-700/80",
+    bullets: [
+      "Video lekce v 4K",
+      "Poznámky s AI shrnutím",
+      "Mentoring na vyžádání",
+    ],
+    cta: { label: "Vstoupit do kurzu", href: "#kurz" },
+  },
+  {
+    id: "simulation",
+    eyebrow: "Simulace",
+    title: "Interaktivní laboratoř",
+    description:
+      "Ovládejte parametry, sledujte grafy v reálném čase a ukládejte si experimenty. Přeneste fyziku z učebnic do živých modelů.",
+    icon: FlaskConical,
+    gradient: "from-purple-500/90 via-fuchsia-600/80 to-pink-600/80",
+    bullets: ["Přes 40 scénářů", "Sdílení experimentů", "Export výsledků"],
+    cta: { label: "Spustit simulaci", href: "#simulace" },
+  },
+  {
+    id: "tasks",
+    eyebrow: "Výzvy",
+    title: "Sada úloh a testů",
+    description:
+      "Vyřešte adaptivní úlohy, sbírejte odznaky a porovnejte své výsledky s komunitou. Každá úloha nabízí vysvětlení i alternativní postupy.",
+    icon: Target,
+    gradient: "from-indigo-600/90 via-blue-600/80 to-cyan-500/80",
+    bullets: [
+      "Adaptivní obtížnost",
+      "Okamžitá zpětná vazba",
+      "Komunitní žebříčky",
+    ],
+    cta: { label: "Pustit se do úloh", href: "#ukoly" },
   },
 ];
 
@@ -110,7 +163,6 @@ const Fyzika = () => {
                         {step.label}
                       </div>
                       <div className="group relative rounded-3xl border border-white/10 bg-white/10 dark:bg-slate-900/60 backdrop-blur-2xl p-8 shadow-[0_20px_80px_rgba(15,23,42,0.55)]">
-                        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-rose-500/10 via-transparent to-sky-500/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
                         <div className="relative z-10 flex flex-col gap-6">
                           <div className="flex flex-wrap items-center gap-4">
                             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/20 flex items-center justify-center text-white">
@@ -146,7 +198,95 @@ const Fyzika = () => {
         </div>
       </div>
 
-      <div className="h-[200vh] w-full dark:from-black dark:to-black bg-gradient-to-b from-white/80 to-white z-50"></div>
+      <div className="relative w-full py-32 bg-gradient-to-b from-white/80 to-white dark:from-black dark:to-black z-50">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center gap-16">
+            <div className="w-full md:w-2/3 space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-medium uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                  Váš průvodce
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight">
+                  Učení nemusí být <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600">
+                    jen otrava
+                  </span>
+                </h2>
+              </div>
+
+              <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                S námi vás fyzika bude bavit. Zapomeňte na nudné biflování
+                vzorečků. Ukážeme vám, jak funguje svět kolem nás, od atomů až
+                po galaxie. Připojte se k tisícům studentů, kteří už objevili
+                krásu fyziky.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transform hover:-translate-y-1 transition duration-300">
+                  Zjistit více
+                </button>
+                <button className="px-8 py-4 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white font-semibold hover:bg-slate-50 dark:hover:bg-white/5 transition duration-300">
+                  Ukázková lekce
+                </button>
+              </div>
+
+              <div className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-200 dark:border-white/10">
+                <div>
+                  <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                    10+
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Let praxe
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                    5k+
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Studentů
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                    4.9
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Hodnocení
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-full md:w-1/2 relative">
+              <img
+                src={ucitel}
+                alt="Náš lektor"
+                className="w-2/3 h-auto object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-black h-screen w-full z-10 flex items-center justify-center px-6 py-24 overflow-hidden">
+        <div className="container mx-auto px-6 text-center">
+          <div className="text-center space-y-6 mb-20 ">
+            <p className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-200/80 dark:text-slate-300/70">
+              <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/60 to-white"></span>
+              Harmonogram misí
+              <span className="h-px w-12 bg-gradient-to-l from-transparent via-white/60 to-white"></span>
+            </p>
+            <h1 className="text-4xl md:text-6xl font-semibold text-white drop-shadow-[0_5px_45px_rgba(59,130,246,0.35)]">
+              Vnímejte časovou osu fyzikálních průlomů
+            </h1>
+            <p className="text-base md:text-lg text-white/70 max-w-3xl mx-auto">
+              Každý krok vás posune k hlubšímu pochopení reality. Kombinujeme
+              interaktivní simulace, analytické nástroje a AI asistenty, aby
+              každá fáze studia působila jako futuristická mise.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
