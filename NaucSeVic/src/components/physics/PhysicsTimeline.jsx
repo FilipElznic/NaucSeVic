@@ -1,11 +1,11 @@
 import { Atom, Telescope, CircuitBoard } from "lucide-react";
 
 const gradientSteps = [
-  "from-indigo-400 to-purple-400",
-  "from-indigo-500 to-purple-500",
-  "from-indigo-600 to-purple-600",
-  "from-indigo-700 to-purple-700",
-  "from-indigo-800 to-purple-800",
+  "from-green-400 dark:from-purple-400 to-lime-400 dark:to-violet-400",
+  "from-green-500 dark:from-purple-500 to-lime-500 dark:to-violet-500",
+  "from-green-600 dark:from-purple-600 to-lime-600 dark:to-violet-600",
+  "from-green-700 dark:from-purple-700 to-lime-700 dark:to-violet-700",
+  "from-green-800 dark:from-purple-800 to-lime-800 dark:to-violet-800",
 ];
 
 const timelineSteps = [
@@ -46,14 +46,14 @@ const timelineSteps = [
 
 const PhysicsTimeline = () => {
   return (
-    <div className="relative min-h-[140vh] w-full flex-col bg-gradient-to-b from-transparent via-white/20 to-white/80 dark:from-transparent dark:via-slate-900/80 dark:to-black z-50 flex items-center justify-center px-6 py-24 overflow-hidden">
+    <div className="relative min-h-[140vh] w-full flex-col bg-gradient-to-b from-transparent via-white/80 to-white dark:bg-gradient-to-b dark:from-transparent dark:via-slate-900/80 dark:to-black z-50 flex items-center justify-center px-6 py-24 overflow-hidden">
       <div className="text-center space-y-6 mb-20">
-        <p className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-200/80 dark:text-slate-300/70">
+        <p className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-300/70">
           <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/60 to-white"></span>
-          Harmonogram misí
+          <p className=" text-white">Harmonogram misí</p>
           <span className="h-px w-12 bg-gradient-to-l from-transparent via-white/60 to-white"></span>
         </p>
-        <h1 className="text-4xl md:text-6xl font-semibold text-white drop-shadow-[0_5px_45px_rgba(59,130,246,0.35)]">
+        <h1 className="text-4xl md:text-6xl font-semibold  text-white drop-shadow-[0_5px_45px_rgba(59,130,246,0.35)]">
           Vnímejte časovou osu fyzikálních průlomů
         </h1>
         <p className="text-base md:text-lg text-white/70 max-w-3xl mx-auto">
@@ -83,7 +83,7 @@ const PhysicsTimeline = () => {
                     <div
                       className={`w-28 h-28 rounded-3xl bg-gradient-to-br ${step.color} p-[1px] shadow-[0_0_45px_rgba(148,163,184,0.45)]`}
                     >
-                      <div className="w-full h-full rounded-3xl bg-slate-950/80 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-2xl font-semibold text-white">
+                      <div className="w-full h-full rounded-3xl bg-white dark:bg-slate-950/80 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-2xl font-semibold dark:text-white text-black">
                         {String(step.id).padStart(2, "0")}
                       </div>
                     </div>
@@ -93,17 +93,17 @@ const PhysicsTimeline = () => {
                     <div className="inline-flex items-center text-xs tracking-[0.35em] text-white/70 uppercase mb-4">
                       {step.label}
                     </div>
-                    <div className="group relative rounded-3xl border border-white/10 bg-white/10 dark:bg-slate-900/60 backdrop-blur-2xl p-8 shadow-[0_20px_80px_rgba(15,23,42,0.55)]">
+                    <div className="group relative rounded-3xl border border-white/10 dark:bg-slate-900/60 bg-white backdrop-blur-2xl p-8 shadow-[0_20px_80px_rgba(15,23,42,0.55)]">
                       <div className="relative z-10 flex flex-col gap-6">
                         <div className="flex flex-wrap items-center gap-4">
-                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-white/20 flex items-center justify-center text-white">
+                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-transparent border border-black/10 dark:border-white/20 flex items-center justify-center text-black dark:text-white">
                             <Icon className="w-8 h-8" />
                           </div>
                           <div>
-                            <h3 className="text-2xl md:text-3xl font-semibold text-white">
+                            <h3 className="text-2xl md:text-3xl font-semibold text-green-800 dark:text-white">
                               {step.title}
                             </h3>
-                            <p className="text-white/70 text-sm md:text-base max-w-2xl">
+                            <p className="text-black/70 dark:text-white/70 text-sm md:text-base max-w-2xl">
                               {step.description}
                             </p>
                           </div>
@@ -112,7 +112,7 @@ const PhysicsTimeline = () => {
                           {step.chips.map((chip) => (
                             <span
                               key={chip}
-                              className="text-xs tracking-wider uppercase border border-white/20 text-white/80 px-4 py-1 rounded-full bg-white/5 backdrop-blur"
+                              className="text-xs tracking-wider uppercase border border-white/20 dark:text-white/80 text-black  px-4 py-1 rounded-full bg-white/5 backdrop-blur"
                             >
                               {chip}
                             </span>
