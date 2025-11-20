@@ -23,7 +23,6 @@ const Fyzika = () => {
 
       <PhysicsTimeline />
       <PhysicsTeacher />
-      <PhysicsSimulation />
 
       <div className="bg-black h-screen relative w-full z-10 flex items-center justify-center px-6 py-24 overflow-hidden">
         <div className="container mx-auto px-6 text-center ">
