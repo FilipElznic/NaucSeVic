@@ -820,3 +820,57 @@ exports.onTaskUpdated = onDocumentUpdated("tasks/{taskId}", async (event) => {
     return;
   }
 });
+
+// Admin function to seed geometry data
+exports.adminSeedGeometry = onCall(async (request) => {
+  // Check if user is authenticated
+  if (!request.auth) {
+    throw new HttpsError(
+      "unauthenticated",
+      "The function must be called while authenticated."
+    );
+  }
+
+  // Check if user is admin
+  const isUserAdmin = await isAdmin(request.auth.uid);
+  if (!isUserAdmin) {
+    throw new HttpsError(
+      "permission-denied",
+      "Only admins can seed geometry data."
+    );
+  }
+
+  const { bodies } = request.data;
+
+  if (!bodies || !Array.isArray(bodies)) {
+    throw new HttpsError(
+      "invalid-argument",
+      "The function must be called with an array of geometric bodies."
+    );
+  }
+
+  try {
+    const batch = admin.firestore().batch();
+    const collectionRef = admin.firestore().collection("geometricBodies");
+
+    for (const body of bodies) {
+      if (!body.id) {
+        continue; // Skip invalid entries
+      }
+      const docRef = collectionRef.doc(body.id);
+      batch.set(docRef, body, { merge: true });
+    }
+
+    await batch.commit();
+
+    logger.info("Geometry data seeded successfully", {
+      adminUid: request.auth.uid,
+      count: bodies.length,
+    });
+
+    return { success: true, count: bodies.length };
+  } catch (error) {
+    logger.error("Error seeding geometry data", error);
+    throw new HttpsError("internal", "Error seeding geometry data");
+  }
+});

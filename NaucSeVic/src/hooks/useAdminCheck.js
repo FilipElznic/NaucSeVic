@@ -23,8 +23,8 @@ export const useAdminCheck = () => {
         setLoading(true);
         setError(null);
 
-        // Get the user's ID token with custom claims
-        const idTokenResult = await user.getIdTokenResult();
+        // Get the user's ID token with custom claims (force refresh to get latest claims)
+        const idTokenResult = await user.getIdTokenResult(true);
 
         // Check if user has admin custom claim
         const adminClaim = idTokenResult.claims.admin === true;

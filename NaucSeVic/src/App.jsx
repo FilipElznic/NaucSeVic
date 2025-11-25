@@ -25,6 +25,7 @@ import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import TaskCreator from "./components/TaskCreator";
+import AdminGeometryManager from "./pages/AdminGeometryManager";
 import Matematika from "./components/subjects/Matematika";
 import Geometrie from "./components/subjects/Geometrie";
 import Fyzika from "./components/subjects/Fyzika";
@@ -145,6 +146,28 @@ const AppRoutes = () => {
                 </Layout>
               </AdminRoute>
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/tasks"
+          element={
+            <AdminRoute>
+              <Layout>
+                <TaskCreator />
+              </Layout>
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/geometry"
+          element={
+            <AdminRoute>
+              <Layout>
+                <AdminGeometryManager />
+              </Layout>
+            </AdminRoute>
           }
         />
 

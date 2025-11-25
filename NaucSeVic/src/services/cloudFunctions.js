@@ -114,6 +114,18 @@ class CloudFunctionsService {
     }
   }
 
+  // Seed geometry data (admin only)
+  async seedGeometryData(bodies) {
+    try {
+      const seedFunction = httpsCallable(functions, "adminSeedGeometry");
+      const result = await seedFunction({ bodies });
+      return result.data;
+    } catch (error) {
+      console.error("Error seeding geometry data:", error);
+      throw error;
+    }
+  }
+
   // Generic HTTP API call to the api endpoint
   async callApi(method = "GET", data = null) {
     try {

@@ -7,10 +7,10 @@ import { useAdminCheck } from "../hooks/useAdminCheck";
  * AdminRoute component - protects routes that require admin privileges
  * @param {Object} props - Component props
  * @param {React.ReactNode} props.children - Child components to render if user is admin
- * @param {string} props.redirectTo - Path to redirect to if not admin (default: '/home')
+ * @param {string} props.redirectTo - Path to redirect to if not admin (default: '/')
  * @returns {React.ReactNode} - Admin content or redirect
  */
-const AdminRoute = ({ children, redirectTo = "/home" }) => {
+const AdminRoute = ({ children, redirectTo = "/" }) => {
   const { isAdmin, loading, error } = useAdminCheck();
 
   // Show loading spinner while checking admin status
@@ -69,7 +69,12 @@ const AdminRoute = ({ children, redirectTo = "/home" }) => {
           >
             Zpět
           </button>
-          <Navigate to={redirectTo} replace />
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Domů
+          </button>
         </div>
       </div>
     );
