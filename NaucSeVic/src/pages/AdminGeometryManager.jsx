@@ -3,6 +3,7 @@ import { cloudFunctionsService } from "../services/cloudFunctions";
 import geometryData from "../data/geometryData.json";
 import { toast } from "react-toastify";
 import { Upload, Check, AlertTriangle } from "lucide-react";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const AdminGeometryManager = () => {
   const [loading, setLoading] = useState(false);
@@ -104,7 +105,10 @@ const AdminGeometryManager = () => {
           >
             {loading ? (
               <>
-                <div className="w-5 h-5 border-2 border-slate-500 border-t-transparent rounded-full animate-spin"></div>
+                <LoadingSpinner
+                  size="sm"
+                  className="border-slate-500 border-t-transparent"
+                />
                 Nahrávám...
               </>
             ) : (

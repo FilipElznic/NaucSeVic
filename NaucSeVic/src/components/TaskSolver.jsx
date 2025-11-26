@@ -10,6 +10,7 @@ import {
 import { cloudFunctionsService } from "../services/cloudFunctions";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import { toast } from "react-toastify";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 const TaskSolver = ({ task, onComplete, onClose }) => {
   const { user } = useFirebaseAuth();
@@ -411,7 +412,7 @@ const TaskSolver = ({ task, onComplete, onClose }) => {
             >
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  <LoadingSpinner size="sm" className="border-white mr-2" />
                   Odesílám...
                 </>
               ) : (

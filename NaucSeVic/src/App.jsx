@@ -29,6 +29,7 @@ import AdminGeometryManager from "./pages/AdminGeometryManager";
 import Matematika from "./components/subjects/Matematika";
 import Geometrie from "./components/subjects/Geometrie";
 import Fyzika from "./components/subjects/Fyzika";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
 
 // Protected Route component is now imported from components
 
@@ -39,7 +40,7 @@ const PublicRoute = ({ children }) => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
+        <LoadingSpinner size="xl" />
       </div>
     );
   }

@@ -14,6 +14,7 @@ import {
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import TaskCreator from "./TaskCreator";
 import { toast } from "react-toastify";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 const TaskManager = () => {
   const { user } = useFirebaseAuth();
@@ -141,7 +142,7 @@ const TaskManager = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <LoadingSpinner size="lg" />
         <span className="ml-3 text-gray-600 dark:text-gray-300">
           Načítám úlohy...
         </span>

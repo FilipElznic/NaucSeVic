@@ -24,6 +24,7 @@ import { cloudFunctionsService } from "../services/cloudFunctions";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import { userService } from "../services/userService";
 import { toast } from "react-toastify";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const AllTasks = () => {
   const { user } = useFirebaseAuth();
@@ -500,7 +501,7 @@ const AllTasks = () => {
         {/* Tasks Grid */}
         {loading ? (
           <div className="flex justify-center items-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            <LoadingSpinner size="lg" />
           </div>
         ) : (
           <>

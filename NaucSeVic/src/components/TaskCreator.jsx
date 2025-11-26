@@ -4,6 +4,7 @@ import { cloudFunctionsService } from "../services/cloudFunctions";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import { useAdminCheck } from "../hooks/useAdminCheck";
 import { toast } from "react-toastify";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 const TaskCreator = ({ onTaskCreated, onClose }) => {
   const { user } = useFirebaseAuth();
@@ -745,7 +746,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
               >
                 {loading ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                    <LoadingSpinner size="sm" className="border-white mr-3" />
                     Vytvářím...
                   </>
                 ) : (

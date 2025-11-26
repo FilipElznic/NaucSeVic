@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import LoadingSpinner from "./ui/LoadingSpinner";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useFirebaseAuth();
@@ -10,7 +11,9 @@ const ProtectedRoute = ({ children }) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <div className="flex justify-center mb-4">
+            <LoadingSpinner size="lg" />
+          </div>
           <p className="text-gray-600 dark:text-zinc-400">Načítání...</p>
         </div>
       </div>

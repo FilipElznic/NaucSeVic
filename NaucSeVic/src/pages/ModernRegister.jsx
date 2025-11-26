@@ -23,6 +23,7 @@ import { gsap } from "gsap";
 import FloatingOrbs from "../components/ui/FloatingOrbs";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
 
 const ModernRegister = () => {
   const [formData, setFormData] = useState({
@@ -583,7 +584,7 @@ const ModernRegister = () => {
               className="w-full flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             >
               {isLoading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <LoadingSpinner size="sm" className="border-white" />
               ) : (
                 <>
                   Vytvořit účet
