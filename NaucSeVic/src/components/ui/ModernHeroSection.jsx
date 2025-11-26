@@ -1,10 +1,11 @@
-import LaserFlow from "./LaserFlow";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
-
-import MagicBento from "./MagicBento";
 import Navbar from "./Navbar";
+import LoadingSpinner from "./LoadingSpinner";
+
+const LaserFlow = lazy(() => import("./LaserFlow"));
+const MagicBento = lazy(() => import("./MagicBento"));
 
 // NOTE: You can also adjust the variables in the shader for super detailed customization
 
@@ -16,15 +17,41 @@ import Navbar from "./Navbar";
 // Image Example Interactive Reveal Effect
 function ModernHeroSection() {
   const revealImgRef = useRef(null);
+  const containerRef = useRef(null);
+  const rectRef = useRef(null);
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const update = () => setIsMobile(window.innerWidth <= 600);
+    const update = () => {
+      setIsMobile(window.innerWidth <= 600);
+      if (containerRef.current) {
+        rectRef.current = containerRef.current.getBoundingClientRect();
+      }
+    };
     update();
     window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    window.addEventListener("scroll", update); // Update on scroll as position might change
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update);
+    };
   }, []);
+
+  const handleMouseMove = (e) => {
+    if (!rectRef.current) return;
+
+    const x = e.clientX - rectRef.current.left;
+    const y = e.clientY - rectRef.current.top;
+    const el = revealImgRef.current;
+
+    if (el) {
+      requestAnimationFrame(() => {
+        el.style.setProperty("--mx", `${x}px`);
+        el.style.setProperty("--my", `${y + rectRef.current.height * 0.5}px`);
+      });
+    }
+  };
 
   return (
     <>
@@ -65,20 +92,12 @@ function ModernHeroSection() {
         </div>
       ) : (
         <div
+          ref={containerRef}
           className="relative overflow-hidden bg-white dark:bg-black"
           style={{
             height: "1500px",
           }}
-          onMouseMove={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const el = revealImgRef.current;
-            if (el) {
-              el.style.setProperty("--mx", `${x}px`);
-              el.style.setProperty("--my", `${y + rect.height * 0.5}px`);
-            }
-          }}
+          onMouseMove={handleMouseMove}
           onMouseLeave={() => {
             const el = revealImgRef.current;
             if (el) {
@@ -87,12 +106,18 @@ function ModernHeroSection() {
             }
           }}
         >
-          <LaserFlow
-            horizontalBeamOffset={0.2}
-            verticalBeamOffset={0}
-            color="#6e82d4"
-            horizontalSizing={0.25}
-          />
+          <Suspense
+            fallback={
+              <div className="absolute inset-0 bg-gray-50 dark:bg-black" />
+            }
+          >
+            <LaserFlow
+              horizontalBeamOffset={0.2}
+              verticalBeamOffset={0}
+              color="#6e82d4"
+              horizontalSizing={0.25}
+            />
+          </Suspense>
 
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[70vw] h-[80vh] bg-gray-50 dark:bg-black flex justify-center text-white text-2xl z-[6] overflow-hidden  rounded-lg">
             {/* Border with fade effect */}
@@ -107,18 +132,26 @@ function ModernHeroSection() {
             ></div>
             {/* Content fade overlay */}
             <div className="absolute inset-x-0 bottom-0 h-[60vh] bg-gradient-to-t from-white dark:from-black to-transparent pointer-events-none z-10"></div>
-            <MagicBento
-              textAutoHide={true}
-              enableStars={true}
-              enableSpotlight={true}
-              enableBorderGlow={true}
-              enableTilt={true}
-              enableMagnetism={true}
-              clickEffect={true}
-              spotlightRadius={300}
-              particleCount={12}
-              glowColor="132, 0, 255"
-            />
+            <Suspense
+              fallback={
+                <div className="w-full h-full flex items-center justify-center">
+                  <LoadingSpinner size="lg" />
+                </div>
+              }
+            >
+              <MagicBento
+                textAutoHide={true}
+                enableStars={true}
+                enableSpotlight={true}
+                enableBorderGlow={true}
+                enableTilt={true}
+                enableMagnetism={true}
+                clickEffect={true}
+                spotlightRadius={300}
+                particleCount={12}
+                glowColor="132, 0, 255"
+              />
+            </Suspense>
           </div>
 
           <div className="absolute z-10 top-28 sm:top-36 md:top-40 lg:top-52 left-0 right-0 px-4 sm:px-8 md:px-12 lg:left-44 lg:right-auto lg:px-16 text-left">
@@ -156,6 +189,8 @@ function ModernHeroSection() {
             ref={revealImgRef}
             src="/test.webp"
             alt="Reveal effect"
+            fetchPriority="high"
+            loading="eager"
             style={{
               position: "absolute",
               width: "100%",

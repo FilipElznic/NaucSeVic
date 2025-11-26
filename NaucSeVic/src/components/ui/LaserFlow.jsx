@@ -376,9 +376,7 @@ export const LaserFlow = ({
     const mouseTarget = new THREE.Vector2(0, 0);
     const mouseSmooth = new THREE.Vector2(0, 0);
 
-    const setSizeNow = () => {
-      const w = mount.clientWidth || 1;
-      const h = mount.clientHeight || 1;
+    const updateSize = (w, h) => {
       const pr = currentDprRef.current;
 
       const last = lastSizeRef.current;
@@ -393,6 +391,10 @@ export const LaserFlow = ({
       renderer.setPixelRatio(pr);
       renderer.setSize(w, h, false);
       uniforms.iResolution.value.set(w * pr, h * pr, pr);
+
+      // Optimization: Delay getBoundingClientRect to avoid immediate forced reflow after setSize
+      // or use the values we already have if possible.
+      // For now, we keep it but it might still cause a small reflow if layout is dirty.
       rectRef.current = canvas.getBoundingClientRect();
 
       if (!pausedRef.current) {
@@ -401,23 +403,38 @@ export const LaserFlow = ({
     };
 
     let resizeRaf = 0;
-    const scheduleResize = () => {
+    const onResize = (entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+
+      // Use contentBoxSize if available for better precision and to avoid reading DOM
+      let width, height;
+      if (entry.contentBoxSize) {
+        // contentBoxSize can be an array
+        const contentBoxSize = Array.isArray(entry.contentBoxSize)
+          ? entry.contentBoxSize[0]
+          : entry.contentBoxSize;
+        width = contentBoxSize.inlineSize;
+        height = contentBoxSize.blockSize;
+      } else {
+        width = entry.contentRect.width;
+        height = entry.contentRect.height;
+      }
+
       if (resizeRaf) cancelAnimationFrame(resizeRaf);
-      resizeRaf = requestAnimationFrame(setSizeNow);
+      resizeRaf = requestAnimationFrame(() => updateSize(width, height));
     };
 
-    // Initial size calculation with delayed retry for StrictMode/async rendering
+    // Initial size calculation
     const initSize = () => {
-      setSizeNow();
-      // Retry after 100ms to ensure dimensions are set (handles StrictMode double-mount)
-      setTimeout(() => {
-        setSizeNow();
-      }, 100);
+      if (!mount) return;
+      const rect = mount.getBoundingClientRect();
+      updateSize(rect.width, rect.height);
     };
 
     requestAnimationFrame(initSize);
 
-    const ro = new ResizeObserver(scheduleResize);
+    const ro = new ResizeObserver(onResize);
     ro.observe(mount);
     const io = new IntersectionObserver(
       (entries) => {
