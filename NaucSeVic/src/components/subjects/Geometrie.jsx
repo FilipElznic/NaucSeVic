@@ -14,6 +14,7 @@ const Geometrie = () => {
 
       <GeometryTimeline />
       <GeometryTeacher />
+
       <div className="bg-white z-10">
         <GeometrySimulation />
         <GeometryGallery />

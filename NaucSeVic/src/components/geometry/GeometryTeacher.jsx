@@ -1,6 +1,9 @@
 import ucitel from "/ucitel.png";
+import { useNavigate } from "react-router-dom";
 
 const GeometryTeacher = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="relative w-full py-32 dark:bg-black bg-white z-50">
       <div className="container mx-auto px-6">
@@ -26,10 +29,16 @@ const GeometryTeacher = () => {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-lime-600 to-green-600 dark:from-purple-600 dark:to-violet-600 text-white font-semibold shadow-lg shadow-green-500/25 dark:shadow-purple-500/25 hover:shadow-green-500/40 dark:hover:shadow-purple-500/40 transform hover:-translate-y-1 transition duration-300">
-                Zjistit více
+              <button
+                onClick={() => navigate("/geometrie-kurz")}
+                className="px-8 py-4 rounded-xl bg-gradient-to-r from-lime-600 to-green-600 dark:from-purple-600 dark:to-violet-600 text-white font-semibold shadow-lg shadow-green-500/25 dark:shadow-purple-500/25 hover:shadow-green-500/40 dark:hover:shadow-purple-500/40 transform hover:-translate-y-1 transition duration-300"
+              >
+                Začít kurz
               </button>
-              <button className="px-8 py-4 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white font-semibold hover:bg-slate-50 dark:hover:bg-white/5 transition duration-300">
+              <button
+                onClick={() => navigate("/geometrie-kurz")}
+                className="px-8 py-4 rounded-xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white font-semibold hover:bg-slate-50 dark:hover:bg-white/5 transition duration-300"
+              >
                 Ukázková lekce
               </button>
             </div>
