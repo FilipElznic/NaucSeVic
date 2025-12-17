@@ -3,7 +3,7 @@ import { db } from "../config/firebase";
 
 export const getGeometricBodies = async () => {
   try {
-    const q = query(collection(db, "geometricBodies"), orderBy("order", "asc"));
+    const q = query(collection(db, "geometricBodies"));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,

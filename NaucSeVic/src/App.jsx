@@ -30,6 +30,7 @@ const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TaskCreator = lazy(() => import("./components/TaskCreator"));
 const AdminGeometryManager = lazy(() => import("./pages/AdminGeometryManager"));
 const GeometryCoursePage = lazy(() => import("./pages/GeometryCoursePage"));
+const SimulationsPage = lazy(() => import("./pages/SimulationsPage"));
 const Matematika = lazy(() => import("./components/subjects/Matematika"));
 const Geometrie = lazy(() => import("./components/subjects/Geometrie"));
 const Fyzika = lazy(() => import("./components/subjects/Fyzika"));
@@ -108,6 +109,18 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 <GeometryCoursePage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Simulations Page */}
+          <Route
+            path="/simulace"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SimulationsPage />
+                </Layout>
               </ProtectedRoute>
             }
           />

@@ -1,7 +1,63 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getGeometricBodies } from "../../services/geometryService";
 import Spline from "@splinetool/react-spline";
-import { Box, Circle, Cuboid, Triangle, Cylinder, Pyramid } from "lucide-react";
+import {
+  Box,
+  Circle,
+  Cuboid,
+  Triangle,
+  Cylinder,
+  Pyramid,
+  ImageOff,
+} from "lucide-react";
+import { data } from "react-router-dom";
+
+const BodyImage = ({ src, alt }) => {
+  const [error, setError] = useState(false);
+
+  if (error || !src) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 bg-slate-50 dark:bg-slate-800/50">
+        <ImageOff size={24} className="mb-2 opacity-50" />
+        <span className="text-xs font-medium">Obrázek nedostupný</span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="w-full h-full object-contain p-4"
+      onError={() => setError(true)}
+    />
+  );
+};
+
+const KatexFormula = ({ formula }) => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (containerRef.current && window.katex) {
+      try {
+        window.katex.render(formula, containerRef.current, {
+          throwOnError: false,
+          displayMode: false,
+        });
+      } catch (e) {
+        console.error("KaTeX error:", e);
+        containerRef.current.innerText = formula;
+      }
+    }
+  }, [formula]);
+
+  return (
+    <span
+      ref={containerRef}
+      className="text-sm font-bold text-green-600 dark:text-purple-400"
+    />
+  );
+};
 
 const GeometryGallery = () => {
   const [bodies, setBodies] = useState([]);
@@ -14,6 +70,7 @@ const GeometryGallery = () => {
       setBodies(data);
     };
     fetchBodies();
+    console.log(data);
   }, []);
 
   const filteredBodies = bodies.filter((body) => {
@@ -89,17 +146,7 @@ const GeometryGallery = () => {
                     </div>
                   ) : (
                     <>
-                      {body.assets?.image_url ? (
-                        <img
-                          src={body.assets.image_url}
-                          alt={body.name}
-                          className="w-full h-full object-contain p-4"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400">
-                          No Image
-                        </div>
-                      )}
+                      <BodyImage src={body.assets?.image_url} alt={body.name} />
 
                       {body.assets?.spline_url && (
                         <button
@@ -142,9 +189,9 @@ const GeometryGallery = () => {
                         <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                           {formula.name}
                         </span>
-                        <code className="text-sm font-mono font-bold text-green-600 dark:text-purple-400 bg-green-50 dark:bg-purple-900/20 px-2 py-1 rounded">
-                          {formula.formula}
-                        </code>
+                        <div className="bg-green-50 dark:bg-purple-900/20 px-3 py-1 rounded">
+                          <KatexFormula formula={formula.formula} />
+                        </div>
                       </div>
                     ))}
                 </div>

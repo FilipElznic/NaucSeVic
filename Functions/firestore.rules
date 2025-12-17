@@ -74,16 +74,16 @@ service cloud.firestore {
     match /adminData/{document=**} {
       allow read, write: if isAdmin();
     }
-    
-    // Default deny all other collections
-    match /{document=**} {
-      allow read, write: if false;
-    }
-    
+
     // Geometric Bodies collection
     match /geometricBodies/{bodyId} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+    
+    // Default deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

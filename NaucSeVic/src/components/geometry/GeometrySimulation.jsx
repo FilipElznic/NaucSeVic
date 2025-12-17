@@ -1,9 +1,17 @@
 import { useState, useMemo, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { GraduationCap, Shapes, TrendingUp, Plus, Minus } from "lucide-react";
+import {
+  GraduationCap,
+  Shapes,
+  TrendingUp,
+  Plus,
+  Minus,
+  ArrowRight,
+} from "lucide-react";
 import * as THREE from "three";
 import { useDarkMode } from "../../contexts/DarkModeContext";
+import { Link } from "react-router-dom";
 
 const PolygonModel = ({ sides, isDarkMode }) => {
   const meshRef = useRef();
@@ -103,6 +111,16 @@ const GeometrySimulation = () => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div className="pt-2">
+              <Link
+                to="/simulace"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 dark:from-purple-600 dark:to-violet-600 text-white font-bold shadow-lg shadow-green-500/25 dark:shadow-purple-500/25 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                Vstoupit do laboratoře
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </div>
           </div>
 
