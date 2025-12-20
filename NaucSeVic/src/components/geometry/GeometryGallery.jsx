@@ -94,14 +94,14 @@ const GeometryGallery = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row lg:h-[calc(100vh-180px)] bg-white dark:bg-black rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl">
+    <div className="flex flex-col lg:flex-row lg:min-h-[85vh] bg-white dark:bg-black rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl">
       {/* Left Sidebar - Navigation */}
       <div className="w-full lg:w-72 flex-shrink-0 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/20 flex flex-col">
         <div className="p-4 lg:p-6 h-full flex flex-col">
           <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 hidden lg:block">
             Knihovna těles
           </h2>
-          <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto no-scrollbar pb-2 lg:pb-0">
+          <div className="flex lg:flex-col gap-2 overflow-x-auto no-scrollbar pb-2 lg:pb-0">
             {bodies.map((body) => (
               <button
                 key={body.id}
@@ -200,7 +200,7 @@ const GeometryGallery = () => {
             </div>
 
             {/* Right Sidebar - Info Panel */}
-            <div className="w-full lg:w-[400px] bg-white dark:bg-black border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 flex flex-col h-auto lg:h-full overflow-y-auto custom-scrollbar">
+            <div className="w-full lg:w-[400px] bg-white dark:bg-black border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 flex flex-col h-auto lg:h-full custom-scrollbar">
               <div className="p-6 lg:p-8 space-y-8">
                 <div>
                   <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4">

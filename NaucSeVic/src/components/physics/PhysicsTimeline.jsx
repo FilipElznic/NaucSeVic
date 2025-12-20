@@ -48,11 +48,11 @@ const PhysicsTimeline = () => {
   return (
     <div className="relative min-h-[140vh] w-full flex-col bg-gradient-to-b from-transparent via-white/80 to-white dark:bg-gradient-to-b dark:from-transparent dark:via-slate-900/80 dark:to-black z-50 flex items-center justify-center px-6 py-24 overflow-hidden">
       <div className="text-center space-y-6 mb-20">
-        <p className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-300/70">
+        <div className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-300/70">
           <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/60 to-white"></span>
           <p className=" text-white">Harmonogram misí</p>
           <span className="h-px w-12 bg-gradient-to-l from-transparent via-white/60 to-white"></span>
-        </p>
+        </div>
         <h1 className="text-4xl md:text-6xl font-semibold  text-white drop-shadow-[0_5px_45px_rgba(59,130,246,0.35)]">
           Vnímejte časovou osu fyzikálních průlomů
         </h1>
