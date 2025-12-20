@@ -115,7 +115,7 @@ const AppRoutes = () => {
 
           {/* Simulations Page */}
           <Route
-            path="/simulace"
+            path="/geometric-simulations"
             element={
               <ProtectedRoute>
                 <Layout>

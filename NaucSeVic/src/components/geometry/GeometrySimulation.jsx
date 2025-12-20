@@ -115,7 +115,7 @@ const GeometrySimulation = () => {
 
             <div className="pt-2">
               <Link
-                to="/simulace"
+                to="/geometric-simulations"
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 dark:from-purple-600 dark:to-violet-600 text-white font-bold shadow-lg shadow-green-500/25 dark:shadow-purple-500/25 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 Vstoupit do laboratoře
