@@ -32,6 +32,14 @@ const AdminGeometryManager = lazy(() => import("./pages/AdminGeometryManager"));
 const GeometryCoursePage = lazy(() => import("./pages/GeometryCoursePage"));
 const SimulationsPage = lazy(() => import("./pages/SimulationsPage"));
 const Matematika = lazy(() => import("./components/subjects/Matematika"));
+const MatematikaLevels = lazy(() => import("./pages/MatematikaLevels"));
+const MatematikaZSSelection = lazy(() =>
+  import("./pages/MatematikaZSSelection")
+);
+const MatematikaZS1 = lazy(() => import("./components/math/MatematikaZS1"));
+const MatematikaZS2 = lazy(() => import("./components/math/MatematikaZS2"));
+const MatematikaSS = lazy(() => import("./components/math/MatematikaSS"));
+const MatematikaVS = lazy(() => import("./components/math/MatematikaVS"));
 const Geometrie = lazy(() => import("./components/subjects/Geometrie"));
 const Fyzika = lazy(() => import("./components/subjects/Fyzika"));
 
@@ -144,6 +152,66 @@ const AppRoutes = () => {
               <ProtectedRoute>
                 <Layout>
                   <Matematika />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/predmety/matematika/levels"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MatematikaLevels />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/predmety/matematika/zs"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MatematikaZSSelection />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/predmety/matematika/zs/1-stupen"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MatematikaZS1 />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/predmety/matematika/zs/2-stupen"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MatematikaZS2 />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/predmety/matematika/ss"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MatematikaSS />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/predmety/matematika/vs"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <MatematikaVS />
                 </Layout>
               </ProtectedRoute>
             }

@@ -53,6 +53,18 @@ const Predmety = () => {
       students: "3.2k+",
       duration: "36 hodin",
     },
+    {
+      id: "matematika",
+      title: "Matematika",
+      description: "Studium matematických konceptů a řešení problémů",
+      icon: Calculator,
+      color: "#3B82F6",
+      gradient: "from-blue-500 to-cyan-500",
+      tags: ["Algebra", "Analýza"],
+      chapters: 10,
+      students: "1.8k+",
+      duration: "20 hodin",
+    },
   ];
 
   const filteredSubjects = subjects.filter(

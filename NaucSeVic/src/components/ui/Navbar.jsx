@@ -83,6 +83,11 @@ const Navbar = () => {
       href: "/predmety/fyzika",
       description: "Mechanika, elektřina, optika",
     },
+    {
+      name: "Matematika",
+      href: "/predmety/matematika",
+      description: "Algebra, analýza, rovnice",
+    },
   ];
 
   // Legal/public navigation items
