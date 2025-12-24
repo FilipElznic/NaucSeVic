@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const GeometryButton = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="relative z-10 inline-block mt-24">
@@ -141,6 +143,7 @@ const GeometryButton = () => {
 
       {/* Main button */}
       <button
+        onClick={() => navigate("/predmety/geometrie/levels")}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         className="relative group px-20 py-7 dark:bg-black bg-white border-2 border-green-500/50 dark:border-purple-500/50 
