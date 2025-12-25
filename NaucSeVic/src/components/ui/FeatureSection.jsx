@@ -1,7 +1,7 @@
 import CardSwap, { Card } from "./CardLanding";
 import { useEffect, useState } from "react";
 import { Brain, Zap, Target } from "lucide-react";
-import StarBorder from "./StarBorder/StarBorder";
+import StarBorder from "./StarBorder";
 
 const FeatureSection = () => {
   const [isMobile, setIsMobile] = useState(false);

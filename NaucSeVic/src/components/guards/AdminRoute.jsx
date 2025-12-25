@@ -1,8 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { Shield, AlertCircle } from "lucide-react";
-import { useAdminCheck } from "../hooks/useAdminCheck";
-import LoadingSpinner from "./ui/LoadingSpinner";
+import { useAdminCheck } from "../../hooks/useAdminCheck";
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 /**
  * AdminRoute component - protects routes that require admin privileges

@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
-import LoadingSpinner from "./ui/LoadingSpinner";
+import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useFirebaseAuth();

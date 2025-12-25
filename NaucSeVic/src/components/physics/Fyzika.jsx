@@ -1,8 +1,8 @@
 import Hero from "../ui/FyzikaBackground";
-import PhysicsTimeline from "../physics/PhysicsTimeline";
-import PhysicsTeacher from "../physics/PhysicsTeacher";
-import PhysicsSimulation from "../physics/PhysicsSimulation";
-import PhysicsButton from "../physics/PhysicsButton";
+import PhysicsTimeline from "./PhysicsTimeline";
+import PhysicsTeacher from "./PhysicsTeacher";
+import PhysicsSimulation from "./PhysicsSimulation";
+import PhysicsButton from "./PhysicsButton";
 
 const Fyzika = () => {
   return (

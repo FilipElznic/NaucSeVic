@@ -1,9 +1,9 @@
-import LandingPage from "../geometry/LandingPage";
-import GeometryTimeline from "../geometry/GeometryTimeline";
-import GeometryTeacher from "../geometry/GeometryTeacher";
-import GeometrySimulation from "../geometry/GeometrySimulation";
+import LandingPage from "./LandingPage";
+import GeometryTimeline from "./GeometryTimeline";
+import GeometryTeacher from "./GeometryTeacher";
+import GeometrySimulation from "./GeometrySimulation";
 
-import GeometryButton from "../geometry/GeometryButton";
+import GeometryButton from "./GeometryButton";
 
 const Geometrie = () => {
   return (

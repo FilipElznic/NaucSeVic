@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { cloudFunctionsService } from "../services/cloudFunctions";
-import geometryData from "../data/geometryData.json";
+import { cloudFunctionsService } from "../../services/cloudFunctions";
+import geometryData from "../../data/geometryData.json";
 import { toast } from "react-toastify";
 import { Upload, Check, AlertTriangle } from "lucide-react";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 const AdminGeometryManager = () => {
   const [loading, setLoading] = useState(false);

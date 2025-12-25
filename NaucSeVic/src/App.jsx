@@ -12,15 +12,15 @@ import {
   FirebaseAuthProvider,
   useFirebaseAuth,
 } from "./contexts/FirebaseAuthContext";
-import Layout from "./components/Layout";
-import ProtectedRoute from "./components/ProtectedRoute";
-import AdminRoute from "./components/AdminRoute";
+import Layout from "./components/layout/Layout";
+import ProtectedRoute from "./components/guards/ProtectedRoute";
+import AdminRoute from "./components/guards/AdminRoute";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import LandingPage from "./pages/LandingPage";
 
 // Lazy load pages for better performance
-const ModernLogin = lazy(() => import("./pages/ModernLogin"));
-const ModernRegister = lazy(() => import("./pages/ModernRegister"));
+const ModernLogin = lazy(() => import("./pages/auth/ModernLogin"));
+const ModernRegister = lazy(() => import("./pages/auth/ModernRegister"));
 const Predmety = lazy(() => import("./pages/Predmety"));
 const AllTasks = lazy(() => import("./pages/AllTasks"));
 const Demo = lazy(() => import("./pages/Demo"));
@@ -28,28 +28,36 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TaskCreator = lazy(() => import("./components/TaskCreator"));
-const AdminGeometryManager = lazy(() => import("./pages/AdminGeometryManager"));
-const GeometryCoursePage = lazy(() => import("./pages/GeometryCoursePage"));
-const SimulationsPage = lazy(() => import("./pages/SimulationsPage"));
-const Matematika = lazy(() => import("./components/subjects/Matematika"));
-const MatematikaLevels = lazy(() => import("./pages/MatematikaLevels"));
+const AdminGeometryManager = lazy(() =>
+  import("./pages/geometry/AdminGeometryManager")
+);
+const GeometryCoursePage = lazy(() =>
+  import("./pages/geometry/GeometryCoursePage")
+);
+const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
+const Matematika = lazy(() => import("./components/math/Matematika"));
+const MatematikaLevels = lazy(() => import("./pages/math/MatematikaLevels"));
 const MatematikaZSSelection = lazy(() =>
-  import("./pages/MatematikaZSSelection")
+  import("./pages/math/MatematikaZSSelection")
 );
 const MatematikaZS1 = lazy(() => import("./components/math/MatematikaZS1"));
 const MatematikaZS2 = lazy(() => import("./components/math/MatematikaZS2"));
 const MatematikaSS = lazy(() => import("./components/math/MatematikaSS"));
 const MatematikaVS = lazy(() => import("./components/math/MatematikaVS"));
-const Geometrie = lazy(() => import("./components/subjects/Geometrie"));
-const Fyzika = lazy(() => import("./components/subjects/Fyzika"));
-const FyzikaLevels = lazy(() => import("./pages/FyzikaLevels"));
-const FyzikaZSSelection = lazy(() => import("./pages/FyzikaZSSelection"));
+const Geometrie = lazy(() => import("./components/geometry/Geometrie"));
+const Fyzika = lazy(() => import("./components/physics/Fyzika"));
+const FyzikaLevels = lazy(() => import("./pages/physics/FyzikaLevels"));
+const FyzikaZSSelection = lazy(() =>
+  import("./pages/physics/FyzikaZSSelection")
+);
 const FyzikaZS1 = lazy(() => import("./components/physics/FyzikaZS1"));
 const FyzikaZS2 = lazy(() => import("./components/physics/FyzikaZS2"));
 const FyzikaSS = lazy(() => import("./components/physics/FyzikaSS"));
 const FyzikaVS = lazy(() => import("./components/physics/FyzikaVS"));
-const GeometrieLevels = lazy(() => import("./pages/GeometrieLevels"));
-const GeometrieZSSelection = lazy(() => import("./pages/GeometrieZSSelection"));
+const GeometrieLevels = lazy(() => import("./pages/geometry/GeometrieLevels"));
+const GeometrieZSSelection = lazy(() =>
+  import("./pages/geometry/GeometrieZSSelection")
+);
 const GeometrieZS1 = lazy(() => import("./components/geometry/GeometrieZS1"));
 const GeometrieZS2 = lazy(() => import("./components/geometry/GeometrieZS2"));
 const GeometrieSS = lazy(() => import("./components/geometry/GeometrieSS"));

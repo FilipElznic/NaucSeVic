@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import {
   GoogleAuthProvider,
   OAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth } from "../../config/firebase";
 import { toast, ToastContainer } from "react-toastify";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, BookOpen } from "lucide-react";
 import { gsap } from "gsap";
-import FloatingOrbs from "../components/ui/FloatingOrbs";
+import FloatingOrbs from "../../components/ui/FloatingOrbs";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 const ModernLogin = () => {
   const [email, setEmail] = useState("");

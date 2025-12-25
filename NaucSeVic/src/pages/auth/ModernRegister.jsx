@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import {
   GoogleAuthProvider,
   OAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../config/firebase";
-import { cloudFunctionsService } from "../services/cloudFunctions";
+import { auth } from "../../config/firebase";
+import { cloudFunctionsService } from "../../services/cloudFunctions";
 import { toast, ToastContainer } from "react-toastify";
 import {
   Eye,
@@ -20,10 +20,10 @@ import {
   Check,
 } from "lucide-react";
 import { gsap } from "gsap";
-import FloatingOrbs from "../components/ui/FloatingOrbs";
-import { useDarkMode } from "../contexts/DarkModeContext";
+import FloatingOrbs from "../../components/ui/FloatingOrbs";
+import { useDarkMode } from "../../contexts/DarkModeContext";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
 
 const ModernRegister = () => {
   const [formData, setFormData] = useState({

@@ -1,6 +1,6 @@
 import React from "react";
-import MatematikaHero from "../math/MatematikaHero";
-import MatematikaButton from "../math/MatematikaButton";
+import MatematikaHero from "./MatematikaHero";
+import MatematikaButton from "./MatematikaButton";
 
 const Matematika = () => {
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import GeometryGallery from "../components/geometry/GeometryGallery";
+import GeometryGallery from "../../components/geometry/GeometryGallery";
 
 const SimulationsPage = () => {
   return (
