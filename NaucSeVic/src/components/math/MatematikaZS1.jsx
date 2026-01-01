@@ -8,7 +8,7 @@ const MatematikaZS1 = () => {
           Matematika - 1. Stupeň ZŠ
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Obsah pro 1. stupeň bude brzy doplněn.
+          Obsah pro 1. stupeň základní školy bude brzy doplněn.
         </p>
       </div>
     </div>

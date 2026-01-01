@@ -1,47 +1,68 @@
-import LandingPage from "./LandingPage";
-import GeometryTimeline from "./GeometryTimeline";
-import GeometryTeacher from "./GeometryTeacher";
-import GeometrySimulation from "./GeometrySimulation";
-
-import GeometryButton from "./GeometryButton";
+import React from "react";
+import { Compass, School, GraduationCap } from "lucide-react";
+import GeometryBackground from "./GeometryBackground";
+import SubjectSelection from "../shared/SubjectSelection";
 
 const Geometrie = () => {
+  const levels = [
+    {
+      id: "zakladni",
+      title: "Základní škola",
+      level: "Začátečník",
+      description:
+        "Poznáváme tvary kolem nás. Čtverec, trojúhelník, kruh. Měříme, rýsujeme a počítáme obvody a obsahy.",
+      icon: School,
+      color: "green",
+      topics: [
+        "Základní útvary",
+        "Měření a rýsování",
+        "Obvody a obsahy",
+        "Tělesa a jejich sítě",
+      ],
+      path: "/predmety/geometrie/zs",
+    },
+    {
+      id: "stredni",
+      title: "Střední škola",
+      level: "Pokročilý",
+      description:
+        "Analytická geometrie, kuželosečky a trigonometrie. Propojujeme algebru s geometrií.",
+      icon: Compass,
+      color: "blue",
+      topics: [
+        "Analytická geometrie",
+        "Trigonometrie",
+        "Kuželosečky",
+        "Vektory",
+      ],
+      path: "/predmety/geometrie/ss",
+    },
+    {
+      id: "vysoka",
+      title: "Vysoká škola",
+      level: "Expert",
+      description:
+        "Diferenciální geometrie, topologie a neeukleidovské geometrie. Abstraktní pohled na prostor.",
+      icon: GraduationCap,
+      color: "purple",
+      topics: [
+        "Lineární algebra",
+        "Diferenciální geometrie",
+        "Topologie",
+        "Neeukleidovská geometrie",
+      ],
+      path: "/predmety/geometrie/vs",
+    },
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="h-full w-full overflow-hidden flex flex-col relative justify-center">
-        <LandingPage />
-      </div>
-
-      <GeometryTimeline />
-      <GeometryTeacher />
-
-      <div className="bg-white z-10">
-        <GeometrySimulation />
-      </div>
-
-      <div className="dark:bg-black bg-white min-h-screen relative w-full z-10 flex justify-center px-6 py-24 overflow-hidden">
-        <div className="container mx-auto px-6 text-center">
-          <div className="text-center space-y-6 mb-20">
-            <div className="inline-flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-slate-300/70">
-              <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/60 to-white"></span>
-              <p className="text-black dark:text-white/70">Začněte hned teď</p>
-              <span className="h-px w-12 bg-gradient-to-l from-transparent via-white/60 to-white"></span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-semibold text-white drop-shadow-[0_5px_45px_rgba(59,130,246,0.35)]">
-              <p className="text-black dark:text-white/70">
-                Vaše cesta k poznání začíná zde
-              </p>
-            </h1>
-            <p className="text-base md:text-lg text-black/70 dark:text-white/70 max-w-3xl mx-auto">
-              Připojte se k nám a objevte fascinující svět geometrie. Žádné
-              biflování, jen čisté pochopení a zábava. Stačí jeden klik.
-            </p>
-          </div>
-
-          <GeometryButton />
-        </div>
-      </div>
-    </div>
+    <SubjectSelection
+      title="Vyberte si úroveň studia"
+      description="Zvolte si obtížnost, která odpovídá vašim znalostem a cílům. Od základů až po pokročilé koncepty."
+      levels={levels}
+      BackgroundComponent={GeometryBackground}
+      subjectTheme="pink"
+    />
   );
 };
 

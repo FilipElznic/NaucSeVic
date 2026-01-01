@@ -68,24 +68,27 @@ function Geometries() {
   );
 }
 
-export default function GeometryBackground() {
+export default function GeometryBackground({ children }) {
   const { darkMode } = useDarkMode();
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none">
-      <Canvas gl={{ antialias: true, alpha: true }}>
-        <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <Geometries />
-      </Canvas>
-      <div
-        className={`absolute inset-0 bg-gradient-to-t ${
-          darkMode
-            ? "from-black/80 via-transparent to-black/40"
-            : "from-white/80 via-transparent to-white/40"
-        }`}
-      />
+    <div className="relative min-h-screen w-full overflow-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Canvas gl={{ antialias: true, alpha: true }}>
+          <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={1} />
+          <Geometries />
+        </Canvas>
+        <div
+          className={`absolute inset-0 bg-gradient-to-t ${
+            darkMode
+              ? "from-black/80 via-transparent to-black/40"
+              : "from-white/80 via-transparent to-white/40"
+          }`}
+        />
+      </div>
+      <div className="relative z-10 w-full h-full">{children}</div>
     </div>
   );
 }

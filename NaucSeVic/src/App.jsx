@@ -31,37 +31,11 @@ const TaskCreator = lazy(() => import("./components/TaskCreator"));
 const AdminGeometryManager = lazy(() =>
   import("./pages/geometry/AdminGeometryManager")
 );
-const GeometryCoursePage = lazy(() =>
-  import("./pages/geometry/GeometryCoursePage")
-);
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
-const Matematika = lazy(() => import("./components/math/Matematika"));
-const MatematikaLevels = lazy(() => import("./pages/math/MatematikaLevels"));
-const MatematikaZSSelection = lazy(() =>
-  import("./pages/math/MatematikaZSSelection")
+
+const UniversalSubjectLayout = lazy(() =>
+  import("./components/layout/UniversalSubjectLayout")
 );
-const MatematikaZS1 = lazy(() => import("./components/math/MatematikaZS1"));
-const MatematikaZS2 = lazy(() => import("./components/math/MatematikaZS2"));
-const MatematikaSS = lazy(() => import("./components/math/MatematikaSS"));
-const MatematikaVS = lazy(() => import("./components/math/MatematikaVS"));
-const Geometrie = lazy(() => import("./components/geometry/Geometrie"));
-const Fyzika = lazy(() => import("./components/physics/Fyzika"));
-const FyzikaLevels = lazy(() => import("./pages/physics/FyzikaLevels"));
-const FyzikaZSSelection = lazy(() =>
-  import("./pages/physics/FyzikaZSSelection")
-);
-const FyzikaZS1 = lazy(() => import("./components/physics/FyzikaZS1"));
-const FyzikaZS2 = lazy(() => import("./components/physics/FyzikaZS2"));
-const FyzikaSS = lazy(() => import("./components/physics/FyzikaSS"));
-const FyzikaVS = lazy(() => import("./components/physics/FyzikaVS"));
-const GeometrieLevels = lazy(() => import("./pages/geometry/GeometrieLevels"));
-const GeometrieZSSelection = lazy(() =>
-  import("./pages/geometry/GeometrieZSSelection")
-);
-const GeometrieZS1 = lazy(() => import("./components/geometry/GeometrieZS1"));
-const GeometrieZS2 = lazy(() => import("./components/geometry/GeometrieZS2"));
-const GeometrieSS = lazy(() => import("./components/geometry/GeometrieSS"));
-const GeometrieVS = lazy(() => import("./components/geometry/GeometrieVS"));
 
 // Protected Route component is now imported from components
 
@@ -131,16 +105,6 @@ const AppRoutes = () => {
             }
           />
 
-          {/* Geometry Course */}
-          <Route
-            path="/geometrie-kurz"
-            element={
-              <ProtectedRoute>
-                <GeometryCoursePage />
-              </ProtectedRoute>
-            }
-          />
-
           {/* Simulations Page */}
           <Route
             path="/geometric-simulations"
@@ -159,219 +123,39 @@ const AppRoutes = () => {
             element={
               <ProtectedRoute>
                 <Layout>
-                  <Predmety />
+                  <UniversalSubjectLayout />
                 </Layout>
               </ProtectedRoute>
             }
           />
 
-          {/* Individual Subjects */}
+          {/* Universal Subject Routes */}
           <Route
-            path="/predmety/matematika"
+            path="/predmety/:subjectId"
             element={
               <ProtectedRoute>
                 <Layout>
-                  <Matematika />
+                  <UniversalSubjectLayout />
                 </Layout>
               </ProtectedRoute>
             }
           />
           <Route
-            path="/predmety/matematika/levels"
+            path="/predmety/:subjectId/:levelId"
             element={
               <ProtectedRoute>
                 <Layout>
-                  <MatematikaLevels />
+                  <UniversalSubjectLayout />
                 </Layout>
               </ProtectedRoute>
             }
           />
           <Route
-            path="/predmety/matematika/zs"
+            path="/predmety/:subjectId/:levelId/:subLevelId"
             element={
               <ProtectedRoute>
                 <Layout>
-                  <MatematikaZSSelection />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/matematika/zs/1-stupen"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <MatematikaZS1 />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/matematika/zs/2-stupen"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <MatematikaZS2 />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/matematika/ss"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <MatematikaSS />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/matematika/vs"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <MatematikaVS />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/geometrie"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <Geometrie />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/geometrie/levels"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <GeometrieLevels />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/geometrie/zs"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <GeometrieZSSelection />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/geometrie/zs/1-stupen"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <GeometrieZS1 />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/geometrie/zs/2-stupen"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <GeometrieZS2 />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/geometrie/ss"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <GeometrieSS />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/geometrie/vs"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <GeometrieVS />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/fyzika"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <Fyzika />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/fyzika/levels"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <FyzikaLevels />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/fyzika/zs"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <FyzikaZSSelection />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/fyzika/zs/1-stupen"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <FyzikaZS1 />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/fyzika/zs/2-stupen"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <FyzikaZS2 />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/fyzika/ss"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <FyzikaSS />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/predmety/fyzika/vs"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <FyzikaVS />
+                  <UniversalSubjectLayout />
                 </Layout>
               </ProtectedRoute>
             }
