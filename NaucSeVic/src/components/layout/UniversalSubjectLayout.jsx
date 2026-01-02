@@ -20,16 +20,40 @@ const UniversalSubjectLayout = () => {
 
   // --- STATE MANAGEMENT ---
 
+  const activeSubjectId = subjectId || "matematika"; // Default for safety in content mode
+  const activeLevelId = levelId || "zs";
+
+  // --- DERIVED STATE & MEMOIZATION ---
+
+  // Get current subject config object
+  const activeSubject = useMemo(() => {
+    return subjectConfig[activeSubjectId] || subjectConfig.matematika;
+  }, [activeSubjectId]);
+
+  // Get current level config object
+  const activeLevelConfig = useMemo(() => {
+    return activeSubject.levelsData
+      ? activeSubject.levelsData[activeLevelId]
+      : null;
+  }, [activeSubject, activeLevelId]);
+
+  // Check if the current level has sub-levels (e.g. ZS -> 1. stupen, 2. stupen)
+  const hasSubLevels = activeLevelConfig?.subLevels ? true : false;
+
+  // MODES
   // If subjectId is undefined, we are in "Root Mode" (Subject Selection)
   const isRootMode = !subjectId;
 
   // If levelId is undefined, we are in "Level Selection Mode"
   const isLevelSelectionMode = subjectId && !levelId;
 
-  const activeSubjectId = subjectId || "matematika"; // Default for safety in content mode
-  const activeLevelId = levelId || "zs";
+  // If we have a level, and that level has sub-levels, but no sub-level is specified in URL
+  const isSubLevelSelectionMode =
+    subjectId && levelId && hasSubLevels && !subLevelId;
 
   // Parse subLevel from URL (e.g., "1-stupen" -> 1) or default to 1
+  // Note: This default is only used if we are in content mode (subLevelId is present)
+  // or if we need a fallback.
   const initialSubLevel = subLevelId === "2-stupen" ? 2 : 1;
   const [subLevel, setSubLevel] = useState(initialSubLevel);
 
@@ -40,20 +64,13 @@ const UniversalSubjectLayout = () => {
     else setSubLevel(1);
   }, [subLevelId]);
 
-  // --- DERIVED STATE & MEMOIZATION ---
-
-  // Get current subject config object
-  const activeSubject = useMemo(() => {
-    return subjectConfig[activeSubjectId] || subjectConfig.matematika;
-  }, [activeSubjectId]);
-
   // Resolve the icon component dynamically
   const IconComponent =
     LucideIcons[activeSubject.icon] || LucideIcons.HelpCircle;
 
-  // Determine if we should show the sub-level switcher (1. vs 2. stupen)
-  const showSubLevelSwitch =
-    activeLevelId === "zs" && activeSubject.hasSubLevels;
+  // Determine if we should show the sub-level switcher (1. vs 2. stupen) in the content view
+  // We show it if the level has sub-levels.
+  const showSubLevelSwitch = hasSubLevels;
 
   // Construct the key to look up special components
   const specialComponentKey = useMemo(() => {
@@ -213,6 +230,27 @@ const UniversalSubjectLayout = () => {
     );
   }
 
+  // --- SUB-LEVEL SELECTION MODE RENDER ---
+  if (isSubLevelSelectionMode) {
+    const subLevelsForSelection = Object.values(
+      activeLevelConfig.subLevels
+    ).map((sl) => ({
+      ...sl,
+      icon: LucideIcons[sl.icon] || LucideIcons.HelpCircle,
+      path: `/predmety/${activeSubjectId}/${activeLevelId}/${sl.pathSuffix}`,
+    }));
+
+    return (
+      <SubjectSelection
+        title={`Vyberte stupeň - ${activeLevelConfig.title}`}
+        description={activeLevelConfig.description}
+        levels={subLevelsForSelection}
+        BackgroundComponent={BackgroundComponent}
+        subjectTheme={activeSubject.themeColor}
+      />
+    );
+  }
+
   // --- CONTENT MODE RENDER ---
 
   // Safe style object for dynamic colors to avoid Tailwind purging issues
@@ -225,51 +263,17 @@ const UniversalSubjectLayout = () => {
       className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"
       style={dynamicStyle}
     >
-      {/* HEADER SECTION */}
-      <header className="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div
-              className="flex items-center gap-3 cursor-pointer"
-              onClick={() => navigate(`/predmety/${activeSubjectId}`)}
-            >
-              <div
-                className={`p-2 rounded-lg bg-${activeSubject.themeColor}-100 dark:bg-${activeSubject.themeColor}-900/30`}
-              >
-                <IconComponent
-                  className={`w-6 h-6 text-${activeSubject.themeColor}-600 dark:text-${activeSubject.themeColor}-400`}
-                />
-              </div>
-              <h1 className="text-xl font-bold tracking-tight">
-                {activeSubject.title}
-              </h1>
-            </div>
-
-            {/* Subject Switcher (Simple Dropdown or Tabs for demo) */}
-            <div className="flex gap-2 overflow-x-auto pb-1 md:pb-0 hide-scrollbar">
-              {Object.values(subjectConfig).map((subject) => (
-                <button
-                  key={subject.id}
-                  onClick={() => handleSubjectChange(subject.id)}
-                  className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all whitespace-nowrap ${
-                    activeSubjectId === subject.id
-                      ? `bg-gray-900 text-white dark:bg-white dark:text-black shadow-sm`
-                      : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                  }`}
-                >
-                  {subject.title}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* HEADER SECTION REMOVED - Using Global Navbar */}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* LEVEL SELECTION TABS */}
         <div className="flex justify-center mb-8">
           <div className="bg-white dark:bg-zinc-900 p-1 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm inline-flex">
-            {Object.values(levelsConfig).map((level) => (
+            {/* Use levelsData if available for dynamic tabs, fallback to levelsConfig */}
+            {(activeSubject.levelsData
+              ? Object.values(activeSubject.levelsData)
+              : Object.values(levelsConfig)
+            ).map((level) => (
               <button
                 key={level.id}
                 onClick={() => handleLevelChange(level.id)}
@@ -285,7 +289,7 @@ const UniversalSubjectLayout = () => {
                     : {}
                 }
               >
-                {level.label}
+                {level.title || level.label}
               </button>
             ))}
           </div>
@@ -322,7 +326,8 @@ const UniversalSubjectLayout = () => {
           {/* 1. Dynamic Header based on selection */}
           <div className="text-center space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-              {activeSubject.title} &ndash; {levelsConfig[activeLevelId].title}
+              {activeSubject.title} &ndash;{" "}
+              {activeLevelConfig?.title || levelsConfig[activeLevelId]?.label}
               {showSubLevelSwitch && (
                 <span className="opacity-60 ml-2">({subLevel}. stupeň)</span>
               )}

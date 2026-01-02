@@ -74,9 +74,9 @@ const Navbar = () => {
   // Subject items for tasks
   const subjectItems = [
     {
-      name: "Geometrie",
-      href: "/predmety/geometrie",
-      description: "Planimetrie, stereometrie",
+      name: "Matematika",
+      href: "/predmety/matematika",
+      description: "Algebra, analýza, rovnice",
     },
     {
       name: "Fyzika",
@@ -84,9 +84,24 @@ const Navbar = () => {
       description: "Mechanika, elektřina, optika",
     },
     {
-      name: "Matematika",
-      href: "/predmety/matematika",
-      description: "Algebra, analýza, rovnice",
+      name: "Geometrie",
+      href: "/predmety/geometrie",
+      description: "Planimetrie, stereometrie",
+    },
+    {
+      name: "Čeština",
+      href: "/predmety/cestina",
+      description: "Gramatika, literatura a sloh",
+    },
+    {
+      name: "Informatika",
+      href: "/predmety/informatika",
+      description: "Programování, hardware a digitální svět",
+    },
+    {
+      name: "Chemie",
+      href: "/predmety/chemie",
+      description: "Prvky, reakce a pokusy",
     },
   ];
 

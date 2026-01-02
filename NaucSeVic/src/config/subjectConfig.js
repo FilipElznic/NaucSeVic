@@ -35,37 +35,50 @@ export const subjectConfig = {
     description:
       "Studium matematických konceptů a řešení problémů. Počítání, algebra, funkce a logika.",
     levelsData: {
-      zs1: {
-        id: "zs1",
-        title: "1. Stupeň ZŠ",
-        level: "Začátečník",
+      zs: {
+        id: "zs",
+        title: "Základní škola",
+        level: "Začátečník - Mírně pokročilý",
         description:
-          "Základy počítání, sčítání, odčítání, násobilka a první setkání s geometrií.",
+          "Základy matematiky pro základní školy. Vyberte si stupeň.",
         icon: "School",
         color: "green",
-        topics: [
-          "Sčítání a odčítání",
-          "Malá násobilka",
-          "Geometrické tvary",
-          "Slovní úlohy",
-        ],
-        pathSuffix: "zs/1-stupen",
-      },
-      zs2: {
-        id: "zs2",
-        title: "2. Stupeň ZŠ",
-        level: "Mírně pokročilý",
-        description:
-          "Zlomky, procenta, rovnice a složitější geometrie. Příprava na přijímačky.",
-        icon: "Divide",
-        color: "teal",
-        topics: [
-          "Zlomky a procenta",
-          "Lineární rovnice",
-          "Pythagorova věta",
-          "Výrazy",
-        ],
-        pathSuffix: "zs/2-stupen",
+        topics: ["Sčítání a odčítání", "Zlomky", "Rovnice", "Geometrie"],
+        pathSuffix: "zs",
+        subLevels: {
+          "1-stupen": {
+            id: "1-stupen",
+            title: "1. Stupeň ZŠ",
+            level: "Začátečník",
+            description:
+              "Základy počítání, sčítání, odčítání, násobilka a první setkání s geometrií.",
+            icon: "School",
+            color: "green",
+            topics: [
+              "Sčítání a odčítání",
+              "Malá násobilka",
+              "Geometrické tvary",
+              "Slovní úlohy",
+            ],
+            pathSuffix: "1-stupen",
+          },
+          "2-stupen": {
+            id: "2-stupen",
+            title: "2. Stupeň ZŠ",
+            level: "Mírně pokročilý",
+            description:
+              "Zlomky, procenta, rovnice a složitější geometrie. Příprava na přijímačky.",
+            icon: "Divide",
+            color: "teal",
+            topics: [
+              "Zlomky a procenta",
+              "Lineární rovnice",
+              "Pythagorova věta",
+              "Výrazy",
+            ],
+            pathSuffix: "2-stupen",
+          },
+        },
       },
       ss: {
         id: "ss",
@@ -185,32 +198,50 @@ export const subjectConfig = {
     description:
       "Objevuj fascinující svět tvarů, prostorů a konstrukcí s praktickými příklady. Tvary, tělesa, rýsování a prostorová představivost.",
     levelsData: {
-      zs1: {
-        id: "zs1",
-        title: "1. Stupeň ZŠ",
-        level: "Začátečník",
+      zs: {
+        id: "zs",
+        title: "Základní škola",
+        level: "Začátečník - Mírně pokročilý",
         description:
-          "Poznáváme tvary kolem nás. Čtverec, trojúhelník, kruh. Základní rýsování.",
+          "Objevuj fascinující svět tvarů, prostorů a konstrukcí. Vyberte si stupeň.",
         icon: "School",
         color: "green",
-        topics: ["Základní útvary", "Měření", "Jednoduché rýsování", "Tělesa"],
-        pathSuffix: "zs/1-stupen",
-      },
-      zs2: {
-        id: "zs2",
-        title: "2. Stupeň ZŠ",
-        level: "Mírně pokročilý",
-        description:
-          "Měříme, rýsujeme a počítáme obvody a obsahy. Pythagorova věta v praxi.",
-        icon: "Compass",
-        color: "teal",
-        topics: [
-          "Obvody a obsahy",
-          "Konstrukční úlohy",
-          "Podobnost",
-          "Goniometrie",
-        ],
-        pathSuffix: "zs/2-stupen",
+        topics: ["Základní útvary", "Měření", "Rýsování", "Tělesa"],
+        pathSuffix: "zs",
+        subLevels: {
+          "1-stupen": {
+            id: "1-stupen",
+            title: "1. Stupeň ZŠ",
+            level: "Začátečník",
+            description:
+              "Poznáváme tvary kolem nás. Čtverec, trojúhelník, kruh. Základní rýsování.",
+            icon: "School",
+            color: "green",
+            topics: [
+              "Základní útvary",
+              "Měření",
+              "Jednoduché rýsování",
+              "Tělesa",
+            ],
+            pathSuffix: "1-stupen",
+          },
+          "2-stupen": {
+            id: "2-stupen",
+            title: "2. Stupeň ZŠ",
+            level: "Mírně pokročilý",
+            description:
+              "Měříme, rýsujeme a počítáme obvody a obsahy. Pythagorova věta v praxi.",
+            icon: "Compass",
+            color: "teal",
+            topics: [
+              "Obvody a obsahy",
+              "Konstrukční úlohy",
+              "Podobnost",
+              "Goniometrie",
+            ],
+            pathSuffix: "2-stupen",
+          },
+        },
       },
       ss: {
         id: "ss",

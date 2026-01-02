@@ -21,7 +21,6 @@ import LandingPage from "./pages/LandingPage";
 // Lazy load pages for better performance
 const ModernLogin = lazy(() => import("./pages/auth/ModernLogin"));
 const ModernRegister = lazy(() => import("./pages/auth/ModernRegister"));
-const Predmety = lazy(() => import("./pages/Predmety"));
 const AllTasks = lazy(() => import("./pages/AllTasks"));
 const Demo = lazy(() => import("./pages/Demo"));
 const NotFound = lazy(() => import("./pages/NotFound"));
