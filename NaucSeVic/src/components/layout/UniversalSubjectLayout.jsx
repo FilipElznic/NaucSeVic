@@ -4,6 +4,7 @@ import { subjectConfig, levelsConfig } from "../../config/subjectConfig";
 import { specialComponentsMap } from "../special/SpecialComponentsMap";
 import { backgroundMap } from "../special/BackgroundMap";
 import SubjectSelection from "../shared/SubjectSelection";
+import UniversalCoursePage from "./UniversalCoursePage";
 import * as LucideIcons from "lucide-react";
 
 /**
@@ -323,61 +324,29 @@ const UniversalSubjectLayout = () => {
 
         {/* CONTENT AREA */}
         <div className="space-y-8">
-          {/* 1. Dynamic Header based on selection */}
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-              {activeSubject.title} &ndash;{" "}
-              {activeLevelConfig?.title || levelsConfig[activeLevelId]?.label}
-              {showSubLevelSwitch && (
-                <span className="opacity-60 ml-2">({subLevel}. stupeň)</span>
-              )}
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              {activeSubject.description}
-            </p>
-          </div>
+          {/* Universal Course Page - ALWAYS VISIBLE */}
+          <UniversalCoursePage
+            subject={activeSubject}
+            level={
+              activeLevelConfig || { title: activeLevelId, level: "Unknown" }
+            }
+            subLevel={showSubLevelSwitch ? subLevel : null}
+          />
 
-          {/* 2. Special Component Injection (The 10% specific functionality) */}
-          {SpecialComponent ? (
-            <div className="my-8 animate-in zoom-in-95 duration-300">
-              <SpecialComponent />
-            </div>
-          ) : (
-            // Fallback / Default Content
-            <div className="p-12 text-center border-2 border-dashed border-gray-200 dark:border-zinc-800 rounded-2xl">
-              <p className="text-gray-500 dark:text-gray-400">
-                Standardní obsah pro {activeSubject.title} ({activeLevelId})
-                <br />
-                <span className="text-xs opacity-70">
-                  (Žádná speciální komponenta nenalezena v mapě pro klíč:{" "}
-                  {specialComponentKey})
-                </span>
-              </p>
-            </div>
-          )}
-
-          {/* 3. Generic Data Grid (Example of Data-Driven Content) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* This would normally come from a database query using activeSubject.dbBaseTag */}
-            {[1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="group bg-white dark:bg-zinc-900 rounded-xl p-6 border border-gray-200 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 transition-all hover:shadow-lg"
-              >
-                <div
-                  className={`w-10 h-10 rounded-lg bg-${activeSubject.themeColor}-50 dark:bg-${activeSubject.themeColor}-900/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
-                >
-                  <IconComponent
-                    className={`w-5 h-5 text-${activeSubject.themeColor}-600 dark:text-${activeSubject.themeColor}-400`}
-                  />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Lekce {item}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Automaticky generovaný obsah pro {activeSubject.dbBaseTag}.
+          {/* Special Component Injection - VISIBLE BELOW COURSE IF EXISTS */}
+          {SpecialComponent && (
+            <div className="my-8 animate-in zoom-in-95 duration-300 border-t border-gray-200 dark:border-zinc-800 pt-8">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Interaktivní nástroje
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Speciální aplikace a simulace pro tuto sekci.
                 </p>
               </div>
-            ))}
-          </div>
+              <SpecialComponent />
+            </div>
+          )}
         </div>
       </main>
     </div>
