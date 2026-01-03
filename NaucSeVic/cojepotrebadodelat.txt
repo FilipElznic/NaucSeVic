@@ -1,0 +1,13 @@
+je potreba dodelat pastovani textu do urcitejch kurzu - zatim to je jen string a to  v 
+
+   title: "Sčítání a odčítání do 20",
+          lessons: [
+            { title: "Počítáme do 10", content: "pocitani je ez" },
+            "Sčítání do 20",
+            "Odčítání do 20",
+            "Slovní úlohy",
+          ],
+
+          do budouna je nutne tomu udelat styling a udelat tomu dalsi specialni komponentu nebo proste to nechat atkto s textem
+
+          dale pak nejake predelat preskakovani mezi kapitolama a dat nejaky mensi ui
