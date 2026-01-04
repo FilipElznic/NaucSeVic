@@ -183,9 +183,58 @@ const LecturePage = () => {
           </h2>
 
           {currentLecture.content ? (
-            <div className="text-lg text-gray-800 dark:text-gray-200 max-w-2xl mb-8 p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-xl border border-gray-100 dark:border-zinc-800">
-              {currentLecture.content}
-            </div>
+            typeof currentLecture.content === "string" ? (
+              <div className="text-lg text-gray-800 dark:text-gray-200 max-w-2xl mb-8 p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-xl border border-gray-100 dark:border-zinc-800">
+                {currentLecture.content}
+              </div>
+            ) : (
+              <div className="w-full max-w-4xl text-left space-y-12 mb-12">
+                {currentLecture.content.sections &&
+                  currentLecture.content.sections.map((section, idx) => (
+                    <div key={idx} className="space-y-6">
+                      {section.heading && (
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-zinc-800 pb-2">
+                          {section.heading}
+                        </h3>
+                      )}
+
+                      {section.text && (
+                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                          {section.text}
+                        </p>
+                      )}
+
+                      {section.image && (
+                        <div className="my-6 bg-gray-100 dark:bg-zinc-800 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 aspect-video flex items-center justify-center">
+                          <div className="text-center text-gray-500 dark:text-gray-400">
+                            <LucideIcons.Image
+                              size={48}
+                              className="mx-auto mb-2 opacity-50"
+                            />
+                            <span className="text-sm">
+                              Obrázek: {section.image}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {section.video && (
+                        <div className="my-6 bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center relative group cursor-pointer">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
+                          <div className="relative z-10 text-center text-white">
+                            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                              <LucideIcons.Play size={32} className="ml-1" />
+                            </div>
+                            <span className="text-sm font-medium">
+                              Video: {section.video}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            )
           ) : (
             <p className="text-gray-600 dark:text-gray-400 max-w-lg mb-8">
               Zde bude zobrazen samotný obsah lekce - video přehrávač,

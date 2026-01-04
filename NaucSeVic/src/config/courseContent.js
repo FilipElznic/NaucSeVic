@@ -56,7 +56,28 @@ export const courseContentDatabase = {
         {
           title: "Sčítání a odčítání do 20",
           lessons: [
-            { title: "Počítáme do 10", content: "pocitani je ez" },
+            {
+              title: "Počítáme do 10",
+              content: {
+                sections: [
+                  {
+                    heading: "Úvod do počítání",
+                    text: "Počítání je základní dovednost, kterou používáme každý den. Představ si, že máš košík s jablky. Abychom věděli, kolik jablek máme, musíme je spočítat. Začínáme od jedničky a pokračujeme dál: jedna, dva, tři... Každému jablku přiřadíme jedno číslo.",
+                    image: "placeholder-apples",
+                  },
+                  {
+                    heading: "Čísla 1 až 5",
+                    text: "Prvních pět čísel je velmi důležitých. Můžeme si je ukázat na prstech jedné ruky. Palec je jedna, ukazováček dvě, prostředníček tři, prsteníček čtyři a malíček pět. Zkus si to! Ukazuj prsty a říkej čísla nahlas.",
+                    video: "placeholder-video-1-5",
+                  },
+                  {
+                    heading: "Čísla 6 až 10",
+                    text: "Když máme plnou jednu ruku, pokračujeme na druhé. Šestka je celá jedna ruka a palec na druhé. Desítka jsou obě ruce dohromady. Všechny prsty na obou rukou nám dají číslo deset. To je základ naší desítkové soustavy.",
+                    image: "placeholder-hands",
+                  },
+                ],
+              },
+            },
             "Sčítání do 20",
             "Odčítání do 20",
             "Slovní úlohy",
