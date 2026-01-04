@@ -1,36 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as LucideIcons from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { generateCourseData } from "../../config/courseContent";
+import { useCourseData } from "../../hooks/useCourseData";
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 // --- COMPONENT ---
 
 const UniversalCoursePage = ({ subject, level, subLevel }) => {
   const navigate = useNavigate();
-  const courseData = generateCourseData(subject, level, subLevel);
-  const [expandedChapter, setExpandedChapter] = useState("ch-1");
+  const { courseData, loading, error } = useCourseData(
+    subject.id,
+    level.id,
+    subLevel
+  );
+  const [expandedChapter, setExpandedChapter] = useState(null);
+
+  // Set first chapter expanded when data loads
+  useEffect(() => {
+    if (courseData?.chapters?.length > 0) {
+      setExpandedChapter(courseData.chapters[0].id);
+    }
+  }, [courseData]);
 
   const toggleChapter = (chapterId) => {
     setExpandedChapter(expandedChapter === chapterId ? null : chapterId);
   };
 
-  const handleStartLesson = (chapterId, lessonId) => {
+  const handleStartLesson = (chapter, lesson) => {
     let url = `/kurz/${subject.id}/${level.id}`;
     if (subLevel) {
       url += `/${subLevel}-stupen`;
     }
-    url += `/${chapterId}/${lessonId}`;
+    // Use short URL format: ch{order}/l{order}
+    const chSlug = chapter.order ? `ch${chapter.order}` : chapter.id;
+    const lSlug = lesson.order ? `l${lesson.order}` : lesson.id;
+    url += `/${chSlug}/${lSlug}`;
     navigate(url);
   };
 
   const handleStartCourse = () => {
+    if (!courseData?.chapters) return;
     // Find first unlocked lesson
     for (const chapter of courseData.chapters) {
       for (const lesson of chapter.lessons) {
-        if (lesson.status !== "locked") {
-          handleStartLesson(chapter.id, lesson.id);
-          return;
-        }
+        // Assuming all are unlocked for now or check status if implemented in DB
+        // In seed script we didn't explicitly set status logic like in JS file
+        // But let's assume we can start the first one.
+        handleStartLesson(chapter, lesson);
+        return;
       }
     }
   };
@@ -59,6 +76,22 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
     };
     return colors[themeColor] || colors.blue;
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-20">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (error || !courseData) {
+    return (
+      <div className="text-center py-20 text-gray-500">
+        Nepodařilo se načíst obsah kurzu.
+      </div>
+    );
+  }
 
   return (
     <div className="animate-in fade-in duration-500">
@@ -251,7 +284,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleStartLesson(chapter.id, lesson.id);
+                              handleStartLesson(chapter, lesson);
                             }}
                             className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1.5 text-xs font-medium bg-white dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-600"
                           >

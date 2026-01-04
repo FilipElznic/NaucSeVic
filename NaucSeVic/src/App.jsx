@@ -32,6 +32,7 @@ const AdminGeometryManager = lazy(() =>
 );
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
+const TestPage = lazy(() => import("./pages/TestPage"));
 
 const UniversalSubjectLayout = lazy(() =>
   import("./components/layout/UniversalSubjectLayout")
@@ -210,6 +211,17 @@ const AppRoutes = () => {
               <AdminRoute>
                 <Layout>
                   <AdminGeometryManager />
+                </Layout>
+              </AdminRoute>
+            }
+          />
+
+          <Route
+            path="/test"
+            element={
+              <AdminRoute>
+                <Layout>
+                  <TestPage />
                 </Layout>
               </AdminRoute>
             }

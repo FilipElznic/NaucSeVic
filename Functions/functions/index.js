@@ -874,3 +874,280 @@ exports.adminSeedGeometry = onCall(async (request) => {
     throw new HttpsError("internal", "Error seeding geometry data");
   }
 });
+
+// Admin function to seed course content
+exports.seedDatabase = onCall(async (request) => {
+  // Check if user is authenticated
+  if (!request.auth) {
+    throw new HttpsError(
+      "unauthenticated",
+      "The function must be called while authenticated."
+    );
+  }
+
+  // Check if user is admin
+  const isUserAdmin = await isAdmin(request.auth.uid);
+  if (!isUserAdmin) {
+    throw new HttpsError("permission-denied", "Only admins can seed database.");
+  }
+
+  const { content } = request.data;
+
+  if (!content) {
+    throw new HttpsError(
+      "invalid-argument",
+      "The function must be called with content object."
+    );
+  }
+
+  try {
+    const db = admin.firestore();
+    const batch = db.batch();
+    let operationCount = 0;
+    const MAX_BATCH_SIZE = 450; // Firestore limit is 500
+
+    // Helper to commit batch if full
+    const checkBatch = async () => {
+      if (operationCount >= MAX_BATCH_SIZE) {
+        await batch.commit();
+        operationCount = 0;
+        // Create new batch? No, batch is an object. We need to re-instantiate?
+        // Actually, we can't reuse the committed batch object.
+        // We need to manage multiple batches.
+        // For simplicity in this script, let's just commit and return if we hit limit,
+        // or better, use a recursive approach or just commit chunks.
+        // But since we can't easily swap the 'batch' variable reference inside this scope cleanly without redesign,
+        // let's just assume the content isn't massive for now, or implement a proper chunking mechanism.
+        // Given the user's request, I'll implement a simple chunking array.
+      }
+    };
+
+    // Better approach: Collect all operations first, then batch them.
+    const operations = [];
+
+    // 1. Process Subjects
+    for (const [subjectId, subjectData] of Object.entries(content)) {
+      // Create Subject Document
+      const subjectRef = db.collection("subjects").doc(subjectId);
+      operations.push({
+        type: "set",
+        ref: subjectRef,
+        data: {
+          title: subjectId.charAt(0).toUpperCase() + subjectId.slice(1), // Simple title case
+          id: subjectId,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+      });
+
+      // 2. Process Levels (zs, ss, vs)
+      for (const [levelId, levelData] of Object.entries(subjectData)) {
+        // We don't necessarily need a 'levels' collection, but we can store level info in subject or separate.
+        // The prompt asked for subjects, chapters, lessons.
+
+        // 3. Process SubLevels/Chapters
+        // The structure is: subject -> level -> (default | 1 | 2) -> [chapters]
+
+        for (const [subLevelId, chapters] of Object.entries(levelData)) {
+          if (!Array.isArray(chapters)) continue;
+
+          chapters.forEach((chapter, chapterIdx) => {
+            const chapterId = `${subjectId}_${levelId}_${subLevelId}_ch${
+              chapterIdx + 1
+            }`;
+            const chapterRef = db.collection("chapters").doc(chapterId);
+
+            operations.push({
+              type: "set",
+              ref: chapterRef,
+              data: {
+                subjectId,
+                levelId,
+                subLevelId: subLevelId === "default" ? null : subLevelId,
+                title: chapter.title,
+                description: chapter.description || "",
+                order: chapterIdx + 1,
+                updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+              },
+            });
+
+            // 4. Process Lessons
+            if (chapter.lessons && Array.isArray(chapter.lessons)) {
+              chapter.lessons.forEach((lesson, lessonIdx) => {
+                const lessonId = `${chapterId}_l${lessonIdx + 1}`;
+                const lessonRef = db.collection("lessons").doc(lessonId);
+
+                const lessonTitle =
+                  typeof lesson === "string" ? lesson : lesson.title;
+                const lessonContent =
+                  typeof lesson === "object" ? lesson.content : null;
+                const lessonType =
+                  typeof lesson === "object" && lesson.type
+                    ? lesson.type
+                    : "text";
+
+                operations.push({
+                  type: "set",
+                  ref: lessonRef,
+                  data: {
+                    chapterId,
+                    subjectId,
+                    title: lessonTitle,
+                    content: lessonContent,
+                    type: lessonType,
+                    order: lessonIdx + 1,
+                    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+                  },
+                });
+              });
+            }
+          });
+        }
+      }
+    }
+
+    // Execute batches
+    let currentBatch = db.batch();
+    let count = 0;
+    let totalCommitted = 0;
+
+    for (const op of operations) {
+      if (op.type === "set") {
+        currentBatch.set(op.ref, op.data, { merge: true });
+      }
+      count++;
+
+      if (count >= MAX_BATCH_SIZE) {
+        await currentBatch.commit();
+        totalCommitted += count;
+        currentBatch = db.batch();
+        count = 0;
+      }
+    }
+
+    if (count > 0) {
+      await currentBatch.commit();
+      totalCommitted += count;
+    }
+
+    logger.info("Database seeded successfully", {
+      adminUid: request.auth.uid,
+      documentsWritten: totalCommitted,
+    });
+
+    return { success: true, documentsWritten: totalCommitted };
+  } catch (error) {
+    logger.error("Error seeding database", error);
+    throw new HttpsError(
+      "internal",
+      "Error seeding database: " + error.message
+    );
+  }
+});
+
+// Function to get course data
+exports.getCourseData = onCall(async (request) => {
+  const { subjectId, levelId, subLevelId } = request.data;
+
+  logger.info("getCourseData called", { subjectId, levelId, subLevelId });
+
+  if (!subjectId || !levelId) {
+    throw new HttpsError(
+      "invalid-argument",
+      "The function must be called with subjectId and levelId."
+    );
+  }
+
+  try {
+    const db = admin.firestore();
+
+    // 1. Get Subject Data (optional, for title etc)
+    const subjectDoc = await db.collection("subjects").doc(subjectId).get();
+    const subjectData = subjectDoc.exists
+      ? subjectDoc.data()
+      : { title: subjectId };
+
+    logger.info("Subject data retrieved", {
+      exists: subjectDoc.exists,
+      title: subjectData.title,
+    });
+
+    // 2. Get Chapters
+    // Simplify query to avoid complex index requirements
+    // We fetch all chapters for this subject and level, then filter in memory
+    const chaptersQuery = db
+      .collection("chapters")
+      .where("subjectId", "==", subjectId)
+      .where("levelId", "==", levelId);
+
+    const chaptersSnapshot = await chaptersQuery.get();
+    logger.info("Chapters found (raw)", { count: chaptersSnapshot.size });
+
+    let chaptersDocs = chaptersSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // Filter by subLevelId in memory
+    if (subLevelId) {
+      const targetSubLevel = subLevelId.toString();
+      chaptersDocs = chaptersDocs.filter(
+        (ch) => ch.subLevelId && ch.subLevelId.toString() === targetSubLevel
+      );
+    } else {
+      // If no subLevelId requested, we want chapters with NO subLevelId (null)
+      // OR chapters where subLevelId is "default" (if that's how it was stored)
+      chaptersDocs = chaptersDocs.filter(
+        (ch) => ch.subLevelId === null || ch.subLevelId === "default"
+      );
+    }
+
+    logger.info("Chapters after filtering", { count: chaptersDocs.length });
+
+    // Sort by order
+    chaptersDocs.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    // 3. Get Lessons for each chapter
+    // We can do this in parallel
+    const chapterPromises = chaptersDocs.map(async (chapterData) => {
+      // Remove orderBy here to avoid index issues
+      const lessonsSnapshot = await db
+        .collection("lessons")
+        .where("chapterId", "==", chapterData.id)
+        .get();
+
+      const lessons = lessonsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Sort in memory
+      lessons.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+      return {
+        ...chapterData,
+        lessons,
+      };
+    });
+
+    const resolvedChapters = await Promise.all(chapterPromises);
+
+    // Sort chapters by order again just in case
+    resolvedChapters.sort((a, b) => a.order - b.order);
+
+    logger.info("Returning resolved chapters", {
+      count: resolvedChapters.length,
+    });
+
+    return {
+      title: `${subjectData.title} - ${levelId.toUpperCase()}`,
+      description: `Komplexní kurz pro ${levelId}.`,
+      chapters: resolvedChapters,
+    };
+  } catch (error) {
+    logger.error("Error fetching course data", error);
+    throw new HttpsError(
+      "internal",
+      "Error fetching course data: " + error.message
+    );
+  }
+});
