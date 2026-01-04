@@ -142,7 +142,28 @@ export const courseContentDatabase = {
         },
         {
           title: "Geometrické tvary",
-          lessons: ["Čtverec a obdélník", "Trojúhelník", "Kruh", "Tělesa"],
+          lessons: [
+            {
+              title: "Čtverec a obdélník",
+              content: {
+                splineUrl:
+                  "https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode",
+                sections: [
+                  {
+                    heading: "Čtverec",
+                    text: "Čtverec je pravidelný čtyřúhelník, který má všechny strany stejně dlouhé a všechny úhly pravé (90°).",
+                  },
+                  {
+                    heading: "Obdélník",
+                    text: "Obdélník je čtyřúhelník, který má protější strany stejně dlouhé a všechny úhly pravé.",
+                  },
+                ],
+              },
+            },
+            "Trojúhelník",
+            "Kruh",
+            "Tělesa",
+          ],
         },
         {
           title: "Slovní úlohy",
@@ -445,7 +466,23 @@ export const courseContentDatabase = {
         {
           title: "Základní tvary v rovině",
           lessons: [
-            "Čtverec a obdélník",
+            {
+              title: "Čtverec a obdélník",
+              content: {
+                splineUrl:
+                  "https://prod.spline.design/6Wq1Q7YGyM-iab9i/scene.splinecode",
+                sections: [
+                  {
+                    heading: "Čtverec",
+                    text: "Čtverec je pravidelný čtyřúhelník, který má všechny strany stejně dlouhé a všechny úhly pravé (90°).",
+                  },
+                  {
+                    heading: "Obdélník",
+                    text: "Obdélník je čtyřúhelník, který má protější strany stejně dlouhé a všechny úhly pravé.",
+                  },
+                ],
+              },
+            },
             "Trojúhelník",
             "Kruh a kružnice",
             "Mnohoúhelníky",

@@ -1162,6 +1162,10 @@ exports.submitQuiz = onCall(async (request) => {
     throw new HttpsError("unauthenticated", "Musíte být přihlášeni.");
   }
 
+  // Rate limiting
+  const clientIP = (request.rawRequest && request.rawRequest.ip) || "unknown";
+  checkRateLimit(request.auth.uid, "submitQuiz", 10, 60000); // 10 requests per minute per user
+
   const { lessonId, userAnswers } = request.data;
   const userId = request.auth.uid;
   const db = admin.firestore();
@@ -1184,6 +1188,27 @@ exports.submitQuiz = onCall(async (request) => {
         return { score: 0, total: 0, xpGained: 0, passed: true };
       }
 
+      // Determine XP per question based on difficulty (level)
+      // chapterId format: subjectId_levelId_subLevelId_chX
+      const chapterId = lessonData.chapterId || "";
+      const parts = chapterId.split("_");
+      const levelId = parts.length > 1 ? parts[1] : "zs";
+      const subLevelId = parts.length > 2 ? parts[2] : "default";
+
+      let xpPerQuestion = 10; // Default (ZS 1. stupeň)
+
+      if (levelId === "zs") {
+        if (subLevelId === "2") {
+          xpPerQuestion = 15; // ZS 2. stupeň
+        } else {
+          xpPerQuestion = 10; // ZS 1. stupeň
+        }
+      } else if (levelId === "ss") {
+        xpPerQuestion = 25; // Střední škola
+      } else if (levelId === "vs") {
+        xpPerQuestion = 40; // Vysoká škola
+      }
+
       // 3. Calculate Score (Server Side)
       let correctCount = 0;
       let potentialXp = 0;
@@ -1197,7 +1222,7 @@ exports.submitQuiz = onCall(async (request) => {
 
         if (isCorrect) {
           correctCount++;
-          potentialXp += task.xp || 10; // Default 10 XP per question
+          potentialXp += xpPerQuestion;
         }
 
         corrections.push({
@@ -1254,5 +1279,65 @@ exports.submitQuiz = onCall(async (request) => {
   } catch (error) {
     console.error("Quiz submission error:", error);
     throw new HttpsError("internal", "Chyba při vyhodnocování testu.");
+  }
+});
+
+exports.completeLesson = onCall(async (request) => {
+  // 1. Authentication Check
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Musíte být přihlášeni.");
+  }
+
+  const { lessonId } = request.data;
+  const userId = request.auth.uid;
+  const db = admin.firestore();
+
+  // Rate limiting
+  checkRateLimit(userId, "completeLesson", 20, 60000);
+
+  try {
+    const userRef = db.collection("users").doc(userId);
+    const lessonRef = db.collection("lessons").doc(lessonId);
+
+    await db.runTransaction(async (transaction) => {
+      const lessonDoc = await transaction.get(lessonRef);
+      if (!lessonDoc.exists) {
+        throw new HttpsError("not-found", "Lekce nebyla nalezena.");
+      }
+
+      // Check if lesson has tasks - if so, user MUST use submitQuiz
+      const lessonData = lessonDoc.data();
+      if (lessonData.content?.tasks?.length > 0) {
+        throw new HttpsError(
+          "failed-precondition",
+          "Tuto lekci lze splnit pouze vypracováním testu."
+        );
+      }
+
+      const userDoc = await transaction.get(userRef);
+      if (!userDoc.exists) {
+        throw new HttpsError("not-found", "Uživatel nenalezen.");
+      }
+
+      const userData = userDoc.data();
+      const completedLessons = userData.completedLessons || [];
+
+      if (!completedLessons.includes(lessonId)) {
+        // Award small XP for reading (e.g., 5 XP)
+        const xpAwarded = 5;
+        transaction.update(userRef, {
+          xp: (userData.xp || 0) + xpAwarded,
+          completedLessons: admin.firestore.FieldValue.arrayUnion(lessonId),
+        });
+        return { success: true, xpGained: xpAwarded };
+      } else {
+        return { success: true, xpGained: 0, message: "Already completed" };
+      }
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Complete lesson error:", error);
+    throw new HttpsError("internal", "Chyba při dokončování lekce.");
   }
 });

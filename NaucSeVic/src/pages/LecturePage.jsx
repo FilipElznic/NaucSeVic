@@ -3,15 +3,26 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import * as LucideIcons from "lucide-react";
 import { subjectConfig, levelsConfig } from "../config/subjectConfig";
 import { useCourseData } from "../hooks/useCourseData";
+import { useUserProfile } from "../hooks/useUserProfile";
+import { useDarkMode } from "../contexts/DarkModeContext";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import QuizComponent from "../components/lecture/QuizComponent";
+import ErrorBoundary from "../components/guards/ErrorBoundary";
+import SplineViewer from "../components/ui/SplineViewer";
+
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../config/firebase";
+import { toast } from "react-toastify";
 
 const LecturePage = () => {
   const { subjectId, levelId, subLevelId, chapterId, lectureId } = useParams();
   const navigate = useNavigate();
+  const { darkMode, toggleDarkMode } = useDarkMode();
+  const { userProfile, refreshProfile } = useUserProfile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [expandedChapters, setExpandedChapters] = useState({});
   const [showQuiz, setShowQuiz] = useState(false);
+  const [completing, setCompleting] = useState(false);
 
   // --- DATA RETRIEVAL ---
 
@@ -96,6 +107,27 @@ const LecturePage = () => {
     setExpandedChapters((prev) => ({ ...prev, [chId]: !prev[chId] }));
   };
 
+  const handleCompleteLesson = async () => {
+    setCompleting(true);
+    try {
+      const completeLesson = httpsCallable(functions, "completeLesson");
+      const result = await completeLesson({ lessonId: currentLecture.id });
+
+      if (result.data.xpGained > 0) {
+        toast.success(`Lekce dokončena! +${result.data.xpGained} XP`);
+      } else {
+        toast.success("Lekce označena jako dokončená.");
+      }
+
+      await refreshProfile();
+    } catch (error) {
+      console.error("Error completing lesson:", error);
+      toast.error("Nepodařilo se dokončit lekci.");
+    } finally {
+      setCompleting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-zinc-950">
@@ -109,6 +141,22 @@ const LecturePage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-white">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Chyba při načítání kurzu</h2>
+          <button
+            onClick={handleBack}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Zpět na přehled
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentLecture) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Lekce nenalezena</h2>
           <button
             onClick={handleBack}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -232,6 +280,19 @@ const LecturePage = () => {
           >
             <LucideIcons.ChevronRight size={20} />
           </button>
+
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-all duration-300 ml-2"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? (
+              <LucideIcons.Sun className="w-5 h-5 text-yellow-500" />
+            ) : (
+              <LucideIcons.Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            )}
+          </button>
         </div>
       </header>
 
@@ -278,6 +339,9 @@ const LecturePage = () => {
                     <div className="bg-white dark:bg-zinc-900">
                       {chapter.lessons.map((lesson) => {
                         const isActive = lesson.id === currentLecture.id;
+                        const isCompleted =
+                          userProfile?.completedLessons?.includes(lesson.id);
+
                         return (
                           <button
                             key={lesson.id}
@@ -290,7 +354,7 @@ const LecturePage = () => {
                                 : "border-transparent hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-400"
                             }`}
                           >
-                            {lesson.status === "completed" ? (
+                            {isCompleted ? (
                               <LucideIcons.CheckCircle2
                                 size={16}
                                 className="text-green-500 shrink-0"
@@ -306,7 +370,15 @@ const LecturePage = () => {
                                 className="text-gray-300 dark:text-zinc-700 shrink-0"
                               />
                             )}
-                            <span className="truncate">{lesson.title}</span>
+                            <span
+                              className={`truncate ${
+                                isCompleted
+                                  ? "text-green-700 dark:text-green-400 font-medium"
+                                  : ""
+                              }`}
+                            >
+                              {lesson.title}
+                            </span>
                           </button>
                         );
                       })}
@@ -321,129 +393,143 @@ const LecturePage = () => {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto p-4 md:p-8 w-full bg-gray-50 dark:bg-zinc-950">
           <div className="max-w-6xl mx-auto">
-            <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-800 overflow-hidden min-h-[60vh] flex flex-col items-center justify-center p-8 md:p-12 text-center">
-              {showQuiz ? (
-                <div className="w-full max-w-4xl mx-auto">
-                  <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                      Procvičování: {currentLecture.title}
-                    </h2>
-                    <button
-                      onClick={() => setShowQuiz(false)}
-                      className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
-                    >
-                      Zpět k lekci
-                    </button>
-                  </div>
-                  <QuizComponent
-                    tasks={currentLecture.content.tasks}
-                    lessonId={currentLecture.id}
-                  />
-                </div>
-              ) : (
-                <>
-                  <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center mb-6 text-gray-400 dark:text-gray-500">
-                    {currentLecture.type === "video" ? (
-                      <LucideIcons.Play size={40} />
-                    ) : (
-                      <LucideIcons.FileQuestion size={40} />
-                    )}
-                  </div>
-
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                    Obsah lekce: {currentLecture.title}
-                  </h2>
-
-                  {currentLecture.content ? (
-                    typeof currentLecture.content === "string" ? (
-                      <div className="text-lg text-gray-800 dark:text-gray-200 max-w-2xl mb-8 p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-xl border border-gray-100 dark:border-zinc-800">
-                        {currentLecture.content}
-                      </div>
-                    ) : (
-                      <div className="w-full max-w-4xl text-left space-y-12 mb-12">
-                        {currentLecture.content.sections &&
-                          currentLecture.content.sections.map(
-                            (section, idx) => (
-                              <div key={idx} className="space-y-6">
-                                {section.heading && (
-                                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-zinc-800 pb-2">
-                                    {section.heading}
-                                  </h3>
-                                )}
-
-                                {section.text && (
-                                  <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                                    {section.text}
-                                  </p>
-                                )}
-
-                                {section.image && (
-                                  <div className="my-6 bg-gray-100 dark:bg-zinc-800 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 aspect-video flex items-center justify-center">
-                                    <div className="text-center text-gray-500 dark:text-gray-400">
-                                      <LucideIcons.Image
-                                        size={48}
-                                        className="mx-auto mb-2 opacity-50"
-                                      />
-                                      <span className="text-sm">
-                                        Obrázek: {section.image}
-                                      </span>
-                                    </div>
-                                  </div>
-                                )}
-
-                                {section.video && (
-                                  <div className="my-6 bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center relative group cursor-pointer">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
-                                    <div className="relative z-10 text-center text-white">
-                                      <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                                        <LucideIcons.Play
-                                          size={32}
-                                          className="ml-1"
-                                        />
-                                      </div>
-                                      <span className="text-sm font-medium">
-                                        Video: {section.video}
-                                      </span>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            )
-                          )}
-                      </div>
-                    )
-                  ) : (
-                    <p className="text-gray-600 dark:text-gray-400 max-w-lg mb-8">
-                      Zde bude zobrazen samotný obsah lekce - video přehrávač,
-                      interaktivní cvičení nebo textový materiál.
-                    </p>
-                  )}
-
-                  <div className="flex gap-4">
-                    <button
-                      onClick={() => {
-                        if (
-                          currentLecture.content?.tasks &&
-                          currentLecture.content.tasks.length > 0
-                        ) {
-                          setShowQuiz(true);
-                        }
+            <ErrorBoundary>
+              <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-800 overflow-hidden min-h-[60vh] flex flex-col items-center justify-center p-8 md:p-12 text-center">
+                {showQuiz && currentLecture?.content?.tasks?.length > 0 ? (
+                  <div className="w-full max-w-4xl mx-auto">
+                    <div className="flex items-center justify-between mb-8">
+                      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                        Procvičování: {currentLecture.title}
+                      </h2>
+                      <button
+                        onClick={() => setShowQuiz(false)}
+                        className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                      >
+                        Zpět k lekci
+                      </button>
+                    </div>
+                    <QuizComponent
+                      tasks={currentLecture.content.tasks}
+                      lessonId={currentLecture.id}
+                      onComplete={async () => {
+                        await refreshProfile();
                       }}
-                      className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={
-                        !currentLecture.content?.tasks ||
-                        currentLecture.content.tasks.length === 0
-                      }
-                    >
-                      Spustit cvičení
-                    </button>
-                    <button className="px-6 py-2.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-900 dark:text-white font-medium rounded-lg transition-colors">
-                      Označit jako dokončené
-                    </button>
+                    />
                   </div>
-                </>
-              )}
-            </div>
+                ) : (
+                  <>
+                    <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center mb-6 text-gray-400 dark:text-gray-500">
+                      {currentLecture.type === "video" ? (
+                        <LucideIcons.Play size={40} />
+                      ) : (
+                        <LucideIcons.FileQuestion size={40} />
+                      )}
+                    </div>
+
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                      Obsah lekce: {currentLecture.title}
+                    </h2>
+
+                    {currentLecture.content?.splineUrl && (
+                      <div className="w-full max-w-4xl mx-auto mb-8 h-[500px]">
+                        <SplineViewer url={currentLecture.content.splineUrl} />
+                      </div>
+                    )}
+
+                    {currentLecture.content ? (
+                      typeof currentLecture.content === "string" ? (
+                        <div className="text-lg text-gray-800 dark:text-gray-200 max-w-2xl mb-8 p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-xl border border-gray-100 dark:border-zinc-800">
+                          {currentLecture.content}
+                        </div>
+                      ) : (
+                        <div className="w-full max-w-4xl text-left space-y-12 mb-12">
+                          {currentLecture.content.sections &&
+                            currentLecture.content.sections.map(
+                              (section, idx) => (
+                                <div key={idx} className="space-y-6">
+                                  {section.heading && (
+                                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-zinc-800 pb-2">
+                                      {section.heading}
+                                    </h3>
+                                  )}
+
+                                  {section.text && (
+                                    <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                                      {section.text}
+                                    </p>
+                                  )}
+
+                                  {section.image && (
+                                    <div className="my-6 bg-gray-100 dark:bg-zinc-800 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 aspect-video flex items-center justify-center">
+                                      <div className="text-center text-gray-500 dark:text-gray-400">
+                                        <LucideIcons.Image
+                                          size={48}
+                                          className="mx-auto mb-2 opacity-50"
+                                        />
+                                        <span className="text-sm">
+                                          Obrázek: {section.image}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {section.video && (
+                                    <div className="my-6 bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center relative group cursor-pointer">
+                                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
+                                      <div className="relative z-10 text-center text-white">
+                                        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                          <LucideIcons.Play
+                                            size={32}
+                                            className="ml-1"
+                                          />
+                                        </div>
+                                        <span className="text-sm font-medium">
+                                          Video: {section.video}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                            )}
+                        </div>
+                      )
+                    ) : (
+                      <div className="py-12">
+                        <div className="w-24 h-24 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center mx-auto mb-6 text-gray-300 dark:text-zinc-700">
+                          <LucideIcons.Ghost size={48} />
+                        </div>
+                        <p className="text-gray-500 dark:text-gray-400 max-w-lg mx-auto">
+                          Tato lekce zatím nemá žádný obsah.
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex gap-4">
+                      {currentLecture.content?.tasks &&
+                      currentLecture.content.tasks.length > 0 ? (
+                        <button
+                          onClick={() => setShowQuiz(true)}
+                          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                        >
+                          Spustit cvičení
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleCompleteLesson}
+                          disabled={completing}
+                          className="px-6 py-2.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-900 dark:text-white font-medium rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {completing
+                            ? "Ukládání..."
+                            : "Označit jako dokončené"}
+                        </button>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            </ErrorBoundary>
           </div>
         </main>
       </div>
