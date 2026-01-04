@@ -4,7 +4,11 @@
  */
 
 const { setGlobalOptions } = require("firebase-functions");
-const { onRequest, onCall } = require("firebase-functions/v2/https");
+const {
+  onRequest,
+  onCall,
+  HttpsError,
+} = require("firebase-functions/v2/https");
 const {
   onDocumentCreated,
   onDocumentUpdated,
@@ -1149,5 +1153,106 @@ exports.getCourseData = onCall(async (request) => {
       "internal",
       "Error fetching course data: " + error.message
     );
+  }
+});
+
+exports.submitQuiz = onCall(async (request) => {
+  // 1. Authentication Check
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Musíte být přihlášeni.");
+  }
+
+  const { lessonId, userAnswers } = request.data;
+  const userId = request.auth.uid;
+  const db = admin.firestore();
+
+  // 2. Fetch the Lesson (Source of Truth)
+  const lessonRef = db.collection("lessons").doc(lessonId);
+  const userRef = db.collection("users").doc(userId);
+
+  try {
+    const result = await db.runTransaction(async (transaction) => {
+      const lessonDoc = await transaction.get(lessonRef);
+      if (!lessonDoc.exists) {
+        throw new HttpsError("not-found", "Lekce nebyla nalezena.");
+      }
+
+      const lessonData = lessonDoc.data();
+      const tasks = lessonData.content?.tasks || [];
+
+      if (tasks.length === 0) {
+        return { score: 0, total: 0, xpGained: 0, passed: true };
+      }
+
+      // 3. Calculate Score (Server Side)
+      let correctCount = 0;
+      let potentialXp = 0;
+
+      // We return the correct answers to the client ONLY after submission
+      const corrections = [];
+
+      tasks.forEach((task, index) => {
+        const userAnswerIndex = userAnswers[index];
+        const isCorrect = userAnswerIndex === task.correctAnswer;
+
+        if (isCorrect) {
+          correctCount++;
+          potentialXp += task.xp || 10; // Default 10 XP per question
+        }
+
+        corrections.push({
+          taskId: task.id,
+          correctAnswer: task.correctAnswer,
+          isCorrect: isCorrect,
+        });
+      });
+
+      const scorePercentage = (correctCount / tasks.length) * 100;
+      const passed = scorePercentage >= 80; // 80% threshold to pass
+      const xpAwarded = passed ? potentialXp : 0;
+
+      // 4. Update User (XP and Progress)
+      if (passed) {
+        const userDoc = await transaction.get(userRef);
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          const currentXp = userData.xp || 0;
+          const completedLessons = userData.completedLessons || [];
+
+          // Only award XP if lesson wasn't already completed
+          if (!completedLessons.includes(lessonId)) {
+            transaction.update(userRef, {
+              xp: currentXp + xpAwarded,
+              completedLessons: admin.firestore.FieldValue.arrayUnion(lessonId),
+            });
+          } else {
+            // If already completed, return 0 XP but show success
+            return {
+              score: scorePercentage,
+              correctCount,
+              total: tasks.length,
+              xpGained: 0,
+              passed,
+              corrections,
+              message: "Lekce již byla splněna dříve.",
+            };
+          }
+        }
+      }
+
+      return {
+        score: scorePercentage,
+        correctCount,
+        total: tasks.length,
+        xpGained: xpAwarded,
+        passed,
+        corrections,
+      };
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Quiz submission error:", error);
+    throw new HttpsError("internal", "Chyba při vyhodnocování testu.");
   }
 });
