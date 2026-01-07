@@ -9,6 +9,7 @@ import LoadingSpinner from "../components/ui/LoadingSpinner";
 import QuizComponent from "../components/lecture/QuizComponent";
 import ErrorBoundary from "../components/guards/ErrorBoundary";
 import SplineViewer from "../components/ui/SplineViewer";
+import LatexRenderer from "../components/shared/LatexRenderer";
 
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../config/firebase";
@@ -439,7 +440,7 @@ const LecturePage = () => {
                     {currentLecture.content ? (
                       typeof currentLecture.content === "string" ? (
                         <div className="text-lg text-gray-800 dark:text-gray-200 max-w-2xl mb-8 p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-xl border border-gray-100 dark:border-zinc-800">
-                          {currentLecture.content}
+                          <LatexRenderer text={currentLecture.content} />
                         </div>
                       ) : (
                         <div className="w-full max-w-4xl text-left space-y-12 mb-12">
@@ -454,9 +455,9 @@ const LecturePage = () => {
                                   )}
 
                                   {section.text && (
-                                    <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                                      {section.text}
-                                    </p>
+                                    <div className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                                      <LatexRenderer text={section.text} />
+                                    </div>
                                   )}
 
                                   {section.image && (

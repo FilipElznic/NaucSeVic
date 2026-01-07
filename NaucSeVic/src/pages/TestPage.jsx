@@ -9,6 +9,64 @@ const TestPage = () => {
   const [result, setResult] = useState(null);
 
   const handleSeedDatabase = async () => {
+    console.log("Starting sanitization of courseContentDatabase...");
+
+    // Sanitization function to convert string lessons to objects and content to object
+    const sanitizeContent = (data) => {
+      // 1. First remove keys with undefined values/circular refs
+      const noUndefined = JSON.parse(JSON.stringify(data));
+
+      const processNode = (node) => {
+        if (!node || typeof node !== "object") return;
+
+        if (Array.isArray(node)) {
+          // Crucial fix: recurse into array items!
+          node.forEach((item) => processNode(item));
+          return;
+        }
+
+        // Process object keys
+        Object.keys(node).forEach((key) => {
+          if (key === "lessons" && Array.isArray(node[key])) {
+            // Fix lessons array
+            node[key] = node[key].map((lesson) => {
+              let processed = lesson;
+
+              // 1. Handle string lessons
+              if (typeof processed === "string") {
+                processed = {
+                  title: processed,
+                  content: { sections: [], tasks: [] },
+                };
+              }
+
+              // 2. Handle object lessons with missing content
+              if (typeof processed === "object" && processed !== null) {
+                // If content is completely missing (undefined/null) or empty
+                if (!processed.content) {
+                  console.warn(
+                    `Fixing missing content for lesson: ${processed.title}`
+                  );
+                  processed.content = { sections: [], tasks: [] };
+                } else {
+                  // If content exists, ensure it has basic arrays
+                  if (!processed.content.sections)
+                    processed.content.sections = [];
+                  if (!processed.content.tasks) processed.content.tasks = [];
+                }
+              }
+              return processed;
+            });
+          }
+          // Continue recursion
+          processNode(node[key]);
+        });
+      };
+
+      processNode(noUndefined);
+      return noUndefined;
+    };
+
     if (
       !window.confirm(
         "Are you sure you want to overwrite the database with local content?"
@@ -21,8 +79,10 @@ const TestPage = () => {
     setResult(null);
 
     try {
+      const sanitized = sanitizeContent(courseContentDatabase);
+      console.log("Content sanitized. Sending to database...");
       const seedDatabase = httpsCallable(functions, "seedDatabase");
-      const response = await seedDatabase({ content: courseContentDatabase });
+      const response = await seedDatabase({ content: sanitized });
 
       setResult(response.data);
       toast.success("Database seeded successfully!");

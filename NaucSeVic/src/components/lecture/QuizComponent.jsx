@@ -11,6 +11,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import LatexRenderer from "../shared/LatexRenderer";
 
 const QuizComponent = ({ tasks, lessonId, onComplete }) => {
   const [userAnswers, setUserAnswers] = useState({});
@@ -147,11 +148,11 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
                     <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 shrink-0" />
                   )}
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900 dark:text-gray-100 mb-2">
-                      {task.question}
-                    </p>
+                    <div className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                      <LatexRenderer text={task.question} />
+                    </div>
                     <div className="text-sm space-y-1">
-                      <p
+                      <div
                         className={
                           correction.isCorrect
                             ? "text-green-700 dark:text-green-400"
@@ -160,16 +161,20 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
                       >
                         Vaše odpověď:{" "}
                         <span className="font-semibold">
-                          {task.options[userAnswers[index]]}
+                          <LatexRenderer
+                            text={task.options[userAnswers[index]]}
+                          />
                         </span>
-                      </p>
+                      </div>
                       {!correction.isCorrect && (
-                        <p className="text-green-700 dark:text-green-400">
+                        <div className="text-green-700 dark:text-green-400">
                           Správně:{" "}
                           <span className="font-semibold">
-                            {task.options[correction.correctAnswer]}
+                            <LatexRenderer
+                              text={task.options[correction.correctAnswer]}
+                            />
                           </span>
-                        </p>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -225,9 +230,9 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
               <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold text-sm shrink-0">
                 {qIndex + 1}
               </span>
-              <h4 className="text-xl font-medium text-gray-900 dark:text-white pt-0.5">
-                {task.question}
-              </h4>
+              <div className="text-xl font-medium text-gray-900 dark:text-white pt-0.5">
+                <LatexRenderer text={task.question} />
+              </div>
             </div>
 
             <div className="grid gap-3 pl-0 md:pl-12">
@@ -253,7 +258,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
                             : "text-gray-700 dark:text-gray-300"
                         }`}
                       >
-                        {option}
+                        <LatexRenderer text={option} />
                       </span>
                       {isSelected && (
                         <motion.div

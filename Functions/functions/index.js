@@ -1094,9 +1094,17 @@ exports.getCourseData = onCall(async (request) => {
     // Filter by subLevelId in memory
     if (subLevelId) {
       const targetSubLevel = subLevelId.toString();
-      chaptersDocs = chaptersDocs.filter(
-        (ch) => ch.subLevelId && ch.subLevelId.toString() === targetSubLevel
-      );
+
+      // Fix: "default" subLevel is stored as null in DB by the seeder
+      if (targetSubLevel === "default") {
+        chaptersDocs = chaptersDocs.filter(
+          (ch) => ch.subLevelId === null || ch.subLevelId === "default"
+        );
+      } else {
+        chaptersDocs = chaptersDocs.filter(
+          (ch) => ch.subLevelId && ch.subLevelId.toString() === targetSubLevel
+        );
+      }
     } else {
       // If no subLevelId requested, we want chapters with NO subLevelId (null)
       // OR chapters where subLevelId is "default" (if that's how it was stored)
