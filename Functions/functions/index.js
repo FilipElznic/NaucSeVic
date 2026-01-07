@@ -932,7 +932,7 @@ exports.seedDatabase = onCall(async (request) => {
     // 1. Process Subjects
     for (const [subjectId, subjectData] of Object.entries(content)) {
       // Create Subject Document
-      const subjectRef = db.collection("subjects").doc(subjectId);
+      const subjectRef = db.collection("subject").doc(subjectId);
       operations.push({
         type: "set",
         ref: subjectRef,
@@ -958,7 +958,7 @@ exports.seedDatabase = onCall(async (request) => {
             const chapterId = `${subjectId}_${levelId}_${subLevelId}_ch${
               chapterIdx + 1
             }`;
-            const chapterRef = db.collection("chapters").doc(chapterId);
+            const chapterRef = db.collection("chapter").doc(chapterId);
 
             operations.push({
               type: "set",
@@ -978,7 +978,7 @@ exports.seedDatabase = onCall(async (request) => {
             if (chapter.lessons && Array.isArray(chapter.lessons)) {
               chapter.lessons.forEach((lesson, lessonIdx) => {
                 const lessonId = `${chapterId}_l${lessonIdx + 1}`;
-                const lessonRef = db.collection("lessons").doc(lessonId);
+                const lessonRef = db.collection("lesson").doc(lessonId);
 
                 const lessonTitle =
                   typeof lesson === "string" ? lesson : lesson.title;
@@ -1065,7 +1065,7 @@ exports.getCourseData = onCall(async (request) => {
     const db = admin.firestore();
 
     // 1. Get Subject Data (optional, for title etc)
-    const subjectDoc = await db.collection("subjects").doc(subjectId).get();
+    const subjectDoc = await db.collection("subject").doc(subjectId).get();
     const subjectData = subjectDoc.exists
       ? subjectDoc.data()
       : { title: subjectId };
@@ -1079,7 +1079,7 @@ exports.getCourseData = onCall(async (request) => {
     // Simplify query to avoid complex index requirements
     // We fetch all chapters for this subject and level, then filter in memory
     const chaptersQuery = db
-      .collection("chapters")
+      .collection("chapter")
       .where("subjectId", "==", subjectId)
       .where("levelId", "==", levelId);
 
@@ -1123,7 +1123,7 @@ exports.getCourseData = onCall(async (request) => {
     const chapterPromises = chaptersDocs.map(async (chapterData) => {
       // Remove orderBy here to avoid index issues
       const lessonsSnapshot = await db
-        .collection("lessons")
+        .collection("lesson")
         .where("chapterId", "==", chapterData.id)
         .get();
 
@@ -1179,7 +1179,7 @@ exports.submitQuiz = onCall(async (request) => {
   const db = admin.firestore();
 
   // 2. Fetch the Lesson (Source of Truth)
-  const lessonRef = db.collection("lessons").doc(lessonId);
+  const lessonRef = db.collection("lesson").doc(lessonId);
   const userRef = db.collection("users").doc(userId);
 
   try {
@@ -1305,7 +1305,7 @@ exports.completeLesson = onCall(async (request) => {
 
   try {
     const userRef = db.collection("users").doc(userId);
-    const lessonRef = db.collection("lessons").doc(lessonId);
+    const lessonRef = db.collection("lesson").doc(lessonId);
 
     await db.runTransaction(async (transaction) => {
       const lessonDoc = await transaction.get(lessonRef);
