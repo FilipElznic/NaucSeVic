@@ -379,13 +379,14 @@ export const LaserFlow = ({
     const updateSize = (w, h) => {
       const pr = currentDprRef.current;
 
-      const last = lastSizeRef.current;
-      const sizeChanged =
-        Math.abs(w - last.width) > 0.5 || Math.abs(h - last.height) > 0.5;
-      const dprChanged = Math.abs(pr - last.dpr) > 0.01;
-      if (!sizeChanged && !dprChanged) {
-        return;
-      }
+      // Force update to handle initial render issues where canvas might be blank
+      // const last = lastSizeRef.current;
+      // const sizeChanged =
+      //   Math.abs(w - last.width) > 0.5 || Math.abs(h - last.height) > 0.5;
+      // const dprChanged = Math.abs(pr - last.dpr) > 0.01;
+      // if (!sizeChanged && !dprChanged) {
+      //   return;
+      // }
 
       lastSizeRef.current = { width: w, height: h, dpr: pr };
       renderer.setPixelRatio(pr);
@@ -429,10 +430,16 @@ export const LaserFlow = ({
     const initSize = () => {
       if (!mount) return;
       const rect = mount.getBoundingClientRect();
-      updateSize(rect.width, rect.height);
+      if (rect.width > 0 && rect.height > 0) {
+        updateSize(rect.width, rect.height);
+      }
     };
 
     requestAnimationFrame(initSize);
+
+    // Initial delay hack to force resize after layout settles
+    const timer1 = setTimeout(initSize, 1500);
+    const timer2 = setTimeout(initSize, 4000);
 
     const ro = new ResizeObserver(onResize);
     ro.observe(mount);
@@ -471,7 +478,7 @@ export const LaserFlow = ({
     };
     const onCtxRestored = () => {
       pausedRef.current = false;
-      scheduleResize();
+      initSize();
     };
     canvas.addEventListener("webglcontextlost", onCtxLost, false);
     canvas.addEventListener("webglcontextrestored", onCtxRestored, false);
@@ -511,7 +518,7 @@ export const LaserFlow = ({
       ) {
         currentDprRef.current = next;
         lastDprChangeRef = now;
-        setSizeNow();
+        updateSize(lastSizeRef.current.width, lastSizeRef.current.height);
       }
 
       fpsSamplesRef.current = [];
@@ -557,6 +564,8 @@ export const LaserFlow = ({
     animate();
 
     return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
       cancelAnimationFrame(raf);
       if (resizeRaf) cancelAnimationFrame(resizeRaf);
       ro.disconnect();
