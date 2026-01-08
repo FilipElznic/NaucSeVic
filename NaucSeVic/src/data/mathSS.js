@@ -11,7 +11,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Co je to výrok?",
-                text: "Základním kamenem logiky je **výrok**. Je to jakákoliv oznamovací věta, u které má smysl se zeptat: 'Je to pravda, nebo lež?' Výrok musí mít pravdivostní hodnotu: buď **Pravda** (1, True) nebo **Nepravda** (0, False). \n- Příklad výroku: 'Číslo 5 je prvočíslo.' (Pravda)\n- Příklad výroku: 'Praha leží v Asii.' (Nepravda)\n- Není výrok: 'Ahoj!', 'Kolik je hodin?', 'Kéž by pršelo.' (U těchto vět nelze určit pravdivost).",
+                text: "Základním kamenem logiky je výrok. Je to jakákoliv oznamovací věta, u které má smysl se zeptat: 'Je to pravda, nebo lež?' Výrok musí mít pravdivostní hodnotu: buď Pravda (1, True) nebo Nepravda (0, False). \n- Příklad výroku: 'Číslo 5 je prvočíslo.' (Pravda)\n- Příklad výroku: 'Praha leží v Asii.' (Nepravda)\n- Není výrok: 'Ahoj!', 'Kolik je hodin?', 'Kéž by pršelo.' (U těchto vět nelze určit pravdivost).",
                 image:
                   "[Image showing examples of sentences classified as propositions vs non-propositions]",
               },
@@ -22,7 +22,7 @@ export const mathSS = {
               },
               {
                 heading: "Konjunkce a Disjunkce",
-                text: "Výroky můžeme spojovat:\n1. **Konjunkce (A a současně B):** Značíme $A \\wedge B$. Platí JEN tehdy, když jsou **oba** výroky pravdivé. ('Mám jablko A mám hrušku' = musím mít oboje).\n2. **Disjunkce (A nebo B):** Značíme $A \\vee B$. Platí, když je pravdivý **alespoň jeden** z nich (nebo oba). V matematice 'nebo' neznamená volbu 'buď a nebo'. ('Prší nebo sněží' = je mokro, klidně může pršet i sněžit zároveň).",
+                text: "Výroky můžeme spojovat:\n1. Konjunkce (A a současně B): Značíme $A \\wedge B$. Platí JEN tehdy, když jsou oba výroky pravdivé. ('Mám jablko A mám hrušku' = musím mít oboje).\n2. Disjunkce (A nebo B): Značíme $A \\vee B$. Platí, když je pravdivý alespoň jeden z nich (nebo oba). V matematice 'nebo' neznamená volbu 'buď a nebo'. ('Prší nebo sněží' = je mokro, klidně může pršet i sněžit zároveň).",
                 image: "",
               },
             ],
@@ -99,7 +99,7 @@ export const mathSS = {
               },
               {
                 heading: "Ekvivalence: Dvojitá šipka",
-                text: "Ekvivalence $A \\Leftrightarrow B$ ('A platí právě tehdy, když platí B') znamená, že výroky mají **stejnou** pravdivostní hodnotu. Buď oba platí, nebo oba neplatí. Je to vlastně spojená implikace tam i zpět ($A \\Rightarrow B$ a zároveň $B \\Rightarrow A$). V rovnici používáme ekvivalenci při úpravách, které nemění obor pravdivosti.",
+                text: "Ekvivalence $A \\Leftrightarrow B$ ('A platí právě tehdy, když platí B') znamená, že výroky mají stejnou pravdivostní hodnotu. Buď oba platí, nebo oba neplatí. Je to vlastně spojená implikace tam i zpět ($A \\Rightarrow B$ a zároveň $B \\Rightarrow A$). V rovnici používáme ekvivalenci při úpravách, které nemění obor pravdivosti.",
                 image: "placeholder-equivalence-arrows",
               },
               {
@@ -179,13 +179,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Všichni a Někdo",
-                text: "Kvantifikátory nám říkají, kolika objektů se tvrzení týká.\n1. **Obecný kvantifikátor ($\\forall$):** Čteme 'Pro každé...'. Tvrzení musí platit pro úplně všechny prvky bez výjimky. Příklad: $\\forall x \\in \\mathbb{R}: x^2 \\ge 0$ (Pro každé reálné číslo platí, že jeho druhá mocnina je nezáporná).\n2. **Existenční kvantifikátor ($\\exists$):** Čteme 'Existuje alespoň jedno...'. Stačí najít jediný příklad, aby to byla pravda. Příklad: $\\exists x \\in \\mathbb{Z}: x + 1 = 0$ (Existuje číslo, pro které to platí – ano, -1).",
+                text: "Kvantifikátory nám říkají, kolika objektů se tvrzení týká.\n1. Obecný kvantifikátor ($\\forall$): Čteme 'Pro každé...'. Tvrzení musí platit pro úplně všechny prvky bez výjimky. Příklad: $\\forall x \\in \\mathbb{R}: x^2 \\ge 0$ (Pro každé reálné číslo platí, že jeho druhá mocnina je nezáporná).\n2. Existenční kvantifikátor ($\\exists$): Čteme 'Existuje alespoň jedno...'. Stačí najít jediný příklad, aby to byla pravda. Příklad: $\\exists x \\in \\mathbb{Z}: x + 1 = 0$ (Existuje číslo, pro které to platí – ano, -1).",
                 image:
                   "[Image illustrating symbols for For All and Exists with group diagrams]",
               },
               {
                 heading: "Negování kvantifikátorů",
-                text: "Tady se dělá nejvíce chyb v běžné řeči. Jak popřít větu 'Všichni spí'?\n- Špatně: 'Nikdo nespí.'\n- Správně: '**Alespoň jeden** nespí.'\n\nPravidla pro negaci:\n- $\\forall$ (Všichni) $\\rightarrow$ mění se na $\\exists$ a zneguje se zbytek (Alespoň jeden ne).\n- $\\exists$ (Existuje) $\\rightarrow$ mění se na $\\forall$ a zneguje se zbytek (Nikdo/Žádný ne).",
+                text: "Tady se dělá nejvíce chyb v běžné řeči. Jak popřít větu 'Všichni spí'?\n- Špatně: 'Nikdo nespí.'\n- Správně: 'Alespoň jeden nespí.'\n\nPravidla pro negaci:\n- $\\forall$ (Všichni) $\\rightarrow$ mění se na $\\exists$ a zneguje se zbytek (Alespoň jeden ne).\n- $\\exists$ (Existuje) $\\rightarrow$ mění se na $\\forall$ a zneguje se zbytek (Nikdo/Žádný ne).",
                 image: "placeholder-quantifier-negation-rules",
               },
             ],
@@ -349,50 +349,50 @@ export const mathSS = {
             sections: [
               {
                 heading: "Kouzlo nuly",
-                text: "Jak vyřešit rovnici $(x - 2) \\cdot (x + 5) \\cdot (2x - 1) = 0$? Nemusíš nic roznásobovat! Použij selský rozum: **Kdy je výsledek násobení nula? Jen tehdy, když je alespoň jedno z čísel nula.**\nStačí tedy vzít každou závorku zvlášť a položit ji rovnu nule.\n1. $x - 2 = 0 \\Rightarrow x_1 = 2$\n2. $x + 5 = 0 \\Rightarrow x_2 = -5$\n3. $2x - 1 = 0 \\Rightarrow x_3 = 0,5$\nRovnice má tři řešení.",
+                text: "Jak vyřešit rovnici $(x - 2) \\cdot (x + 5) \\cdot (2x - 1) = 0$? Nemusíš nic roznásobovat! Použij selský rozum: Kdy je výsledek násobení nula? Jen tehdy, když je alespoň jedno z čísel nula.\nStačí tedy vzít každou závorku zvlášť a položit ji rovnu nule.\n1. $x - 2 = 0 \\Rightarrow x_1 = 2$\n2. $x + 5 = 0 \\Rightarrow x_2 = -5$\n3. $2x - 1 = 0 \\Rightarrow x_3 = 0,5$\nRovnice má tři řešení.",
                 image:
                   "[Image illustrating zero product property with logic gates]",
               },
               {
                 heading: "Zlomky a zakázané dělení",
-                text: "U rovnice v podílovém tvaru $\\frac{x + 3}{x - 4} = 0$ platí pravidlo: **Zlomek je nula právě tehdy, když je čitatel nula (a jmenovatel existuje).**\nTakže řešíme pouze $x + 3 = 0 \\Rightarrow x = -3$.\nALE POZOR! Musíme zkontrolovat jmenovatel. $x - 4 \\neq 0$, takže $x \\neq 4$. Kdyby nám vyšla čtyřka, museli bychom ji vyhodit.",
+                text: "U rovnice v podílovém tvaru $\\frac{x + 3}{x - 4} = 0$ platí pravidlo: Zlomek je nula právě tehdy, když je čitatel nula (a jmenovatel existuje).\nTakže řešíme pouze $x + 3 = 0 \\Rightarrow x = -3$.\nALE POZOR! Musíme zkontrolovat jmenovatel. $x - 4 \\neq 0$, takže $x \\neq 4$. Kdyby nám vyšla čtyřka, museli bychom ji vyhodit.",
                 image: "",
               },
               {
                 heading: "Kladivo na paraboly",
-                text: "Kvadratická rovnice má tvar $ax^2 + bx + c = 0$. Někdy jde rozložit na součin (např. $x^2 - 4 = (x-2)(x+2)$), ale když to z hlavy nejde, nastupuje univerzální vzorec s **diskriminantem ($D$)**.\n$$ D = b^2 - 4ac $$\nDiskriminant nám řekne, kolik má rovnice řešení.",
+                text: "Kvadratická rovnice má tvar $ax^2 + bx + c = 0$. Někdy jde rozložit na součin (např. $x^2 - 4 = (x-2)(x+2)$), ale když to z hlavy nejde, nastupuje univerzální vzorec s diskriminantem ($D$).\n$$ D = b^2 - 4ac $$\nDiskriminant nám řekne, kolik má rovnice řešení.",
                 image: "[Image showing quadratic formula decomposition]",
               },
               {
                 heading: "Tři scénáře",
-                text: "1. **$D > 0$ (Kladný):** Dva různé kořeny. Vzorec: $$ x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a} $$\n2. **$D = 0$ (Nula):** Jeden dvojnásobný kořen. Vrchol paraboly leží na ose x.\n3. **$D < 0$ (Záporný):** Žádné řešení v reálných číslech (parabola se osy x nedotýká). Později zjistíme, že řešení existuje v komplexních číslech.",
+                text: "1. $D > 0$ (Kladný): Dva různé kořeny. Vzorec: $$ x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a} $$\n2. $D = 0$ (Nula): Jeden dvojnásobný kořen. Vrchol paraboly leží na ose x.\n3. $D < 0$ (Záporný): Žádné řešení v reálných číslech (parabola se osy x nedotýká). Později zjistíme, že řešení existuje v komplexních číslech.",
                 image:
                   "[Image illustrating geometric interpretation of discriminant D>0, D=0, D<0]",
               },
               {
                 heading: "Jak se zbavit odmocniny?",
-                text: "Máme rovnici $\\sqrt{x + 5} = x - 1$. Odmocninu zničíme tak, že celou rovnici **umocníme na druhou**. \n$$ (\\sqrt{x + 5})^2 = (x - 1)^2 $$\n$$ x + 5 = x^2 - 2x + 1 $$\nTeď už je to normální kvadratická rovnice, kterou vyřešíme. Tím to ale nekončí!",
+                text: "Máme rovnici $\\sqrt{x + 5} = x - 1$. Odmocninu zničíme tak, že celou rovnici umocníme na druhou. \n$$ (\\sqrt{x + 5})^2 = (x - 1)^2 $$\n$$ x + 5 = x^2 - 2x + 1 $$\nTeď už je to normální kvadratická rovnice, kterou vyřešíme. Tím to ale nekončí!",
                 image: "[Image showing squaring both sides of an equation]",
               },
               {
                 heading: "Zkouška je nutnost!",
-                text: "Umocňování není ekvivalentní úprava. Proč? Protože z rovnice $2 = -2$ (která neplatí) udělá umocněním $4 = 4$ (která platí). Umocňování může vyrobit **falešné kořeny**. \nProto u každé rovnice s odmocninou MUSÍŠ udělat zkoušku pro všechna čísla, která ti vyšla. Pokud levá strana nerovná se pravé, kořen škrtáme.",
+                text: "Umocňování není ekvivalentní úprava. Proč? Protože z rovnice $2 = -2$ (která neplatí) udělá umocněním $4 = 4$ (která platí). Umocňování může vyrobit falešné kořeny. \nProto u každé rovnice s odmocninou MUSÍŠ udělat zkoušku pro všechna čísla, která ti vyšla. Pokud levá strana nerovná se pravé, kořen škrtáme.",
                 image: "",
               },
               {
                 heading: "Větší nebo menší?",
-                text: "Lineární nerovnice (např. $2x - 5 > 3$) řešíme stejně jako rovnice, s jedním chytákem: **Když násobíme nebo dělíme záporným číslem, zobáček se otáčí!**\n$$ -2x > 10 \\quad / :(-2) $$\n$$ x < -5 $$\nVýsledek zapíšeme intervalem: $x \\in (-\\infty; -5)$.",
+                text: "Lineární nerovnice (např. $2x - 5 > 3$) řešíme stejně jako rovnice, s jedním chytákem: Když násobíme nebo dělíme záporným číslem, zobáček se otáčí!\n$$ -2x > 10 \\quad / :(-2) $$\n$$ x < -5 $$\nVýsledek zapíšeme intervalem: $x \\in (-\\infty; -5)$.",
                 image:
                   "[Image illustrating inequality sign flipping when dividing by negative number]",
               },
               {
                 heading: "Metoda nulových bodů (Hádě)",
-                text: "Jak vyřešit $(x-2)(x+3) > 0$? \n1. Najdeme **nulové body**, kde se závorky rovnají nule: $2$ a $-3$.\n2. Naneseme je na osu. Osa se rozdělí na 3 intervaly.\n3. Z každého intervalu vezmeme zkušební číslo, dosadíme a zjistíme znaménko výsledku (např. minus krát minus je plus).\n4. Vybereme intervaly, které splňují zadání ($>0$ chceme plusy).",
+                text: "Jak vyřešit $(x-2)(x+3) > 0$? \n1. Najdeme nulové body, kde se závorky rovnají nule: $2$ a $-3$.\n2. Naneseme je na osu. Osa se rozdělí na 3 intervaly.\n3. Z každého intervalu vezmeme zkušební číslo, dosadíme a zjistíme znaménko výsledku (např. minus krát minus je plus).\n4. Vybereme intervaly, které splňují zadání ($>0$ chceme plusy).",
                 image: "",
               },
               {
                 heading: "Rovnice s knoflíkem",
-                text: "Představ si rovnici $px = 10$, kde $x$ je neznámá a $p$ je **parametr** (nastavovátko). Nemůžeme jen tak napsat $x = 10/p$, protože nevíme, co je $p$.\nMusíme provést **diskusi**:\n1. Co když $p = 0$? Rovnice je $0 \\cdot x = 10$, tedy $0 = 10$. To je nesmysl $\\rightarrow$ Nemá řešení.\n2. Co když $p \\neq 0$? Můžeme dělit. $\\rightarrow x = 10/p$.",
+                text: "Představ si rovnici $px = 10$, kde $x$ je neznámá a $p$ je parametr (nastavovátko). Nemůžeme jen tak napsat $x = 10/p$, protože nevíme, co je $p$.\nMusíme provést diskusi:\n1. Co když $p = 0$? Rovnice je $0 \\cdot x = 10$, tedy $0 = 10$. To je nesmysl $\\rightarrow$ Nemá řešení.\n2. Co když $p \\neq 0$? Můžeme dělit. $\\rightarrow x = 10/p$.",
                 image:
                   "[Image illustrating a machine with a parameter knob creating different outputs]",
               },
@@ -692,7 +692,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Anatomie mnohočlenu",
-                text: "Mnohočlen (polynom) je součet členů, jako je $5x^3 - 2x + 1$. Každý člen má svůj **koeficient** (číslo) a **mocninu**. Nejvyšší mocnina určuje **stupeň mnohočlenu**. Například $x^5 - 100$ je mnohočlen 5. stupně. Mnohočleny můžeme sčítat, odčítat a násobit ('každý s každým'), to už známe. Novinkou je dělení.",
+                text: "Mnohočlen (polynom) je součet členů, jako je $5x^3 - 2x + 1$. Každý člen má svůj koeficient (číslo) a mocninu. Nejvyšší mocnina určuje stupeň mnohočlenu. Například $x^5 - 100$ je mnohočlen 5. stupně. Mnohočleny můžeme sčítat, odčítat a násobit ('každý s každým'), to už známe. Novinkou je dělení.",
                 image: "",
               },
               {
@@ -702,17 +702,17 @@ export const mathSS = {
               },
               {
                 heading: "Matematika nesnáší nulu",
-                text: "Lomený výraz je vlastně zlomek, který má ve jmenovateli proměnnou, např. $\\frac{x+2}{x-3}$. Než začneme cokoliv počítat, musíme určit **podmínky**. V matematice je přísně zakázáno dělit nulou. Jmenovatel se nesmí rovnat nule! \nU $\\frac{x+2}{x-3}$ platí $x - 3 \\neq 0$, tedy $x \\neq 3$. Pokud na podmínky zapomeneš, můžeš dojít k nesmyslnému výsledku.",
+                text: "Lomený výraz je vlastně zlomek, který má ve jmenovateli proměnnou, např. $\\frac{x+2}{x-3}$. Než začneme cokoliv počítat, musíme určit podmínky. V matematice je přísně zakázáno dělit nulou. Jmenovatel se nesmí rovnat nule! \nU $\\frac{x+2}{x-3}$ platí $x - 3 \\neq 0$, tedy $x \\neq 3$. Pokud na podmínky zapomeneš, můžeš dojít k nesmyslnému výsledku.",
                 image: "",
               },
               {
                 heading: "Krácení a rozklad",
-                text: "Chceš zkrátit výraz $\\frac{x^2 - 9}{x + 3}$? NESMÍŠ jen tak škrtnout $x$ nebo čísla. Musíš nejprve **rozložit na součin**!\nČitatel je vzorec $a^2-b^2$: $(x-3)(x+3)$.\nTeď máme $\\frac{(x-3)(x+3)}{(x+3)}$. Celou závorku $(x+3)$ můžeme škrtnout.\nVýsledek je $x - 3$ (za podmínky $x \\neq -3$).",
+                text: "Chceš zkrátit výraz $\\frac{x^2 - 9}{x + 3}$? NESMÍŠ jen tak škrtnout $x$ nebo čísla. Musíš nejprve rozložit na součin!\nČitatel je vzorec $a^2-b^2$: $(x-3)(x+3)$.\nTeď máme $\\frac{(x-3)(x+3)}{(x+3)}$. Celou závorku $(x+3)$ můžeme škrtnout.\nVýsledek je $x - 3$ (za podmínky $x \\neq -3$).",
                 image: "",
               },
               {
                 heading: "Záporný exponent = Výtah",
-                text: "Co znamená $x^{-2}$? Není to záporné číslo! Minus v exponentu funguje jako **výtah**. Říká číslu: 'Jeď do druhého patra.'\n- Pokud je číslo nahoře, pošle ho dolů do jmenovatele: $$ x^{-n} = \\frac{1}{x^n} $$ Tedy $2^{-3} = \\frac{1}{2^3} = \\frac{1}{8}$.\n- Pokud je dole, pošle ho nahoru: $\\frac{1}{x^{-n}} = x^n$.",
+                text: "Co znamená $x^{-2}$? Není to záporné číslo! Minus v exponentu funguje jako výtah. Říká číslu: 'Jeď do druhého patra.'\n- Pokud je číslo nahoře, pošle ho dolů do jmenovatele: $$ x^{-n} = \\frac{1}{x^n} $$ Tedy $2^{-3} = \\frac{1}{2^3} = \\frac{1}{8}$.\n- Pokud je dole, pošle ho nahoru: $\\frac{1}{x^{-n}} = x^n$.",
                 image: "",
               },
               {
@@ -722,7 +722,7 @@ export const mathSS = {
               },
               {
                 heading: "Zlomek v exponentu",
-                text: "Teď přijde velké odhalení: Odmocniny ve skutečnosti neexistují, jsou to jen **zlomkové mocniny**! \n- Druhá odmocnina je mocnina na jednu polovinu: $\\sqrt{x} = x^{\\frac{1}{2}}$.\n- Třetí odmocnina je mocnina na jednu třetinu: $\\sqrt[3]{x} = x^{\\frac{1}{3}}$.\nObecně platí: $$ \\sqrt[n]{x^m} = x^{\\frac{m}{n}} $$ Jmenovatel zlomku ti říká, kolikátá je to odmocnina. 'Kořen (root) je dole'.",
+                text: "Teď přijde velké odhalení: Odmocniny ve skutečnosti neexistují, jsou to jen zlomkové mocniny! \n- Druhá odmocnina je mocnina na jednu polovinu: $\\sqrt{x} = x^{\\frac{1}{2}}$.\n- Třetí odmocnina je mocnina na jednu třetinu: $\\sqrt[3]{x} = x^{\\frac{1}{3}}$.\nObecně platí: $$ \\sqrt[n]{x^m} = x^{\\frac{m}{n}} $$ Jmenovatel zlomku ti říká, kolikátá je to odmocnina. 'Kořen (root) je dole'.",
                 image: "",
               },
               {
@@ -732,7 +732,7 @@ export const mathSS = {
               },
               {
                 heading: "Kosmetika výrazů",
-                text: "V matematice se považuje za 'neslušné' nechat odmocninu ve jmenovateli (dole). Procesu odstranění odmocniny zespodu říkáme **usměrňování**. \nZákladní trik: Vynásobíme zlomek jedničkou zapsanou chytře jako $\\frac{\\sqrt{a}}{\\sqrt{a}}$.\n$$ \\frac{1}{\\sqrt{2}} = \\frac{1}{\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = \\frac{\\sqrt{2}}{2} $$ Hodnota se nezměnila, ale odmocnina je teď nahoře.",
+                text: "V matematice se považuje za 'neslušné' nechat odmocninu ve jmenovateli (dole). Procesu odstranění odmocniny zespodu říkáme usměrňování. \nZákladní trik: Vynásobíme zlomek jedničkou zapsanou chytře jako $\\frac{\\sqrt{a}}{\\sqrt{a}}$.\n$$ \\frac{1}{\\sqrt{2}} = \\frac{1}{\\sqrt{2}} \\cdot \\frac{\\sqrt{2}}{\\sqrt{2}} = \\frac{\\sqrt{2}}{2} $$ Hodnota se nezměnila, ale odmocnina je teď nahoře.",
                 image: "",
               },
               {
@@ -1017,12 +1017,12 @@ export const mathSS = {
             sections: [
               {
                 heading: "Co je to množina?",
-                text: "Množina je soubor libovolných objektů. Představ si ji jako nákupní tašku. To, co je uvnitř, jsou **prvky**. Množiny značíme velkými písmeny ($A, B, M$) a prvky vypisujeme do složených závorek.\nNapříklad množina barev na semaforu: $$ S = \\{\\text{červená, žlutá, zelená}\\} $$",
+                text: "Množina je soubor libovolných objektů. Představ si ji jako nákupní tašku. To, co je uvnitř, jsou prvky. Množiny značíme velkými písmeny ($A, B, M$) a prvky vypisujeme do složených závorek.\nNapříklad množina barev na semaforu: $$ S = \\{\\text{červená, žlutá, zelená}\\} $$",
                 image: "",
               },
               {
                 heading: "Patří, nebo nepatří?",
-                text: "Pokud prvek $x$ leží v množině $A$, píšeme $x \\in A$ (čteme: $x$ je prvkem $A$). Pokud tam není, píšeme $x \\notin A$ (přeškrtnuté $\\in$).\nExistují dva speciální případy:\n1. **Prázdná množina** ($\\emptyset$): Taška, ve které nic není.\n2. **Podmnožina** ($B \\subset A$): Když je celá taška $B$ vložena do větší tašky $A$.",
+                text: "Pokud prvek $x$ leží v množině $A$, píšeme $x \\in A$ (čteme: $x$ je prvkem $A$). Pokud tam není, píšeme $x \\notin A$ (přeškrtnuté $\\in$).\nExistují dva speciální případy:\n1. Prázdná množina ($\\emptyset$): Taška, ve které nic není.\n2. Podmnožina ($B \\subset A$): Když je celá taška $B$ vložena do větší tašky $A$.",
                 image: "placeholder-subset-diagram",
               },
             ],
@@ -1093,17 +1093,17 @@ export const mathSS = {
             sections: [
               {
                 heading: "Sjednocení (Miska)",
-                text: "Sjednocení dvou množin $A \\cup B$ (symbol vypadá jako miska) znamená, že sesypeme obsah obou tašek na jednu hromadu. Prvky, které byly v obou, tam budou jen jednou (neopakují se). \n$$ \\{1, 2\\} \\cup \\{2, 3\\} = \\{1, 2, 3\\} $$ \nPlatí to pro prvky, které jsou v $A$ **nebo** v $B$.",
+                text: "Sjednocení dvou množin $A \\cup B$ (symbol vypadá jako miska) znamená, že sesypeme obsah obou tašek na jednu hromadu. Prvky, které byly v obou, tam budou jen jednou (neopakují se). \n$$ \\{1, 2\\} \\cup \\{2, 3\\} = \\{1, 2, 3\\} $$ \nPlatí to pro prvky, které jsou v $A$ nebo v $B$.",
                 image: "",
               },
               {
                 heading: "Průnik (Most)",
-                text: "Průnik $A \\cap B$ (symbol připomíná most nebo tunel) hledá to, co mají množiny **společné**. \n$$ \\{1, 2\\} \\cap \\{2, 3\\} = \\{2\\} $$ \nPokud množiny nemají nic společného (třeba sudá a lichá čísla), jejich průnikem je prázdná množina $\\emptyset$. Říkáme, že jsou **disjunktní**.",
+                text: "Průnik $A \\cap B$ (symbol připomíná most nebo tunel) hledá to, co mají množiny společné. \n$$ \\{1, 2\\} \\cap \\{2, 3\\} = \\{2\\} $$ \nPokud množiny nemají nic společného (třeba sudá a lichá čísla), jejich průnikem je prázdná množina $\\emptyset$. Říkáme, že jsou disjunktní.",
                 image: "",
               },
               {
                 heading: "Rozdíl a doplněk",
-                text: "- **Rozdíl** $A \\setminus B$: Vezmu množinu $A$ a 'vykopnu' z ní všechno, co patří i do $B$. ('Všechno, co je v A, ale není v B').\n- **Doplněk** $A'$: Všechno, co chybí množině $A$ do nějakého celku (univerza).",
+                text: "- Rozdíl $A \\setminus B$: Vezmu množinu $A$ a 'vykopnu' z ní všechno, co patří i do $B$. ('Všechno, co je v A, ale není v B').\n- Doplněk $A'$: Všechno, co chybí množině $A$ do nějakého celku (univerza).",
                 image: "placeholder-set-difference",
               },
             ],
@@ -1173,13 +1173,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Přirozená a Celá čísla",
-                text: "Čísla nepadají z nebe, mají svou hierarchii.\n1. **Přirozená čísla ($\\mathbb{N}$):** $1, 2, 3...$ (to, čím počítáme prsty). Někdy se tam řadí i nula $\\mathbb{N}_0$.\n2. **Celá čísla ($\\mathbb{Z}$):** Přirozená + nula + záporná čísla ($-5, 0, 10$). Zkratka je z německého 'Zahlen'.",
+                text: "Čísla nepadají z nebe, mají svou hierarchii.\n1. Přirozená čísla ($\\mathbb{N}$): $1, 2, 3...$ (to, čím počítáme prsty). Někdy se tam řadí i nula $\\mathbb{N}_0$.\n2. Celá čísla ($\\mathbb{Z}$): Přirozená + nula + záporná čísla ($-5, 0, 10$). Zkratka je z německého 'Zahlen'.",
                 image:
                   "[Image showing nested circles of number sets N inside Z]",
               },
               {
                 heading: "Racionální a Reálná čísla",
-                text: "3. **Racionální čísla ($\\mathbb{Q}$):** Vše, co jde zapsat jako zlomek (quotient). Patří sem $1/2$, $0,5$ i periodická čísla.\n4. **Reálná čísla ($\\mathbb{R}$):** Všechna čísla na číselné ose. Patří sem i ta, která nejdou zapsat zlomkem (iracionální), jako je $\\pi$ nebo $\\sqrt{2}$. Tahle čísla 'vyplňují díry' na ose.",
+                text: "3. Racionální čísla ($\\mathbb{Q}$): Vše, co jde zapsat jako zlomek (quotient). Patří sem $1/2$, $0,5$ i periodická čísla.\n4. Reálná čísla ($\\mathbb{R}$): Všechna čísla na číselné ose. Patří sem i ta, která nejdou zapsat zlomkem (iracionální), jako je $\\pi$ nebo $\\sqrt{2}$. Tahle čísla 'vyplňují díry' na ose.",
                 image:
                   "[Image showing complete hierarchy N subset Z subset Q subset R]",
               },
@@ -1245,12 +1245,12 @@ export const mathSS = {
             sections: [
               {
                 heading: "Od - do",
-                text: "Jak zapsat 'všechna čísla od 2 do 5'? Nemůžeme je vypsat, je jich nekonečně mnoho ($2,1; 2,001...$). Používáme **interval**. \nInterval je kus číselné osy. Důležité je, zda krajní body patří dovnitř, nebo ne. To určují závorky.",
+                text: "Jak zapsat 'všechna čísla od 2 do 5'? Nemůžeme je vypsat, je jich nekonečně mnoho ($2,1; 2,001...$). Používáme interval. \nInterval je kus číselné osy. Důležité je, zda krajní body patří dovnitř, nebo ne. To určují závorky.",
                 image: "[Image showing a number line with an interval segment]",
               },
               {
                 heading: "Závorky a puntíky",
-                text: "1. **Uzavřený interval** $\\langle a; b \\rangle$: Krajní body tam PATŘÍ. Nerovnice: $a \\le x \\le b$. Na ose kreslíme **plný puntík**.\n2. **Otevřený interval** $(a; b)$: Krajní body tam NEPATŘÍ (končíme těsně před nimi). Nerovnice: $a < x < b$. Na ose kreslíme **prázdný puntík**.\n3. **Polouzavřený interval** $\\langle a; b)$: 'a' patří, 'b' nepatří.",
+                text: "1. Uzavřený interval $\\langle a; b \\rangle$: Krajní body tam PATŘÍ. Nerovnice: $a \\le x \\le b$. Na ose kreslíme plný puntík.\n2. Otevřený interval $(a; b)$: Krajní body tam NEPATŘÍ (končíme těsně před nimi). Nerovnice: $a < x < b$. Na ose kreslíme prázdný puntík.\n3. Polouzavřený interval $\\langle a; b)$: 'a' patří, 'b' nepatří.",
                 image:
                   "[Image contrasting closed interval solid dots vs open interval hollow dots]",
               },
@@ -1325,13 +1325,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Kreslíme nad sebou",
-                text: "S intervaly děláme sjednocení a průniky stejně jako s množinami. Nejlepší metoda je grafická:\n1. Nakreslíš osu.\n2. Interval $A$ nakreslíš jako čáru nad osou (v jedné výšce).\n3. Interval $B$ nakreslíš jako čáru o kousek výš.\n4. **Průnik** je tam, kde jsou 'dvě čáry nad sebou'. **Sjednocení** je tam, kde je 'alespoň jedna čára'.",
+                text: "S intervaly děláme sjednocení a průniky stejně jako s množinami. Nejlepší metoda je grafická:\n1. Nakreslíš osu.\n2. Interval $A$ nakreslíš jako čáru nad osou (v jedné výšce).\n3. Interval $B$ nakreslíš jako čáru o kousek výš.\n4. Průnik je tam, kde jsou 'dvě čáry nad sebou'. Sjednocení je tam, kde je 'alespoň jedna čára'.",
                 image:
                   "[Image showing two overlapping intervals on a number line highlighting intersection]",
               },
               {
                 heading: "Příklad",
-                text: "Mějme $A = \\langle -2; 3 \\rangle$ a $B = (0; 5)$.\n- **Průnik** ($A \\cap B$): Kde se překrývají? Od $0$ do $3$. Nula v B není (prázdná), trojka v A je (plná). Výsledek: $(0; 3 \\rangle$.\n- **Sjednocení** ($A \\cup B$): Odkud kam sahají dohromady? Začínají v -2 a končí v 5. Výsledek: $\\langle -2; 5)$.",
+                text: "Mějme $A = \\langle -2; 3 \\rangle$ a $B = (0; 5)$.\n- Průnik ($A \\cap B$): Kde se překrývají? Od $0$ do $3$. Nula v B není (prázdná), trojka v A je (plná). Výsledek: $(0; 3 \\rangle$.\n- Sjednocení ($A \\cup B$): Odkud kam sahají dohromady? Začínají v -2 a končí v 5. Výsledek: $\\langle -2; 5)$.",
                 image: "placeholder-interval-operations-example",
               },
             ],
@@ -1416,12 +1416,12 @@ export const mathSS = {
             sections: [
               {
                 heading: "Černá skříňka",
-                text: "Funkce je jako stroj (černá skříňka). Vhodíš do ní číslo $x$ (vstup), stroj něco udělá (vynásobí, umocní...) a vypadne číslo $y$ (výstup). Zapisujeme to jako $y = f(x)$.\nZlaté pravidlo funkce zní: **Pro jedno $x$ existuje nejvýše jedno $y$.**\nNemůže se stát, že pro vstup $x=2$ by funkce vyplivla zároveň $10$ i $20$. To by nebyla funkce, ale chaos. Jeden vstup = jeden jasný výsledek.",
+                text: "Funkce je jako stroj (černá skříňka). Vhodíš do ní číslo $x$ (vstup), stroj něco udělá (vynásobí, umocní...) a vypadne číslo $y$ (výstup). Zapisujeme to jako $y = f(x)$.\nZlaté pravidlo funkce zní: Pro jedno $x$ existuje nejvýše jedno $y$.\nNemůže se stát, že pro vstup $x=2$ by funkce vyplivla zároveň $10$ i $20$. To by nebyla funkce, ale chaos. Jeden vstup = jeden jasný výsledek.",
                 image: "",
               },
               {
                 heading: "Způsoby zadání",
-                text: "Funkci můžeme zadat třemi způsoby:\n1. **Předpisem (rovnicí):** Např. $f(x) = 2x + 1$. To je nejpřesnější.\n2. **Tabulkou:** Vypíšeme pár dvojic. To je dobré pro přehled, ale nevidíme všechno.\n3. **Grafem:** Nakreslíme body v soustavě souřadnic. To je nejnázornější.",
+                text: "Funkci můžeme zadat třemi způsoby:\n1. Předpisem (rovnicí): Např. $f(x) = 2x + 1$. To je nejpřesnější.\n2. Tabulkou: Vypíšeme pár dvojic. To je dobré pro přehled, ale nevidíme všechno.\n3. Grafem: Nakreslíme body v soustavě souřadnic. To je nejnázornější.",
                 image: "placeholder-function-representations",
               },
             ],
@@ -1497,13 +1497,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Povolené vstupy ($D_f$)",
-                text: "Definiční obor (značíme $D_f$) je množina všech čísel $x$, která **smíme** do funkce vložit. Obvykle jsou to všechna reálná čísla $\\mathbb{R}$, kromě 'zakázaných' hodnot. Kdy musíme dávat pozor?\n1. **Zlomek:** Jmenovatel se nesmí rovnat nule.\n2. **Odmocnina:** Pod sudou odmocninou nesmí být záporné číslo.\n3. **Logaritmus:** Argument musí být kladný (uvidíme později).",
+                text: "Definiční obor (značíme $D_f$) je množina všech čísel $x$, která smíme do funkce vložit. Obvykle jsou to všechna reálná čísla $\\mathbb{R}$, kromě 'zakázaných' hodnot. Kdy musíme dávat pozor?\n1. Zlomek: Jmenovatel se nesmí rovnat nule.\n2. Odmocnina: Pod sudou odmocninou nesmí být záporné číslo.\n3. Logaritmus: Argument musí být kladný (uvidíme později).",
                 image:
                   "[Image illustrating Domain as a projection of the graph onto the X-axis]",
               },
               {
                 heading: "Možné výstupy ($H_f$)",
-                text: "Obor hodnot (značíme $H_f$) je množina všech čísel $y$, která nám mohou z funkce vypadnout. \nPředstav si to jako **stín**, který vrhá graf funkce na osu $y$. Například u funkce $y = x^2$ nikdy nedostaneme záporný výsledek. Stín grafu začíná v nule a jde do nekonečna. $H_f = \\langle 0; \\infty)$.",
+                text: "Obor hodnot (značíme $H_f$) je množina všech čísel $y$, která nám mohou z funkce vypadnout. \nPředstav si to jako stín, který vrhá graf funkce na osu $y$. Například u funkce $y = x^2$ nikdy nedostaneme záporný výsledek. Stín grafu začíná v nule a jde do nekonečna. $H_f = \\langle 0; \\infty)$.",
                 image: "placeholder-range-shadow-y-axis",
               },
             ],
@@ -1577,13 +1577,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Z kopce a do kopce",
-                text: "Sledujeme graf zleva doprava (jako když čteme knihu).\n- **Rostoucí:** Jdeme do kopce. Čím větší $x$, tím větší $y$. ($x_1 < x_2 \\Rightarrow f(x_1) < f(x_2)$).\n- **Klesající:** Jdeme z kopce. Čím větší $x$, tím menší $y$.\n- **Konstantní:** Jdeme po rovině. $y$ se nemění.",
+                text: "Sledujeme graf zleva doprava (jako když čteme knihu).\n- Rostoucí: Jdeme do kopce. Čím větší $x$, tím větší $y$. ($x_1 < x_2 \\Rightarrow f(x_1) < f(x_2)$).\n- Klesající: Jdeme z kopce. Čím větší $x$, tím menší $y$.\n- Konstantní: Jdeme po rovině. $y$ se nemění.",
                 image:
                   "[Image illustrating increasing, decreasing and constant function graphs]",
               },
               {
                 heading: "Prostá funkce",
-                text: "Funkce je **prostá**, když každou hodnotu $y$ nabývá nanejvýš jednou. Graficky to poznáme tak, že kterákoliv vodorovná čára protne graf maximálně v jednom bodě. \n- Příklad: $y = 2x$ je prostá (nikdy se nevrací).\n- Příklad: $y = x^2$ není prostá (pro $y=4$ existují dva vstupy: $2$ a $-2$).",
+                text: "Funkce je prostá, když každou hodnotu $y$ nabývá nanejvýš jednou. Graficky to poznáme tak, že kterákoliv vodorovná čára protne graf maximálně v jednom bodě. \n- Příklad: $y = 2x$ je prostá (nikdy se nevrací).\n- Příklad: $y = x^2$ není prostá (pro $y=4$ existují dva vstupy: $2$ a $-2$).",
                 image: "placeholder-injective-function-test",
               },
             ],
@@ -1649,13 +1649,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Symetrie podle zrcadla (Sudá)",
-                text: "Funkce je **sudá**, pokud je její graf souměrný podle osy $y$ (svislé osy). Levá strana je zrcadlovým obrazem pravé.\nMatematicky: $f(-x) = f(x)$. (Minus uvnitř 'zmizí').\nTypický příklad: $y = x^2$ nebo $y = \\cos x$.",
+                text: "Funkce je sudá, pokud je její graf souměrný podle osy $y$ (svislé osy). Levá strana je zrcadlovým obrazem pravé.\nMatematicky: $f(-x) = f(x)$. (Minus uvnitř 'zmizí').\nTypický příklad: $y = x^2$ nebo $y = \\cos x$.",
                 image:
                   "[Image showing an even function symmetric about the Y-axis like y=x^2]",
               },
               {
                 heading: "Symetrie podle středu (Lichá)",
-                text: "Funkce je **lichá**, pokud je její graf souměrný podle počátku $[0;0]$. Když graf otočíš o 180 stupňů, vypadá stejně.\nMatematicky: $f(-x) = -f(x)$. (Minus 'vyskkočí' ven).\nTypický příklad: $y = x^3$ nebo $y = \\sin x$.",
+                text: "Funkce je lichá, pokud je její graf souměrný podle počátku $[0;0]$. Když graf otočíš o 180 stupňů, vypadá stejně.\nMatematicky: $f(-x) = -f(x)$. (Minus 'vyskkočí' ven).\nTypický příklad: $y = x^3$ nebo $y = \\sin x$.",
                 image: "placeholder-odd-function-symmetry",
               },
             ],
@@ -1715,13 +1715,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Podlaha a strop",
-                text: "Funkce je **omezená zdola**, pokud existuje vodorovná čára, pod kterou graf nikdy neklesne (má dno). Např. $y = x^2$ je omezená zdola (nulou).\nFunkce je **omezená shora**, pokud má strop, který nikdy neprorazí. Např. $y = -x^2$.\nPokud má oboje (jako sinus, který létá jen mezi -1 a 1), je **omezená**.",
+                text: "Funkce je omezená zdola, pokud existuje vodorovná čára, pod kterou graf nikdy neklesne (má dno). Např. $y = x^2$ je omezená zdola (nulou).\nFunkce je omezená shora, pokud má strop, který nikdy neprorazí. Např. $y = -x^2$.\nPokud má oboje (jako sinus, který létá jen mezi -1 a 1), je omezená.",
                 image:
                   "[Image illustrating bounded functions with floor and ceiling lines]",
               },
               {
                 heading: "Maxima a Minima",
-                text: "Pokud funkce v nějakém bodě dosáhne nejvyšší hodnoty ze všech, má tam **globální maximum** (vrchol hory). Pokud dosáhne nejnižší hodnoty, má **globální minimum** (dno propasti). \nParabola $y = x^2$ má minimum v bodě $[0;0]$, ale nemá maximum (jde do nekonečna).",
+                text: "Pokud funkce v nějakém bodě dosáhne nejvyšší hodnoty ze všech, má tam globální maximum (vrchol hory). Pokud dosáhne nejnižší hodnoty, má globální minimum (dno propasti). \nParabola $y = x^2$ má minimum v bodě $[0;0]$, ale nemá maximum (jde do nekonečna).",
                 image: "placeholder-function-extrema",
               },
             ],
@@ -1802,7 +1802,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Směrnice: Jak strmý je kopec?",
-                text: "V rovnici přímky $y = ax + b$ hraje hlavní roli číslo $a$, kterému říkáme **směrnice**. Udává, o kolik se zvedne $y$, když se $x$ posune o 1 doprava.\n- $a = 1$: Sklon $45^{\\circ}$.\n- $a = 2$: Prudký kopec (za 1 krok doprava 2 kroky nahoru).\n- $a = -0,5$: Mírné klesání (za 1 krok doprava půl kroku dolů).\nPokud známe dva body $[x_1; y_1]$ a $[x_2; y_2]$, směrnici vypočítáme jako: $$ a = \\frac{y_2 - y_1}{x_2 - x_1} $$",
+                text: "V rovnici přímky $y = ax + b$ hraje hlavní roli číslo $a$, kterému říkáme směrnice. Udává, o kolik se zvedne $y$, když se $x$ posune o 1 doprava.\n- $a = 1$: Sklon $45^{\\circ}$.\n- $a = 2$: Prudký kopec (za 1 krok doprava 2 kroky nahoru).\n- $a = -0,5$: Mírné klesání (za 1 krok doprava půl kroku dolů).\nPokud známe dva body $[x_1; y_1]$ a $[x_2; y_2]$, směrnici vypočítáme jako: $$ a = \\frac{y_2 - y_1}{x_2 - x_1} $$",
                 image:
                   "[Image showing slope triangle rise over run on a linear graph]",
               },
@@ -1875,7 +1875,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Kde má parabola nos?",
-                text: "Obecná rovnice $y = ax^2 + bx + c$ nám o poloze paraboly moc neřekne. Mnohem lepší je **vrcholový tvar**: $$ y = a(x - m)^2 + n $$ Z něj okamžitě vidíme souřadnice vrcholu $V[m; n]$. \n- Pozor na znaménko v závorce! $(x - 3)^2$ znamená posun doprava o 3 (m=3).\n- Číslo $n$ posouvá graf nahoru/dolů.",
+                text: "Obecná rovnice $y = ax^2 + bx + c$ nám o poloze paraboly moc neřekne. Mnohem lepší je vrcholový tvar: $$ y = a(x - m)^2 + n $$ Z něj okamžitě vidíme souřadnice vrcholu $V[m; n]$. \n- Pozor na znaménko v závorce! $(x - 3)^2$ znamená posun doprava o 3 (m=3).\n- Číslo $n$ posouvá graf nahoru/dolů.",
                 image:
                   "[Image illustrating parabola shift from origin based on vertex form]",
               },
@@ -1955,7 +1955,7 @@ export const mathSS = {
               },
               {
                 heading: "Průsečíky s osou x (Kořeny)",
-                text: "Tady leží sranda. Hledáme body, kde $y = 0$. To znamená vyřešit kvadratickou rovnici $ax^2 + bx + c = 0$. Zde vstupuje do hry **diskriminant**:\n- $D > 0$: Parabola protne osu $x$ dvakrát (dva průsečíky).\n- $D = 0$: Parabola se osy $x$ jen dotkne (vrcholem).\n- $D < 0$: Parabola 'létá' nad (nebo pod) osou $x$ a neprotne ji.",
+                text: "Tady leží sranda. Hledáme body, kde $y = 0$. To znamená vyřešit kvadratickou rovnici $ax^2 + bx + c = 0$. Zde vstupuje do hry diskriminant:\n- $D > 0$: Parabola protne osu $x$ dvakrát (dva průsečíky).\n- $D = 0$: Parabola se osy $x$ jen dotkne (vrcholem).\n- $D < 0$: Parabola 'létá' nad (nebo pod) osou $x$ a neprotne ji.",
                 image: "placeholder-parabola-discriminant-roots",
               },
             ],
@@ -2020,7 +2020,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Graf do V",
-                text: "Funkce $y = |x|$ je matkou všech 'lomených' funkcí. \n- Pro kladná čísla se chová jako $y = x$ (osa 1. kvadrantu).\n- Pro záporná čísla dělá z minusu plus ($y = -x$).\nVýsledkem je graf ve tvaru písmene **V** s špičkou v počátku $[0;0]$.",
+                text: "Funkce $y = |x|$ je matkou všech 'lomených' funkcí. \n- Pro kladná čísla se chová jako $y = x$ (osa 1. kvadrantu).\n- Pro záporná čísla dělá z minusu plus ($y = -x$).\nVýsledkem je graf ve tvaru písmene V s špičkou v počátku $[0;0]$.",
                 image: "",
               },
               {
@@ -2093,13 +2093,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Sudý vs. Lichý svět",
-                text: "Funkce $y = x^n$ se chovají podle toho, zda je $n$ sudé nebo liché.\n1. **Sudé $n$ ($x^2, x^4, x^6$):** Grafem je **parabola** (nebo jí podobná křivka). Je to 'miska', která je vždy nezáporná (kromě nuly). Graf je souměrný podle osy $y$. Čím větší exponent, tím je miska hranatější (u dna plošší, na krajích strmější).\n2. **Liché $n$ ($x^3, x^5, x^7$):** Graf je **esíčko** (prohnutá křivka). V záporných číslech jde dolů, v kladných nahoru. Je středově souměrný.",
+                text: "Funkce $y = x^n$ se chovají podle toho, zda je $n$ sudé nebo liché.\n1. Sudé $n$ ($x^2, x^4, x^6$): Grafem je parabola (nebo jí podobná křivka). Je to 'miska', která je vždy nezáporná (kromě nuly). Graf je souměrný podle osy $y$. Čím větší exponent, tím je miska hranatější (u dna plošší, na krajích strmější).\n2. Liché $n$ ($x^3, x^5, x^7$): Graf je esíčko (prohnutá křivka). V záporných číslech jde dolů, v kladných nahoru. Je středově souměrný.",
                 image:
                   "[Image comparing graphs of even power functions x^2, x^4 vs odd power functions x^3, x^5]",
               },
               {
                 heading: "Závod mezi nulou a jedničkou",
-                text: "Zajímavé věci se dějí v intervalu $(0; 1)$. Zkus umocnit $0,1^2 = 0,01$. A $0,1^3 = 0,001$. Tady platí paradox: **Čím vyšší mocnina, tím menší číslo!** Grafy s vyšším exponentem se v tomto úseku více lepí k ose $x$.",
+                text: "Zajímavé věci se dějí v intervalu $(0; 1)$. Zkus umocnit $0,1^2 = 0,01$. A $0,1^3 = 0,001$. Tady platí paradox: Čím vyšší mocnina, tím menší číslo! Grafy s vyšším exponentem se v tomto úseku více lepí k ose $x$.",
                 image: "placeholder-power-functions-interval-0-1",
               },
             ],
@@ -2163,13 +2163,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Hyperbola a Sopka",
-                text: "Co když je exponent záporný celé číslo? $y = x^{-n}$ je vlastně $y = \\frac{1}{x^n}$. Opět rozhoduje parita:\n1. **Liché $n$ ($x^{-1}, x^{-3}$):** Klasická **hyperbola**. Jedna větev v I. kvadrantu, druhá ve III. kvadrantu.\n2. **Sudé $n$ ($x^{-2}, x^{-4}$):** Graf připomíná **sopku** (nebo komín). Obě větve jdou nahoru do plus nekonečna. Proč? Protože sudá mocnina zruší minus ve jmenovateli, takže výsledek je vždy kladný.",
+                text: "Co když je exponent záporný celé číslo? $y = x^{-n}$ je vlastně $y = \\frac{1}{x^n}$. Opět rozhoduje parita:\n1. Liché $n$ ($x^{-1}, x^{-3}$): Klasická hyperbola. Jedna větev v I. kvadrantu, druhá ve III. kvadrantu.\n2. Sudé $n$ ($x^{-2}, x^{-4}$): Graf připomíná sopku (nebo komín). Obě větve jdou nahoru do plus nekonečna. Proč? Protože sudá mocnina zruší minus ve jmenovateli, takže výsledek je vždy kladný.",
                 image:
                   "[Image comparing graph of y=x^-1 (hyperbola) and y=x^-2 (volcano shape)]",
               },
               {
                 heading: "Definiční obor",
-                text: "U všech těchto funkcí platí přísný zákaz: **$x$ se nesmí rovnat nule!** Graf se k ose $y$ nekonečně přibližuje, ale nikdy se jí nedotkne. Ose $y$ říkáme vertikální asymptota.",
+                text: "U všech těchto funkcí platí přísný zákaz: $x$ se nesmí rovnat nule! Graf se k ose $y$ nekonečně přibližuje, ale nikdy se jí nedotkne. Ose $y$ říkáme vertikální asymptota.",
                 image: "placeholder-vertical-asymptote",
               },
             ],
@@ -2245,7 +2245,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Elektrické ohradníky",
-                text: "Lineární lomená funkce má tvar $y = \\frac{k}{x - m} + n$. Jejím grafem je hyperbola, která má dvě **asymptoty** – přímky, kterých se graf nikdy nedotkne.\n1. **Svislá asymptota:** Je v bodě, kde je jmenovatel nula ($x = m$). Tudy graf neprojde, protože nulou nelze dělit.\n2. **Vodorovná asymptota:** Je ve výšce posunu ($y = n$). K této hodnotě se funkce blíží v nekonečnu.",
+                text: "Lineární lomená funkce má tvar $y = \\frac{k}{x - m} + n$. Jejím grafem je hyperbola, která má dvě asymptoty – přímky, kterých se graf nikdy nedotkne.\n1. Svislá asymptota: Je v bodě, kde je jmenovatel nula ($x = m$). Tudy graf neprojde, protože nulou nelze dělit.\n2. Vodorovná asymptota: Je ve výšce posunu ($y = n$). K této hodnotě se funkce blíží v nekonečnu.",
                 image: "",
               },
               {
@@ -2407,7 +2407,7 @@ export const mathSS = {
               },
               {
                 heading: "Růst vs. Pokles",
-                text: "Tvar grafu závisí na základu $a$:\n1. **$a > 1$ (Růst):** Funkce prudce stoupá. Např. $y = 2^x$. Čím větší základ, tím strmější růst.\n2. **$0 < a < 1$ (Pokles):** Funkce klesá k nule. Např. $y = (0,5)^x$. To popisuje třeba radioaktivní rozpad nebo chladnutí kávy.\nGraf vždy prochází bodem $[0; 1]$, protože $a^0 = 1$.",
+                text: "Tvar grafu závisí na základu $a$:\n1. $a > 1$ (Růst): Funkce prudce stoupá. Např. $y = 2^x$. Čím větší základ, tím strmější růst.\n2. $0 < a < 1$ (Pokles): Funkce klesá k nule. Např. $y = (0,5)^x$. To popisuje třeba radioaktivní rozpad nebo chladnutí kávy.\nGraf vždy prochází bodem $[0; 1]$, protože $a^0 = 1$.",
                 image: "[Image showing exponential growth vs decay graphs]",
               },
             ],
@@ -2477,7 +2477,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Přírodní konstanta",
-                text: "Existuje jedno číslo, které je pro růst stejně důležité jako $\\pi$ pro kruhy. Je to **Eulerovo číslo $e$**. Jeho hodnota je přibližně $2,718$. Funkce $y = e^x$ se nazývá **přirozená exponenciála**. \nProč je tak slavná? Popisuje děje v přírodě nejdokonaleji. Derivace (rychlost změny) funkce $e^x$ je znovu $e^x$. Roste tak rychle, jaká je její hodnota.",
+                text: "Existuje jedno číslo, které je pro růst stejně důležité jako $\\pi$ pro kruhy. Je to Eulerovo číslo $e$. Jeho hodnota je přibližně $2,718$. Funkce $y = e^x$ se nazývá přirozená exponenciála. \nProč je tak slavná? Popisuje děje v přírodě nejdokonaleji. Derivace (rychlost změny) funkce $e^x$ je znovu $e^x$. Roste tak rychle, jaká je její hodnota.",
                 image: "",
               },
               {
@@ -2551,7 +2551,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Porovnávání exponentů",
-                text: "Jak vyřešit rovnici $2^x = 8$? \nKlíčem je převést obě strany na **stejný základ**. Víme, že $8 = 2^3$. \nRovnice je tedy $2^x = 2^3$. \nProtože základ je stejný, musí se rovnat i exponenty (funkce je prostá). \nVýsledek: $x = 3$.",
+                text: "Jak vyřešit rovnici $2^x = 8$? \nKlíčem je převést obě strany na stejný základ. Víme, že $8 = 2^3$. \nRovnice je tedy $2^x = 2^3$. \nProtože základ je stejný, musí se rovnat i exponenty (funkce je prostá). \nVýsledek: $x = 3$.",
                 image:
                   "[Image illustrating solving 2^x = 8 by equating exponents]",
               },
@@ -2611,7 +2611,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Když sčítáme mocniny",
-                text: "Rovnici $4^x + 2^x - 6 = 0$ nelze vyřešit porovnáním exponentů, protože je tam plus. Všimni si ale, že $4^x = (2^2)^x = (2^x)^2$. \nMáme tam $2^x$ i jeho druhou mocninu. To volá po **substituci**! \nZavedeme novou neznámou $y = 2^x$. \nRovnice se změní na kvadratickou: $y^2 + y - 6 = 0$.",
+                text: "Rovnici $4^x + 2^x - 6 = 0$ nelze vyřešit porovnáním exponentů, protože je tam plus. Všimni si ale, že $4^x = (2^2)^x = (2^x)^2$. \nMáme tam $2^x$ i jeho druhou mocninu. To volá po substituci! \nZavedeme novou neznámou $y = 2^x$. \nRovnice se změní na kvadratickou: $y^2 + y - 6 = 0$.",
                 image:
                   "[Image showing substitution process converting exponential to quadratic equation]",
               },
@@ -2760,7 +2760,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Hledání ztraceného exponentu",
-                text: "Už umíme vyřešit $2^3 = x$ (to je $8$). Umíme i $x^3 = 8$ (to je $2$). Ale co rovnice $2^x = 8$? Hledáme exponent. Víme, že je to $3$. Ale co $2^x = 10$? To z hlavy nedáme. Potřebujeme funkci, která se zeptá: **'Na kolikátou musím umocnit základ 2, abych dostal 10?'**\nTato funkce se jmenuje logaritmus. Zapisujeme: $$ x = \\log_2 10 $$",
+                text: "Už umíme vyřešit $2^3 = x$ (to je $8$). Umíme i $x^3 = 8$ (to je $2$). Ale co rovnice $2^x = 8$? Hledáme exponent. Víme, že je to $3$. Ale co $2^x = 10$? To z hlavy nedáme. Potřebujeme funkci, která se zeptá: 'Na kolikátou musím umocnit základ 2, abych dostal 10?'\nTato funkce se jmenuje logaritmus. Zapisujeme: $$ x = \\log_2 10 $$",
                 image:
                   "[Image showing the relationship between exponential form a^y=x and logarithmic form log_a(x)=y]",
               },
@@ -2826,13 +2826,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Zrcadlový obraz",
-                text: "Logaritmická funkce $y = \\log_a x$ je **inverzní** k exponenciální funkci $y = a^x$. Grafy jsou souměrné podle osy 1. a 3. kvadrantu ($y=x$). \n- Exponenciála rostla strašně rychle do výšky. \n- Logaritmus roste strašně pomalu (jako by ho někdo připlácl k zemi), ale roste do nekonečna. Prochází bodem $[1; 0]$.",
+                text: "Logaritmická funkce $y = \\log_a x$ je inverzní k exponenciální funkci $y = a^x$. Grafy jsou souměrné podle osy 1. a 3. kvadrantu ($y=x$). \n- Exponenciála rostla strašně rychle do výšky. \n- Logaritmus roste strašně pomalu (jako by ho někdo připlácl k zemi), ale roste do nekonečna. Prochází bodem $[1; 0]$.",
                 image:
                   "[Image comparing graph of 2^x and log_2(x) showing symmetry across y=x]",
               },
               {
                 heading: "Definiční obor a Asymptota",
-                text: "Graf se nekonečně přibližuje k ose $y$, ale nikdy se jí nedotkne. Osa $y$ je svislá asymptota. \n- **Definiční obor ($D_f$):** $(0; \\infty)$. Do logaritmu smíme sypat jen kladná čísla.\n- **Obor hodnot ($H_f$):** $\\mathbb{R}$. Výsledek logaritmu může být cokoliv (i záporné číslo, pokud logaritmujeme zlomek).",
+                text: "Graf se nekonečně přibližuje k ose $y$, ale nikdy se jí nedotkne. Osa $y$ je svislá asymptota. \n- Definiční obor ($D_f$): $(0; \\infty)$. Do logaritmu smíme sypat jen kladná čísla.\n- Obor hodnot ($H_f$): $\\mathbb{R}$. Výsledek logaritmu může být cokoliv (i záporné číslo, pokud logaritmujeme zlomek).",
                 image: "placeholder-log-graph-domain",
               },
             ],
@@ -2903,7 +2903,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Kalkulačka 17. století",
-                text: "Logaritmy byly vymyšleny, aby zjednodušily násobení velkých čísel na sčítání. Platí tři magická pravidla:\n1. **Logaritmus součinu:** $\\log_a (x \\cdot y) = \\log_a x + \\log_a y$\n2. **Logaritmus podílu:** $\\log_a (\\frac{x}{y}) = \\log_a x - \\log_a y$\nPozor! $\\log(x+y)$ nejde roztrhnout! Logaritmus součtu nemá vzorec.",
+                text: "Logaritmy byly vymyšleny, aby zjednodušily násobení velkých čísel na sčítání. Platí tři magická pravidla:\n1. Logaritmus součinu: $\\log_a (x \\cdot y) = \\log_a x + \\log_a y$\n2. Logaritmus podílu: $\\log_a (\\frac{x}{y}) = \\log_a x - \\log_a y$\nPozor! $\\log(x+y)$ nejde roztrhnout! Logaritmus součtu nemá vzorec.",
                 image:
                   "[Image illustrating log rules: product to sum, quotient to difference]",
               },
@@ -2978,7 +2978,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Když základ chybí",
-                text: "Dva logaritmy jsou tak důležité, že mají vlastní značku:\n1. **Dekadický logaritmus:** Má základ 10. Místo $\\log_{10} x$ píšeme jen $\\log x$. Používá se ve fyzice (pH, decibely, Richterova stupnice).\n2. **Přirozený logaritmus:** Má základ $e$ (Eulerovo číslo $\\approx 2,71$). Místo $\\log_e x$ píšeme $\\ln x$. Je to 'jazyk přírody', používá se v kalkulu a při popisu růstu.",
+                text: "Dva logaritmy jsou tak důležité, že mají vlastní značku:\n1. Dekadický logaritmus: Má základ 10. Místo $\\log_{10} x$ píšeme jen $\\log x$. Používá se ve fyzice (pH, decibely, Richterova stupnice).\n2. Přirozený logaritmus: Má základ $e$ (Eulerovo číslo $\\approx 2,71$). Místo $\\log_e x$ píšeme $\\ln x$. Je to 'jazyk přírody', používá se v kalkulu a při popisu růstu.",
                 image:
                   "[Image showing calculator buttons for LOG (base 10) and LN (base e)]",
               },
@@ -3040,7 +3040,7 @@ export const mathSS = {
               },
               {
                 heading: "Podmínky jsou životně důležité",
-                text: "Při řešení logaritmických rovnic MUSÍŠ určit podmínky. Vše, co je uvnitř logaritmu, musí být **ostře větší než nula**. \nŘešíš $\\log(x-2) + \\log(x+2) = \\dots$. Podmínky: $x-2>0$ a $x+2>0$. Tedy $x>2$. Pokud ti vyjde kořen $x = -3$, musíš ho vyhodit, i kdyby zkouška vyšla!",
+                text: "Při řešení logaritmických rovnic MUSÍŠ určit podmínky. Vše, co je uvnitř logaritmu, musí být ostře větší než nula. \nŘešíš $\\log(x-2) + \\log(x+2) = \\dots$. Podmínky: $x-2>0$ a $x+2>0$. Tedy $x>2$. Pokud ti vyjde kořen $x = -3$, musíš ho vyhodit, i kdyby zkouška vyšla!",
                 image: "placeholder-log-equation-conditions",
               },
             ],
@@ -3107,12 +3107,12 @@ export const mathSS = {
             sections: [
               {
                 heading: "Proč trojúhelník nestačí?",
-                text: "Na základní škole jste se učili, že sinus je 'protilehlá ku přeponě'. To funguje skvěle, dokud je úhel ostrý ($< 90^\\circ$). Ale kolik je $\\sin 120^\\circ$? V pravoúhlém trojúhelníku nemůže být tupý úhel! Proto matematici vymysleli **jednotkovou kružnici**. Je to kružnice se středem v počátku $[0;0]$ a poloměrem $r=1$.",
+                text: "Na základní škole jste se učili, že sinus je 'protilehlá ku přeponě'. To funguje skvěle, dokud je úhel ostrý ($< 90^\\circ$). Ale kolik je $\\sin 120^\\circ$? V pravoúhlém trojúhelníku nemůže být tupý úhel! Proto matematici vymysleli jednotkovou kružnici. Je to kružnice se středem v počátku $[0;0]$ a poloměrem $r=1$.",
                 image: "[Image of a unit circle on a Cartesian plane]",
               },
               {
                 heading: "Sinus a Kosinus jako souřadnice",
-                text: "Představ si bod $P$, který běhá po této kružnici. Jeho poloha závisí na úhlu $\\alpha$. Definice je revoluční:\n- **$\\cos \\alpha$** je $x$-ová souřadnice bodu $P$.\n- **$\\sin \\alpha$** je $y$-ová souřadnice bodu $P$.\nUž žádné přepony. Prostě souřadnice $[x; y] = [\\cos \\alpha; \\sin \\alpha]$. Díky tomu můžeme definovat sinus pro jakýkoliv úhel, třeba i $1000^\\circ$.",
+                text: "Představ si bod $P$, který běhá po této kružnici. Jeho poloha závisí na úhlu $\\alpha$. Definice je revoluční:\n- $\\cos \\alpha$ je $x$-ová souřadnice bodu $P$.\n- $\\sin \\alpha$ je $y$-ová souřadnice bodu $P$.\nUž žádné přepony. Prostě souřadnice $[x; y] = [\\cos \\alpha; \\sin \\alpha]$. Díky tomu můžeme definovat sinus pro jakýkoliv úhel, třeba i $1000^\\circ$.",
                 image:
                   "[Image showing a point P on the unit circle with coordinates (cos alpha, sin alpha)]",
               },
@@ -3173,7 +3173,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Proč 360 stupňů?",
-                text: "Dělení kruhu na 360 dílků (stupňů) vymysleli staří Babyloňané. Je to ale jen dohoda. V 'dospělé' matematice měříme úhly v **radiánech**. Jeden radián je úhel, při kterém je oblouk kružnice stejně dlouhý jako její poloměr ($r$).\nProtože obvod kruhu je $2\\pi r$, plný úhel ($360^\\circ$) odpovídá $2\\pi$ radiánům.",
+                text: "Dělení kruhu na 360 dílků (stupňů) vymysleli staří Babyloňané. Je to ale jen dohoda. V 'dospělé' matematice měříme úhly v radiánech. Jeden radián je úhel, při kterém je oblouk kružnice stejně dlouhý jako její poloměr ($r$).\nProtože obvod kruhu je $2\\pi r$, plný úhel ($360^\\circ$) odpovídá $2\\pi$ radiánům.",
                 image:
                   "[Image illustrating definition of 1 radian with arc length equal to radius]",
               },
@@ -3243,7 +3243,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Znaménka v kvadrantech",
-                text: "Protože $\\cos x$ je $x$-ová souřadnice a $\\sin x$ je $y$-ová souřadnice, znaménka se mění podle kvadrantu:\n- **I. kvadrant ($0$ až $\\pi/2$):** Vše kladné (jsme vpravo nahoře).\n- **II. kvadrant ($\\pi/2$ až $\\pi$):** Sinus kladný (nahoře), Kosinus záporný (vlevo).\n- **III. kvadrant ($\\pi$ až $3\\pi/2$):** Obojí záporné (vlevo dole).\n- **IV. kvadrant ($3\\pi/2$ až $2\\pi$):** Sinus záporný (dole), Kosinus kladný (vpravo).",
+                text: "Protože $\\cos x$ je $x$-ová souřadnice a $\\sin x$ je $y$-ová souřadnice, znaménka se mění podle kvadrantu:\n- I. kvadrant ($0$ až $\\pi/2$): Vše kladné (jsme vpravo nahoře).\n- II. kvadrant ($\\pi/2$ až $\\pi$): Sinus kladný (nahoře), Kosinus záporný (vlevo).\n- III. kvadrant ($\\pi$ až $3\\pi/2$): Obojí záporné (vlevo dole).\n- IV. kvadrant ($3\\pi/2$ až $2\\pi$): Sinus záporný (dole), Kosinus kladný (vpravo).",
                 image: "[Image showing signs of sin and cos in four quadrants]",
               },
               {
@@ -3379,13 +3379,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Sinusoida",
-                text: "Když rozbalíme pohyb po kružnici do grafu v čase, vznikne vlna – **sinusoida**. \n- Sinus začíná v nule ($0$), roste do $1$, klesá do $-1$ a vrací se do $0$. To celé trvá $2\\pi$ (jedna perioda).\n- Kosinusoida je stejná vlna, jen posunutá. Začíná na vrcholu ($1$).",
+                text: "Když rozbalíme pohyb po kružnici do grafu v čase, vznikne vlna – sinusoida. \n- Sinus začíná v nule ($0$), roste do $1$, klesá do $-1$ a vrací se do $0$. To celé trvá $2\\pi$ (jedna perioda).\n- Kosinusoida je stejná vlna, jen posunutá. Začíná na vrcholu ($1$).",
                 image:
                   "[Image illustrating unwrapping unit circle to create sine wave]",
               },
               {
                 heading: "Amplituda a Perioda",
-                text: "Funkce $y = A \\cdot \\sin(B \\cdot x)$:\n- **$A$ (Amplituda):** Určuje výšku vlny. $2\\sin x$ je dvakrát vyšší vlna.\n- **$B$ (Frekvence):** Určuje hustotu vln. $\\sin(2x)$ vlní dvakrát rychleji (perioda se zkrátí na polovinu).",
+                text: "Funkce $y = A \\cdot \\sin(B \\cdot x)$:\n- $A$ (Amplituda): Určuje výšku vlny. $2\\sin x$ je dvakrát vyšší vlna.\n- $B$ (Frekvence): Určuje hustotu vln. $\\sin(2x)$ vlní dvakrát rychleji (perioda se zkrátí na polovinu).",
                 image: "placeholder-amplitude-period-change",
               },
             ],
@@ -3613,7 +3613,7 @@ export const mathSS = {
               },
               {
                 heading: "Kosinus je sobec",
-                text: "Kosinus se chová jinak: $$ \\cos(x + y) = \\cos x \\cos y - \\sin x \\sin y $$ \nKosinus drží funkce u sebe (kosinus s kosinem, sinus se sinem) a **otáčí znaménko** (z plusu udělá minus)!",
+                text: "Kosinus se chová jinak: $$ \\cos(x + y) = \\cos x \\cos y - \\sin x \\sin y $$ \nKosinus drží funkce u sebe (kosinus s kosinem, sinus se sinem) a otáčí znaménko (z plusu udělá minus)!",
                 image: "placeholder-cosine-sum-formula",
               },
             ],
@@ -3693,7 +3693,7 @@ export const mathSS = {
               },
               {
                 heading: "Perioda (To se točí pořád dokola)",
-                text: "Kružnice nemá konec. K bodu $30^\\circ$ se dostaneme znovu po celé otočce ($360^\\circ$), pak znovu a znovu. \nObecné řešení musíme zapsat s **periodou**: \n$$ x_1 = \\frac{\\pi}{6} + 2k\\pi $$ \n$$ x_2 = \\frac{5\\pi}{6} + 2k\\pi $$ \nKde $k$ je libovolné celé číslo (počet otoček). U tangensu je perioda jen $k\\pi$.",
+                text: "Kružnice nemá konec. K bodu $30^\\circ$ se dostaneme znovu po celé otočce ($360^\\circ$), pak znovu a znovu. \nObecné řešení musíme zapsat s periodou: \n$$ x_1 = \\frac{\\pi}{6} + 2k\\pi $$ \n$$ x_2 = \\frac{5\\pi}{6} + 2k\\pi $$ \nKde $k$ je libovolné celé číslo (počet otoček). U tangensu je perioda jen $k\\pi$.",
                 image: "placeholder-general-solution-period",
               },
             ],
@@ -3765,7 +3765,7 @@ export const mathSS = {
               },
               {
                 heading: "Vytýkání",
-                text: "Rovnice $\\sin x \\cdot \\cos x + \\sin x = 0$. \nNikdy neděl celou rovnici sinem (ztratil bys řešení, kde $\\sin x = 0$)! Místo toho **vytýkej**. \n$\\sin x \\cdot (\\cos x + 1) = 0$. \nTeď se rozpadne na dvě jednoduché: \n1. $\\sin x = 0$ \n2. $\\cos x = -1$.",
+                text: "Rovnice $\\sin x \\cdot \\cos x + \\sin x = 0$. \nNikdy neděl celou rovnici sinem (ztratil bys řešení, kde $\\sin x = 0$)! Místo toho vytýkej. \n$\\sin x \\cdot (\\cos x + 1) = 0$. \nTeď se rozpadne na dvě jednoduché: \n1. $\\sin x = 0$ \n2. $\\cos x = -1$.",
                 image: "placeholder-factoring-trig-equation",
               },
             ],
@@ -3848,7 +3848,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Poměr strany a protějšku",
-                text: "Sinová věta je o párech 'strana a úhel naproti ní'. Říká, že poměr délky strany a sinu protějšího úhlu je v daném trojúhelníku vždy stejný. \n$$ \\frac{a}{\\sin \\alpha} = \\frac{b}{\\sin \\beta} = \\frac{c}{\\sin \\gamma} = 2r $$\n(Kde $r$ je poloměr kružnice opsané). Tuto větu použiješ, když znáš **dva úhly a jednu stranu** (nebo dvě strany a úhel proti jedné z nich).",
+                text: "Sinová věta je o párech 'strana a úhel naproti ní'. Říká, že poměr délky strany a sinu protějšího úhlu je v daném trojúhelníku vždy stejný. \n$$ \\frac{a}{\\sin \\alpha} = \\frac{b}{\\sin \\beta} = \\frac{c}{\\sin \\gamma} = 2r $$\n(Kde $r$ je poloměr kružnice opsané). Tuto větu použiješ, když znáš dva úhly a jednu stranu (nebo dvě strany a úhel proti jedné z nich).",
                 image:
                   "[Image illustrating the Law of Sines in a general triangle with labeled sides and opposite angles]",
               },
@@ -3929,7 +3929,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Zobecněný Pythagoras",
-                text: "Kosinová věta je jako Pythagorova věta, která funguje i pro křivé trojúhelníky. \n$$ c^2 = a^2 + b^2 - 2ab \\cos \\gamma $$\nKdyž je $\\gamma = 90^\\circ$, tak $\\cos 90^\\circ = 0$, celý konec zmizí a zbyde $c^2 = a^2 + b^2$. Geniální! \nPoužiješ ji, když znáš **3 strany** (chceš úhel) nebo **2 strany a úhel mezi nimi** (chceš třetí stranu).",
+                text: "Kosinová věta je jako Pythagorova věta, která funguje i pro křivé trojúhelníky. \n$$ c^2 = a^2 + b^2 - 2ab \\cos \\gamma $$\nKdyž je $\\gamma = 90^\\circ$, tak $\\cos 90^\\circ = 0$, celý konec zmizí a zbyde $c^2 = a^2 + b^2$. Geniální! \nPoužiješ ji, když znáš 3 strany (chceš úhel) nebo 2 strany a úhel mezi nimi (chceš třetí stranu).",
                 image:
                   "[Image illustrating the Law of Cosines derivation from Pythagoras]",
               },
@@ -4089,7 +4089,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Jak změřit řeku",
-                text: "Stojíš na břehu a chceš změřit šířku řeky, ale neumíš plavat. \n1. Vytyčíš si na břehu úsečku (třeba 100 m). \n2. Změříš úhly z obou konců úsečky k bodu na druhém břehu. \n3. Znáš stranu a dva úhly $\\rightarrow$ Dopočítáš třetí úhel $\\rightarrow$ Použiješ Sinovou větu. \nTomu se říká **triangulace**.",
+                text: "Stojíš na břehu a chceš změřit šířku řeky, ale neumíš plavat. \n1. Vytyčíš si na břehu úsečku (třeba 100 m). \n2. Změříš úhly z obou konců úsečky k bodu na druhém břehu. \n3. Znáš stranu a dva úhly $\\rightarrow$ Dopočítáš třetí úhel $\\rightarrow$ Použiješ Sinovou větu. \nTomu se říká triangulace.",
                 image: "[Image illustrating triangulation across a river]",
               },
               {
@@ -4177,13 +4177,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Hledání nemožného",
-                text: "Doposud jsme tvrdili, že $\\sqrt{-1}$ neexistuje, protože žádné číslo umocněné na druhou nedá minus. Matematici ale byli zvědaví: 'Co kdybychom si takové číslo vymysleli?' \nZavedli **imaginární jednotku $i$**. Její definice je prostá: $$ i^2 = -1 $$ \nNebo jinak: $i = \\sqrt{-1}$. Díky tomuto triku můžeme odmocňovat záporná čísla: $\\sqrt{-4} = \\sqrt{4 \\cdot (-1)} = 2i$.",
+                text: "Doposud jsme tvrdili, že $\\sqrt{-1}$ neexistuje, protože žádné číslo umocněné na druhou nedá minus. Matematici ale byli zvědaví: 'Co kdybychom si takové číslo vymysleli?' \nZavedli imaginární jednotku $i$. Její definice je prostá: $$ i^2 = -1 $$ \nNebo jinak: $i = \\sqrt{-1}$. Díky tomuto triku můžeme odmocňovat záporná čísla: $\\sqrt{-4} = \\sqrt{4 \\cdot (-1)} = 2i$.",
                 image:
                   "[Image illustrating the definition of imaginary unit i squared equals minus one]",
               },
               {
                 heading: "Algebraický tvar ($a + bi$)",
-                text: "Komplexní číslo $z$ má dvě části:\n1. **Reálná část ($a$):** To je to staré známé číslo.\n2. **Imaginární část ($b$):** To je to, co stojí u $i$.\nZápis: $z = a + bi$. Například $z = 3 + 2i$. Je to jako bod v mapě, který má dvě souřadnice. Reálná čísla jsou jen podmnožinou, kde $b=0$.",
+                text: "Komplexní číslo $z$ má dvě části:\n1. Reálná část ($a$): To je to staré známé číslo.\n2. Imaginární část ($b$): To je to, co stojí u $i$.\nZápis: $z = a + bi$. Například $z = 3 + 2i$. Je to jako bod v mapě, který má dvě souřadnice. Reálná čísla jsou jen podmnožinou, kde $b=0$.",
                 image: "placeholder-complex-number-parts",
               },
             ],
@@ -4237,13 +4237,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Sčítání a Násobení",
-                text: "S komplexními čísly počítáme jako s mnohočleny, kde $i$ je proměnná.\n- **Sčítání:** Reálné k reálným, imaginární k imaginárním. $(2+3i) + (1+4i) = 3 + 7i$.\n- **Násobení:** Každý s každým. $(1+i)(2+i) = 2 + i + 2i + i^2$. \nPOZOR! Vždy nahraď $i^2$ za $-1$. Takže $2 + 3i - 1 = 1 + 3i$.",
+                text: "S komplexními čísly počítáme jako s mnohočleny, kde $i$ je proměnná.\n- Sčítání: Reálné k reálným, imaginární k imaginárním. $(2+3i) + (1+4i) = 3 + 7i$.\n- Násobení: Každý s každým. $(1+i)(2+i) = 2 + i + 2i + i^2$. \nPOZOR! Vždy nahraď $i^2$ za $-1$. Takže $2 + 3i - 1 = 1 + 3i$.",
                 image:
                   "[Image illustrating multiplication of complex numbers using FOIL method]",
               },
               {
                 heading: "Komplexně sdružené číslo",
-                text: "Ke každému číslu $z = a + bi$ existuje dvojče $\\bar{z} = a - bi$. Říkáme mu **číslo komplexně sdružené**. Liší se jen znaménkem u $i$. \nK čemu je dobré? Když je vynásobíme ($z \\cdot \\bar{z}$), zmizí $i$ a vznikne reálné číslo! To používáme při dělení (usměrňování zlomků).",
+                text: "Ke každému číslu $z = a + bi$ existuje dvojče $\\bar{z} = a - bi$. Říkáme mu číslo komplexně sdružené. Liší se jen znaménkem u $i$. \nK čemu je dobré? Když je vynásobíme ($z \\cdot \\bar{z}$), zmizí $i$ a vznikne reálné číslo! To používáme při dělení (usměrňování zlomků).",
                 image: "placeholder-complex-conjugate",
               },
             ],
@@ -4362,13 +4362,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Dálka a Směr",
-                text: "Místo souřadnic $[a; b]$ můžeme číslo popsat pomocí:\n1. **Vzdálenosti ($|z|$):** Jak daleko je od nuly.\n2. **Úhlu ($\\varphi$):** Jak moc je otočené od kladné osy x.\nZápis: $$ z = |z| \\cdot (\\cos \\varphi + i \\sin \\varphi) $$ Tomu říkáme goniometrický tvar. Je skvělý pro násobení a umocňování.",
+                text: "Místo souřadnic $[a; b]$ můžeme číslo popsat pomocí:\n1. Vzdálenosti ($|z|$): Jak daleko je od nuly.\n2. Úhlu ($\\varphi$): Jak moc je otočené od kladné osy x.\nZápis: $$ z = |z| \\cdot (\\cos \\varphi + i \\sin \\varphi) $$ Tomu říkáme goniometrický tvar. Je skvělý pro násobení a umocňování.",
                 image:
                   "[Image illustrating polar coordinates r and phi for a complex number]",
               },
               {
                 heading: "Moivreova věta: Síla rotace",
-                text: "Jak spočítat $(1+i)^{10}$? Roznásobovat závorky by byla sebevražda. Použijeme Moivreovu větu. Ta říká, že při umocňování se **vzdálenost umocní** a **úhel se vynásobí**. \n$$ z^n = |z|^n \\cdot (\\cos(n\\varphi) + i \\sin(n\\varphi)) $$ \nUmocňování v komplexní rovině je vlastně otáčení!",
+                text: "Jak spočítat $(1+i)^{10}$? Roznásobovat závorky by byla sebevražda. Použijeme Moivreovu větu. Ta říká, že při umocňování se vzdálenost umocní a úhel se vynásobí. \n$$ z^n = |z|^n \\cdot (\\cos(n\\varphi) + i \\sin(n\\varphi)) $$ \nUmocňování v komplexní rovině je vlastně otáčení!",
                 image: "placeholder-moivre-theorem-rotation",
               },
             ],
@@ -4523,7 +4523,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Bod vs. Vektor",
-                text: "Jaký je rozdíl mezi bodem a vektorem? \n- **Bod** $A[1; 2]$ je špendlík zapíchnutý v mapě. Říká: 'Tady jsem'.\n- **Vektor** $\\vec{u} = (2; 3)$ je instrukce k pohybu. Říká: 'Jdi o 2 doprava a o 3 nahoru'.\nVektor nemá pevné místo. Je to jen směr a velikost. Můžeme ho umístit kamkoliv.",
+                text: "Jaký je rozdíl mezi bodem a vektorem? \n- Bod $A[1; 2]$ je špendlík zapíchnutý v mapě. Říká: 'Tady jsem'.\n- Vektor $\\vec{u} = (2; 3)$ je instrukce k pohybu. Říká: 'Jdi o 2 doprava a o 3 nahoru'.\nVektor nemá pevné místo. Je to jen směr a velikost. Můžeme ho umístit kamkoliv.",
                 image:
                   "[Image showing difference between fixed points on a grid and a floating vector arrow]",
               },
@@ -4742,13 +4742,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Kouzlo s úhly",
-                text: "Můžeme násobit dva vektory mezi sebou? Ano! **Skalární součin** $\\vec{u} \\cdot \\vec{v}$ je operace, jejímž výsledkem není vektor, ale ČÍSLO (skalár).\nVzorec v souřadnicích: $$ \\vec{u} \\cdot \\vec{v} = u_1 v_1 + u_2 v_2 $$ (První s prvním plus druhý s druhým).\nNapř. $(2; 3) \\cdot (4; -1) = 2\\cdot4 + 3\\cdot(-1) = 8 - 3 = 5$.",
+                text: "Můžeme násobit dva vektory mezi sebou? Ano! Skalární součin $\\vec{u} \\cdot \\vec{v}$ je operace, jejímž výsledkem není vektor, ale ČÍSLO (skalár).\nVzorec v souřadnicích: $$ \\vec{u} \\cdot \\vec{v} = u_1 v_1 + u_2 v_2 $$ (První s prvním plus druhý s druhým).\nNapř. $(2; 3) \\cdot (4; -1) = 2\\cdot4 + 3\\cdot(-1) = 8 - 3 = 5$.",
                 image:
                   "[Image showing dot product formula and its relation to the angle between vectors]",
               },
               {
                 heading: "Test kolmosti",
-                text: "Toto je nejdůležitější využití! Skalární součin nám řekne, jaký úhel vektory svírají.\nPlatí: $\\vec{u} \\cdot \\vec{v} = |\\vec{u}| \\cdot |\\vec{v}| \\cdot \\cos \\alpha$.\nKlíčové pravidlo: **Vektory jsou na sebe KOLMÉ právě tehdy, když je jejich skalární součin roven NULE.** (protože $\\cos 90^\\circ = 0$).",
+                text: "Toto je nejdůležitější využití! Skalární součin nám řekne, jaký úhel vektory svírají.\nPlatí: $\\vec{u} \\cdot \\vec{v} = |\\vec{u}| \\cdot |\\vec{v}| \\cdot \\cos \\alpha$.\nKlíčové pravidlo: Vektory jsou na sebe KOLMÉ právě tehdy, když je jejich skalární součin roven NULE. (protože $\\cos 90^\\circ = 0$).",
                 image: "placeholder-vector-orthogonality-test",
               },
             ],
@@ -4812,13 +4812,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Třetí do party",
-                text: "V prostoru (3D) existuje ještě **vektorový součin** $\\vec{u} \\times \\vec{v}$. Výsledkem je **nový vektor**, který je kolmý na oba původní vektory. Používáme pravidlo pravé ruky: palec (u), ukazovák (v), prostředník (výsledek).\nTento součin existuje pouze ve 3D!",
+                text: "V prostoru (3D) existuje ještě vektorový součin $\\vec{u} \\times \\vec{v}$. Výsledkem je nový vektor, který je kolmý na oba původní vektory. Používáme pravidlo pravé ruky: palec (u), ukazovák (v), prostředník (výsledek).\nTento součin existuje pouze ve 3D!",
                 image:
                   "[Image illustrating cross product right-hand rule and resultant vector]",
               },
               {
                 heading: "Obsah rovnoběžníku",
-                text: "Velikost tohoto nového vektoru $|\\vec{u} \\times \\vec{v}|$ se rovná **obsahu rovnoběžníku**, který ty dva vektory tvoří. Toho se využívá při výpočtech obsahů trojúhelníků v prostoru (je to polovina rovnoběžníku).",
+                text: "Velikost tohoto nového vektoru $|\\vec{u} \\times \\vec{v}|$ se rovná obsahu rovnoběžníku, který ty dva vektory tvoří. Toho se využívá při výpočtech obsahů trojúhelníků v prostoru (je to polovina rovnoběžníku).",
                 image: "placeholder-cross-product-area",
               },
             ],
@@ -4896,7 +4896,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Start a Směr",
-                text: "Představ si přímku jako stopu po chodci. Abychom ji popsali, potřebujeme dvě věci:\n1. **Bod $A$ (Start):** Odkud vychází.\n2. **Směrový vektor $\\vec{u}$ (Směr):** Kam jde.\nRovnice zní: $X = A + t \\cdot \\vec{u}$.\nKde $X$ je libovolný bod na přímce a $t$ je **parametr** (čas). Když $t=1$, jsme o krok dál. Když $t=-1$, couváme.",
+                text: "Představ si přímku jako stopu po chodci. Abychom ji popsali, potřebujeme dvě věci:\n1. Bod $A$ (Start): Odkud vychází.\n2. Směrový vektor $\\vec{u}$ (Směr): Kam jde.\nRovnice zní: $X = A + t \\cdot \\vec{u}$.\nKde $X$ je libovolný bod na přímce a $t$ je parametr (čas). Když $t=1$, jsme o krok dál. Když $t=-1$, couváme.",
                 image:
                   "[Image illustrating parametric line equation X = A + t*u with points for t=0, t=1, t=2]",
               },
@@ -4973,7 +4973,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Normálový vektor (Kolmice)",
-                text: "Obecná rovnice vypadá takto: $$ ax + by + c = 0 $$ \nTady pozor! Čísla $a$ a $b$ NEJSOU směrový vektor. Tvoří tzv. **normálový vektor** $\\vec{n} = (a; b)$. \nNormálový vektor je **kolmý** na přímku. Představ si ho jako hřebík, který trčí z přímky ven.",
+                text: "Obecná rovnice vypadá takto: $$ ax + by + c = 0 $$ \nTady pozor! Čísla $a$ a $b$ NEJSOU směrový vektor. Tvoří tzv. normálový vektor $\\vec{n} = (a; b)$. \nNormálový vektor je kolmý na přímku. Představ si ho jako hřebík, který trčí z přímky ven.",
                 image:
                   "[Image illustrating a line ax+by+c=0 and its normal vector n=(a,b) perpendicular to it]",
               },
@@ -5121,13 +5121,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Detektivka se dvěma rovnicemi",
-                text: "Máme dvě přímky. Jak se k sobě chovají?\n1. Podíváme se na jejich normálové (nebo směrové) vektory.\n- Jsou vektory násobkem? (např. $(1; 2)$ a $(2; 4)$) $\\rightarrow$ Přímky jsou **rovnoběžné**.\n- Nejsou násobkem? $\\rightarrow$ Přímky jsou **různoběžné** (mají průsečík).",
+                text: "Máme dvě přímky. Jak se k sobě chovají?\n1. Podíváme se na jejich normálové (nebo směrové) vektory.\n- Jsou vektory násobkem? (např. $(1; 2)$ a $(2; 4)$) $\\rightarrow$ Přímky jsou rovnoběžné.\n- Nejsou násobkem? $\\rightarrow$ Přímky jsou různoběžné (mají průsečík).",
                 image:
                   "[Image showing parallel vs intersecting lines based on vector comparison]",
               },
               {
                 heading: "Hledání průsečíku",
-                text: "Pokud jsou různoběžné, průsečík najdeme vyřešením **soustavy rovnic**. \nNapř. $x+y-3=0$ a $x-y+1=0$. \nSečteme rovnice $\\rightarrow 2x - 2 = 0 \\rightarrow x=1$. \nDosadíme $\\rightarrow 1+y-3=0 \\rightarrow y=2$. Průsečík je $[1; 2]$.",
+                text: "Pokud jsou různoběžné, průsečík najdeme vyřešením soustavy rovnic. \nNapř. $x+y-3=0$ a $x-y+1=0$. \nSečteme rovnice $\\rightarrow 2x - 2 = 0 \\rightarrow x=1$. \nDosadíme $\\rightarrow 1+y-3=0 \\rightarrow y=2$. Průsečík je $[1; 2]$.",
                 image: "placeholder-intersection-system-linear",
               },
             ],
@@ -5281,7 +5281,7 @@ export const mathSS = {
               },
               {
                 heading: "Obecná rovnice",
-                text: "Když závorky roznásobíme, dostaneme obecnou rovnici: $x^2 + y^2 + Ax + By + C = 0$. \nPozor! Aby to byla kružnice, musí být u $x^2$ a $y^2$ **stejné číslo** (obvykle jednička). Pokud tam jsou různá čísla, je to elipsa. Pokud mají opačná znaménka, je to hyperbola.",
+                text: "Když závorky roznásobíme, dostaneme obecnou rovnici: $x^2 + y^2 + Ax + By + C = 0$. \nPozor! Aby to byla kružnice, musí být u $x^2$ a $y^2$ stejné číslo (obvykle jednička). Pokud tam jsou různá čísla, je to elipsa. Pokud mají opačná znaménka, je to hyperbola.",
                 image: "placeholder-circle-equation-forms",
               },
             ],
@@ -5418,7 +5418,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Rozdíl vzdáleností",
-                text: "Hyperbola je množina bodů, pro které je **rozdíl** vzdáleností od ohnisek stálý. Graf se skládá ze dvou oddělených větví. \nRovnice je podobná elipse, ale má **mínus**: \n$$ \\frac{(x-m)^2}{a^2} - \\frac{(y-n)^2}{b^2} = 1 $$ \nPokud je minus u $y$, hyperbola je vodorovná (otevírá se do stran). Pokud je minus u $x$, je svislá (nahoru a dolů).",
+                text: "Hyperbola je množina bodů, pro které je rozdíl vzdáleností od ohnisek stálý. Graf se skládá ze dvou oddělených větví. \nRovnice je podobná elipse, ale má mínus: \n$$ \\frac{(x-m)^2}{a^2} - \\frac{(y-n)^2}{b^2} = 1 $$ \nPokud je minus u $y$, hyperbola je vodorovná (otevírá se do stran). Pokud je minus u $x$, je svislá (nahoru a dolů).",
                 image:
                   "[Image showing hyperbola parts: vertices, foci, asymptotes]",
               },
@@ -5489,7 +5489,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Ohnisko a Řídící přímka",
-                text: "Parabola je množina bodů, které mají **stejnou vzdálenost** od ohniska $F$ a od řídící přímky $d$. \nRovnice má druhou mocninu jen u jedné proměnné!\n- $(x-m)^2 = 2p(y-n)$: Otevřená nahoru/dolů (známe z funkcí).\n- $(y-n)^2 = 2p(x-m)$: Otevřená doprava/doleva (to je novinka!).",
+                text: "Parabola je množina bodů, které mají stejnou vzdálenost od ohniska $F$ a od řídící přímky $d$. \nRovnice má druhou mocninu jen u jedné proměnné!\n- $(x-m)^2 = 2p(y-n)$: Otevřená nahoru/dolů (známe z funkcí).\n- $(y-n)^2 = 2p(x-m)$: Otevřená doprava/doleva (to je novinka!).",
                 image:
                   "[Image illustrating parabola definition: distance to Focus equals distance to Directrix]",
               },
@@ -5554,7 +5554,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Řezání kuželoseček",
-                text: "Přímka může kuželosečku:\n1. **Protnout** (sečna, 2 body).\n2. **Dotknout se** (tečna, 1 bod).\n3. **Minout** (vnější přímka, 0 bodů).\nJak to zjistíme? Vyjádříme z rovnice přímky $y$ (nebo $x$), dosadíme do rovnice kuželosečky a vznikne kvadratická rovnice.",
+                text: "Přímka může kuželosečku:\n1. Protnout (sečna, 2 body).\n2. Dotknout se (tečna, 1 bod).\n3. Minout (vnější přímka, 0 bodů).\nJak to zjistíme? Vyjádříme z rovnice přímky $y$ (nebo $x$), dosadíme do rovnice kuželosečky a vznikne kvadratická rovnice.",
                 image:
                   "[Image showing secant, tangent, and non-intersecting line relative to a circle]",
               },
@@ -5637,12 +5637,12 @@ export const mathSS = {
             sections: [
               {
                 heading: "Cesty a oblečení",
-                text: "Základní pravidlo kombinatoriky je prosté: Pokud mám 3 trička a 2 kalhoty, kolik outfitů mohu vytvořit? Ke každému tričku si mohu vzít jedny ze dvou kalhot. Tedy $3 \\cdot 2 = 6$ možností. Tomu říkáme **pravidlo součinu**. Používáme ho, když vybíráme nezávisle jednu věc z jedné hromádky a druhou z druhé.",
+                text: "Základní pravidlo kombinatoriky je prosté: Pokud mám 3 trička a 2 kalhoty, kolik outfitů mohu vytvořit? Ke každému tričku si mohu vzít jedny ze dvou kalhot. Tedy $3 \\cdot 2 = 6$ možností. Tomu říkáme pravidlo součinu. Používáme ho, když vybíráme nezávisle jednu věc z jedné hromádky a druhou z druhé.",
                 image: "",
               },
               {
                 heading: "Faktoriál (!)",
-                text: "Kolika způsoby seřadit 5 lidí do fronty? \n- Na 1. místo vybírám z 5 lidí.\n- Na 2. místo už jen ze 4 (jeden už stojí).\n- Na 3. místo ze 3...\nCelkem: $5 \\cdot 4 \\cdot 3 \\cdot 2 \\cdot 1 = 120$. \nTomuto součinu říkáme **faktoriál** a značíme ho vykřičníkem: $5!$. \nPozor: $0! = 1$ (prázdná množina lze seřadit jediným způsobem – nijak).",
+                text: "Kolika způsoby seřadit 5 lidí do fronty? \n- Na 1. místo vybírám z 5 lidí.\n- Na 2. místo už jen ze 4 (jeden už stojí).\n- Na 3. místo ze 3...\nCelkem: $5 \\cdot 4 \\cdot 3 \\cdot 2 \\cdot 1 = 120$. \nTomuto součinu říkáme faktoriál a značíme ho vykřičníkem: $5!$. \nPozor: $0! = 1$ (prázdná množina lze seřadit jediným způsobem – nijak).",
                 image: "placeholder-factorial-queue",
               },
             ],
@@ -5702,13 +5702,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Záleží na pořadí?",
-                text: "Toto je nejdůležitější otázka kombinatoriky. \n- Je rozdíl mezi heslem 1234 a 4321? **ANO**. (Záleží na pořadí $\\rightarrow$ Variace/Permutace).\n- Je rozdíl mezi týmem {Petr, Jana} a {Jana, Petr}? **NE**. (Nezáleží na pořadí $\\rightarrow$ Kombinace).",
+                text: "Toto je nejdůležitější otázka kombinatoriky. \n- Je rozdíl mezi heslem 1234 a 4321? ANO. (Záleží na pořadí $\\rightarrow$ Variace/Permutace).\n- Je rozdíl mezi týmem {Petr, Jana} a {Jana, Petr}? NE. (Nezáleží na pořadí $\\rightarrow$ Kombinace).",
                 image:
                   "[Image illustrating difference between a permutation lock code and a fruit bowl combination]",
               },
               {
                 heading: "Variace vs. Permutace",
-                text: "1. **Permutace:** Mícháme **všechny** prvky, co máme. (5 lidí do fronty). Počet je $P(n) = n!$.\n2. **Variace:** Vybíráme jen **několik** prvků a řadíme je. (Z 10 běžců vybíráme medailisty na 1., 2. a 3. místo). \n$$ V(k, n) = \\frac{n!}{(n-k)!} $$ \n(Pro běžce: $10 \\cdot 9 \\cdot 8$).",
+                text: "1. Permutace: Mícháme všechny prvky, co máme. (5 lidí do fronty). Počet je $P(n) = n!$.\n2. Variace: Vybíráme jen několik prvků a řadíme je. (Z 10 běžců vybíráme medailisty na 1., 2. a 3. místo). \n$$ V(k, n) = \\frac{n!}{(n-k)!} $$ \n(Pro běžce: $10 \\cdot 9 \\cdot 8$).",
                 image: "placeholder-race-podium",
               },
             ],
@@ -5779,7 +5779,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Třídní tým",
-                text: "Z 30 žáků máme vybrat trojici na úklid. Je jedno, jestli vyberu (A, B, C) nebo (C, B, A). Je to pořád ta stejná skupina. \nPočítáme to pomocí **kombinačního čísla** $\\binom{n}{k}$ (čti: 'n nad k').\n$$ \\binom{n}{k} = \\frac{n!}{k!(n-k)!} $$ \nVlastně vypočítáme variace ($n!/(n-k)!$) a pak vydělíme počtem možných seřazení té trojice ($k!$), protože na pořadí nezáleží.",
+                text: "Z 30 žáků máme vybrat trojici na úklid. Je jedno, jestli vyberu (A, B, C) nebo (C, B, A). Je to pořád ta stejná skupina. \nPočítáme to pomocí kombinačního čísla $\\binom{n}{k}$ (čti: 'n nad k').\n$$ \\binom{n}{k} = \\frac{n!}{k!(n-k)!} $$ \nVlastně vypočítáme variace ($n!/(n-k)!$) a pak vydělíme počtem možných seřazení té trojice ($k!$), protože na pořadí nezáleží.",
                 image:
                   "[Image illustrating binomial coefficient formula n choose k]",
               },
@@ -5911,7 +5911,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "NEBO vs. A ZÁROVEŇ",
-                text: "1. **Sčítání ($A \\cup B$):** Ptáme se na 'A **nebo** B'. Pokud se jevy vylučují (padne 1 nebo 2), pravděpodobnosti sčítáme. Pokud se překrývají, musíme odečíst průnik.\n2. **Násobení ($A \\cap B$):** Ptáme se na 'A **a zároveň** B' (nebo 'A a pak B'). Pokud jsou jevy nezávislé (hod dvěma kostkami), pravděpodobnosti násobíme. \n$$ P(A \\cap B) = P(A) \\cdot P(B) $$",
+                text: "1. Sčítání ($A \\cup B$): Ptáme se na 'A nebo B'. Pokud se jevy vylučují (padne 1 nebo 2), pravděpodobnosti sčítáme. Pokud se překrývají, musíme odečíst průnik.\n2. Násobení ($A \\cap B$): Ptáme se na 'A a zároveň B' (nebo 'A a pak B'). Pokud jsou jevy nezávislé (hod dvěma kostkami), pravděpodobnosti násobíme. \n$$ P(A \\cap B) = P(A) \\cdot P(B) $$",
                 image:
                   "[Image illustrating intersection and union probability rules with Venn diagrams]",
               },
@@ -6001,13 +6001,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Funkce na schodech",
-                text: "Posloupnost je vlastně funkce, ale jejím definičním oborem jsou jen **přirozená čísla** ($1, 2, 3...$). Nekreslíme ji jako spojitou čáru, ale jako izolované tečky (schody). \nČleny značíme $a_1$ (první), $a_2$ (druhý), ..., $a_n$ (n-tý).\nNapř. $2, 4, 6, 8...$ je posloupnost sudých čísel.",
+                text: "Posloupnost je vlastně funkce, ale jejím definičním oborem jsou jen přirozená čísla ($1, 2, 3...$). Nekreslíme ji jako spojitou čáru, ale jako izolované tečky (schody). \nČleny značíme $a_1$ (první), $a_2$ (druhý), ..., $a_n$ (n-tý).\nNapř. $2, 4, 6, 8...$ je posloupnost sudých čísel.",
                 image:
                   "[Image plotting a sequence as discrete points on a graph vs a continuous function]",
               },
               {
                 heading: "Vzorec vs. Rekurze",
-                text: "Dva způsoby, jak zadat posloupnost:\n1. **Vzorec pro n-tý člen:** $a_n = 2n$. Dosadím $n=100$ a hned vím, že stý člen je 200. Je to 'teleport'.\n2. **Rekurentně:** Řekneme start a pravidlo pro další krok. $a_1 = 2, a_{n+1} = a_n + 2$. Musím spočítat všechny předchozí členy, abych se dostal ke stému. Je to 'chůze'.",
+                text: "Dva způsoby, jak zadat posloupnost:\n1. Vzorec pro n-tý člen: $a_n = 2n$. Dosadím $n=100$ a hned vím, že stý člen je 200. Je to 'teleport'.\n2. Rekurentně: Řekneme start a pravidlo pro další krok. $a_1 = 2, a_{n+1} = a_n + 2$. Musím spočítat všechny předchozí členy, abych se dostal ke stému. Je to 'chůze'.",
                 image: "placeholder-recursive-formula-steps",
               },
             ],
@@ -6078,7 +6078,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Stále stejně daleko",
-                text: "V aritmetické posloupnosti se k předchozímu členu vždy **přičítá** stejné číslo – **diference $d$**. \nNapř. $3, 5, 7, 9...$ ($d=2$).\nVzorec pro n-tý člen: $$ a_n = a_1 + (n-1) \\cdot d $$ \nChci 10. člen? Vezmu první a přičtu k němu 9 skoků (diferencí).",
+                text: "V aritmetické posloupnosti se k předchozímu členu vždy přičítá stejné číslo – diference $d$. \nNapř. $3, 5, 7, 9...$ ($d=2$).\nVzorec pro n-tý člen: $$ a_n = a_1 + (n-1) \\cdot d $$ \nChci 10. člen? Vezmu první a přičtu k němu 9 skoků (diferencí).",
                 image:
                   "[Image illustrating arithmetic progression as stepping stones with equal spacing]",
               },
@@ -6147,7 +6147,7 @@ export const mathSS = {
             sections: [
               {
                 heading: "Násobení místo sčítání",
-                text: "V geometrické posloupnosti se předchozí člen **násobí** číslem – **kvocientem $q$**. \nNapř. $3, 6, 12, 24...$ ($q=2$). \nVzorec pro n-tý člen: $$ a_n = a_1 \\cdot q^{n-1} $$ \nToto je princip úroků v bance nebo množení bakterií.",
+                text: "V geometrické posloupnosti se předchozí člen násobí číslem – kvocientem $q$. \nNapř. $3, 6, 12, 24...$ ($q=2$). \nVzorec pro n-tý člen: $$ a_n = a_1 \\cdot q^{n-1} $$ \nToto je princip úroků v bance nebo množení bakterií.",
                 image: "[Image showing geometric growth doubling at each step]",
               },
               {
@@ -6220,13 +6220,13 @@ export const mathSS = {
             sections: [
               {
                 heading: "Kam to spěje?",
-                text: "Zkoumáme, co se děje s členy $a_n$, když $n$ roste do nekonečna. \n- **Konvergentní:** Posloupnost se blíží k jednomu číslu (limitě). Např. $1/n$ ($1, 0,5, 0,33...$) se blíží k nule.\n- **Divergentní:** Posloupnost utíká do nekonečna ($n^2$) nebo skáče tam a zpět ($(-1)^n$) a nikde se neustálí.",
+                text: "Zkoumáme, co se děje s členy $a_n$, když $n$ roste do nekonečna. \n- Konvergentní: Posloupnost se blíží k jednomu číslu (limitě). Např. $1/n$ ($1, 0,5, 0,33...$) se blíží k nule.\n- Divergentní: Posloupnost utíká do nekonečna ($n^2$) nebo skáče tam a zpět ($(-1)^n$) a nikde se neustálí.",
                 image:
                   "[Image illustrating convergence of 1/n to 0 vs divergence of n^2]",
               },
               {
                 heading: "Vlastní vs. Nevlastní limita",
-                text: "Pokud se posloupnost blíží ke konkrétnímu číslu (třeba 5), má **vlastní limitu**. Pokud roste nade všechny meze, má **nevlastní limitu** ($+\\infty$ nebo $-\\infty$).",
+                text: "Pokud se posloupnost blíží ke konkrétnímu číslu (třeba 5), má vlastní limitu. Pokud roste nade všechny meze, má nevlastní limitu ($+\\infty$ nebo $-\\infty$).",
                 image: "placeholder-limit-types",
               },
             ],
