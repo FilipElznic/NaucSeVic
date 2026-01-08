@@ -1,12 +1,10 @@
-import { mathSS } from "./mathSS.js";
-import { mathZS } from "./mathZS.js";
+import { mathSS } from "../data/mathSS.js";
+import { mathZS } from "../data/mathZS.js";
+import { mathVS } from "../data/mathVS.js";
 export const courseContentDatabase = {
   matematika: {
-    zs: mathZS,
     ss: mathSS,
-    vs: {
-      default: [],
-    },
+    vs: mathVS,
   },
   fyzika: {
     zs: {
