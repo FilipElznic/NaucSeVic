@@ -1150,10 +1150,21 @@ exports.getCourseData = onCall(async (request) => {
       count: resolvedChapters.length,
     });
 
+    // Helper to safely convert Firestore timestamp or date string to ISO
+    const toIsoString = (val) => {
+      if (!val) return new Date().toISOString();
+      if (val.toDate && typeof val.toDate === "function")
+        return val.toDate().toISOString();
+      if (val instanceof Date) return val.toISOString();
+      return val; // Assume it's already a string
+    };
+
     return {
       title: `${subjectData.title} - ${levelId.toUpperCase()}`,
       description: `Komplexní kurz pro ${levelId}.`,
       chapters: resolvedChapters,
+      updatedAt: toIsoString(subjectData.updatedAt || subjectData.createdAt),
+      createdAt: toIsoString(subjectData.createdAt),
     };
   } catch (error) {
     logger.error("Error fetching course data", error);

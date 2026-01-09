@@ -312,7 +312,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                   <LucideIcons.BarChart2 size={16} /> Obtížnost
                 </span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  {level.level}
+                  {level.title}
                 </span>
               </li>
               <li className="flex items-center justify-between text-sm">
@@ -323,20 +323,19 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                   {courseData.chapters.length}
                 </span>
               </li>
+
               <li className="flex items-center justify-between text-sm">
                 <span className="text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                  <LucideIcons.Clock size={16} /> Odhadovaný čas
+                  <LucideIcons.Calendar size={16} /> Poslední aktualizace
                 </span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  ~12 hodin
-                </span>
-              </li>
-              <li className="flex items-center justify-between text-sm">
-                <span className="text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                  <LucideIcons.Award size={16} /> Certifikát
-                </span>
-                <span className="font-medium text-green-600 dark:text-green-400">
-                  Ano
+                  {new Date(
+                    courseData.updatedAt || Date.now()
+                  ).toLocaleDateString("cs-CZ", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </span>
               </li>
             </ul>

@@ -240,9 +240,16 @@ const LecturePage = () => {
   const IconComponent = LucideIcons[activeSubject.icon] || LucideIcons.BookOpen;
 
   return (
-    <div className="h-screen bg-gray-50 dark:bg-zinc-950 flex flex-col overflow-hidden">
+    <div className="h-screen bg-slate-50 dark:bg-zinc-950 flex flex-col overflow-hidden relative">
+      {/* Background decoration for light mode */}
+      <div className="absolute inset-0 z-0 pointer-events-none dark:hidden overflow-hidden">
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-gradient-to-br from-indigo-50/40 to-purple-50/0 rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-gradient-to-tr from-blue-50/40 to-slate-50/0 rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+      </div>
+
       {/* Top Bar */}
-      <header className="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 px-4 py-3 flex items-center justify-between shrink-0 z-50">
+      <header className="bg-white/80 backdrop-blur-md dark:bg-zinc-900/90 border-b border-gray-200/50 dark:border-zinc-800 px-4 py-3 flex items-center justify-between shrink-0 z-50 relative">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -301,7 +308,7 @@ const LecturePage = () => {
         {/* Sidebar */}
         <aside
           className={`
-          absolute md:relative z-40 h-full bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800
+          absolute md:relative z-40 h-full bg-white/60 backdrop-blur-xl dark:bg-zinc-900/95 border-r border-gray-200/50 dark:border-zinc-800
           transition-all duration-300 ease-in-out overflow-y-auto overflow-x-hidden
           ${
             isSidebarOpen
@@ -323,7 +330,7 @@ const LecturePage = () => {
                 >
                   <button
                     onClick={() => toggleChapter(chapter.id)}
-                    className="w-full flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800/50 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors text-left"
+                    className="w-full flex items-center justify-between p-3 bg-slate-50/80 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-800 transition-colors text-left backdrop-blur-sm"
                   >
                     <span className="font-medium text-sm text-gray-900 dark:text-white line-clamp-1">
                       {chapter.title}
@@ -337,7 +344,7 @@ const LecturePage = () => {
                   </button>
 
                   {expandedChapters[chapter.id] && (
-                    <div className="bg-white dark:bg-zinc-900">
+                    <div className="bg-white/40 dark:bg-zinc-900/40">
                       {chapter.lessons.map((lesson) => {
                         const isActive = lesson.id === currentLecture.id;
                         const isCompleted =
@@ -351,8 +358,8 @@ const LecturePage = () => {
                             }
                             className={`w-full flex items-center gap-3 p-3 text-left text-sm transition-colors border-l-2 ${
                               isActive
-                                ? "bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-300"
-                                : "border-transparent hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-400"
+                                ? "bg-blue-50/80 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-300"
+                                : "border-transparent hover:bg-white/50 dark:hover:bg-zinc-800/50 text-gray-600 dark:text-gray-400"
                             }`}
                           >
                             {isCompleted ? (
@@ -392,10 +399,10 @@ const LecturePage = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 w-full bg-gray-50 dark:bg-zinc-950">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 w-full bg-transparent dark:bg-zinc-950 relative z-10">
           <div className="max-w-6xl mx-auto">
             <ErrorBoundary>
-              <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-800 overflow-hidden min-h-[60vh] flex flex-col items-center justify-center p-8 md:p-12 text-center">
+              <div className="bg-white/90 backdrop-blur-sm dark:bg-zinc-900 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-gray-100 dark:border-zinc-800 overflow-hidden min-h-[60vh] flex flex-col items-center justify-center p-8 md:p-12 text-center">
                 {showQuiz && currentLecture?.content?.tasks?.length > 0 ? (
                   <div className="w-full max-w-4xl mx-auto">
                     <div className="flex items-center justify-between mb-8">
