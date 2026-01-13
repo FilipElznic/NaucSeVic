@@ -9,6 +9,8 @@ import {
   Trophy,
   ArrowRight,
   RefreshCw,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LatexRenderer from "../shared/LatexRenderer";
@@ -18,6 +20,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
 
   const handleSelect = (questionIndex, optionIndex) => {
     if (result) return;
@@ -25,6 +28,18 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
       ...prev,
       [questionIndex]: optionIndex,
     }));
+  };
+
+  const handleNext = () => {
+    if (currentTaskIndex < tasks.length - 1) {
+      setCurrentTaskIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentTaskIndex > 0) {
+      setCurrentTaskIndex((prev) => prev - 1);
+    }
   };
 
   const handleSubmit = async () => {
@@ -60,10 +75,14 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
     }
   };
 
+  const currentTask = tasks[currentTaskIndex];
+  const isLastTask = currentTaskIndex === tasks.length - 1;
+  const hasAnsweredCurrent = userAnswers[currentTaskIndex] !== undefined;
+
   const allAnswered =
     tasks.length > 0 && Object.keys(userAnswers).length === tasks.length;
   const progress = Math.round(
-    (Object.keys(userAnswers).length / tasks.length) * 100
+    ((currentTaskIndex + (hasAnsweredCurrent ? 1 : 0)) / tasks.length) * 100
   );
 
   if (result) {
@@ -218,32 +237,33 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
       </div>
 
       <div className="space-y-6">
-        {tasks.map((task, qIndex) => (
+        <AnimatePresence mode="wait">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: qIndex * 0.1 }}
-            key={task.id}
-            className="bg-white dark:bg-zinc-900 rounded-2xl p-6 md:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow"
+            key={currentTask.id}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
+            className="bg-white dark:bg-zinc-900 rounded-2xl p-6 md:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm"
           >
             <div className="flex gap-4 mb-6">
               <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold text-sm shrink-0">
-                {qIndex + 1}
+                {currentTaskIndex + 1}
               </span>
               <div className="text-xl font-medium text-gray-900 dark:text-white pt-0.5">
-                <LatexRenderer text={task.question} />
+                <LatexRenderer text={currentTask.question} />
               </div>
             </div>
 
             <div className="grid gap-3 pl-0 md:pl-12">
-              {task.options.map((option, oIndex) => {
-                const isSelected = userAnswers[qIndex] === oIndex;
+              {currentTask.options.map((option, oIndex) => {
+                const isSelected = userAnswers[currentTaskIndex] === oIndex;
                 return (
                   <motion.button
                     key={oIndex}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    onClick={() => handleSelect(qIndex, oIndex)}
+                    onClick={() => handleSelect(currentTaskIndex, oIndex)}
                     className={`relative w-full text-left p-4 rounded-xl border-2 transition-all duration-200 group ${
                       isSelected
                         ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-500 shadow-sm"
@@ -275,7 +295,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
               })}
             </div>
           </motion.div>
-        ))}
+        </AnimatePresence>
       </div>
 
       {error && (
@@ -288,13 +308,30 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
         </motion.div>
       )}
 
-      <div className="flex justify-end pt-4 pb-12">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={handleSubmit}
-          disabled={!allAnswered || submitting}
+      <div className="flex justify-between pt-4 pb-12">
+        <button
+          onClick={handlePrevious}
+          disabled={currentTaskIndex === 0}
           className={`
+            flex items-center px-6 py-3 rounded-xl font-medium transition-colors
+            ${
+              currentTaskIndex === 0
+                ? "text-gray-300 dark:text-zinc-700 cursor-not-allowed"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800"
+            }
+          `}
+        >
+          <ChevronLeft className="w-5 h-5 mr-2" />
+          Zpět
+        </button>
+
+        {isLastTask ? (
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleSubmit}
+            disabled={!allAnswered || submitting}
+            className={`
             inline-flex items-center px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg
             ${
               !allAnswered || submitting
@@ -302,19 +339,38 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
                 : "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:shadow-blue-500/25"
             }
           `}
-        >
-          {submitting ? (
-            <>
-              <Loader2 className="w-6 h-6 mr-2 animate-spin" />
-              Vyhodnocování...
-            </>
-          ) : (
-            <>
-              Odevzdat test
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </>
-          )}
-        </motion.button>
+          >
+            {submitting ? (
+              <>
+                <Loader2 className="w-6 h-6 mr-2 animate-spin" />
+                Vyhodnocování...
+              </>
+            ) : (
+              <>
+                Odevzdat test
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </>
+            )}
+          </motion.button>
+        ) : (
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleNext}
+            disabled={!hasAnsweredCurrent}
+            className={`
+            inline-flex items-center px-8 py-3 rounded-xl font-bold transition-all
+            ${
+              !hasAnsweredCurrent
+                ? "bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-500 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-600/20"
+            }
+          `}
+          >
+            Další otázka
+            <ChevronRight className="w-5 h-5 ml-2" />
+          </motion.button>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,11 @@
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { db } from "../config/firebase";
 import { cloudFunctionsService } from "./cloudFunctions";
 
@@ -112,6 +119,28 @@ class UserService {
       return true;
     } catch (error) {
       console.error("Error updating user profile:", error);
+      throw error;
+    }
+  }
+
+  // Toggle favorite course
+  async toggleFavoriteCourse(userId, courseId, isFavorite) {
+    try {
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
+
+      const userRef = doc(db, "users", userId);
+      const updateData = {
+        favoriteCourses: isFavorite
+          ? arrayUnion(courseId)
+          : arrayRemove(courseId),
+      };
+
+      await updateDoc(userRef, updateData);
+      return true;
+    } catch (error) {
+      console.error("Error toggling favorite course:", error);
       throw error;
     }
   }

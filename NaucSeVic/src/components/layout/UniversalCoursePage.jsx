@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import * as LucideIcons from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCourseData } from "../../hooks/useCourseData";
+import { useUserProfile } from "../../hooks/useUserProfile";
 import LoadingSpinner from "../ui/LoadingSpinner";
+import { getAuth } from "firebase/auth";
+import userService from "../../services/userService";
+import { toast } from "react-toastify";
 
 // --- COMPONENT ---
 
@@ -13,6 +17,10 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
     level.id,
     subLevel
   );
+  const { userProfile, refreshProfile } = useUserProfile();
+
+  // State for loading animation on the button
+  const [updatingFavorite, setUpdatingFavorite] = useState(false);
   const [expandedChapter, setExpandedChapter] = useState(null);
 
   // Set first chapter expanded when data loads
@@ -40,15 +48,71 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
 
   const handleStartCourse = () => {
     if (!courseData?.chapters) return;
-    // Find first unlocked lesson
+
+    const completedLessonIds = userProfile?.completedLessons || [];
+
+    // Find first lesson that is not completed
     for (const chapter of courseData.chapters) {
+      if (!chapter.lessons) continue;
+
       for (const lesson of chapter.lessons) {
-        // Assuming all are unlocked for now or check status if implemented in DB
-        // In seed script we didn't explicitly set status logic like in JS file
-        // But let's assume we can start the first one.
-        handleStartLesson(chapter, lesson);
-        return;
+        // Check if lesson is completed by checking ID in user profile
+        const isCompleted = completedLessonIds.includes(lesson.id);
+
+        if (!isCompleted) {
+          handleStartLesson(chapter, lesson);
+          return;
+        }
       }
+    }
+
+    // Fallback: If all are completed, start from the beginning
+    if (
+      courseData.chapters.length > 0 &&
+      courseData.chapters[0].lessons?.length > 0
+    ) {
+      handleStartLesson(
+        courseData.chapters[0],
+        courseData.chapters[0].lessons[0]
+      );
+    }
+  };
+
+  // 1. Generate a stable Course ID based on props
+  const courseId = subLevel
+    ? `${subject.id}_${level.id}_${subLevel}`
+    : `${subject.id}_${level.id}`;
+
+  // 2. Check if currently favorite
+  const isFavorite = userProfile?.favoriteCourses?.includes(courseId);
+
+  // 3. Handle the toggle action
+  const handleToggleFavorite = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      toast.info("Pro uložení kurzu se musíte přihlásit.");
+      navigate("/prihlaseni");
+      return;
+    }
+
+    setUpdatingFavorite(true);
+    try {
+      // Call the service method we saw in userService.js
+      await userService.toggleFavoriteCourse(user.uid, courseId, !isFavorite);
+      await refreshProfile();
+
+      toast.success(
+        isFavorite
+          ? "Kurz odebrán z oblíbených."
+          : "Kurz byl uložen do oblíbených."
+      );
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+      toast.error("Nepodařilo se změnit stav oblíbených.");
+    } finally {
+      setUpdatingFavorite(false);
     }
   };
 
@@ -166,9 +230,21 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
               <LucideIcons.PlayCircle size={20} />
               Pokračovat
             </button>
-            <button className="px-6 py-3 rounded-xl font-bold bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all flex items-center justify-center gap-2">
-              <LucideIcons.Bookmark size={20} />
-              Uložit kurz
+            <button
+              onClick={handleToggleFavorite}
+              disabled={updatingFavorite}
+              className="px-6 py-3 rounded-xl font-bold bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all flex items-center justify-center gap-2"
+            >
+              {isFavorite ? (
+                <LucideIcons.Star className="w-5 h-5 text-yellow-500" />
+              ) : (
+                <LucideIcons.Star className="w-5 h-5 text-gray-400" />
+              )}
+              {updatingFavorite
+                ? "Ukládám..."
+                : isFavorite
+                ? "Uloženo"
+                : "Uložit kurz"}
             </button>
           </div>
         </div>
@@ -213,7 +289,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                         {chapter.title}
                       </h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {chapter.lessons.length} lekcí • {chapter.description}
+                        {chapter.lessons.length} lekcí
                       </p>
                     </div>
                   </div>
