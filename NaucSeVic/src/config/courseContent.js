@@ -1,152 +1,20 @@
 import { mathSS } from "../data/mathSS.js";
 import { mathZS } from "../data/mathZS.js";
 import { mathVS } from "../data/mathVS.js";
+import { physicsZS } from "../data/physicsZS.js";
+import { physicsSS } from "../data/physicsSS.js";
+import { physicsVS } from "../data/physicsVS.js";
+
 export const courseContentDatabase = {
   matematika: {
+    zs: mathZS,
     ss: mathSS,
     vs: mathVS,
   },
   fyzika: {
-    zs: {
-      default: [
-        {
-          title: "Veličiny a měření",
-          lessons: ["Délka", "Hmotnost", "Čas", "Teplota", "Hustota"],
-        },
-        {
-          title: "Síla a pohyb",
-          lessons: [
-            "Síla",
-            "Skládání sil",
-            "Pohyb tělesa",
-            "Rychlost",
-            "Dráha",
-          ],
-        },
-        {
-          title: "Kapaliny a plyny",
-          lessons: [
-            "Tlak",
-            "Archimedův zákon",
-            "Pascalův zákon",
-            "Atmosférický tlak",
-          ],
-        },
-        {
-          title: "Teplo",
-          lessons: [
-            "Teplota a teplo",
-            "Šíření tepla",
-            "Změny skupenství",
-            "Tepelné motory",
-          ],
-        },
-        {
-          title: "Elektřina",
-          lessons: [
-            "Elektrický náboj",
-            "Elektrický proud",
-            "Elektrické napětí",
-            "Ohmův zákon",
-            "Elektrický obvod",
-          ],
-        },
-      ],
-    },
-    ss: {
-      default: [
-        {
-          title: "Kinematika",
-          lessons: [
-            "Pohyb hmotného bodu",
-            "Rovnoměrný pohyb",
-            "Rovnoměrně zrychlený pohyb",
-            "Kruhový pohyb",
-          ],
-        },
-        {
-          title: "Dynamika",
-          lessons: [
-            "Newtonovy zákony",
-            "Hybnost",
-            "Práce a výkon",
-            "Energie",
-            "Gravitační pole",
-          ],
-        },
-        {
-          title: "Mechanika tuhého tělesa",
-          lessons: [
-            "Moment síly",
-            "Těžiště",
-            "Rovnovážné polohy",
-            "Jednoduché stroje",
-          ],
-        },
-        {
-          title: "Kmitání a vlnění",
-          lessons: ["Kmitavý pohyb", "Kyvadlo", "Mechanické vlnění", "Zvuk"],
-        },
-        {
-          title: "Elektřina a magnetismus",
-          lessons: [
-            "Elektrické pole",
-            "Magnetické pole",
-            "Elektromagnetická indukce",
-            "Střídavý proud",
-          ],
-        },
-      ],
-    },
-    vs: {
-      default: [
-        {
-          title: "Teoretická mechanika",
-          lessons: [
-            "Lagrangeovy rovnice",
-            "Hamiltonovy rovnice",
-            "Princip nejmenší akce",
-            "Teorie relativity",
-          ],
-        },
-        {
-          title: "Elektrodynamika",
-          lessons: [
-            "Maxwellovy rovnice",
-            "Elektromagnetické vlny",
-            "Záření",
-            "Relativistická elektrodynamika",
-          ],
-        },
-        {
-          title: "Kvantová mechanika",
-          lessons: [
-            "Vlnová funkce",
-            "Schrödingerova rovnice",
-            "Operátory",
-            "Atom vodíku",
-          ],
-        },
-        {
-          title: "Termodynamika",
-          lessons: [
-            "Termodynamické zákony",
-            "Entropie",
-            "Fázové přechody",
-            "Statistická fyzika",
-          ],
-        },
-        {
-          title: "Jaderná fyzika",
-          lessons: [
-            "Struktura jádra",
-            "Radioaktivita",
-            "Jaderné reakce",
-            "Elementární částice",
-          ],
-        },
-      ],
-    },
+    zs: physicsZS,
+    ss: physicsSS,
+    vs: physicsVS,
   },
   geometrie: {
     zs: {

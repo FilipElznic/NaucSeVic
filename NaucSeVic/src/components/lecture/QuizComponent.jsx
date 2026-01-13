@@ -11,8 +11,9 @@ import {
   RefreshCw,
   ChevronRight,
   ChevronLeft,
+  GripVertical,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 import LatexRenderer from "../shared/LatexRenderer";
 
 const QuizComponent = ({ tasks, lessonId, onComplete }) => {
@@ -22,13 +23,27 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
   const [error, setError] = useState(null);
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
 
-  const handleSelect = (questionIndex, optionIndex) => {
+  const handleAnswerChange = (value) => {
     if (result) return;
     setUserAnswers((prev) => ({
       ...prev,
-      [questionIndex]: optionIndex,
+      [currentTaskIndex]: value,
     }));
   };
+
+  const handleSelect = (questionIndex, optionIndex) => {
+    // Wrapper for backward compatibility with multiple choice
+    if (currentTaskIndex !== questionIndex) return;
+    handleAnswerChange(optionIndex);
+  };
+
+  // Initialize sequence tasks
+  React.useEffect(() => {
+    const task = tasks[currentTaskIndex];
+    if (task?.type === "sequence" && !userAnswers[currentTaskIndex]) {
+      handleAnswerChange([...task.options]);
+    }
+  }, [currentTaskIndex, tasks]); // userAnswers excluded to avoid loop, we check existence inside
 
   const handleNext = () => {
     if (currentTaskIndex < tasks.length - 1) {
@@ -148,6 +163,24 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
           </h4>
           {tasks.map((task, index) => {
             const correction = result.corrections[index];
+
+            const userVal = userAnswers[index];
+            let displayUser = "";
+            let displayCorrect = "";
+
+            if (task.type === "sequence") {
+              displayUser = Array.isArray(userVal) ? userVal.join(", ") : "";
+              displayCorrect = Array.isArray(task.correctAnswer)
+                ? task.correctAnswer.join(", ")
+                : "";
+            } else if (task.type === "text-input") {
+              displayUser = userVal;
+              displayCorrect = task.correctAnswer;
+            } else {
+              displayUser = task.options?.[userVal];
+              displayCorrect = task.options?.[correction.correctAnswer];
+            }
+
             return (
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -180,18 +213,14 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
                       >
                         Vaše odpověď:{" "}
                         <span className="font-semibold">
-                          <LatexRenderer
-                            text={task.options[userAnswers[index]]}
-                          />
+                          <LatexRenderer text={displayUser} />
                         </span>
                       </div>
                       {!correction.isCorrect && (
                         <div className="text-green-700 dark:text-green-400">
                           Správně:{" "}
                           <span className="font-semibold">
-                            <LatexRenderer
-                              text={task.options[correction.correctAnswer]}
-                            />
+                            <LatexRenderer text={displayCorrect} />
                           </span>
                         </div>
                       )}
@@ -256,43 +285,82 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
             </div>
 
             <div className="grid gap-3 pl-0 md:pl-12">
-              {currentTask.options.map((option, oIndex) => {
-                const isSelected = userAnswers[currentTaskIndex] === oIndex;
-                return (
-                  <motion.button
-                    key={oIndex}
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    onClick={() => handleSelect(currentTaskIndex, oIndex)}
-                    className={`relative w-full text-left p-4 rounded-xl border-2 transition-all duration-200 group ${
-                      isSelected
-                        ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-500 shadow-sm"
-                        : "border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/50 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-white dark:hover:bg-zinc-800"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span
-                        className={`font-medium ${
-                          isSelected
-                            ? "text-blue-700 dark:text-blue-300"
-                            : "text-gray-700 dark:text-gray-300"
-                        }`}
-                      >
-                        <LatexRenderer text={option} />
-                      </span>
-                      {isSelected && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="text-blue-500"
+              {(!currentTask.type || currentTask.type === "multiple-choice") &&
+                currentTask.options?.map((option, oIndex) => {
+                  const isSelected = userAnswers[currentTaskIndex] === oIndex;
+                  return (
+                    <motion.button
+                      key={oIndex}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      onClick={() => handleSelect(currentTaskIndex, oIndex)}
+                      className={`relative w-full text-left p-4 rounded-xl border-2 transition-all duration-200 group ${
+                        isSelected
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-500 shadow-sm"
+                          : "border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/50 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-white dark:hover:bg-zinc-800"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span
+                          className={`font-medium ${
+                            isSelected
+                              ? "text-blue-700 dark:text-blue-300"
+                              : "text-gray-700 dark:text-gray-300"
+                          }`}
                         >
-                          <CheckCircle className="w-5 h-5" />
-                        </motion.div>
-                      )}
-                    </div>
-                  </motion.button>
-                );
-              })}
+                          <LatexRenderer text={option} />
+                        </span>
+                        {isSelected && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="text-blue-500"
+                          >
+                            <CheckCircle className="w-5 h-5" />
+                          </motion.div>
+                        )}
+                      </div>
+                    </motion.button>
+                  );
+                })}
+
+              {currentTask.type === "sequence" &&
+                userAnswers[currentTaskIndex] &&
+                Array.isArray(userAnswers[currentTaskIndex]) && (
+                  <Reorder.Group
+                    axis="y"
+                    values={userAnswers[currentTaskIndex]}
+                    onReorder={handleAnswerChange}
+                    className="space-y-3"
+                  >
+                    {userAnswers[currentTaskIndex].map((item) => (
+                      <Reorder.Item
+                        key={item}
+                        value={item}
+                        className="p-4 bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm cursor-grab active:cursor-grabbing flex items-center justify-between"
+                      >
+                        <span className="font-medium text-gray-700 dark:text-gray-300">
+                          <LatexRenderer text={item} />
+                        </span>
+                        <div className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                          <GripVertical size={20} />
+                        </div>
+                      </Reorder.Item>
+                    ))}
+                  </Reorder.Group>
+                )}
+
+              {currentTask.type === "text-input" && (
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={userAnswers[currentTaskIndex] || ""}
+                    onChange={(e) => handleAnswerChange(e.target.value)}
+                    className="w-full p-4 text-lg rounded-xl border-2 border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 focus:border-blue-500 focus:outline-none transition-colors dark:text-white"
+                    placeholder="Napište odpověď..."
+                  />
+                </div>
+              )}
             </div>
           </motion.div>
         </AnimatePresence>

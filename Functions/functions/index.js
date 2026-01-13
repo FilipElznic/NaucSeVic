@@ -1236,8 +1236,28 @@ exports.submitQuiz = onCall(async (request) => {
       const corrections = [];
 
       tasks.forEach((task, index) => {
-        const userAnswerIndex = userAnswers[index];
-        const isCorrect = userAnswerIndex === task.correctAnswer;
+        const userAnswer = userAnswers[index];
+
+        let isCorrect = false;
+
+        if (task.type === "sequence") {
+          // For sequence, compare arrays
+          // We assume simple arrays of strings/numbers
+          isCorrect =
+            JSON.stringify(userAnswer) === JSON.stringify(task.correctAnswer);
+        } else if (task.type === "text-input") {
+          // For text input, compare normalized strings
+          const uNorm = String(userAnswer || "")
+            .trim()
+            .toLowerCase();
+          const cNorm = String(task.correctAnswer || "")
+            .trim()
+            .toLowerCase();
+          isCorrect = uNorm === cNorm;
+        } else {
+          // Default: multiple choice (index comparison)
+          isCorrect = userAnswer === task.correctAnswer;
+        }
 
         if (isCorrect) {
           correctCount++;

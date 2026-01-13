@@ -16,118 +16,93 @@ export const mathZS = {
       title: "Základy: Obor čísel do 20",
       lessons: [
         {
-          title: "Číselná řada 0–20 a sousedé",
+          title: "Velká cesta čísly: Od 0 až do 20",
           content: {
             sections: [
               {
-                heading: "Cesta od 0 do 20",
-                text: "Vítej ve světě čísel! Už umíš počítat do deseti, ale svět je mnohem větší. Teď se vydáme na cestu až k číslu 20. Představ si čísla jako domy v dlouhé ulici. Začínáme nulou, což je prázdný dům, a jdeme postupně dál: 10, 11 (jedenáct), 12 (dvanáct)... až dojdeme k 20 (dvacet). Je důležité umět je vyjmenovat nejen od začátku do konce, ale i pozpátku – jako když odpočítáváme start rakety!",
+                heading: "První kroky: Čísla 0 až 10",
+                text: "Všechno začíná nulou. 0 znamená 'nic' – jako prázdná miska na bonbóny. Když přidáme první bonbón, máme 1. Pak přidáváme další a počítáme stejně, jako máš prsty na rukou: 1, 2, 3, 4, 5 (jedna ruka), 6, 7, 8, 9... až dojdeme k číslu 10. \n\n\n\nČísla od 0 do 9 se nazývají jednociferná, protože se píší jen jedním znakem. Ale číslo 10 je speciální – je to první číslo dvojciferné (píše se pomocí jedničky a nuly). Desítka je jako plný balíček, máme plné obě ruce prstů!",
                 image: "",
               },
               {
-                heading: "Předchůdce a následník",
-                text: "Každé číslo má své sousedy, stejně jako ty máš sousedy v lavici nebo doma. Soused, který bydlí 'před' naším číslem (je menší), se jmenuje předchůdce. Soused, který bydlí 'za' ním (je větší), je následník. Například číslo 15 má předchůdce 14 a následníka 16. Bez znalosti sousedů bychom se na číselné ose ztratili.",
+                heading: "Výprava za desítku: 11 až 20",
+                text: "Co se stane, když máme plnou desítku (10) a přidáme další jedničku? Vznikne číslo 11 (jedenáct). Tady vstupujeme do světa větších čísel. Všimni si, jak se tvoří: vezmeme celou desítku a k ní přidáváme jednotky. \n\n\n\nSlyšíš tu koncovku -náct? \n* 13 (tři-náct),\n* 14 (čtr-náct),\n* až po 19 (devate-náct).\n\nCesta končí u čísla 20 (dvacet). To už nejsou jen nějaké drobné k desítce, to jsou rovnou dvě celé desítky pohromadě (2 a 0).",
+                image: "",
+              },
+              {
+                heading: "Kdo bydlí vedle? (Sousedé)",
+                text: "Žádné číslo nebydlí na číselné ose samo. Každé má své sousedy. Představ si čísla jako řadové domečky v ulici.\n\n* Předchůdce je soused, který bydlí vlevo (je menší). Například předchůdcem čísla 5 je 4. Předchůdcem čísla 20 je 19.\n* Následník je soused, který bydlí vpravo (je větší). Následníkem čísla 0 je 1. Následníkem čísla 10 je 11.\n\nJe důležité umět se podívat na jakékoliv číslo a hned vědět, kdo stojí před ním a kdo za ním.",
                 image: "",
               },
             ],
             tasks: [
               {
+                id: "l1_t0_start",
+                question: "Kolik je prstů na jedné ruce?",
+                options: ["10", "5", "3", "8"],
+                correctAnswer: 1,
+                xp: 5,
+              },
+              {
                 id: "l1_t1",
-                question: "Které číslo následuje hned po číslu 19?",
+                question:
+                  "Které číslo následuje hned po číslu 19 (je jeho následník)?",
                 options: ["18", "20", "10", "21"],
                 correctAnswer: 1,
                 xp: 10,
               },
               {
                 id: "l1_t2",
-                question: "Kdo je předchůdcem čísla 15?",
-                options: ["16", "14", "13", "10"],
+                question: "Kdo je předchůdcem čísla 10?",
+                options: ["11", "9", "8", "1"],
                 correctAnswer: 1,
                 xp: 10,
               },
               {
                 id: "l1_t3",
-                question: "Doplň řadu: $8, 9, 10, \\dots, 12$",
-                options: ["13", "11", "7", "14"],
-                correctAnswer: 1,
+                question: "Doplň řadu: $0, 1, 2, \\dots, 4, 5$",
+                options: ["3", "6", "10", "8"],
+                correctAnswer: 0,
                 xp: 10,
               },
               {
                 id: "l1_t4",
-                question: "Seřaď čísla od nejmenšího: 15, 8, 20, 12",
+                question: "Seřaď čísla od nejmenšího po největší: 5, 20, 0, 11",
                 options: [
-                  "8, 12, 15, 20",
-                  "20, 15, 12, 8",
-                  "8, 15, 12, 20",
-                  "12, 8, 15, 20",
+                  "0, 5, 11, 20",
+                  "20, 11, 5, 0",
+                  "5, 0, 11, 20",
+                  "0, 11, 5, 20",
                 ],
                 correctAnswer: 0,
                 xp: 15,
               },
               {
                 id: "l1_t5",
-                question: "Které číslo leží přesně mezi 10 a 12?",
-                options: ["9", "13", "11", "11 a půl"],
-                correctAnswer: 2,
-                xp: 10,
+                question: "Které číslo je první dvojciferné (má dva znaky)?",
+                options: ["9", "10", "20", "1"],
+                correctAnswer: 1,
+                xp: 15,
+              },
+              {
+                id: "l1_t6_written",
+                type: "text-input",
+                question: "Napiš číslicí číslo patnáct:",
+                correctAnswer: "15",
+                xp: 15,
+              },
+              {
+                id: "l1_t7_sequence",
+                type: "sequence",
+                question: "Seřaď čísla tak, jak jdou za sebou:",
+                options: ["10", "9", "11", "8"],
+                correctAnswer: ["8", "9", "10", "11"],
+                xp: 20,
               },
             ],
           },
         },
-        {
-          title: "Porovnávání čísel (<, >, =)",
-          content: {
-            sections: [
-              {
-                heading: "Hladový krokodýl",
-                text: "Když máme dvě čísla, často chceme vědět, které je větší. K tomu používáme znaménka $<$ a $>$. Aby se ti to nepletlo, představ si, že zobáček je tlama hladového krokodýla. Krokodýl je chytrý a vždycky se otočí s otevřenou pusou tam, kde je více jídla (větší číslo). Takže $5 < 10$, protože krokodýl chce sníst desítku.",
-                image: "",
-              },
-              {
-                heading: "Když je to stejně",
-                text: "Někdy se stane, že na obou stranách je stejně. Třeba 5 jablek na stole a 5 jablek v košíku. Krokodýl neví, kam se otočit, a tak zavře pusu. Vzniknou dvě čárky pod sebou, kterým říkáme 'rovná se' ($=$). To znamená, že hodnota vlevo je naprosto stejná jako hodnota vpravo.",
-                image: "placeholder-equals-sign",
-              },
-            ],
-            tasks: [
-              {
-                id: "l2_t1",
-                question: "Doplň znaménko: $15 \\dots 18$",
-                options: ["$>$", "$<$", "$=$", "$+$"],
-                correctAnswer: 1,
-                xp: 10,
-              },
-              {
-                id: "l2_t2",
-                question: "Který zápis je správně?",
-                options: ["$12 > 20$", "$8 = 8$", "$10 < 5$", "$1 = 2$"],
-                correctAnswer: 1,
-                xp: 10,
-              },
-              {
-                id: "l2_t3",
-                question: "Co platí pro čísla 11 a 11?",
-                options: ["$11 > 11$", "$11 < 11$", "$11 = 11$", "Nic neplatí"],
-                correctAnswer: 2,
-                xp: 10,
-              },
-              {
-                id: "l2_t4",
-                question: "Které číslo je větší než 16?",
-                options: ["15", "10", "16", "17"],
-                correctAnswer: 3,
-                xp: 10,
-              },
-              {
-                id: "l2_t5",
-                question: "Vyber správné porovnání:",
-                options: ["$12 < 14$", "$20 < 10$", "$9 > 11$", "$7 = 17$"],
-                correctAnswer: 0,
-                xp: 10,
-              },
-            ],
-          },
-        },
+
         {
           title: "Sčítání a odčítání bez přechodu desítky",
           content: {
@@ -179,6 +154,22 @@ export const mathZS = {
                 correctAnswer: 1,
                 xp: 15,
               },
+              {
+                id: "l3_t6_written",
+                type: "text-input",
+                question: "Vypočítej: $11 + 6 =$",
+                correctAnswer: "17",
+                xp: 15,
+              },
+              {
+                id: "l3_t7_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď příklady podle výsledku od nejmenšího po největší:",
+                options: ["$10 + 5$", "$10 + 2$", "$10 + 8$"],
+                correctAnswer: ["$10 + 2$", "$10 + 5$", "$10 + 8$"],
+                xp: 20,
+              },
             ],
           },
         },
@@ -187,14 +178,14 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Most přes rozbouřenou řeku",
-                text: "Teď nás čeká nejdůležitější dovednost! Co když máme $8 + 5$? To už na prstech jednoduše nespočítáme. Představ si desítku jako záchytný ostrov. Nejprve musíme dojít k desítce. Od osmičky nám do deseti chybí 2. Pětku si tedy 'rozložíme' na 2 a 3. Osmička sní dvojku, stane se z ní 10, a pak už jen přičteme zbytek (3). Výsledek je 13!",
+                heading: "Most přes rozbouřenou řeku (Sčítání)",
+                text: "Teď nás čeká nejdůležitější matematická dovednost! Co když máme příklad $8 + 5$? Na prstech nám to nevychází. Představ si, že číslo 10 je bezpečný ostrov uprostřed řeky. My nemůžeme skočit z osmičky rovnou o pět dál, spadli bychom do vody. Musíme si postavit most.\n\n\n\nJak na to?\n1. Jdeme na ostrov 10. Kolik chybí číslu 8 do 10? Chybí 2. \n2. Tyto 2 si vypůjčíme z pětky. Pětku si tedy rozložíme na 2 a 3.\n3. Osmička sní dvojku a stane se z ní 10. \n4. Teď už jen k desítce přičteme ten zbytek (3). $10 + 3 = 13$. \n\nZní to složitě, ale je to jen o tom vědět, kolik chybí do deseti!",
                 image: "",
               },
               {
                 heading: "Odčítání s couváním",
-                text: "Při odčítání, třeba $13 - 6$, to děláme podobně, jen couváme. Nejprve se musíme vrátit na desítku. Z 13 musíme odebrat 3, abychom byli na 10. Ale měli jsme odebrat celkem 6! Kolik ještě musíme odebrat? Ještě 3. Takže $10 - 3 = 7$. Tomuto postupu říkáme 'rozklad' nebo 'počítání přes desítku'.",
-                video: "placeholder-video-bridging-10",
+                text: "Při odčítání, třeba $13 - 6$, to děláme podobně, jen couváme. Představ si, že jedeš autem a chceš couvnout o 6 metrů, ale na metru 10 je závora (zastávka). Musíš zastavit.\n\n\n\n1. Z čísla 13 couvneme na desítku. Musíme odebrat 3 ($13 - 3 = 10$).\n2. Chtěli jsme odebrat celkem 6, ale zatím jsme odebrali jen 3. Kolik nám ještě zbývá odebrat? Ještě 3.\n3. Teď už to jde snadno: od desítky odebereme ty zbylé 3. \n4. Příklad $10 - 3 = 7$.\n\nTomuto postupu říkáme rozklad přes desítku. Vždy se snažíme dostat na desítku, tam si odpočinout, a pak dokončit zbytek.",
+                image: "",
               },
             ],
             tasks: [
@@ -206,31 +197,70 @@ export const mathZS = {
                 xp: 20,
               },
               {
-                id: "l4_t2",
-                question:
-                  "Jak rozložíš číslo 5 v příkladu $9 + 5$, abys doplnil do desítky?",
-                options: ["na 1 a 4", "na 2 a 3", "na 5 a 0", "na 3 a 2"],
-                correctAnswer: 0,
-                xp: 20,
+                id: "l4_t2_sequence",
+                type: "sequence",
+                question: "Seřaď myšlenkové kroky pro výpočet $9 + 4$:",
+                options: [
+                  "Teď k desítce přičtu zbytek (3).",
+                  "Mám 9 a chci přičíst 4.",
+                  "Z čísla 4 vezmu 1 a dám ho devítce, abych měl 10.",
+                  "Výsledek je 13.",
+                ],
+                correctAnswer: [
+                  "Mám 9 a chci přičíst 4.",
+                  "Z čísla 4 vezmu 1 a dám ho devítce, abych měl 10.",
+                  "Teď k desítce přičtu zbytek (3).",
+                  "Výsledek je 13.",
+                ],
+                xp: 25,
               },
               {
                 id: "l4_t3",
-                question: "Vypočítej: $15 - 7$",
-                options: ["8", "7", "9", "6"],
+                question: "Jak správně rozložíme číslo 7 v příkladu $8 + 7$?",
+                options: [
+                  "na 2 a 5 (protože 8 + 2 = 10)",
+                  "na 1 a 6 (protože 8 + 1 = 9)",
+                  "na 3 a 4 (jen tak náhodou)",
+                  "nerozkládáme ho",
+                ],
                 correctAnswer: 0,
                 xp: 20,
               },
               {
-                id: "l4_t4",
-                question: "Kolik je $7 + 7$?",
-                options: ["13", "14", "15", "12"],
-                correctAnswer: 1,
+                id: "l4_t4_written",
+                type: "text-input",
+                question: "Vypočítej příklad: $7 + 7$. Napiš jen číslo.",
+                correctAnswer: "14",
                 xp: 15,
               },
               {
-                id: "l4_t5",
-                question: "Doplň chybějící číslo: $6 + ? = 14$",
-                options: ["7", "8", "9", "6"],
+                id: "l4_t5_written",
+                type: "text-input",
+                question:
+                  "Vypočítej s couváním: $12 - 5$. (Jdi na 10 a pak odečti zbytek).",
+                correctAnswer: "7",
+                xp: 20,
+              },
+              {
+                id: "l4_t6_sequence",
+                type: "sequence",
+                question: "Seřaď postup pro odčítání $14 - 6$:",
+                options: [
+                  "Jsem na 10 a musím odebrat ještě 2.",
+                  "Výsledek je 8.",
+                  "Startuji na 14. Abych byl na 10, odeberu 4.",
+                ],
+                correctAnswer: [
+                  "Startuji na 14. Abych byl na 10, odeberu 4.",
+                  "Jsem na 10 a musím odebrat ještě 2.",
+                  "Výsledek je 8.",
+                ],
+                xp: 25,
+              },
+              {
+                id: "l4_t7",
+                question: "Doplň chybějící číslo v rozkladu: $6 + ? = 11$",
+                options: ["4", "5", "6", "7"],
                 correctAnswer: 1,
                 xp: 20,
               },
@@ -238,59 +268,183 @@ export const mathZS = {
           },
         },
         {
-          title: "První slovní úlohy",
+          title: "Porovnávání čísel: Kdo je větší?",
           content: {
             sections: [
               {
-                heading: "Matematika v příbězích",
-                text: "Slovní úlohy jsou jako malé detektivní příběhy. Nejsou tam jen čísla, ale i slova. Musíme zjistit, co se děje. Když slyšíš slova jako 'přidal', 'přiletěl', 'dostal', obvykle budeme sčítat (+). Když slyšíš 'snědl', 'odletěl', 'ztratil' nebo 'dal pryč', budeme odčítat (-).",
+                heading: "Hladový krokodýl (< a >)",
+                text: "Když vidíme dvě různá čísla, chceme zjistit, které je větší a které menší. Používáme k tomu znaménka, která vypadají jako šipky: $<$ a $>$. Aby se ti to nikdy nepletlo, představ si, že to není obyčejná šipka, ale otevřená tlama hladového krokodýla.\n\n\n\nKrokodýl je velký jedlík a vždycky se otočí tam, kde je více jídla (větší číslo). \n* Když máme $5$ a $10$, krokodýl otevře pusu na desítku: $5 < 10$.\n* Když máme $20$ a $3$, otočí se na dvacítku: $20 > 3$.\n\nPamatuj, že čteme vždy zleva doprava (jako v knížce). Zobáček nám ukazuje, která strana je 'menší' (tam, kde je špička) a která 'větší' (tam, kde je otevřeno).",
                 image: "",
               },
               {
-                heading: "Jak vyřešit úlohu",
-                text: "1. Přečti si zadání (klidně dvakrát).\n2. Zjisti, co víme (např. Petr má 5 autíček).\n3. Zjisti, na co se ptáme (Kolik jich má teď?).\n4. Sestav příklad ($5 + 3$).\n5. Vypočítej a napiš odpověď. Nezapomeň, že každá slovní úloha musí mít odpověď celou větou!",
-                image: "placeholder-detective-math",
+                heading: "Když je to stejně (=)",
+                text: "Co se stane, když krokodýl přijde k obědu a na obou stranách najde stejně jídla? Třeba 8 ryb vlevo a 8 ryb vpravo? Krokodýl neví, kam se otočit, je zmatený a zavře pusu. \n\n\n\nJeho zavřená pusa vypadá jako dvě čárky pod sebou: $=$. Tomuto znaménku říkáme rovná se. Znamená to, že hodnota vlevo je úplně stejná jako hodnota vpravo, jako když jsou váhy dokonale vyvážené. Například $15 = 15$.",
+                image: "",
+              },
+            ],
+            tasks: [
+              {
+                id: "l2_t1",
+                question:
+                  "Kam se otočí krokodýl, když vidí čísla 15 a 18? ($15 \\dots 18$)",
+                options: [
+                  "> (otočí se na 15)",
+                  "< (otočí se na 18)",
+                  "= (zavře pusu)",
+                  "+ (sečte je)",
+                ],
+                correctAnswer: 1,
+                xp: 10,
+              },
+              {
+                id: "l2_t2",
+                question: "Který zápis je matematicky správně?",
+                options: [
+                  "$12 > 20$ (12 je větší než 20)",
+                  "$8 = 8$ (8 se rovná 8)",
+                  "$10 < 5$ (10 je menší než 5)",
+                  "$1 = 2$ (1 se rovná 2)",
+                ],
+                correctAnswer: 1,
+                xp: 10,
+              },
+              {
+                id: "l2_t3",
+                question: "Doplň správné znaménko: $20 \\dots 10$",
+                options: [">", "<", "=", "0"],
+                correctAnswer: 0,
+                xp: 10,
+              },
+              {
+                id: "l2_t4",
+                question: "Které číslo je větší než 16?",
+                options: ["15", "10", "16", "17"],
+                correctAnswer: 3,
+                xp: 10,
+              },
+              {
+                id: "l2_t5",
+                question: "Najdi chybu! Který krokodýl se spletl?",
+                options: [
+                  "$12 < 14$",
+                  "$20 > 19$",
+                  "$9 > 11$ (TOHLE JE CHYBA)",
+                  "$7 = 7$",
+                ],
+                correctAnswer: 2,
+                xp: 15,
+              },
+              {
+                id: "l2_t6_written",
+                type: "text-input",
+                question:
+                  "Napiš na klávesnici znaménko ( <, > nebo = ), které patří mezi tato čísla: $5 \\dots 5$",
+                correctAnswer: "=",
+                xp: 15,
+              },
+              {
+                id: "l2_t7_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď čísla od nejmenšího (nahoře) po největší (dole), aby je mohl krokodýl sníst postupně:",
+                options: ["12", "4", "20", "9"],
+                correctAnswer: ["4", "9", "12", "20"],
+                xp: 20,
+              },
+            ],
+          },
+        },
+        {
+          title: "První slovní úlohy: Matematika v příbězích",
+          content: {
+            sections: [
+              {
+                heading: "Hra na detektivy",
+                text: "Slovní úlohy jsou jako malé detektivní příběhy. Čísla se v nich schovávají mezi slovy a naším úkolem je najít je a zjistit, co se s nimi děje. Musíme být pozorní k určitým slovíčkům, která nám napoví, jaký příklad sestavit.\n\n\n\n* Kdy sčítáme (+)? Když slyšíš slova jako: *přiletěl, dostal, koupil, přidal, celkem, dohromady*.\n* Kdy odčítáme (-)? Když slyšíš slova jako: *odletěl, ztratil, snědl, rozbil, dal pryč, zbylo*.\n\nNení to jen o počítání, je to o pochopení příběhu!",
+                image: "",
+              },
+              {
+                heading: "Jak vyřešit každou záhadu (Postup)",
+                text: "Aby ses v úloze neztratil, dodržuj vždy těchto 5 kroků:\n\n1.  Přečti si zadání: Klidně dvakrát. Musíš vědět, o čem se tam píše.\n2.  Najdi čísla: Co víme? (Např. *Petr má 5 autíček*).\n3.  Na co se ptáme? Co musíme zjistit? (Např. *Kolik jich má teď?*).\n4.  Vymysli příklad: Převeď slova na čísla ($5 + 3$).\n5.  Odpověz: Každá slovní úloha končí větou. Nestačí jen číslo 8, musíme říct: *Petr má teď 8 autíček.*\n\n\n\nZkus si to hned na dalším úkolu!",
+                image: "",
               },
             ],
             tasks: [
               {
                 id: "l5_t1",
                 question:
-                  "Na stromě bylo 8 ptáčků. 3 odletěli. Kolik jich zůstalo?",
-                options: ["11", "5", "6", "4"],
+                  "Na stromě sedělo 8 ptáčků. 3 ptáčci odletěli. Kolik ptáčků zůstalo na stromě?",
+                options: [
+                  "11 (protože 8 + 3)",
+                  "5 (protože 8 - 3)",
+                  "6 (špatně spočítáno)",
+                  "3 (to jsou ti, co odletěli)",
+                ],
                 correctAnswer: 1,
                 xp: 20,
               },
               {
-                id: "l5_t2",
+                id: "l5_t2_input",
+                type: "text-input",
                 question:
-                  "Jana měla 12 pastelek a dostala k narozeninám další 4. Kolik má celkem?",
-                options: ["8", "15", "16", "124"],
-                correctAnswer: 2,
+                  "Jana měla 12 pastelek a k svátku dostala další 4. Kolik pastelek má teď dohromady? (Napiš jen číslo)",
+                correctAnswer: "16",
                 xp: 20,
               },
               {
-                id: "l5_t3",
-                question:
-                  "Tomáš má 9 kuliček, Milan má o 3 více. Kolik má Milan?",
-                options: ["6", "11", "12", "13"],
-                correctAnswer: 2,
-                xp: 20,
-              },
-              {
-                id: "l5_t4",
-                question:
-                  "V autobuse jelo 15 lidí. Na zastávce 5 lidí vystoupilo. Kolik lidí jede dál?",
-                options: ["10", "20", "15", "5"],
-                correctAnswer: 0,
-                xp: 20,
-              },
-              {
-                id: "l5_t5",
-                question: "Mám 7 bonbónů a chci jich mít 15. Kolik mi chybí?",
-                options: ["7", "8", "9", "6"],
-                correctAnswer: 1,
+                id: "l5_t3_sequence",
+                type: "sequence",
+                question: "Seřaď správně kroky, jak se řeší slovní úloha:",
+                options: [
+                  "Přečtu si pozorně zadání.",
+                  "Zjistím, co mám spočítat (otázka).",
+                  "Vypočítám příklad.",
+                  "Napíšu odpověď.",
+                ],
+                correctAnswer: [
+                  "Přečtu si pozorně zadání.",
+                  "Zjistím, co mám spočítat (otázka).",
+                  "Vypočítám příklad.",
+                  "Napíšu odpověď.",
+                ],
                 xp: 25,
+              },
+              {
+                id: "l5_t4_input",
+                type: "text-input",
+                question:
+                  "V autobuse jelo 15 lidí. Na zastávce 5 lidí vystoupilo. Kolik lidí zůstalo v autobuse? (Napiš číslo)",
+                correctAnswer: "10",
+                xp: 20,
+              },
+              {
+                id: "l5_t5_sequence",
+                type: "sequence",
+                question: "Sestav příběh podle příkladu $10 - 2 = 8$:",
+                options: [
+                  "Měl jsem 10 jablek.",
+                  "2 jablka jsem snědl.",
+                  "Zbylo mi 8 jablek.",
+                ],
+                correctAnswer: [
+                  "Měl jsem 10 jablek.",
+                  "2 jablka jsem snědl.",
+                  "Zbylo mi 8 jablek.",
+                ],
+                xp: 25,
+              },
+              {
+                id: "l5_t6",
+                question:
+                  "Tomáš má 9 kuliček. Milan má o 3 kuličky VÍCE. Kolik kuliček má Milan?",
+                options: [
+                  "6 (to by měl méně)",
+                  "12 (9 + 3)",
+                  "9 (stejně)",
+                  "3 (jen ten rozdíl)",
+                ],
+                correctAnswer: 1,
+                xp: 20,
               },
             ],
           },
@@ -1811,17 +1965,17 @@ export const mathZS = {
             sections: [
               {
                 heading: "Atomy matematiky",
-                text: "Představ si, že každé přirozené číslo je postavené z Lego kostiček. Některá čísla jsou velká a složitá, jiná jsou malá. Existují však speciální čísla, která už nejdou rozbít na menší kousky (kromě jedničky). Těm říkáme prvočísla. Jsou to základní stavební kameny vší matematiky. Prvočíslo má přesně dva dělitele: jedničku a samo sebe. Příkladem je číslo $5$ (jde dělit jen $1$ a $5$) nebo $13$.",
+                text: "Představ si, že každé přirozené číslo je postavené z Lego kostiček. Některá čísla jsou velká a složitá, jiná jsou malá. Existují však speciální čísla, která už nejdou rozbít na menší kousky (kromě jedničky). Těm říkáme prvočísla.\n\n\n\nPrvočíslo je jako základní atom. Má přesně dva dělitele: jedničku a samo sebe. Příkladem je číslo $5$ (jde dělit jen $1$ a $5$) nebo $13$. Nikdo jiný je nedělí.",
                 image: "",
               },
               {
                 heading: "Čísla složená a osamělá jednička",
-                text: "Čísla, která mají více než dva dělitele, se nazývají čísla složená. Například číslo $4$ je složené, protože jde dělit $1$, $2$ a $4$. Můžeme ho „postavit“ jako $2 \\cdot 2$. A co číslo $1$? To je speciální samotář. Jednička má pouze jednoho dělitele (sama sebe), proto nepatří ani mezi prvočísla, ani mezi čísla složená. Je to prostě jednotka.",
-                image: "placeholder-prime-composite-diagram",
+                text: "Čísla, která mají více než dva dělitele, se nazývají čísla složená. Můžeme je 'rozložit' na menší násobky. Například číslo $4$ je složené, protože jde dělit $1$, $2$ a $4$. \n\nA co číslo $1$? To je speciální samotář. Jednička má pouze jednoho dělitele (sama sebe), proto nepatří ani mezi prvočísla, ani mezi čísla složená. Je to prostě jednotka, začátek všeho.",
+                image: "",
               },
               {
-                heading: "Eratosthenovo síto",
-                text: "Jak najít všechna prvočísla třeba do sta? Řecký matematik Eratosthenes vymyslel trik. Napíšeš si čísla $1$ až $100$. Škrtneš $1$. Kroužkuješ $2$ (prvočíslo) a škrtneš všechny jeho násobky ($4, 6, 8...$). Pak zakroužkuješ další čisté číslo v pořadí ($3$) a škrtneš jeho násobky ($6, 9, 12...$). Takhle pokračuješ dál. Čísla, která zůstanou neškrtnutá, jsou prvočísla.",
+                heading: "Jak lovit prvočísla (Eratosthenovo síto)",
+                text: "Jak najít všechna prvočísla třeba do dvacítky? Použijeme metodu starou tisíce let – Eratosthenovo síto. Funguje to vylučovací metodou:\n1. Napíšeme si čísla $1$ až $20$.\n2. Škrtneme $1$ (není prvočíslo).\n3. Zakroužkujeme $2$ (první prvočíslo) a škrtneme všechny její násobky ($4, 6, 8...$).\n4. Další čisté číslo je $3$. Zakroužkujeme ho a škrtneme jeho násobky.\n5. Takhle pokračujeme, dokud nezůstanou jen prvočísla.\n\n",
                 image: "",
               },
             ],
@@ -1839,19 +1993,32 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c1_l1_t2",
-                question: "Proč číslo $1$ není prvočíslo?",
-                options: [
-                  "Protože je liché.",
-                  "Protože má pouze jednoho dělitele.",
-                  "Protože je moc malé.",
-                  "Je to prvočíslo.",
-                ],
-                correctAnswer: 1,
+                id: "c1_l1_t2_input",
+                type: "text-input",
+                question: "Napiš nejmenší prvočíslo, které je sudé:",
+                correctAnswer: "2",
                 xp: 15,
               },
               {
-                id: "c1_l1_t3",
+                id: "c1_l1_t3_sequence",
+                type: "sequence",
+                question: "Seřaď kroky Eratosthenova síta:",
+                options: [
+                  "Vypíšu řadu čísel.",
+                  "Škrtnu číslo 1.",
+                  "Zakroužkuji 2 a škrtám násobky dvojky.",
+                  "Zakroužkuji 3 a škrtám násobky trojky.",
+                ],
+                correctAnswer: [
+                  "Vypíšu řadu čísel.",
+                  "Škrtnu číslo 1.",
+                  "Zakroužkuji 2 a škrtám násobky dvojky.",
+                  "Zakroužkuji 3 a škrtám násobky trojky.",
+                ],
+                xp: 25,
+              },
+              {
+                id: "c1_l1_t4",
                 question: "Kolik dělitelů má číslo $10$?",
                 options: [
                   "Dva ($1, 10$)",
@@ -1860,25 +2027,6 @@ export const mathZS = {
                   "Pět",
                 ],
                 correctAnswer: 2,
-                xp: 15,
-              },
-              {
-                id: "c1_l1_t4",
-                question: "Které je nejmenší prvočíslo?",
-                options: ["$0$", "$1$", "$2$", "$3$"],
-                correctAnswer: 2,
-                xp: 10,
-              },
-              {
-                id: "c1_l1_t5",
-                question: "Je číslo $99$ prvočíslo?",
-                options: [
-                  "Ano, vypadá tak.",
-                  "Ne, je dělitelné třeba 9 a 11.",
-                  "Ano, je liché.",
-                  "Ne, protože je menší než 100.",
-                ],
-                correctAnswer: 1,
                 xp: 15,
               },
             ],
@@ -1890,67 +2038,65 @@ export const mathZS = {
             sections: [
               {
                 heading: "Matematické hacky",
-                text: "Představ si, že máš číslo $1\\ 234\\ 567\\ 890$ a máš zjistit, jestli jde vydělit pěti beze zbytku. Nemusíš to složitě dělit! Stačí se podívat na konec. Matematika má svá tajná pravidla, kterým říkáme znaky dělitelnosti. Díky nim okamžitě vidíme vlastnosti čísla, aniž bychom museli počítat.",
+                text: "Představ si, že máš číslo $1\\ 234\\ 567\\ 890$ a máš zjistit, jestli jde vydělit pěti beze zbytku. Nemusíš to složitě dělit! Stačí se podívat na konec. Matematika má svá tajná pravidla, kterým říkáme znaky dělitelnosti. Díky nim okamžitě vidíme vlastnosti čísla, aniž bychom museli zdlouhavě počítat.",
                 image: "",
               },
               {
-                heading: "Pravidla pro 2, 5 a 10 (Koncovky)",
-                text: "Tato pravidla se týkají pouze poslední číslice:\n- Dělitelnost 2: Číslo je sudé (končí na $0, 2, 4, 6, 8$).\n- Dělitelnost 5: Číslo končí na $0$ nebo $5$.\n- Dělitelnost 10: Číslo končí na $0$.\nNapříklad číslo $345$ je dělitelné pěti, ale není dělitelné dvěma ani deseti.",
-                image: "placeholder-divisibility-2-5-10",
+                heading: "Pravidla koncovky (2, 5, 10)",
+                text: "Tato pravidla se týkají pouze poslední číslice. Zbytek čísla nás nezajímá!\n* Dělitelnost 2: Číslo musí být sudé. Tedy končí na $0, 2, 4, 6, 8$.\n* Dělitelnost 5: Číslo musí končit na $0$ nebo $5$.\n* Dělitelnost 10: Číslo musí končit přesně na $0$.\n\n",
+                image: "",
               },
               {
                 heading: "Magický ciferný součet (3 a 9)",
-                text: "U čísel $3$ a $9$ nezáleží na poslední číslici, ale na součtu všech cifer. Tomu říkáme ciferný součet. Mějme číslo $123$. Sečteme cifry: $$1 + 2 + 3 = 6$$ Je výsledek ($6$) dělitelný třemi? Ano! Takže i celé číslo $123$ je dělitelné třemi. Stejně to funguje pro devítku. Příklad $81$: $$8 + 1 = 9$$ Devět je dělitelné devíti, takže i $81$ je dělitelné devíti.",
-                image:
-                  "[Image explaining digit sum calculation for divisibility]",
+                text: "U čísel $3$ a $9$ nezáleží na poslední číslici, ale na celém čísle. Musíme sečíst všechny jeho cifry. Tomu říkáme ciferný součet.\n\nMějme číslo $123$. Sečteme cifry: $$1 + 2 + 3 = 6$$ \nJe výsledek ($6$) dělitelný třemi? Ano! Takže i celé obří číslo $123$ je dělitelné třemi. Stejně to funguje pro devítku.",
+                image: "",
               },
             ],
             tasks: [
               {
                 id: "c1_l2_t1",
-                question: "Které číslo je dělitelné číslem $2$?",
-                options: ["$123$", "$501$", "$1\\ 008$", "$77$"],
+                question: "Které číslo je dělitelné číslem $5$?",
+                options: ["$123$", "$501$", "$1\\ 005$", "$77$"],
                 correctAnswer: 2,
                 xp: 10,
               },
               {
-                id: "c1_l2_t2",
-                question:
-                  "Je číslo $51$ dělitelné třemi? (Tip: Zkus ciferný součet)",
-                options: [
-                  "Ne, protože končí jedničkou.",
-                  "Ano, protože $5 + 1 = 6$ a to jde dělit 3.",
-                  "Ne, je to prvočíslo.",
-                  "Ano, protože je liché.",
-                ],
-                correctAnswer: 1,
-                xp: 20,
-              },
-              {
-                id: "c1_l2_t3",
-                question: "Které číslo je dělitelné pěti, ale ne deseti?",
-                options: ["$100$", "$55$", "$20$", "$8$"],
-                correctAnswer: 1,
+                id: "c1_l2_t2_input",
+                type: "text-input",
+                question: "Vypočítej ciferný součet čísla $258$. (Napiš číslo)",
+                correctAnswer: "15",
                 xp: 15,
               },
               {
-                id: "c1_l2_t4",
-                question: "Jaký je ciferný součet čísla $2\\ 024$?",
-                options: ["$4$", "$6$", "$8$", "$10$"],
-                correctAnswer: 2,
-                xp: 10,
+                id: "c1_l2_t3_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď čísla podle velikosti jejich ciferného součtu (od nejmenšího):",
+                options: [
+                  "$10$ (součet 1)",
+                  "$21$ (součet 3)",
+                  "$40$ (součet 4)",
+                  "$15$ (součet 6)",
+                ],
+                correctAnswer: [
+                  "$10$ (součet 1)",
+                  "$21$ (součet 3)",
+                  "$40$ (součet 4)",
+                  "$15$ (součet 6)",
+                ],
+                xp: 20,
               },
               {
-                id: "c1_l2_t5",
-                question: "Vyber číslo dělitelné devíti.",
+                id: "c1_l2_t4",
+                question: "Je číslo $72$ dělitelné devíti?",
                 options: [
-                  "$100$",
-                  "$82$ (součet 10)",
-                  "$72$ (součet 9)",
-                  "$19$ (součet 10)",
+                  "Ano, protože $7+2=9$.",
+                  "Ne, protože nekončí devítkou.",
+                  "Ano, protože je sudé.",
+                  "Ne, je moc malé.",
                 ],
-                correctAnswer: 2,
-                xp: 20,
+                correctAnswer: 0,
+                xp: 15,
               },
             ],
           },
@@ -1961,22 +2107,23 @@ export const mathZS = {
             sections: [
               {
                 heading: "Rentgenové vidění",
-                text: "Každé složené číslo se dá rozložit na součin prvočísel. Je to jako bychom číslo dali pod rentgen a viděli jeho DNA. Tento proces se nazývá prvočíselný rozklad. Každé číslo má svůj unikátní rozklad (pokud nepočítáme pořadí). Například rozklad čísla $12$ vypadá takto: $$12 = 4 \\cdot 3$$ Ale $4$ není prvočíslo, musíme dál! $$12 = 2 \\cdot 2 \\cdot 3$$ Teď už máme samá prvočísla. Můžeme to zapsat pomocí mocniny: $$12 = 2^2 \\cdot 3$$",
+                text: "Každé složené číslo se dá rozložit na součin prvočísel. Je to jako bychom číslo dali pod rentgen a viděli jeho DNA. Tento proces se nazývá prvočíselný rozklad. \n\nNapříklad rozklad čísla $12$:\n1. $12 = 4 \\cdot 3$ (Ale 4 není prvočíslo, musíme dál!)\n2. $12 = 2 \\cdot 2 \\cdot 3$\n3. Teď už máme samá prvočísla. Můžeme to zapsat zkráceně pomocí mocniny: $$12 = 2^2 \\cdot 3$$",
                 image: "",
               },
               {
-                heading: "Metoda stromečku nebo žebříku",
-                text: "Jak rozložit velké číslo, třeba $60$? Použijeme postupné dělení.\n1. Jde $60$ dělit nejmenším prvočíslem ($2$)? Ano. $$60 : 2 = 30$$\n2. Jde $30$ dělit $2$? Ano. $$30 : 2 = 15$$\n3. Jde $15$ dělit $2$? Ne. Zkusíme další prvočíslo ($3$). Jde to? Ano. $$15 : 3 = 5$$\n4. $5$ je prvočíslo. Hotovo.\nVýsledek: $60 = 2 \\cdot 2 \\cdot 3 \\cdot 5$.",
-                image: "placeholder-prime-factorization-ladder",
+                heading: "Metoda žebříku (postupné dělení)",
+                text: "Jak rozložit velké číslo, třeba $60$? Dělíme postupně nejmenšími možnými prvočísly:\n\n1. Jde $60$ dělit $2$? Ano. ($60 : 2 = 30$)\n2. Jde $30$ dělit $2$? Ano. ($30 : 2 = 15$)\n3. Jde $15$ dělit $2$? Ne. Zkusíme další prvočíslo ($3$). Jde to? Ano. ($15 : 3 = 5$)\n4. $5$ je prvočíslo. Hotovo.\n\nVýsledek zapíšeme jako součin: $60 = 2 \\cdot 2 \\cdot 3 \\cdot 5$.",
+                image: "",
               },
             ],
             tasks: [
               {
                 id: "c1_l3_t1",
-                question: "Jaký je správný prvočíselný rozklad čísla $8$?",
+                question:
+                  "Který zápis je správný prvočíselný rozklad čísla $8$?",
                 options: [
                   "$4 \\cdot 2$",
-                  "$2 \\cdot 2 \\cdot 2$ (nebo $2^3$)",
+                  "$2 \\cdot 2 \\cdot 2$",
                   "$1 \\cdot 8$",
                   "$2 \\cdot 4$",
                 ],
@@ -1984,40 +2131,35 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c1_l3_t2",
-                question: "Rozlož číslo $20$ na součin prvočísel.",
+                id: "c1_l3_t2_sequence",
+                type: "sequence",
+                question: "Seřaď kroky rozkladu čísla 18:",
                 options: [
-                  "$2 \\cdot 10$",
-                  "$4 \\cdot 5$",
-                  "$2 \\cdot 2 \\cdot 5$",
-                  "$2 \\cdot 5 \\cdot 5$",
+                  "Mám číslo 18.",
+                  "Vydělím ho 2 (zbyde 9).",
+                  "Devítku vydělím 3 (zbyde 3).",
+                  "Trojka je prvočíslo, mám hotovo ($2 \\cdot 3 \\cdot 3$).",
                 ],
-                correctAnswer: 2,
-                xp: 20,
+                correctAnswer: [
+                  "Mám číslo 18.",
+                  "Vydělím ho 2 (zbyde 9).",
+                  "Devítku vydělím 3 (zbyde 3).",
+                  "Trojka je prvočíslo, mám hotovo ($2 \\cdot 3 \\cdot 3$).",
+                ],
+                xp: 25,
               },
               {
-                id: "c1_l3_t3",
-                question: "Které číslo má rozklad $3 \\cdot 5$?",
-                options: ["$8$", "$15$", "$35$", "$53$"],
-                correctAnswer: 1,
-                xp: 10,
+                id: "c1_l3_t3_input",
+                type: "text-input",
+                question:
+                  "Které číslo se skrývá pod rozkladem $2 \\cdot 3 \\cdot 5$? (Vynásob je)",
+                correctAnswer: "30",
+                xp: 20,
               },
               {
                 id: "c1_l3_t4",
-                question: "Je zápis $30 = 6 \\cdot 5$ prvočíselným rozkladem?",
-                options: [
-                  "Ano, je správný.",
-                  "Ne, protože $6$ není prvočíslo (dá se rozložit na $2 \\cdot 3$).",
-                  "Ne, chybí tam jednička.",
-                  "Ano, protože $5$ je prvočíslo.",
-                ],
-                correctAnswer: 1,
-                xp: 20,
-              },
-              {
-                id: "c1_l3_t5",
                 question:
-                  "Jak zapíšeme $2 \\cdot 2 \\cdot 2 \\cdot 3$ zkráceně?",
+                  "Jak zapíšeme $2 \\cdot 2 \\cdot 2 \\cdot 3$ zkráceně pomocí mocniny?",
                 options: [
                   "$23 \\cdot 3$",
                   "$6 \\cdot 3$",
@@ -2035,36 +2177,47 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Co mají společného?",
-                text: "Představ si, že máš dvě tyče dlouhé $12$ metrů a $18$ metrů. Chceš je rozřezat na stejně dlouhé kousky tak, aby ti nic nezbylo a kousky byly co největší. Hledáš Největší Společný Dělitel (značíme $NSD$). Vypíšeme si dělitele:\n- Dělitelé $12$: $1, 2, 3, 4, 6, 12$\n- Dělitelé $18$: $1, 2, 3, 6, 9, 18$\nSpolečná čísla jsou $1, 2, 3, 6$. Největší z nich je $6$. Takže $$NSD(12, 18) = 6$$.",
-                image:
-                  "[Image comparing divisors of 12 and 18 finding the greatest common one]",
+                heading: "Krájíme tyče (Co je to NSD)",
+                text: "Představ si, že máš dvě dřevěné tyče: jedna měří $12$ metrů a druhá $18$ metrů. Chceš je rozřezat na stejně dlouhé kousky tak, aby ti nic nezbylo a kousky byly co největší. \n\nHledáme Největší Společný Dělitel ($NSD$).\n* Dělitelé 12: $1, 2, 3, 4, 6, 12$\n* Dělitelé 18: $1, 2, 3, 6, 9, 18$\n\nKterá čísla mají společná? $1, 2, 3$ a $6$. Největší z nich je $6$. Takže nejdelší tyč, kterou můžeme nařezat, měří 6 metrů.",
+                image: "",
               },
               {
-                heading: "Hledání pomocí rozkladu",
-                text: "U velkých čísel je vypisování zdlouhavé. Použijeme prvočíselný rozklad! Pravidlo zní: Pro NSD vybereme jen ta prvočísla, která se vyskytují v obou rozkladech, a to v nejnižší mocnině.\n- $12 = 2^2 \\cdot 3$\n- $18 = 2 \\cdot 3^2$\nSpolečná je jedna dvojka a jedna trojka. $$NSD(12, 18) = 2 \\cdot 3 = 6$$",
-                image: "placeholder-gcd-venn-diagram",
+                heading: "Profesionální metoda (přes rozklad)",
+                text: "U malých čísel stačí dělitele vypsat. U velkých (např. 120 a 300) bychom se upsali. Použijeme prvočíselný rozklad!\n\nPravidlo: Pro NSD vybereme jen ta prvočísla, která se vyskytují v obou rozkladech, a to v té menší mocnině (musí se vejít do obou).\n\n* $12 = 2^2 \\cdot 3$\n* $18 = 2 \\cdot 3^2$\n\nSpolečná je jedna dvojka ($2^1$) a jedna trojka ($3^1$). \n$$NSD(12, 18) = 2 \\cdot 3 = 6$$",
+                image: "",
               },
             ],
             tasks: [
               {
-                id: "c1_l4_t1",
-                question: "Najdi $NSD(10, 15)$.",
-                options: ["$2$", "$5$", "$10$", "$1$"],
-                correctAnswer: 1,
+                id: "c1_l4_t1_input",
+                type: "text-input",
+                question:
+                  "Najdi největšího společného dělitele čísel 10 a 15. Napiš číslo:",
+                correctAnswer: "5",
                 xp: 15,
               },
               {
-                id: "c1_l4_t2",
-                question: "Jaký je největší společný dělitel čísel $8$ a $12$?",
-                options: ["$2$", "$4$", "$8$", "$24$"],
-                correctAnswer: 1,
-                xp: 20,
+                id: "c1_l4_t2_sequence",
+                type: "sequence",
+                question: "Seřaď postup hledání NSD(12, 18) pomocí rozkladu:",
+                options: [
+                  "Rozložím 12 na $2 \\cdot 2 \\cdot 3$.",
+                  "Rozložím 18 na $2 \\cdot 3 \\cdot 3$.",
+                  "Vyberu společná čísla (jedna 2 a jedna 3).",
+                  "Vynásobím $2 \\cdot 3 = 6$.",
+                ],
+                correctAnswer: [
+                  "Rozložím 12 na $2 \\cdot 2 \\cdot 3$.",
+                  "Rozložím 18 na $2 \\cdot 3 \\cdot 3$.",
+                  "Vyberu společná čísla (jedna 2 a jedna 3).",
+                  "Vynásobím $2 \\cdot 3 = 6$.",
+                ],
+                xp: 30,
               },
               {
                 id: "c1_l4_t3",
                 question:
-                  "Čísla, jejichž $NSD$ je $1$ (např. 4 a 9), nazýváme:",
+                  "Čísla, jejichž $NSD$ je $1$ (nemají žádného společného dělitele kromě jedničky), nazýváme:",
                 options: [
                   "Sousoudělná",
                   "Nesoudělná",
@@ -2072,22 +2225,20 @@ export const mathZS = {
                   "Nepřátelská",
                 ],
                 correctAnswer: 1,
-                xp: 25,
+                xp: 20,
               },
               {
                 id: "c1_l4_t4",
                 question:
                   "Máš 20 jablek a 30 hrušek. Chceš udělat stejné balíčky. Kolik nejvíc balíčků uděláš?",
-                options: ["$5$", "$10$", "$20$", "$2$"],
+                options: [
+                  "$5$",
+                  "$10$ (protože 10 dělí 20 i 30)",
+                  "$20$",
+                  "$2$",
+                ],
                 correctAnswer: 1,
                 xp: 30,
-              },
-              {
-                id: "c1_l4_t5",
-                question: "Najdi $NSD(7, 13)$ (obě jsou prvočísla).",
-                options: ["$0$", "$1$", "$7$", "$91$"],
-                correctAnswer: 1,
-                xp: 20,
               },
             ],
           },
@@ -2097,38 +2248,32 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Závody na okruhu",
-                text: "Představ si dva běžce na oválu. První uběhne kolo za $4$ minuty, druhý za $6$ minut. Vystartují spolu. Kdy se znovu potkají na startu? Hledáme nejmenší společný násobek (značíme $nsn$ nebo $n$).\n- Násobky $4$: $4, 8, 12, 16, 20, 24...$\n- Násobky $6$: $6, 12, 18, 24...$\nPoprvé se potkají v $12$. minutě. $$nsn(4, 6) = 12$$.",
+                heading: "Závody na okruhu (Co je to nsn)",
+                text: "Představ si dva běžce na oválu. První uběhne kolo za $4$ minuty, druhý je pomalejší a trvá mu to $6$ minut. Vystartují spolu. Kdy se znovu potkají na startovní čáře? \n\nHledáme nejmenší společný násobek ($nsn$).\n* Běžec A (4 min): bude na startu v čase 4, 8, 12, 16, 20, 24...\n* Běžec B (6 min): bude na startu v čase 6, 12, 18, 24...\n\nPoprvé se potkají ve 12. minutě. To je jejich nejmenší společný násobek.",
                 image: "",
               },
               {
-                heading: "Pravidlo pro rozklad",
-                text: "Pro nalezení $nsn$ pomocí rozkladu platí pravidlo: Sjednotíme všechny prvočíselné faktory a použijeme jejich nejvyšší mocninu. Musíme „pokrýt“ potřeby obou čísel.\n- $12 = 2^2 \\cdot 3$\n- $18 = 2 \\cdot 3^2$\nPotřebujeme $2^2$ (aby se vešla dvanáctka) a $3^2$ (aby se vešla osmnáctka). $$nsn(12, 18) = 2^2 \\cdot 3^2 = 4 \\cdot 9 = 36$$",
-                image: "placeholder-lcm-calculation",
+                heading: "Jak na to přes rozklad",
+                text: "Pro nalezení $nsn$ pomocí rozkladu platí opačné pravidlo než u NSD: Musíme vytvořit 'batoh', do kterého se vejdou obě čísla. \n\nPravidlo: Sjednotíme všechna prvočísla a použijeme jejich nejvyšší mocninu.\n\n* $12 = 2^2 \\cdot 3$ (potřebuje dvě dvojky a jednu trojku)\n* $18 = 2 \\cdot 3^2$ (potřebuje jednu dvojku a dvě trojky)\n\nAby byl batoh dost velký pro oba, musí tam být dvě dvojky ($2^2$) a dvě trojky ($3^2$).\n$$nsn(12, 18) = 2^2 \\cdot 3^2 = 4 \\cdot 9 = 36$$",
+                image: "",
               },
             ],
             tasks: [
               {
-                id: "c1_l5_t1",
-                question: "Najdi nejmenší společný násobek čísel $2$ a $3$.",
-                options: ["$2$", "$3$", "$5$", "$6$"],
-                correctAnswer: 3,
-                xp: 10,
+                id: "c1_l5_t1_input",
+                type: "text-input",
+                question:
+                  "Najdi nejmenší společný násobek čísel 2 a 3. (Kdy se potkají násobky?)",
+                correctAnswer: "6",
+                xp: 15,
               },
               {
                 id: "c1_l5_t2",
-                question: "Najdi $nsn(4, 10)$.",
-                options: ["$10$", "$20$", "$40$", "$14$"],
-                correctAnswer: 1,
-                xp: 20,
-              },
-              {
-                id: "c1_l5_t3",
                 question:
                   "Autobus A jezdí každých 10 minut, autobus B každých 15 minut. Teď odjeli spolu. Za jak dlouho pojedou zase spolu?",
                 options: [
                   "Za 25 minut",
-                  "Za 30 minut",
+                  "Za 30 minut (nsn 10 a 15)",
                   "Za 60 minut",
                   "Za 150 minut",
                 ],
@@ -2136,17 +2281,22 @@ export const mathZS = {
                 xp: 30,
               },
               {
-                id: "c1_l5_t4",
-                question: "Které číslo je násobkem čísla $8$?",
-                options: ["$4$", "$12$", "$16$", "$20$"],
-                correctAnswer: 2,
+                id: "c1_l5_t3_sequence",
+                type: "sequence",
+                question: "Seřaď násobky čísla 6:",
+                options: ["6", "12", "18", "24"],
+                correctAnswer: ["6", "12", "18", "24"],
                 xp: 10,
               },
               {
-                id: "c1_l5_t5",
-                question: "Výpočet $nsn(5, 7)$ (obě prvočísla):",
-                options: ["$12$", "$35$", "$1$", "$7$"],
-                correctAnswer: 1,
+                id: "c1_l5_t4",
+                question: "Platí, že $nsn(3, 5) = 15$? (Jsou to prvočísla)",
+                options: [
+                  "Ano, u prvočísel je nsn jejich součin.",
+                  "Ne, je to 8.",
+                  "Ne, je to 1.",
+                ],
+                correctAnswer: 0,
                 xp: 20,
               },
             ],
@@ -2165,18 +2315,18 @@ export const mathZS = {
             sections: [
               {
                 heading: "Svět za zrcadlem",
-                text: "Doposud jsme znali přirozená čísla ($1, 2, 3...$). Ale co když je venku mráz nebo máme na účtu dluh? Potřebujeme celá čísla. Představ si nulu jako zrcadlo. Každé kladné číslo má svůj obraz na druhé straně – číslo opačné. Opačné číslo k $5$ je $-5$. Opačné k $-100$ je $100$. Všechna tato čísla tvoří množinu celých čísel (značíme $\\mathbb{Z}$).",
+                text: "Doposud jsme znali jen kladná čísla ($1, 2, 3...$). Ale co když je venku mráz nebo máme na účtu dluh? Potřebujeme celá čísla. Představ si nulu jako velké zrcadlo. Každé kladné číslo má v zrcadle svůj obraz – číslo opačné.\n\n\n\n* Obrazem pětky ($5$) je minus pět ($-5$).\n* Obrazem stovky ($100$) je minus sto ($-100$).\n\nVšechna tato čísla dohromady (kladná, záporná a nula) tvoří rodinu celých čísel (značíme $\\mathbb{Z}$).",
                 image: "",
               },
               {
                 heading: "Vzdálenost od nuly (Absolutní hodnota)",
-                text: "Někdy nás nezajímá, jestli jdeme doleva (do minusu) nebo doprava (do plusu), ale jen to, jak daleko jsme šli. Této vzdálenosti od nuly říkáme absolutní hodnota. Značíme ji svislými čarami, např. $|-5|$. Platí, že $|-5| = 5$ a $|5| = 5$. Vzdálenost nikdy nemůže být záporná! Absolutní hodnota 'požírá' znaménka minus.",
-                image: "placeholder-absolute-value-distance",
+                text: "Někdy nás nezajímá, jestli jdeme doleva (do minusu) nebo doprava (do plusu), ale jen to, kolik kroků jsme ušli. Této vzdálenosti od nuly říkáme absolutní hodnota. Značíme ji svislými čarami, např. $|-5|$.\n\n\n\nAbsolutní hodnota je jako pračka na znaménka – vždy z ní vypadne kladné číslo (nebo nula). Vzdálenost totiž nemůže být záporná!\n* $|-5| = 5$ (ušli jsme 5 kroků doleva)\n* $|5| = 5$ (ušli jsme 5 kroků doprava)",
+                image: "",
               },
               {
                 heading: "Porovnávání v mrazu",
-                text: "Které číslo je větší? $-5$ nebo $-10$? Představ si teplotu. Kdy je větší zima? Při $-10$ stupních. To znamená, že $-10$ je menší číslo než $-5$. Na číselné ose platí jednoduché pravidlo: Číslo, které je více vpravo, je vždy větší. $$ -100 < -1 < 0 < 5 $$",
-                image: "",
+                text: "Které číslo je větší? $-5$ nebo $-10$? Představ si teplotu. Kdy je větší zima? Při $-10$ stupních. To znamená, že $-10$ je menší (nižší) číslo než $-5$. Na číselné ose platí jednoduché pravidlo: Číslo, které je více vpravo, je vždy větší.\n\n$$ -100 < -1 < 0 < 5 $$",
+                image: "placeholder-thermometer-comparison",
               },
             ],
             tasks: [
@@ -2188,36 +2338,38 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c2_l1_t2",
-                question: "Které číslo je opačné k číslu $-15$?",
-                options: ["$15$", "$-15$", "$0$", "$1/15$"],
-                correctAnswer: 0,
-                xp: 10,
+                id: "c2_l1_t2_input",
+                type: "text-input",
+                question: "Napiš číslo opačné k číslu $-15$:",
+                correctAnswer: "15",
+                xp: 15,
               },
               {
-                id: "c2_l1_t3",
+                id: "c2_l1_t3_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď čísla od nejmenšího (největší zimy) po největší:",
+                options: ["$-20$", "$-5$", "$0$", "$3$"],
+                correctAnswer: ["$-20$", "$-5$", "$0$", "$3$"],
+                xp: 25,
+              },
+              {
+                id: "c2_l1_t4",
                 question: "Který zápis je pravdivý?",
-                options: ["$-5 > -2$", "$-10 > 0$", "$-50 < -20$", "$0 < -5$"],
+                options: [
+                  "$-5 > -2$ (chyba, -5 je větší zima)",
+                  "$-10 > 0$ (chyba, záporné není větší než nula)",
+                  "$-50 < -20$ (správně, -50 je více vlevo)",
+                  "$0 < -5$ (chyba)",
+                ],
                 correctAnswer: 2,
                 xp: 20,
               },
               {
-                id: "c2_l1_t4",
-                question: "Seřaď čísla od nejmenšího: $2, -5, 0, -1$",
-                options: [
-                  "$0, -1, -5, 2$",
-                  "$-5, -1, 0, 2$",
-                  "$-1, -5, 0, 2$",
-                  "$2, 0, -1, -5$",
-                ],
-                correctAnswer: 1,
-                xp: 15,
-              },
-              {
-                id: "c2_l1_t5",
-                question: "Vypočítej: $|-3| + |2|$",
-                options: ["$-1$", "$1$", "$5$", "$-5$"],
-                correctAnswer: 2,
+                id: "c2_l1_t5_input",
+                type: "text-input",
+                question: "Vypočítej: $|-3| + |2| = ?",
+                correctAnswer: "5",
                 xp: 20,
               },
             ],
@@ -2229,55 +2381,77 @@ export const mathZS = {
             sections: [
               {
                 heading: "Sčítání a odčítání: Model peněz",
-                text: "Jak spočítat $-5 + 2$ nebo $-3 - 4$? Nejlepší je představit si peníze.\n- Minus je dluh. Plus je majetek.\n- $-5 + 2$: Mám dluh 5 korun, vydělám 2 koruny. Splatím část dluhu, ale stále dlužím 3 koruny. Výsledek: $-3$.\n- $-3 - 4$: Mám dluh 3 koruny a udělám další dluh 4 koruny. Můj dluh se prohloubí. Výsledek: $-7$.",
-                image: "[Image illustrating debt and earnings coins]",
+                text: "Jak spočítat $-5 + 2$ nebo $-3 - 4$? Nejlepší je představit si peníze a dluhy.\n\n* Minus je dluh. Plus jsou peníze v kapse.\n* $-5 + 2$: Mám dluh 5 korun, ale vydělám 2 koruny. Splatím část dluhu. Kolik mi zbývá doplatit? Dlužím ještě 3. Výsledek: $-3$.\n* $-3 - 4$: Mám dluh 3 koruny a udělám další sekeru za 4 koruny. Můj dluh se prohloubí. Celkem dlužím 7. Výsledek: $-7$.\n\n",
+                image: "",
               },
               {
-                heading: "Dvě znaménka vedle seba",
-                text: "Co když se potkají dvě znaménka, třeba $5 - (-2)$? \n- Plus a plus se mají rádi $\\rightarrow +$\n- Minus a minus se 'popere' a vznikne $\\rightarrow +$ (odebrat dluh znamená zbohatnout!)\n- Plus a minus je vždy $\\rightarrow -$\nTakže: $$ 5 - (-2) = 5 + 2 = 7 $$",
-                image: "placeholder-signs-rules",
+                heading: "Válka znamének",
+                text: "Co když se potkají dvě znaménka vedle seba, třeba $5 - (-2)$? Platí pravidla jako ve vztazích:\n\n* $+$ a $+$ se mají rádi $\\rightarrow$ +\n* $-$ a $-$ se 'poperou' a vznikne $\\rightarrow$ + (odebrat dluh znamená zbohatnout!)\n* $+$ a $-$ se nemají rádi $\\rightarrow$ -\n\nPříklad: $5 - (-2)$ změníme na $5 + 2 = 7$.",
+                image: "",
               },
               {
                 heading: "Násobení a dělení: Přítel a nepřítel",
-                text: "Pro násobení a dělení platí jednoduchá 'sociální' pravidla:\n- Přítel mého přítele je můj přítel: $(+) \\cdot (+) = +$\n- Nepřítel mého nepřítele je můj přítel: $(-) \\cdot (-) = +$\n- Přítel mého nepřítele je můj nepřítel: $(+) \\cdot (-) = -$\nPokud je v součinu sudý počet minusů, výsledek je kladný. Pokud lichý, je záporný.",
+                text: "Pro násobení a dělení platí jednoduchá pravidla:\n\n* Přítel mého přítele je můj přítel: $(+) \\cdot (+) = +$\n* Nepřítel mého nepřítele je můj přítel: $(-) \\cdot (-) = +$\n* Přítel mého nepřítele je můj nepřítel: $(+) \\cdot (-) = -$\n\n\n\nJednoduše: Pokud je v příkladu sudý počet minusů, výsledek je kladný. Pokud lichý, je záporný.",
                 image: "",
               },
             ],
             tasks: [
               {
-                id: "c2_l2_t1",
-                question: "Vypočítej: $-5 - 3$",
-                options: ["$-2$", "$-8$", "$2$", "$8$"],
-                correctAnswer: 1,
+                id: "c2_l2_t1_input",
+                type: "text-input",
+                question:
+                  "Vypočítej: $-5 - 3$ (mám dluh 5 a udělám dluh 3). Napiš výsledek:",
+                correctAnswer: "-8",
                 xp: 15,
               },
               {
                 id: "c2_l2_t2",
                 question: "Vypočítej: $10 + (-4)$",
-                options: ["$14$", "$6$", "$-6$", "$-14$"],
+                options: [
+                  "$14$",
+                  "$6$ (protože plus a minus dá minus)",
+                  "$-6$",
+                  "$-14$",
+                ],
                 correctAnswer: 1,
                 xp: 15,
               },
               {
-                id: "c2_l2_t3",
-                question: "Co vznikne z $3 - (-3)$?",
-                options: ["$0$", "$6$", "$-6$", "$9$"],
-                correctAnswer: 1,
-                xp: 20,
+                id: "c2_l2_t3_sequence",
+                type: "sequence",
+                question: "Seřaď kroky výpočtu $3 - (-3)$:",
+                options: [
+                  "Mám příklad $3 - (-3)$.",
+                  "Dvě minusy vedle sebe dají plus ($3 + 3$).",
+                  "Sečtu $3 + 3$.",
+                  "Výsledek je 6.",
+                ],
+                correctAnswer: [
+                  "Mám příklad $3 - (-3)$.",
+                  "Dvě minusy vedle sebe dají plus ($3 + 3$).",
+                  "Sečtu $3 + 3$.",
+                  "Výsledek je 6.",
+                ],
+                xp: 25,
               },
               {
-                id: "c2_l2_t4",
-                question: "Vypočítej: $(-2) \\cdot (-5)$",
-                options: ["$-10$", "$10$", "$-7$", "$7$"],
-                correctAnswer: 1,
+                id: "c2_l2_t4_input",
+                type: "text-input",
+                question: "Vypočítej: $(-2) \\cdot (-5)$ (pozor na znaménka!)",
+                correctAnswer: "10",
                 xp: 15,
               },
               {
                 id: "c2_l2_t5",
-                question: "Vypočítej: $-20 : 4$",
-                options: ["$5$", "$-5$", "$4$", "$-0,2$"],
+                question: "Jaké znaménko bude mít výsledek $-20 : 4$?",
+                options: [
+                  "Kladné (+)",
+                  "Záporné (-)",
+                  "Žádné (nula)",
+                  "Nelze určit",
+                ],
                 correctAnswer: 1,
-                xp: 15,
+                xp: 10,
               },
             ],
           },
@@ -2288,14 +2462,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Změna vizáže, stejná hodnota",
-                text: "Zlomky jsou jako chameleoni. $\\frac{1}{2}$ vypadá jinak než $\\frac{2}{4}$ nebo $\\frac{50}{100}$, ale je to pořád ta samá polovina pizzy. Této proměně říkáme rozšiřování (násobíme čitatele i jmenovatele stejným číslem) nebo krácení (dělíme čitatele i jmenovatele stejným číslem). Hodnota zlomku se tím nemění!",
-                image:
-                  "[Image showing 1/2 pizza, 2/4 pizza and 4/8 pizza being equal size]",
+                text: "Zlomky jsou jako chameleoni. $\\frac{1}{2}$ vypadá jinak než $\\frac{2}{4}$ nebo $\\frac{50}{100}$, ale je to pořád ta samá polovina pizzy. Zlomky můžeme upravovat, aniž bychom změnili jejich hodnotu:\n\n* Rozšiřování: Vynásobíme čitatele i jmenovatele stejným číslem. (Zvětšíme počet dílků, ale zmenšíme jejich velikost).\n* Krácení: Vydělíme čitatele i jmenovatele stejným číslem.\n\n",
+                image: "",
               },
               {
                 heading: "Základní tvar",
-                text: "V matematice je slušnost uvádět výsledky v základním tvaru. To je stav, kdy už zlomek nejde dál krátit (čitatel a jmenovatel jsou nesoudělná čísla). Například nám vyjde $\\frac{8}{12}$. Vidíme, že obě čísla jdou dělit čtyřmi. $$ \\frac{8:4}{12:4} = \\frac{2}{3} $$ Zlomek $\\frac{2}{3}$ už krátit nejde, to je základní tvar.",
-                image: "placeholder-fraction-simplification",
+                text: "V matematice je slušnost uvádět výsledky v základním tvaru. To je stav, kdy už zlomek nejde dál krátit (čitatel a jmenovatel nemají společného dělitele).\n\nNapříklad zlomek $\\frac{8}{12}$. Vidíme, že obě čísla jsou sudá a jdou dělit čtyřmi.\n$$ \\frac{8:4}{12:4} = \\frac{2}{3} $$\nZlomek $\\frac{2}{3}$ už krátit nejde, to je základní tvar.",
+                image: "",
               },
             ],
             tasks: [
@@ -2304,7 +2477,7 @@ export const mathZS = {
                 question:
                   "Který zlomek má stejnou hodnotu jako $\\frac{1}{3}$?",
                 options: [
-                  "$\\frac{2}{6}$",
+                  "$\\frac{2}{6}$ (rozšířeno dvěma)",
                   "$\\frac{1}{6}$",
                   "$\\frac{3}{1}$",
                   "$\\frac{2}{5}$",
@@ -2313,23 +2486,32 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c2_l3_t2",
-                question: "Převeď zlomek $\\frac{10}{20}$ na základní tvar.",
+                id: "c2_l3_t2_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď kroky krácení zlomku $\\frac{10}{20}$ na základní tvar:",
                 options: [
-                  "$\\frac{5}{10}$",
-                  "$\\frac{2}{4}$",
-                  "$\\frac{1}{2}$",
-                  "$\\frac{100}{200}$",
+                  "Mám zlomek $\\frac{10}{20}$.",
+                  "Vidím, že obě čísla jdou vydělit 10.",
+                  "Vydělím čitatele: $10 : 10 = 1$.",
+                  "Vydělím jmenovatele: $20 : 10 = 2$.",
+                  "Výsledek je $\\frac{1}{2}$.",
                 ],
-                correctAnswer: 2,
-                xp: 15,
+                correctAnswer: [
+                  "Mám zlomek $\\frac{10}{20}$.",
+                  "Vidím, že obě čísla jdou vydělit 10.",
+                  "Vydělím čitatele: $10 : 10 = 1$.",
+                  "Vydělím jmenovatele: $20 : 10 = 2$.",
+                  "Výsledek je $\\frac{1}{2}$.",
+                ],
+                xp: 25,
               },
               {
-                id: "c2_l3_t3",
+                id: "c2_l3_t3_input",
+                type: "text-input",
                 question:
-                  "Čím musíme rozšířit $\\frac{3}{4}$, abychom dostali jmenovatel $12$?",
-                options: ["Dvěma", "Třemi", "Čtyřmi", "Pěti"],
-                correctAnswer: 1,
+                  "Rozšiř zlomek $\\frac{2}{3}$ číslem 5. Jaký bude čitatel nového zlomku? (Napiš číslo)",
+                correctAnswer: "10",
                 xp: 15,
               },
               {
@@ -2347,15 +2529,16 @@ export const mathZS = {
               },
               {
                 id: "c2_l3_t5",
-                question: "Který zlomek UŽ NEJDE krátit?",
+                question:
+                  "Který zlomek je v základním tvaru (už nejde krátit)?",
                 options: [
-                  "$\\frac{4}{6}$",
-                  "$\\frac{7}{9}$",
-                  "$\\frac{10}{100}$",
-                  "$\\frac{12}{4}$",
+                  "$\\frac{4}{6}$ (jde dělit 2)",
+                  "$\\frac{7}{9}$ (nic společného nemají)",
+                  "$\\frac{10}{100}$ (jde dělit 10)",
+                  "$\\frac{12}{4}$ (jde dělit 4)",
                 ],
                 correctAnswer: 1,
-                xp: 20,
+                xp: 15,
               },
             ],
           },
@@ -2366,61 +2549,66 @@ export const mathZS = {
             sections: [
               {
                 heading: "Sčítání: Hledání společné řeči",
-                text: "Nemůžeme sčítat hrušky s jablky, a stejně tak nemůžeme sčítat zlomky s různými jmenovateli (třetiny s pětinami). Musíme je nejdřív převést na společného jmenovatele (nejlépe nejmenší společný násobek). \n$$ \\frac{1}{2} + \\frac{1}{3} = \\frac{3}{6} + \\frac{2}{6} = \\frac{5}{6} $$ \nČitatele sečteme, ale jmenovatel zůstává stejný!",
-                image:
-                  "[Image illustrating addition of fractions using pie chart segments]",
+                text: "Nemůžeme sčítat hrušky s jablky. Stejně tak nemůžeme sčítat zlomky s různými jmenovateli (třetiny s pětinami). Musíme je nejdřív převést na společného jmenovatele (nejlépe nejmenší společný násobek).\n\n\n\nPříklad $\\frac{1}{2} + \\frac{1}{3}$:\n1. Společný jmenovatel pro 2 a 3 je 6.\n2. Rozšíříme zlomky: $\\frac{3}{6} + \\frac{2}{6}$.\n3. Teď už můžeme sečíst čitatele: $3 + 2 = 5$.\n4. Výsledek: $\\frac{5}{6}$.",
+                image: "",
               },
               {
                 heading: "Násobení: Přímá cesta",
-                text: "Násobení je odměna za dřinu se sčítáním. Tady nic nepřevádíme! Prostě vynásobíme horní s horním (čitatele) a dolní s dolním (jmenovatele). \n$$ \\frac{2}{3} \\cdot \\frac{4}{5} = \\frac{2 \\cdot 4}{3 \\cdot 5} = \\frac{8}{15} $$ \nPřed násobením je chytré zkontrolovat, jestli nejde něco zkrátit křížem.",
-                image: "placeholder-fraction-multiplication",
+                text: "Násobení je mnohem jednodušší. Tady nic nepřevádíme! Prostě vynásobíme horní s horním (čitatele) a dolní s dolním (jmenovatele).\n\n$$ \\frac{2}{3} \\cdot \\frac{4}{5} = \\frac{2 \\cdot 4}{3 \\cdot 5} = \\frac{8}{15} $$",
+                image: "",
               },
               {
                 heading: "Dělení: Salto vzad",
-                text: "Dělení zlomků vlastně neexistuje. Místo toho 'násobíme převrácenou hodnotou'. Druhý zlomek prostě otočíme nohama vzhůru (uděláme z něj převrácenou hodnotu) a změníme dělení na násobení.\n$$ \\frac{2}{3} : \\frac{5}{7} = \\frac{2}{3} \\cdot \\frac{7}{5} = \\frac{14}{15} $$",
-                image:
-                  "[Image showing the flip of the second fraction in division]",
+                text: "Jak vydělit zlomek zlomkem? Použijeme trik: Dělení změníme na násobení převrácenou hodnotou.\n\n\n\nDruhý zlomek prostě otočíme nohama vzhůru (uděláme salto) a znaménko dělení přepíšeme na krát.\n$$ \\frac{2}{3} : \\frac{5}{7} \\rightarrow \\frac{2}{3} \\cdot \\frac{7}{5} = \\frac{14}{15} $$",
+                image: "",
               },
             ],
             tasks: [
               {
-                id: "c2_l4_t1",
-                question: "Vypočítej: $\\frac{1}{4} + \\frac{1}{4}$",
+                id: "c2_l4_t1_sequence",
+                type: "sequence",
+                question: "Seřaď postup sčítání $\\frac{1}{4} + \\frac{1}{5}$:",
                 options: [
-                  "$\\frac{2}{8}$",
-                  "$\\frac{1}{8}$",
-                  "$\\frac{2}{4}$ (což je $\\frac{1}{2}$)",
-                  "$\\frac{1}{20}$",
+                  "Najdu společný jmenovatel (20).",
+                  "Rozšířím zlomky na $\\frac{5}{20}$ a $\\frac{4}{20}$.",
+                  "Sečtu čitatele ($5 + 4 = 9$).",
+                  "Výsledek je $\\frac{9}{20}$.",
                 ],
-                correctAnswer: 2,
-                xp: 15,
+                correctAnswer: [
+                  "Najdu společný jmenovatel (20).",
+                  "Rozšířím zlomky na $\\frac{5}{20}$ a $\\frac{4}{20}$.",
+                  "Sečtu čitatele ($5 + 4 = 9$).",
+                  "Výsledek je $\\frac{9}{20}$.",
+                ],
+                xp: 30,
               },
               {
                 id: "c2_l4_t2",
                 question:
-                  "Jaký je společný jmenovatel pro $\\frac{1}{2}$ a $\\frac{1}{5}$?",
-                options: ["$7$", "$5$", "$2$", "$10$"],
+                  "Jaký je nejmenší společný jmenovatel pro $\\frac{1}{2}$ a $\\frac{1}{5}$?",
+                options: [
+                  "$7$",
+                  "$5$",
+                  "$2$",
+                  "$10$ (protože $2 \\cdot 5 = 10$)",
+                ],
                 correctAnswer: 3,
-                xp: 15,
+                xp: 10,
               },
               {
-                id: "c2_l4_t3",
-                question: "Vypočítej: $\\frac{2}{3} \\cdot \\frac{1}{2}$",
-                options: [
-                  "$\\frac{2}{6}$ (což je $\\frac{1}{3}$)",
-                  "$\\frac{3}{5}$",
-                  "$\\frac{2}{5}$",
-                  "$\\frac{4}{3}$",
-                ],
-                correctAnswer: 0,
-                xp: 20,
+                id: "c2_l4_t3_input",
+                type: "text-input",
+                question:
+                  "Vypočítej součin čitatelů v příkladu $\\frac{2}{3} \\cdot \\frac{4}{5}$ (napiš číslo):",
+                correctAnswer: "8",
+                xp: 15,
               },
               {
                 id: "c2_l4_t4",
                 question: "Jak vypočítáš $\\frac{1}{2} : \\frac{1}{3}$?",
                 options: [
                   "Jako $\\frac{1}{2} \\cdot \\frac{1}{3}$",
-                  "Jako $\\frac{1}{2} \\cdot \\frac{3}{1}$",
+                  "Jako $\\frac{1}{2} \\cdot \\frac{3}{1}$ (násobím převrácenou hodnotou)",
                   "Jako $\\frac{2}{1} \\cdot \\frac{1}{3}$",
                   "Nejde to",
                 ],
@@ -2429,10 +2617,11 @@ export const mathZS = {
               },
               {
                 id: "c2_l4_t5",
-                question: "Vypočítej $\\frac{3}{8} - \\frac{1}{8}$",
+                question:
+                  "Vypočítej $\\frac{3}{8} - \\frac{1}{8}$ (jmenovatel je stejný):",
                 options: [
                   "$\\frac{2}{0}$",
-                  "$\\frac{2}{8}$ (což je $\\frac{1}{4}$)",
+                  "$\\frac{2}{8}$ (což je po zkrácení $\\frac{1}{4}$)",
                   "$\\frac{4}{8}$",
                   "$\\frac{2}{16}$",
                 ],
@@ -2448,22 +2637,24 @@ export const mathZS = {
             sections: [
               {
                 heading: "Dva jazyky stejného kmene",
-                text: "Zlomek a desetinné číslo jsou jen dva způsoby zápisu téže hodnoty. Někdy se hodí jeden, jindy druhý.\n- Zlomek je přesný. $\\frac{1}{3}$ je naprosto přesná třetina.\n- Desetinné číslo je praktické pro peníze a měření. $0,33$ je přibližná hodnota. \nZlomek převedeme na desetinné číslo tak, že prostě vydělíme čitatele jmenovatelem ($1 : 3$).",
-                image: "[Image contrasting 1/3 vs 0.333...]",
+                text: "Zlomek a desetinné číslo jsou jen dva způsoby zápisu téže hodnoty. Někdy se hodí jeden, jindy druhý.\n\n* Zlomek je matematicky přesný. $\\frac{1}{3}$ je naprosto přesná třetina koláče.\n* Desetinné číslo je praktické pro peníze a měření. $0,33$ metrů si lépe představíme.\n\nZlomek převedeme na desetinné číslo tak, že prostě vydělíme čitatele jmenovatelem (čára zlomku znamená děleno).",
+                image:
+                  "[Image comparing 1/3 fraction notation vs 0.33 decimal notation]",
               },
               {
-                heading: "Konečná vs. nekonečná čísla",
-                text: "Některé zlomky jsou hodné a 'skončí'. Třeba $\\frac{1}{2} = 0,5$. Jiné jsou zlobivé a táhnou se do nekonečna. Třeba $\\frac{1}{3} = 0,3333...$ Těm říkáme periodická čísla. Tu opakující se část značíme pruhem nad číslem: $0,\\overline{3}$. V takovém případě je pro počítání vždy lepší nechat číslo ve zlomku!",
-                image: "placeholder-periodic-numbers",
+                heading: "Nekonečné příběhy (Perioda)",
+                text: "Některé zlomky při dělení 'skončí' (třeba $\\frac{1}{2} = 0,5$). Jiné jsou 'zlobivé' a táhnou se do nekonečna. Třeba $\\frac{1}{3} = 0,3333...$\n\n\n\nTěmto číslům říkáme periodická. Tu opakující se část značíme pruhem nad číslem: $0,\\overline{3}$. V takovém případě je pro počítání vždy lepší nechat číslo ve zlomku, jinak bychom museli zaokrouhlovat a dělali chyby.",
+                image: "",
               },
             ],
             tasks: [
               {
-                id: "c2_l5_t1",
-                question: "Převeď $\\frac{1}{2}$ na desetinné číslo.",
-                options: ["$0,2$", "$0,5$", "$1,2$", "$0,52$"],
-                correctAnswer: 1,
-                xp: 10,
+                id: "c2_l5_t1_input",
+                type: "text-input",
+                question:
+                  "Převeď zlomek $\\frac{1}{2}$ na desetinné číslo (napiš číslo s desetinnou čárkou):",
+                correctAnswer: "0,5",
+                xp: 15,
               },
               {
                 id: "c2_l5_t2",
@@ -2478,16 +2669,22 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c2_l5_t3",
-                question: "Který tvar je přesnější pro zápis jedné třetiny?",
+                id: "c2_l5_t3_sequence",
+                type: "sequence",
+                question: "Seřaď čísla od nejmenšího:",
                 options: [
-                  "$0,33$",
-                  "$0,333$",
-                  "$\\frac{1}{3}$",
-                  "Všechny jsou stejně přesné",
+                  "$0,2$",
+                  "$0,25$ (což je $\\frac{1}{4}$)",
+                  "$0,5$ (což je $\\frac{1}{2}$)",
+                  "$0,9$",
                 ],
-                correctAnswer: 2,
-                xp: 15,
+                correctAnswer: [
+                  "$0,2$",
+                  "$0,25$ (což je $\\frac{1}{4}$)",
+                  "$0,5$ (což je $\\frac{1}{2}$)",
+                  "$0,9$",
+                ],
+                xp: 20,
               },
               {
                 id: "c2_l5_t4",
@@ -2499,20 +2696,7 @@ export const mathZS = {
                   "$\\frac{2}{5}$",
                 ],
                 correctAnswer: 1,
-                xp: 20,
-              },
-              {
-                id: "c2_l5_t5",
-                question:
-                  "Vypočítej $\\frac{1}{3} + 0,3$ (nápověda: převeď $0,3$ na $\\frac{3}{10}$).",
-                options: [
-                  "$0,6$",
-                  "$\\frac{4}{13}$",
-                  "$\\frac{19}{30}$",
-                  "$1$",
-                ],
-                correctAnswer: 2,
-                xp: 30,
+                xp: 15,
               },
             ],
           },
@@ -2530,18 +2714,17 @@ export const mathZS = {
             sections: [
               {
                 heading: "Recept na správný mix",
-                text: "Poměr nám říká, v jakém vztahu jsou dvě veličiny. Představ si, že mícháš šťávu s vodou v poměru $1:4$ (čteme 'jedna ku čtyřem'). To znamená, že na $1$ díl šťávy dáš $4$ díly vody. Celý nápoj má pak $5$ dílů. Poměr můžeme krátit a rozšiřovat úplně stejně jako zlomky. Poměr $10:20$ je to samé jako $1:2$.",
-                image:
-                  "[Image showing mixing juice concentrate and water in ratio 1:4]",
+                text: "Poměr nám říká, v jakém vztahu jsou dvě veličiny. Představ si, že mícháš šťávu s vodou v poměru $1:4$ (čteme 'jedna ku čtyřem'). To znamená, že na 1 díl šťávy dáš 4 díly vody. Celý nápoj má pak dohromady 5 dílů.\n\n\n\nS poměrem můžeme pracovat stejně jako se zlomky – můžeme ho krátit i rozšiřovat. Poměr $10:20$ je úplně to samé jako $1:2$.",
+                image: "",
               },
               {
-                heading: "Rozdělování lupu",
-                text: "Často potřebujeme něco rozdělit nerovnoměrně. Představ si, že babička rozdělí $1,000$ Kč mezi Petra a Janu v poměru $2:3$. Jak na to? \n1. Sečteme díly: $2 + 3 = 5$ dílů celkem.\n2. Zjistíme hodnotu jednoho dílu: $1,000 : 5 = 200$ Kč.\n3. Vynásobíme díly pro každého: Petr dostane $2 \\cdot 200 = 400$ Kč, Jana $3 \\cdot 200 = 600$ Kč.",
+                heading: "Rozdělování lupu (Rozdělení v poměru)",
+                text: "Často potřebujeme něco rozdělit nerovnoměrně. Představ si, že babička rozdělí $1\\,000$ Kč mezi Petra a Janu v poměru $2:3$. Petr má dostat 2 díly a Jana 3 díly. Jak na to?\n\n1.  Sečteme díly: $2 + 3 = 5$ dílů celkem.\n2.  Hodnota 1 dílu: $1\\,000 : 5 = 200$ Kč.\n3.  Rozdáme to: Petr dostane $2 \\cdot 200 = 400$ Kč, Jana $3 \\cdot 200 = 600$ Kč.",
                 image: "placeholder-ratio-division-money",
               },
               {
-                heading: "Měřítko mapy",
-                text: "Na mapě najdeš měřítko, třeba $1 : 50\\,000$. To je vlastně poměr! Říká nám, že $1$ cm na mapě odpovídá $50\\,000$ cm ve skutečnosti. Kolik to je? Převedeme na metry (škrtneme 2 nuly) $\\rightarrow 500$ m. Takže každý centimetr na mapě je půl kilometru venku.",
+                heading: "Svět v malém (Měřítko mapy)",
+                text: "Na mapě najdeš měřítko, třeba $1 : 50\\,000$. To je vlastně poměr! Říká nám, že 1 cm na mapě odpovídá 50 000 cm ve skutečnosti.\n\nAbychom si to představili, škrtneme dvě nuly (převedeme cm na metry). Takže 1 cm na mapě je 500 metrů venku. Kdyby bylo měřítko $1 : 100$, znamená to, že skutečnost je stokrát zmenšená.",
                 image: "",
               },
             ],
@@ -2554,21 +2737,17 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c3_l1_t2",
-                question: "Rozděl číslo $20$ v poměru $1 : 4$.",
-                options: [
-                  "$5$ a $15$",
-                  "$4$ a $16$",
-                  "$2$ a $18$",
-                  "$1$ a $4$",
-                ],
-                correctAnswer: 1,
+                id: "c3_l1_t2_input",
+                type: "text-input",
+                question:
+                  "Rozděl číslo 20 v poměru $1 : 4$. Napiš pouze to větší číslo z rozdělení:",
+                correctAnswer: "16",
                 xp: 20,
               },
               {
                 id: "c3_l1_t3",
                 question:
-                  "Měřítko je $1 : 100$. Jak dlouhá je ve skutečnosti úsečka, která má na výkresu $5$ cm?",
+                  "Měřítko je $1 : 100$. Jak dlouhá je ve skutečnosti úsečka, která má na výkresu 5 cm?",
                 options: [
                   "$500$ cm ($5$ metrů)",
                   "$100$ cm",
@@ -2579,11 +2758,23 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c3_l1_t4",
-                question: "Který poměr má stejnou hodnotu jako $2 : 5$?",
-                options: ["$4 : 10$", "$5 : 2$", "$20 : 500$", "$1 : 3$"],
-                correctAnswer: 0,
-                xp: 15,
+                id: "c3_l1_t4_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď poměry podle velikosti prvního čísla vůči druhému (od nejmenšího podílu):",
+                options: [
+                  "$1:10$ (desetina)",
+                  "$1:4$ (čtvrtina)",
+                  "$1:2$ (polovina)",
+                  "$1:1$ (celek)",
+                ],
+                correctAnswer: [
+                  "$1:10$ (desetina)",
+                  "$1:4$ (čtvrtina)",
+                  "$1:2$ (polovina)",
+                  "$1:1$ (celek)",
+                ],
+                xp: 20,
               },
               {
                 id: "c3_l1_t5",
@@ -2591,7 +2782,7 @@ export const mathZS = {
                   "Mícháš beton: 1 díl cementu, 2 díly písku, 3 díly štěrku. Kolik lopat materiálu celkem potřebuješ na jednu dávku?",
                 options: ["$3$", "$5$", "$6$", "$10$"],
                 correctAnswer: 2,
-                xp: 20,
+                xp: 15,
               },
             ],
           },
@@ -2601,26 +2792,28 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Čím víc, tím víc (Přímá)",
-                text: "To je jednoduchá logika nákupů. Čím víc rohlíků koupím, tím víc zaplatím. Pokud $1$ rohlík stojí $3$ Kč, $10$ rohlíků stojí $30$ Kč. Kolikrát se zvětší počet kusů, tolikrát se zvětší cena. Grafem přímé úměrnosti je přímka, která vychází z nuly. Vzorec je $y = k \\cdot x$.",
-                image: "",
+                heading: "Čím víc, tím víc (Přímá úměra)",
+                text: "To je jednoduchá logika nákupů. Čím víc rohlíků koupím, tím víc zaplatím. Pokud 1 rohlík stojí 3 Kč, 10 rohlíků stojí 30 Kč.\n\nPlatí: Kolikrát se zvětší jedna veličina, tolikrát se zvětší i ta druhá. Grafem přímé úměrnosti je přímka, která vychází z nuly.",
+                image:
+                  "[Image showing graph of direct proportion as a straight line starting from zero]",
               },
               {
-                heading: "Čím víc, tím míň (Nepřímá)",
-                text: "Tady pozor! Představ si bagr, který kope jámu. Jeden bagr to udělá za $10$ hodin. Když přijede druhý bagr (je jich $2\\times$ víc), bude jim to trvat déle? Ne! Bude to hotové dříve ($2\\times$ rychleji). Dva bagry to stihnou za $5$ hodin. Kolikrát zvětšíme počet pracantů, tolikrát se zmenší čas. Grafem je křivka zvaná hyperbola.",
-                image: "",
+                heading: "Čím víc, tím míň (Nepřímá úměra)",
+                text: "Tady pozor! Představ si bagr, který kope jámu. Jeden bagr to udělá za 10 hodin. Když přijede druhý bagr (je jich $2\\times$ víc), bude jim to trvat déle? Ne! Bude to hotové dříve ($2\\times$ rychleji).\n\nPlatí: Kolikrát se zvětší počet pracantů, tolikrát se zmenší čas. Grafem je křivka zvaná hyperbola.",
+                image:
+                  "[Image comparing graphs of direct straight line and inverse hyperbola proportions]",
               },
               {
                 heading: "Jak to poznat?",
-                text: "Vždy si řekni selským rozumem: Když zdvojnásobím první věc, co se stane s druhou? \n- Zdvihne se taky? $\\rightarrow$ Přímá úměra.\n- Klesne na polovinu? $\\rightarrow$ Nepřímá úměra.",
-                image: "placeholder-proportions-comparison",
+                text: "Vždy si řekni selským rozumem: Když zdvojnásobím první věc, co se stane s druhou?\n* Zdvihne se taky? $\\rightarrow$ Přímá úměra (nákupy, dráha, recepty).\n* Klesne na polovinu? $\\rightarrow$ Nepřímá úměra (rychlost a čas, dělníci a práce).",
+                image: "",
               },
             ],
             tasks: [
               {
                 id: "c3_l2_t1",
                 question:
-                  "Urči typ úměry: Počet koupených jablek a jejich cena.",
+                  "Urči typ úměry: Počet koupených jablek a cena, kterou zaplatím u pokladny.",
                 options: ["Přímá úměra", "Nepřímá úměra", "Žádná úměra"],
                 correctAnswer: 0,
                 xp: 10,
@@ -2628,46 +2821,47 @@ export const mathZS = {
               {
                 id: "c3_l2_t2",
                 question:
-                  "Urči typ úměry: Rychlost auta a čas, za který dojede do cíle.",
+                  "Urči typ úměry: Rychlost auta a čas, za který dojede do cíle (čím jedu rychleji...)",
                 options: [
                   "Přímá úměra (čím rychleji, tím déle)",
                   "Nepřímá úměra (čím rychleji, tím dříve)",
                   "Nezávisí to na sobě",
                 ],
                 correctAnswer: 1,
-                xp: 15,
+                xp: 10,
               },
               {
-                id: "c3_l2_t3",
+                id: "c3_l2_t3_input",
+                type: "text-input",
                 question:
-                  "3 dělníci postaví zeď za 12 hodin. Jak dlouho to bude trvat 6 dělníkům?",
-                options: ["24 hodin", "6 hodin", "4 hodiny", "12 hodin"],
-                correctAnswer: 1,
+                  "3 dělníci postaví zeď za 12 hodin. Kolik hodin to bude trvat 6 dělníkům? (Je jich dvakrát víc, tak to stihnou...)",
+                correctAnswer: "6",
                 xp: 20,
               },
               {
-                id: "c3_l2_t4",
-                question: "Co je grafem přímé úměrnosti?",
+                id: "c3_l2_t4_sequence",
+                type: "sequence",
+                question: "Seřaď logickou úvahu u nepřímé úměry (Bagry):",
                 options: [
-                  "Křivka",
-                  "Kruh",
-                  "Přímka jdoucí počátkem",
-                  "Vlnovka",
+                  "1 bagr kope 10 hodin.",
+                  "Přijel druhý bagr, bagry jsou 2 (2x více).",
+                  "Práce půjde 2x rychleji.",
+                  "Výsledný čas je 5 hodin.",
                 ],
-                correctAnswer: 2,
-                xp: 15,
+                correctAnswer: [
+                  "1 bagr kope 10 hodin.",
+                  "Přijel druhý bagr, bagry jsou 2 (2x více).",
+                  "Práce půjde 2x rychleji.",
+                  "Výsledný čas je 5 hodin.",
+                ],
+                xp: 25,
               },
               {
-                id: "c3_l2_t5",
+                id: "c3_l2_t5_input",
+                type: "text-input",
                 question:
                   "1 kg barvy vystačí na $5\\,m^2$. Kolik $m^2$ natřu se 4 kg?",
-                options: [
-                  "$20\\,m^2$",
-                  "$10\\,m^2$",
-                  "$1,25\\,m^2$",
-                  "$9\\,m^2$",
-                ],
-                correctAnswer: 0,
+                correctAnswer: "20",
                 xp: 15,
               },
             ],
@@ -2679,43 +2873,55 @@ export const mathZS = {
             sections: [
               {
                 heading: "Univerzální řešitel problémů",
-                text: "Trojčlenka je postup, jak vypočítat neznámou, když známe tři údaje. \nZápis vypadá takto:\n$5$ kg ........... $200$ Kč\n$7$ kg ........... $x$ Kč\nNejdůležitější krok: Určit šipky! Pokud je to přímá úměra, šipky jdou stejným směrem (obě nahoru). Pokud nepřímá, jdou proti sobě. Pak už jen sestavíme rovnici podle šipek.",
+                text: "Trojčlenka je super nástroj, jak vypočítat neznámou, když známe tři údaje a víme, že jde o úměru. Zápis vypadá takto:\n\n$5$ kg ........... $200$ Kč\n$7$ kg ........... $x$ Kč\n\nNejdůležitější krok je určit šipky! \n* Pokud je to přímá úměra (víc kg = víc Kč), šipky jdou stejným směrem.\n* Pokud nepřímá (víc lidí = méně času), šipky jdou proti sobě.",
                 image:
                   "[Image showing rule of three setup with arrows for direct proportion]",
               },
               {
                 heading: "Křížové pravidlo (Přímá úměra)",
-                text: "U přímé úměry (např. cena zboží) funguje jednoduchý trik: Vynásob čísla na uhlopříčce, kde nemáš $x$, a vyděl tím číslem, které zbývá. \nV příkladu výše: $x = \\frac{7 \\cdot 200}{5}$.\n$x = \\frac{1400}{5} = 280$ Kč.",
+                text: "U přímé úměry (jako cena zboží) funguje jednoduchý trik zvaný 'na kříž'.\n1. Vynásob čísla na uhlopříčce, kde nemáš neznámou $x$ ($7 \\cdot 200$).\n2. Vyděl to číslem, které zbývá ($5$).\n\nV příkladu výše: $x = \\frac{7 \\cdot 200}{5} = \\frac{1400}{5} = 280$ Kč.",
                 image: "placeholder-cross-multiplication",
               },
             ],
             tasks: [
               {
                 id: "c3_l3_t1",
-                question: "Kdy píšeme šipky u trojčlenky opačným směrem?",
+                question:
+                  "Kdy píšeme šipky u trojčlenky opačným směrem (jednu nahoru, jednu dolů)?",
                 options: ["Vždy", "U přímé úměry", "U nepřímé úměry", "Nikdy"],
                 correctAnswer: 2,
                 xp: 10,
               },
               {
-                id: "c3_l3_t2",
-                question: "Vypočítej $x$: \n3 ks ... 30 Kč \n5 ks ... x Kč",
-                options: ["40 Kč", "50 Kč", "60 Kč", "150 Kč"],
-                correctAnswer: 1,
+                id: "c3_l3_t2_input",
+                type: "text-input",
+                question:
+                  "Vypočítej x: 3 ks stojí 30 Kč. Kolik stojí 5 ks? (Napiš jen číslo)",
+                correctAnswer: "50",
                 xp: 20,
               },
               {
-                id: "c3_l3_t3",
-                question:
-                  "Auto spotřebuje 6 litrů na 100 km. Kolik spotřebuje na 250 km?",
-                options: ["12 litrů", "15 litrů", "18 litrů", "20 litrů"],
-                correctAnswer: 1,
-                xp: 25,
+                id: "c3_l3_t3_sequence",
+                type: "sequence",
+                question: "Seřaď kroky výpočtu trojčlenky:",
+                options: [
+                  "Napíšu si zadání pod sebe (kg pod kg, cena pod cenu).",
+                  "Určím typ úměry a nakreslím šipky.",
+                  "Sestavím rovnici nebo zlomek podle šipek.",
+                  "Vypočítám neznámou x.",
+                ],
+                correctAnswer: [
+                  "Napíšu si zadání pod sebe (kg pod kg, cena pod cenu).",
+                  "Určím typ úměry a nakreslím šipky.",
+                  "Sestavím rovnici nebo zlomek podle šipek.",
+                  "Vypočítám neznámou x.",
+                ],
+                xp: 30,
               },
               {
                 id: "c3_l3_t4",
                 question:
-                  "Trojčlenka pro nepřímou úměru: 4 lidé ... 10 hod. Jak dlouho 2 lidé?",
+                  "Trojčlenka pro nepřímou úměru: 4 lidé ... 10 hod. Jak dlouho to bude trvat 2 lidem?",
                 options: [
                   "5 hod (polovina času)",
                   "20 hod (dvojnásobek času)",
@@ -2726,11 +2932,11 @@ export const mathZS = {
                 xp: 25,
               },
               {
-                id: "c3_l3_t5",
+                id: "c3_l3_t5_input",
+                type: "text-input",
                 question:
-                  "Z 5 kg mouky upeču 20 housek. Kolik housek upeču z 8 kg?",
-                options: ["32", "30", "40", "25"],
-                correctAnswer: 0,
+                  "Auto žere 6 litrů na 100 km. Kolik litrů spálí na 300 km?",
+                correctAnswer: "18",
                 xp: 20,
               },
             ],
@@ -2742,26 +2948,27 @@ export const mathZS = {
             sections: [
               {
                 heading: "Jedna setina celku",
-                text: "Slovo procento pochází z latinského 'per centum', což znamená 'ze sta'. Jedno procento ($1\\,\\%$) je prostě jedna setina celku ($\\frac{1}{100}$ nebo $0,01$). Celý dort je $100\\,\\%$. Polovina dortu je $50\\,\\%$. \nProč je používáme? Protože se s nimi lépe porovnává. Říct 'sleva $20\\,\\%$' je jasnější než říct 'sleva jedna pětina'.",
-                image: "",
+                text: "Slovo procento pochází z latinského 'per centum', což znamená 'ze sta'. Značka je $\\%$. \n\n$1\\,\\%$ je prostě jedna setina celku ($\\frac{1}{100}$ nebo $0,01$).\n* Celý dort je $100\\,\\%$.\n* Polovina dortu je $50\\,\\%$.\n* Čtvrtina dortu je $25\\,\\%$.\n\nProč je používáme? Protože se s nimi lépe porovnává. Říct 'sleva $20\\,\\%$' je pro lidi jasnější než říct 'sleva jedna pětina'.",
+                image:
+                  "[Image showing a pie chart representing percentages 100%, 50%, 25%, 1%]",
               },
               {
-                heading: "Počítání přes 1 %",
-                text: "Jak vypočítat $10\\,\\%$ nebo $5\\,\\%$ z něčeho? Univerzální návod: Vždy si nejdřív vypočítej $1\\,\\%$. To uděláš tak, že celek vydělíš číslem $100$ (posuneš desetinnou čárku o dvě místa doleva). \nChci $7\\,\\%$ z čísla $200$:\n1. $1\\,\\%$ z $200$ je $2$.\n2. $7\\,\\%$ je $7 \\cdot 2 = 14$.",
+                heading: "Trik přes 1 %",
+                text: "Nejjednodušší způsob, jak počítat procenta z hlavy, je přes jedno procento.\n\nJak vypočítat $1\\,\\%$? Prostě vyděl celek číslem 100 (posuň desetinnou čárku o dvě místa doleva).\n\nPříklad: Chci $7\\,\\%$ z čísla $200$.\n1. $1\\,\\%$ z $200$ je 2.\n2. Chci jich sedm, takže $7 \\cdot 2 = 14$.",
                 image: "placeholder-calculate-one-percent",
               },
             ],
             tasks: [
               {
-                id: "c3_l4_t1",
-                question: "Kolik je $1\\,\\%$ z čísla $500$?",
-                options: ["$50$", "$5$", "$0,5$", "$1$"],
-                correctAnswer: 1,
+                id: "c3_l4_t1_input",
+                type: "text-input",
+                question: "Vypočítej 1% z čísla 500 (vyděl ho stem):",
+                correctAnswer: "5",
                 xp: 10,
               },
               {
                 id: "c3_l4_t2",
-                question: "Jak zapíšeš polovinu pomocí procent?",
+                question: "Jak zapíšeš polovinu (1/2) pomocí procent?",
                 options: [
                   "$10\\,\\%$",
                   "$20\\,\\%$",
@@ -2772,17 +2979,28 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c3_l4_t3",
-                question: "Co znamená $100\\,\\%$?",
-                options: ["Nic", "Polovina", "Celek", "Dvojnásobek"],
-                correctAnswer: 2,
-                xp: 10,
+                id: "c3_l4_t3_sequence",
+                type: "sequence",
+                question: "Seřaď hodnoty od nejmenší po největší:",
+                options: [
+                  "$1\\,\\%$",
+                  "$10\\,\\%$",
+                  "$0,5$ (což je 50%)",
+                  "$100\\,\\%$",
+                ],
+                correctAnswer: [
+                  "$1\\,\\%$",
+                  "$10\\,\\%$",
+                  "$0,5$ (což je 50%)",
+                  "$100\\,\\%$",
+                ],
+                xp: 20,
               },
               {
-                id: "c3_l4_t4",
-                question: "Vypočítej $20\\,\\%$ z $50$.",
-                options: ["$10$", "$20$", "$25$", "$5$"],
-                correctAnswer: 0,
+                id: "c3_l4_t4_input",
+                type: "text-input",
+                question: "Vypočítej 20% z čísla 50. (Tip: 10% je 5...)",
+                correctAnswer: "10",
                 xp: 20,
               },
               {
@@ -2795,7 +3013,7 @@ export const mathZS = {
                   "$75\\,\\%$",
                 ],
                 correctAnswer: 1,
-                xp: 20,
+                xp: 15,
               },
             ],
           },
@@ -2805,14 +3023,15 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Základ, Část, Počet procent",
-                text: "V každé úloze na procenta vystupují tři herci:\n1. Základ ($z$): To je celek, odpovídá $100\\,\\%$. (Např. původní cena).\n2. Procentová část ($č$): To je kousek základu. (Např. výše slevy v korunách).\n3. Počet procent ($p$): To je číslo se znakem $%$. (Např. $20\\,\\%$).\nVztah mezi nimi je: $$ č = \\frac{p \\cdot z}{100} $$",
+                heading: "Tři herci v příběhu",
+                text: "V každé úloze na procenta vystupují tři veličiny. Musíš je umět najít:\n1.  Základ ($z$): To je celek, odpovídá $100\\,\\%$. (Např. původní cena bez slevy).\n2.  Procentová část ($č$): To je kousek základu. (Např. výše slevy v korunách).\n3.  Počet procent ($p$): To je číslo se znakem $\\%$. (Např. sleva $20\\,\\%$).\n\nVztah mezi nimi je: $$ č = \\frac{p \\cdot z}{100} $$",
                 image: "",
               },
               {
-                heading: "Pozor na chytáky!",
-                text: "Tohle je klasická past: Boty stojí $1000$ Kč. Zdražíme je o $10\\,\\%$ (na $1100$ Kč). Pak je zlevníme o $10\\,\\%$. Budou stát zase $1000$ Kč? NE! \nProtože při slevě počítáme $10\\,\\%$ už z nové ceny ($1100$). $10\\,\\%$ z $1100$ je $110$. Nová cena bude $1100 - 110 = 990$ Kč. Boty jsou levnější než na začátku! Základ se totiž v průběhu změnil.",
-                image: "placeholder-percentage-trap-visualization",
+                heading: "Pozor na chytáky! (Změna základu)",
+                text: "Tohle je klasická past, do které padají i dospělí:\nBoty stojí $1000$ Kč. Zdražíme je o $10\\,\\%$ (na $1100$ Kč). Pak je zlevníme o $10\\,\\%$. Budou stát zase $1000$ Kč? \n\nNE!\nProtože při slevě počítáme $10\\,\\%$ už z nové ceny ($1100$). $10\\,\\%$ z $1100$ je $110$ Kč. \nNová cena bude $1100 - 110 = 990$ Kč. Boty jsou levnější než na začátku! Základ se totiž v průběhu změnil.",
+                image:
+                  "[Image illustrating percentage price trap: 1000 + 10% -> 1100 - 10% -> 990]",
               },
             ],
             tasks: [
@@ -2821,7 +3040,7 @@ export const mathZS = {
                 question: "Co je 'základ' v procentovém počtu?",
                 options: [
                   "$1\\,\\%$",
-                  "Hodnota odpovídající $100\\,\\%$",
+                  "Hodnota odpovídající $100\\,\\%$ (celek)",
                   "Sleva",
                   "Výsledek",
                 ],
@@ -2829,42 +3048,44 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c3_l5_t2",
+                id: "c3_l5_t2_input",
+                type: "text-input",
                 question:
-                  "Tričko stálo $200$ Kč a zlevnili ho o $50$ Kč. Kolik procent byla sleva?",
-                options: [
-                  "$50\\,\\%$",
-                  "$25\\,\\%$",
-                  "$20\\,\\%$",
-                  "$10\\,\\%$",
-                ],
-                correctAnswer: 1,
+                  "Tričko stálo 200 Kč a zlevnili ho o 50 Kč. Kolik procent byla sleva? (50 z 200 je čtvrtina...)",
+                correctAnswer: "25",
                 xp: 25,
               },
               {
-                id: "c3_l5_t3",
+                id: "c3_l5_t3_sequence",
+                type: "sequence",
                 question:
-                  "Výrobek zdražil ze $100$ Kč na $120$ Kč. O kolik procent zdražil?",
+                  "Seřaď postup výpočtu 'Pasti': 100 Kč + 10% a pak - 10%:",
                 options: [
-                  "$20\\,\\%$",
-                  "$120\\,\\%$",
-                  "$2\\,\\%$",
-                  "$12\\,\\%$",
+                  "Začínám na 100 Kč.",
+                  "Přičtu 10% (10 Kč), mám 110 Kč.",
+                  "Teď počítám 10% ze 110 Kč (to je 11 Kč).",
+                  "Odečtu 11 Kč. Výsledek je 99 Kč.",
                 ],
-                correctAnswer: 0,
-                xp: 20,
+                correctAnswer: [
+                  "Začínám na 100 Kč.",
+                  "Přičtu 10% (10 Kč), mám 110 Kč.",
+                  "Teď počítám 10% ze 110 Kč (to je 11 Kč).",
+                  "Odečtu 11 Kč. Výsledek je 99 Kč.",
+                ],
+                xp: 30,
               },
               {
-                id: "c3_l5_t4",
-                question: "Kolik je $150\\,\\%$ z čísla $10$?",
-                options: ["$1,5$", "$15$", "$150$", "$25$"],
-                correctAnswer: 1,
+                id: "c3_l5_t4_input",
+                type: "text-input",
+                question:
+                  "Kolik je 150% z čísla 10? (Je to 10 + půlka desítky...)",
+                correctAnswer: "15",
                 xp: 20,
               },
               {
                 id: "c3_l5_t5",
                 question:
-                  "Mám $200$ Kč, to je $50\\,\\%$ ceny dárku. Kolik stojí dárek?",
+                  "Mám 200 Kč, to je přesně 50% (polovina) ceny dárku. Kolik stojí celý dárek?",
                 options: ["$100$ Kč", "$300$ Kč", "$400$ Kč", "$1000$ Kč"],
                 correctAnswer: 2,
                 xp: 25,
@@ -2885,12 +3106,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Obsah čtverce",
-                text: "Proč říkáme 'na druhou'? Představ si čtverec o straně $a$. Jeho obsah vypočítáme jako $a \\cdot a$. Abychom to nemuseli psát dvakrát, matematici vymysleli zkratku: malé číslo vpravo nahoře. Píšeme $a^2$. Čteme to 'a na druhou'. Tedy: $$ 5^2 = 5 \\cdot 5 = 25 $$ Mocnina nám říká: Vezmi toto číslo a vynásob ho samo sebou.",
-                image: "",
+                text: "Proč říkáme 'na druhou'? Představ si čtverec o straně $a$. Jeho obsah vypočítáme jako $a \\cdot a$. Abychom to nemuseli psát dvakrát, matematici vymysleli zkratku: malé číslo vpravo nahoře. Píšeme $a^2$. Čteme to 'a na druhou'. \n\n$$ 5^2 = 5 \\cdot 5 = 25 $$\n\nMocnina nám říká: Vezmi toto číslo a vynásob ho samo sebou. Pozor! $5^2$ není $5 \\cdot 2$ (to by bylo 10). Je to $5 \\cdot 5$.",
+                image:
+                  "[Image showing a square with side length 5 and area 25 composed of grid blocks]",
               },
               {
                 heading: "Past se závorkou (Minusy)",
-                text: "Tady chybuje 90 % žáků! Jaký je rozdíl mezi $(-3)^2$ a $-3^2$?\n- $(-3)^2$ znamená $(-3) \\cdot (-3)$. Minus krát minus dává plus. Výsledek je $9$.\n- $-3^2$ znamená 'minus opisuji a trojku umocním'. Tedy $- (3 \\cdot 3)$. Výsledek je $-9$.\nZávorka rozhoduje o tom, jestli se minus týká mocniny, nebo ne!",
+                text: "Tady chybuje 90 % žáků! Závorka je naprosto klíčová pro znaménko výsledku.\n\n* $(-3)^2$: Znamená 'minus tři' krát 'minus tři'. Minus krát minus dává plus. Výsledek je 9.\n* $-3^2$: Znamená 'minus opisuji a trojku umocním'. Tedy $- (3 \\cdot 3)$. Výsledek je -9.\n\nZávorka rozhoduje o tom, jestli mocnina 'požere' i to znaménko minus.",
                 image: "placeholder-negative-square-trap",
               },
             ],
@@ -2903,11 +3125,22 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c4_l1_t2",
-                question: "Vypočítej $(-4)^2$.",
-                options: ["$16$", "$-16$", "$8$", "$-8$"],
-                correctAnswer: 0,
-                xp: 15,
+                id: "c4_l1_t2_sequence",
+                type: "sequence",
+                question: "Seřaď čísla od nejmenšího po největší:",
+                options: [
+                  "$-4^2$ (výsledek -16)",
+                  "$0^2$ (výsledek 0)",
+                  "$(-2)^2$ (výsledek 4)",
+                  "$3^2$ (výsledek 9)",
+                ],
+                correctAnswer: [
+                  "$-4^2$ (výsledek -16)",
+                  "$0^2$ (výsledek 0)",
+                  "$(-2)^2$ (výsledek 4)",
+                  "$3^2$ (výsledek 9)",
+                ],
+                xp: 25,
               },
               {
                 id: "c4_l1_t3",
@@ -2917,11 +3150,11 @@ export const mathZS = {
                 xp: 20,
               },
               {
-                id: "c4_l1_t4",
-                question: "Kolik je $0^2$?",
-                options: ["$0$", "$1$", "$2$", "Nelze vypočítat"],
-                correctAnswer: 0,
-                xp: 10,
+                id: "c4_l1_t4_input",
+                type: "text-input",
+                question: "Vypočítej $12^2$ (dvanáct na druhou). Napiš číslo:",
+                correctAnswer: "144",
+                xp: 15,
               },
               {
                 id: "c4_l1_t5",
@@ -2939,48 +3172,54 @@ export const mathZS = {
             sections: [
               {
                 heading: "Svět ve 3D",
-                text: "Zatímco druhá mocnina je plocha (2D), třetí mocnina je prostor (3D). Představ si krychli o hraně $a$. Její objem je $a \\cdot a \\cdot a$. Zkráceně $a^3$. Čteme 'a na třetí'. $$ 2^3 = 2 \\cdot 2 \\cdot 2 = 8 $$ Pozor, nepleť si to s $2 \\cdot 3$ (což je 6). Mocnina roste mnohem rychleji!",
-                image: "",
+                text: "Zatímco druhá mocnina je plocha (2D), třetí mocnina je prostor (3D). Představ si krychli o hraně $a$. Její objem je $a \\cdot a \\cdot a$. Zkráceně $a^3$. Čteme 'a na třetí'. \n\n$$ 2^3 = 2 \\cdot 2 \\cdot 2 = 8 $$\n\nPozor, opět to není $2 \\cdot 3$ (což je 6). Mocnina roste mnohem rychleji než násobení!",
+                image: "[Image comparing 2D square area vs 3D cube volume]",
               },
               {
                 heading: "Lichý exponent znaménko nezmění",
-                text: "U druhé mocniny se minus ztratil ($(-2)^2 = 4$). U třetí mocniny je to jinak! $$ (-2)^3 = (-2) \\cdot (-2) \\cdot (-2) $$ První dva minusy dají plus, ale ten třetí minus to zase 'zkazí'. Výsledek je $-8$. Pamatuj: Sudá mocnina 'požírá' minus, lichá mocnina ho 'vyplivne' ven.",
+                text: "U druhé mocniny se minus ztratil ($(-2)^2 = 4$), protože byla sudá. U třetí mocniny je to jinak!\n\n$$ (-2)^3 = (-2) \\cdot (-2) \\cdot (-2) $$\n\nPrvní dva minusy dají plus, ale ten třetí minus to zase 'zkazí' a vrátí výsledek do minusu. Výsledek je -8.\n\nPravidlo: Sudá mocnina 'požírá' minus, lichá mocnina ho 'vyplivne' ven.",
                 image: "placeholder-odd-exponent-sign",
               },
             ],
             tasks: [
               {
                 id: "c4_l2_t1",
-                question: "Vypočítej $1^3$.",
+                question: "Vypočítej $1^3$ (jedna na třetí).",
                 options: ["$1$", "$3$", "$0$", "$111$"],
                 correctAnswer: 0,
                 xp: 10,
               },
               {
-                id: "c4_l2_t2",
-                question: "Vypočítej $3^3$.",
-                options: ["$9$", "$27$", "$6$", "$33$"],
-                correctAnswer: 1,
+                id: "c4_l2_t2_input",
+                type: "text-input",
+                question: "Vypočítej $10^3$ (deset na třetí). Napiš výsledek:",
+                correctAnswer: "1000",
                 xp: 15,
               },
               {
                 id: "c4_l2_t3",
                 question: "Jaké znaménko bude mít výsledek $(-5)^3$?",
-                options: [
-                  "Kladné (+)",
-                  "Záporné (-)",
-                  "Žádné",
-                  "Záleží na náladě",
-                ],
+                options: ["Kladné (+)", "Záporné (-)", "Žádné", "Nelze určit"],
                 correctAnswer: 1,
                 xp: 15,
               },
               {
-                id: "c4_l2_t4",
-                question: "Kolik je $10^3$?",
-                options: ["$30$", "$100$", "$1000$", "$300$"],
-                correctAnswer: 2,
-                xp: 10,
+                id: "c4_l2_t4_sequence",
+                type: "sequence",
+                question: "Seřaď postup výpočtu $(-2)^3$:",
+                options: [
+                  "Rozepíšu na $(-2) \\cdot (-2) \\cdot (-2)$.",
+                  "První dvě čísla dají $4$.",
+                  "Vynásobím $4 \\cdot (-2)$.",
+                  "Výsledek je $-8$.",
+                ],
+                correctAnswer: [
+                  "Rozepíšu na $(-2) \\cdot (-2) \\cdot (-2)$.",
+                  "První dvě čísla dají $4$.",
+                  "Vynásobím $4 \\cdot (-2)$.",
+                  "Výsledek je $-8$.",
+                ],
+                xp: 25,
               },
               {
                 id: "c4_l2_t5",
@@ -2998,13 +3237,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Lenost je matkou pokroku",
-                text: "Představ si, že máš vypočítat $2^3 \\cdot 2^4$. Můžeš to rozepsat: $$(2 \\cdot 2 \\cdot 2) \\cdot (2 \\cdot 2 \\cdot 2 \\cdot 2)$$ Celkem vidíš sedm dvojek. Výsledek je $2^7$. Matematici si všimli pravidla: Když násobíme mocniny se stejným základem, exponenty se sčítají ($3+4=7$). $$ a^m \\cdot a^n = a^{m+n} $$",
+                text: "Představ si, že máš vypočítat $2^3 \\cdot 2^4$. Můžeš to rozepsat:\n$$(2 \\cdot 2 \\cdot 2) \\cdot (2 \\cdot 2 \\cdot 2 \\cdot 2)$$\nCelkem vidíš sedm dvojek. Výsledek je $2^7$. \n\nMatematici vymysleli pravidlo: Když násobíme mocniny se stejným základem, exponenty se sčítají ($3+4=7$).\n$$ a^m \\cdot a^n = a^{m+n} $$",
                 image:
-                  "[Image showing algebraic expansion of exponents multiplication]",
+                  "[Image showing algebraic expansion of exponents multiplication a^m * a^n]",
               },
               {
                 heading: "Dělení a mocnina mocniny",
-                text: "Podobně to funguje u dělení, jen exponenty odčítáme. $$ \frac{2^5}{2^3} = 2^{5-3} = 2^2 $$ A co když máme mocninu na mocninu? $(2^3)^2$. To znamená $(2^3) \\cdot (2^3) = 2^{3+3} = 2^6$. Zkrátka exponenty násobíme. $$ (a^m)^n = a^{m \\cdot n} $$",
+                text: "Podobně to funguje u dělení, jen exponenty odčítáme.\n$$ \\frac{2^5}{2^3} = 2^{5-3} = 2^2 $$\n\nA co když máme mocninu na mocninu? $(2^3)^2$. To znamená $(2^3) \\cdot (2^3) = 2^{3+3} = 2^6$. Zkrátka exponenty násobíme.\n$$ (a^m)^n = a^{m \\cdot n} $$",
                 image: "placeholder-exponent-rules",
               },
             ],
@@ -3012,37 +3251,58 @@ export const mathZS = {
               {
                 id: "c4_l3_t1",
                 question: "Zjednoduš: $x^2 \\cdot x^3$",
-                options: ["$x^6$", "$x^5$", "$2x^5$", "$x^1$"],
+                options: [
+                  "$x^6$ (chyba - násobení)",
+                  "$x^5$ (správně - sčítání)",
+                  "$2x^5$",
+                  "$x^1$",
+                ],
                 correctAnswer: 1,
                 xp: 15,
               },
               {
                 id: "c4_l3_t2",
                 question: "Zjednoduš: $10^6 : 10^2$",
-                options: ["$10^3$", "$10^4$", "$10^8$", "$10^{12}$"],
+                options: [
+                  "$10^3$",
+                  "$10^4$ (odečítáme $6-2$)",
+                  "$10^8$",
+                  "$10^{12}$",
+                ],
                 correctAnswer: 1,
                 xp: 15,
               },
               {
-                id: "c4_l3_t3",
-                question: "Vypočítej: $(2^2)^3$",
-                options: ["$2^5$", "$2^6$", "$2^1$", "$4^3$ (což je totéž)"],
-                correctAnswer: 1,
-                xp: 20,
+                id: "c4_l3_t3_sequence",
+                type: "sequence",
+                question: "Seřaď kroky pro zjednodušení $(x^2)^3 \\cdot x^4$:",
+                options: [
+                  "Odstraním závorku: $(x^2)^3 = x^6$.",
+                  "Mám příklad $x^6 \\cdot x^4$.",
+                  "Sečtu exponenty $6 + 4$.",
+                  "Výsledek je $x^{10}$.",
+                ],
+                correctAnswer: [
+                  "Odstraním závorku: $(x^2)^3 = x^6$.",
+                  "Mám příklad $x^6 \\cdot x^4$.",
+                  "Sečtu exponenty $6 + 4$.",
+                  "Výsledek je $x^{10}$.",
+                ],
+                xp: 30,
               },
               {
-                id: "c4_l3_t4",
-                question: "Kolik je $5^2 \\cdot 5^0$? (Pamatuj, $x^0 = 1$)",
-                options: ["$5^2$", "$5^0$", "$5^{20}$", "$0$"],
-                correctAnswer: 0,
+                id: "c4_l3_t4_input",
+                type: "text-input",
+                question: "Vypočítej hodnotu $5^0$ (cokoliv na nultou je...):",
+                correctAnswer: "1",
                 xp: 25,
               },
               {
                 id: "c4_l3_t5",
-                question: "Platí pravidlo $a^2 + a^3 = a^5$?",
+                question: "Platí pravidlo $a^2 + a^3 = a^5$? (Sčítání mocnin)",
                 options: [
                   "Ano",
-                  "Ne, u sčítání to neplatí!",
+                  "Ne, u sčítání základů to neplatí!",
                   "Jen pro sudá čísla",
                   "Nevím",
                 ],
@@ -3058,13 +3318,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Počítání nul",
-                text: "Mocniny desítky jsou úžasné. Exponent nám přesně říká, kolik nul číslo má. \n- $10^1 = 10$ (jedna nula)\n- $10^3 = 1000$ (tři nuly)\n- $10^6 = 1\\,000\\,000$ (milion, šest nul)\nJe to nejrychlejší způsob, jak napsat obrovská čísla, třeba počet atomů ve vesmíru.",
+                text: "Mocniny desítky jsou úžasné. Exponent nám přesně říká, kolik nul číslo má.\n* $10^1 = 10$ (jedna nula)\n* $10^3 = 1000$ (tři nuly)\n* $10^6 = 1\\,000\\,000$ (milion, šest nul)\n\nJe to nejrychlejší způsob, jak napsat obrovská čísla, třeba počet atomů ve vesmíru, aniž bychom popsali celý papír nulami.",
                 image:
-                  "[Image comparing standard notation and scientific notation of one million]",
+                  "[Image comparing standard notation 1000000 and scientific notation 10^6]",
               },
               {
-                heading: "Vědecký zápis (a \\cdot 10^n)",
-                text: "Vědci jsou líní psát nuly. Místo $300\\,000\\,000$ (rychlost světla) napíší $3 \\cdot 10^8$. Zápis má vždy tvar: jedno číslo od 1 do 10 krát mocnina desítky. \nNapř. $5\\,200$ zapíšeme jako $5,2 \\cdot 10^3$. Desetinnou čárku jsme posunuli o 3 místa.",
+                heading: "Vědecký zápis ($a \\cdot 10^n$)",
+                text: "Vědci jsou líní psát nuly. Místo $300\\,000\\,000$ (rychlost světla) napíší $3 \\cdot 10^8$. \n\nZápis má vždy tvar: jedno číslo od 1 do 10 krát mocnina desítky.\nNapř. $5\\,200$. Posuneme desetinnou čárku o 3 místa doleva, abychom dostali $5,2$. Proto napíšeme $5,2 \\cdot 10^3$.",
                 image: "placeholder-scientific-notation-shift",
               },
             ],
@@ -3072,23 +3332,23 @@ export const mathZS = {
               {
                 id: "c4_l4_t1",
                 question: "Jak zapíšeš číslo milion mocninou?",
-                options: ["$10^5$", "$10^6$", "$10^9$", "$100^2$"],
+                options: ["$10^5$", "$10^6$ (6 nul)", "$10^9$", "$100^2$"],
                 correctAnswer: 1,
                 xp: 10,
               },
               {
-                id: "c4_l4_t2",
-                question: "Co znamená $3 \\cdot 10^2$?",
-                options: ["$30$", "$300$", "$3000$", "$60$"],
-                correctAnswer: 1,
-                xp: 15,
+                id: "c4_l4_t2_input",
+                type: "text-input",
+                question: "Kolik nul má číslo $10^9$ (miliarda)? Napiš číslo:",
+                correctAnswer: "9",
+                xp: 10,
               },
               {
                 id: "c4_l4_t3",
                 question: "Převeď $4\\,500$ na vědecký zápis.",
                 options: [
-                  "$45 \\cdot 10^2$",
-                  "$4,5 \\cdot 10^3$",
+                  "$45 \\cdot 10^2$ (špatně, 45 je moc velké)",
+                  "$4,5 \\cdot 10^3$ (správně, posun o 3 místa)",
                   "$0,45 \\cdot 10^4$",
                   "$4,5 \\cdot 10^2$",
                 ],
@@ -3096,11 +3356,22 @@ export const mathZS = {
                 xp: 20,
               },
               {
-                id: "c4_l4_t4",
-                question: "Kolik nul má číslo $10^9$ (miliarda)?",
-                options: ["$6$", "$9$", "$12$", "$10$"],
-                correctAnswer: 1,
-                xp: 10,
+                id: "c4_l4_t4_sequence",
+                type: "sequence",
+                question: "Seřaď čísla od nejmenšího:",
+                options: [
+                  "$10^2$ (sto)",
+                  "$5 \\cdot 10^2$ (pět set)",
+                  "$10^3$ (tisíc)",
+                  "$2 \\cdot 10^3$ (dva tisíce)",
+                ],
+                correctAnswer: [
+                  "$10^2$ (sto)",
+                  "$5 \\cdot 10^2$ (pět set)",
+                  "$10^3$ (tisíc)",
+                  "$2 \\cdot 10^3$ (dva tisíce)",
+                ],
+                xp: 20,
               },
               {
                 id: "c4_l4_t5",
@@ -3123,34 +3394,35 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Hledáme kořen",
-                text: "Odmocňování je opakem mocnění. Představ si, že znáš obsah čtverce ($25$ m²) a hledáš délku jeho strany. Ptáš se: 'Které číslo musím vynásobit samo se sebou, abych dostal 25?' Odpověď je $5$. Zapíšeme to pomocí znaku odmocniny: $$ \\sqrt{25} = 5 $$",
-                image: "",
+                heading: "Hledáme kořen (Odmocnina)",
+                text: "Odmocňování je opakem mocnění. Představ si, že znáš obsah čtverce ($25$ m²) a hledáš délku jeho strany. Ptáš se: 'Které číslo musím vynásobit samo se sebou, abych dostal 25?'\n\nOdpověď je $5$. Zapíšeme to pomocí znaku odmocniny: \n$$ \\sqrt{25} = 5 $$",
+                image:
+                  "[Image illustrating square root as finding the side of a square]",
               },
               {
                 heading: "Zákaz vstupu pro záporná čísla",
-                text: "Existuje $\\sqrt{-9}$? Hledáme číslo, které když vynásobíme samo sebou, dá $-9$. \n- $3 \\cdot 3 = 9$ (špatně)\n- $(-3) \\cdot (-3) = 9$ (taky špatně!)\nV reálných číslech nelze odmocnit záporné číslo. Pod odmocninou musí být vždy nezáporné číslo.",
+                text: "Existuje $\\sqrt{-9}$? \nHledáme číslo, které když vynásobíme samo sebou, dá $-9$. \n* $3 \\cdot 3 = 9$ (špatně)\n* $(-3) \\cdot (-3) = 9$ (taky špatně!)\n\nV reálných číslech nelze odmocnit záporné číslo. Pod odmocninou musí být vždy nezáporné číslo.",
                 image: "placeholder-no-negative-roots",
               },
               {
                 heading: "Odmocnina součinu a podílu",
-                text: "Stejně jako u mocnin, i tady platí pravidla pro 'roztržení' příkladu. $$ \\sqrt{4 \\cdot 9} = \\sqrt{4} \\cdot \\sqrt{9} = 2 \\cdot 3 = 6 $$ Pozor! Toto neplatí pro sčítání! $\\sqrt{16 + 9}$ není $4 + 3$. $\\sqrt{25}$ je $5$, zatímco $4+3$ je $7$.",
-                image: "[Image illustrating sqrt(a*b) vs sqrt(a+b) error]",
+                text: "Stejně jako u mocnin, i tady platí pravidla pro 'roztržení' příkladu.\n$$ \\sqrt{4 \\cdot 9} = \\sqrt{4} \\cdot \\sqrt{9} = 2 \\cdot 3 = 6 $$\n\nPozor! Toto neplatí pro sčítání! $\\sqrt{16 + 9}$ není $4 + 3$. $\\sqrt{25}$ je $5$, zatímco $4+3$ je $7$.",
+                image: "",
               },
             ],
             tasks: [
               {
-                id: "c4_l5_t1",
-                question: "Vypočítej $\\sqrt{36}$.",
-                options: ["$6$", "$18$", "$4$", "$72$"],
-                correctAnswer: 0,
+                id: "c4_l5_t1_input",
+                type: "text-input",
+                question: "Vypočítej odmocninu ze 100. Napiš číslo:",
+                correctAnswer: "10",
                 xp: 10,
               },
               {
                 id: "c4_l5_t2",
-                question: "Vypočítej $\\sqrt{100}$.",
-                options: ["$50$", "$10$", "$20$", "$1$"],
-                correctAnswer: 1,
+                question: "Vypočítej $\\sqrt{36}$.",
+                options: ["$6$", "$18$", "$4$", "$72$"],
+                correctAnswer: 0,
                 xp: 10,
               },
               {
@@ -3166,11 +3438,22 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c4_l5_t4",
-                question: "Vypočítej $\\sqrt{9} + \\sqrt{16}$.",
-                options: ["$\\sqrt{25} = 5$", "$3 + 4 = 7$", "$12$", "$25$"],
-                correctAnswer: 1,
-                xp: 20,
+                id: "c4_l5_t4_sequence",
+                type: "sequence",
+                question: "Seřaď postup výpočtu $\\sqrt{9 + 16}$:",
+                options: [
+                  "Nejdřív musím sečíst čísla pod odmocninou ($9+16$).",
+                  "Dostanu $\\sqrt{25}$.",
+                  "Odmocním 25.",
+                  "Výsledek je 5.",
+                ],
+                correctAnswer: [
+                  "Nejdřív musím sečíst čísla pod odmocninou ($9+16$).",
+                  "Dostanu $\\sqrt{25}$.",
+                  "Odmocním 25.",
+                  "Výsledek je 5.",
+                ],
+                xp: 25,
               },
               {
                 id: "c4_l5_t5",
@@ -3178,7 +3461,7 @@ export const mathZS = {
                 options: [
                   "Mezi 4 a 5",
                   "Mezi 5 a 6",
-                  "Mezi 7 a 8 (protože $7^2=49$)",
+                  "Mezi 7 a 8 (protože $7^2=49$ a $8^2=64$)",
                   "Mezi 20 a 30",
                 ],
                 correctAnswer: 2,
@@ -3200,53 +3483,66 @@ export const mathZS = {
             sections: [
               {
                 heading: "Proč písmena v matematice?",
-                text: "Představ si, že programuješ hru. Nevíš, kolik bodů hráč získá, ale víš, že za každou minci dostane 10 bodů. Počet mincí se mění – je to proměnná. V matematice ji označujeme písmenem, nejčastěji $x, y, a$ nebo $b$. Výraz $10 \\cdot x$ nám říká: 'Vezmi počet mincí (ať je jakýkoliv) a vynásob ho deseti.'",
-                image: "",
+                text: "Představ si, že programuješ hru. Nevíš, kolik bodů hráč získá, ale víš, že za každou minci dostane 10 bodů. Počet mincí se mění – je to proměnná. V matematice ji označujeme písmenem, nejčastěji $x, y, a$ nebo $b$.\n\nVýraz $10 \\cdot x$ (nebo prostě $10x$) nám říká: 'Vezmi počet mincí (ať je jakýkoliv) a vynásob ho deseti.'",
+                image:
+                  "[Image illustrating video game coins and score calculation with variable x]",
               },
               {
                 heading: "Dosazování: Otevíráme krabici",
-                text: "Výraz sám o sobě nemá jednu hodnotu. Hodnotu získá až ve chvíli, kdy za písmeno dosadíme konkrétní číslo. Mějme výraz $2x + 3$. \n- Když $x = 1$, hodnota je $2 \\cdot 1 + 3 = 5$. \n- Když $x = 5$, hodnota je $2 \\cdot 5 + 3 = 13$. \nTomu říkáme 'určit hodnotu výrazu'.",
+                text: "Výraz sám o sobě nemá jednu konkrétní hodnotu. Je to jen předpis. Hodnotu získá až ve chvíli, kdy za písmeno dosadíme číslo.\n\nMějme výraz $2x + 3$.\n* Když $x = 1$, hodnota je $2 \\cdot 1 + 3 = 5$.\n* Když $x = 5$, hodnota je $2 \\cdot 5 + 3 = 13$.\n\nTomu říkáme 'určit hodnotu výrazu'. Je to jako otevřít krabici označenou $x$ a podívat se, co je uvnitř.",
                 image: "placeholder-evaluating-expressions",
               },
             ],
             tasks: [
               {
                 id: "c5_l1_t1",
-                question: "Co znamená $2x$?",
+                question: "Co znamená zápis $2x$?",
                 options: [
                   "$2 + x$",
-                  "$2 \\cdot x$ (krát)",
-                  "Dvojciferné číslo s x",
+                  "$2 \\cdot x$ (dvakrát x)",
+                  "Dvojciferné číslo začínající dvojkou",
                   "$x \\cdot x$",
                 ],
                 correctAnswer: 1,
                 xp: 10,
               },
               {
-                id: "c5_l1_t2",
-                question: "Urči hodnotu výrazu $x - 5$ pro $x = 12$.",
-                options: ["$7$", "$17$", "$60$", "$-7$"],
-                correctAnswer: 0,
+                id: "c5_l1_t2_input",
+                type: "text-input",
+                question:
+                  "Urči hodnotu výrazu $x - 5$ pro $x = 12$. Napiš výsledek:",
+                correctAnswer: "7",
                 xp: 15,
               },
               {
                 id: "c5_l1_t3",
                 question: "Urči hodnotu výrazu $a^2$ pro $a = -3$.",
-                options: ["$-9$", "$9$", "$6$", "$-6$"],
+                options: [
+                  "$-9$",
+                  "$9$ (protože minus krát minus je plus)",
+                  "$6$",
+                  "$-6$",
+                ],
                 correctAnswer: 1,
                 xp: 20,
               },
               {
-                id: "c5_l1_t4",
-                question: "Jak zapíšeš 'číslo o 5 větší než x'?",
-                options: ["$5 \\cdot x$", "$x - 5$", "$x + 5$", "$5x$"],
-                correctAnswer: 2,
+                id: "c5_l1_t4_sequence",
+                type: "sequence",
+                question: "Seřaď hodnoty výrazu $2x$ pro $x=1, x=2, x=3$:",
+                options: ["2", "4", "6"],
+                correctAnswer: ["2", "4", "6"],
                 xp: 15,
               },
               {
                 id: "c5_l1_t5",
                 question: "Který výraz má pro $x=2$ hodnotu $10$?",
-                options: ["$2x + 6$", "$5x - 1$", "$x^2 + 5$", "$3x$"],
+                options: [
+                  "$2x + 6$ ($4 + 6 = 10$)",
+                  "$5x - 1$ ($10 - 1 = 9$)",
+                  "$x^2 + 5$ ($4 + 5 = 9$)",
+                  "$3x$ ($6$)",
+                ],
                 correctAnswer: 0,
                 xp: 20,
               },
@@ -3259,13 +3555,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Hrušky s hruškami",
-                text: "Při sčítání výrazů platí zlaté pravidlo: Sčítat můžeme jen členy se stejnou proměnnou ve stejné mocnině. Představ si $x$ jako jablka a $y$ jako hrušky. \n$$ 3x + 2y + 5x - y $$\nMám 3 jablka, přidám 5 jablek $\\rightarrow$ mám $8x$. \nMám 2 hrušky, sním 1 hrušku $\\rightarrow$ mám $1y$. \nVýsledek: $8x + y$. Nemůžeme sečíst $x$ a $y$ dohromady!",
+                text: "Při sčítání výrazů platí zlaté pravidlo: Sčítat můžeme jen členy se stejnou proměnnou ve stejné mocnině.\n\nPředstav si $x$ jako jablka a $y$ jako hrušky.\n$$ 3x + 2y + 5x - y $$\n* Mám 3 jablka, přidám 5 jablek $\\rightarrow$ mám $8x$.\n* Mám 2 hrušky, sním 1 hrušku $\\rightarrow$ mám $1y$.\n\nVýsledek: $8x + y$. Nemůžeme sečíst $x$ a $y$ dohromady!",
                 image:
                   "[Image illustrating grouping like terms using fruits x-apples and y-pears]",
               },
               {
                 heading: "Pozor na mocniny!",
-                text: "Stejně tak nemůžeme sčítat $x$ a $x^2$. Jsou to jiné druhy ovoce! $x$ je délka (čára), $x^2$ je čtverec (plocha). \n$$ 2x^2 + 3x + 4x^2 - x = 6x^2 + 2x $$\nSečetli jsme čtverce se čtverci a čáry s čárami.",
+                text: "Stejně tak nemůžeme sčítat $x$ a $x^2$. Jsou to jiné druhy ovoce! \n* $x$ je délka (čára).\n* $x^2$ je čtverec (plocha).\n\n$$ 2x^2 + 3x + 4x^2 - x = 6x^2 + 2x $$\nSečetli jsme čtverce se čtverci a čáry s čárami.",
                 image: "placeholder-x-vs-xsquared-visual",
               },
             ],
@@ -3278,11 +3574,12 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c5_l2_t2",
-                question: "Zjednoduš: $5x - 2y + 3x$",
-                options: ["$6xy$", "$8x - 2y$", "$6x + y$", "$8x^2 - 2y$"],
-                correctAnswer: 1,
-                xp: 15,
+                id: "c5_l2_t2_input",
+                type: "text-input",
+                question:
+                  "Kolik je $x$ ve výrazu $5x + 3x$? (Napiš jen číslo před x):",
+                correctAnswer: "8",
+                xp: 10,
               },
               {
                 id: "c5_l2_t3",
@@ -3290,23 +3587,39 @@ export const mathZS = {
                 options: [
                   "Ano, je to $2x^3$",
                   "Ano, je to $x^3$",
-                  "Ne, nelze zjednodušit",
+                  "Ne, nelze zjednodušit (jsou to jiné mocniny)",
                   "Ano, je to $2x$",
                 ],
                 correctAnswer: 2,
                 xp: 15,
               },
               {
-                id: "c5_l2_t4",
-                question: "Odstraň závorku (pozor na minus): $-(3a - 2b)$",
-                options: ["$-3a - 2b$", "$-3a + 2b$", "$3a + 2b$", "$-3a - 2$"],
-                correctAnswer: 1,
-                xp: 20,
+                id: "c5_l2_t4_sequence",
+                type: "sequence",
+                question: "Seřaď postup odstranění závorky $-(3a - 2b)$:",
+                options: [
+                  "Minus před závorkou mění znaménka uvnitř.",
+                  "$3a$ se změní na $-3a$.",
+                  "$-2b$ se změní na $+2b$.",
+                  "Výsledek je $-3a + 2b$.",
+                ],
+                correctAnswer: [
+                  "Minus před závorkou mění znaménka uvnitř.",
+                  "$3a$ se změní na $-3a$.",
+                  "$-2b$ se změní na $+2b$.",
+                  "Výsledek je $-3a + 2b$.",
+                ],
+                xp: 25,
               },
               {
                 id: "c5_l2_t5",
                 question: "Sečti: $(2x + 1) + (3x - 5)$",
-                options: ["$5x + 6$", "$5x - 4$", "$6x - 5$", "$5x + 4$"],
+                options: [
+                  "$5x + 6$",
+                  "$5x - 4$ ($2x+3x=5x$, $1-5=-4$)",
+                  "$6x - 5$",
+                  "$5x + 4$",
+                ],
                 correctAnswer: 1,
                 xp: 20,
               },
@@ -3319,13 +3632,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Jednočlen krát závorka",
-                text: "Když násobíme závorku číslem nebo jednočlenem, musíme vynásobit každý člen v závorce. Říkáme tomu roznásobování. \n$$ 3 \\cdot (x + 4) = 3 \\cdot x + 3 \\cdot 4 = 3x + 12 $$ \nPozor na znaménka! $-2(x - 3) = -2x + 6$ (protože minus krát minus dává plus).",
+                text: "Když násobíme závorku číslem nebo jednočlenem, musíme vynásobit každý člen v závorce. Říkáme tomu roznásobování.\n\n$$ 3 \\cdot (x + 4) = 3 \\cdot x + 3 \\cdot 4 = 3x + 12 $$\n\nPozor na znaménka! $-2(x - 3) = -2x + 6$ (protože minus krát minus dává plus).",
                 image:
                   "[Image illustrating distributive property a(b+c) = ab + ac with rectangle areas]",
               },
               {
                 heading: "Každý s každým (Závorka krát závorka)",
-                text: "Když se potkají dvě závorky, musí se každý člen z první závorky pozdravit s každým členem z druhé závorky. \n$$ (x + 2)(y + 3) = xy + 3x + 2y + 6 $$ \nVzniknou nám 4 členy. Pokud to jde, nakonec je ještě sečteme a zjednodušíme.",
+                text: "Když se potkají dvě závorky, musí se každý člen z první závorky 'pozdravit' s každým členem z druhé závorky.\n\n$$ (x + 2)(y + 3) = xy + 3x + 2y + 6 $$\n\nVzniknou nám 4 členy. Pokud to jde (mají stejné proměnné), nakonec je ještě sečteme a zjednodušíme.",
                 image: "placeholder-multiplying-binomials-foil",
               },
             ],
@@ -3338,10 +3651,11 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c5_l3_t2",
-                question: "Vynásob: $x(x + 5)$",
-                options: ["$2x + 5$", "$x^2 + 5$", "$x^2 + 5x$", "$x + 5x$"],
-                correctAnswer: 2,
+                id: "c5_l3_t2_input",
+                type: "text-input",
+                question:
+                  "Vynásob $x(x + 5)$. Napiš první člen výsledku ($x$ krát $x$):",
+                correctAnswer: "x^2",
                 xp: 15,
               },
               {
@@ -3349,7 +3663,7 @@ export const mathZS = {
                 question: "Vynásob: $(x+1)(x+2)$",
                 options: [
                   "$x^2 + 2$",
-                  "$x^2 + 3x + 2$",
+                  "$x^2 + 3x + 2$ ($x^2 + 2x + 1x + 2$)",
                   "$x^2 + 2x + 1$",
                   "$2x + 3$",
                 ],
@@ -3359,21 +3673,32 @@ export const mathZS = {
               {
                 id: "c5_l3_t4",
                 question: "Pozor na minus: $-3(2x - 4)$",
-                options: ["$-6x - 12$", "$-6x + 12$", "$6x - 12$", "$-6x - 4$"],
+                options: [
+                  "$-6x - 12$",
+                  "$-6x + 12$ (minus krát minus je plus)",
+                  "$6x - 12$",
+                  "$-6x - 4$",
+                ],
                 correctAnswer: 1,
                 xp: 20,
               },
               {
-                id: "c5_l3_t5",
-                question: "Co vznikne z $(a+b)(c+d)$?",
+                id: "c5_l3_t5_sequence",
+                type: "sequence",
+                question: "Seřaď kroky násobení $(a+b)(c+d)$:",
                 options: [
-                  "$ac + bd$",
-                  "$ab + cd$",
-                  "$ac + ad + bc + bd$",
-                  "$a+b+c+d$",
+                  "Vynásobím $a \\cdot c$.",
+                  "Vynásobím $a \\cdot d$.",
+                  "Vynásobím $b \\cdot c$.",
+                  "Vynásobím $b \\cdot d$.",
                 ],
-                correctAnswer: 2,
-                xp: 20,
+                correctAnswer: [
+                  "Vynásobím $a \\cdot c$.",
+                  "Vynásobím $a \\cdot d$.",
+                  "Vynásobím $b \\cdot c$.",
+                  "Vynásobím $b \\cdot d$.",
+                ],
+                xp: 25,
               },
             ],
           },
@@ -3384,13 +3709,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Matematické zkratky",
-                text: "Některá násobení se v matematice opakují tak často, že se vyplatí naučit se výsledek nazpaměť. Říkáme jim vzorce. První dva jsou pro druhou mocninu součtu a rozdílu: \n1. $(a + b)^2 = a^2 + 2ab + b^2$ \n2. $(a - b)^2 = a^2 - 2ab + b^2$ \nNejčastější chyba? Zapomenout na ten prostřední člen ($2ab$)! $(a+b)^2$ opravdu není $a^2 + b^2$.",
+                text: "Některá násobení se v matematice opakují tak často, že se vyplatí naučit se výsledek nazpaměť. Říkáme jim vzorce.\n\n1.  $(a + b)^2 = a^2 + 2ab + b^2$\n2.  $(a - b)^2 = a^2 - 2ab + b^2$\n\nNejčastější chyba? Zapomenout na ten prostřední člen ($2ab$)! $(a+b)^2$ opravdu není jen $a^2 + b^2$.",
                 image:
                   "[Image showing geometric proof of (a+b)^2 as a large square composed of two squares and two rectangles]",
               },
               {
                 heading: "Rozdíl čtverců",
-                text: "Třetí vzorec je nejužitečnější. Co se stane, když násobíme součet a rozdíl stejných čísel? \n$$ (a + b)(a - b) = a^2 - b^2 $$ \nProstřední členy se odečtou a zmizí. Tento vzorec budeme hodně potřebovat při krácení zlomků.",
+                text: "Třetí vzorec je nejužitečnější. Co se stane, když násobíme součet a rozdíl stejných čísel?\n\n$$ (a + b)(a - b) = a^2 - b^2 $$\n\nProstřední členy se navzájem odečtou a zmizí. Tento vzorec budeme hodně potřebovat při krácení zlomků.",
                 image: "placeholder-difference-of-squares",
               },
             ],
@@ -3414,7 +3739,7 @@ export const mathZS = {
                   "$x^2 - 9$",
                   "$x^2 + 9$",
                   "$x^2 - 3x + 9$",
-                  "$x^2 - 6x + 9$",
+                  "$x^2 - 6x + 9$ (prostřední člen je $2 \\cdot x \\cdot 3$)",
                 ],
                 correctAnswer: 3,
                 xp: 20,
@@ -3432,21 +3757,21 @@ export const mathZS = {
                 xp: 20,
               },
               {
-                id: "c5_l4_t4",
-                question: "Kde je chyba? $(2x)^2 = 2x^2$",
-                options: [
-                  "Chyba není",
-                  "Mocnina se týká i dvojky, má být $4x^2$",
-                  "Má být $2x$",
-                  "Má být $4x$",
-                ],
-                correctAnswer: 1,
+                id: "c5_l4_t4_input",
+                type: "text-input",
+                question: "Umocni $(2x)^2$. Napiš výsledek:",
+                correctAnswer: "4x^2",
                 xp: 20,
               },
               {
                 id: "c5_l4_t5",
                 question: "Jaký je prostřední člen u $(3 + x)^2$?",
-                options: ["$3x$", "$6x$", "$9x$", "$x^2$"],
+                options: [
+                  "$3x$",
+                  "$6x$ ($2 \\cdot 3 \\cdot x$)",
+                  "$9x$",
+                  "$x^2$",
+                ],
                 correctAnswer: 1,
                 xp: 25,
               },
@@ -3458,14 +3783,14 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Zpátečka",
-                text: "Doteď jsme závorky odstraňovali (násobili). Teď se naučíme je vyrábět. Tomu se říká rozklad na součin. První metodou je vytýkání. Hledáme, co mají všechny členy společného. \n$$ 4x + 8 $$\nOba členy jdou vydělit čtyřkou. Čtyřku napíšeme před závorku a zbytek dáme dovnitř. \n$$ 4(x + 2) $$",
+                heading: "Zpátečka (Vytýkání)",
+                text: "Doteď jsme závorky odstraňovali (násobili). Teď se naučíme je vyrábět. Tomu se říká rozklad na součin. \n\nPrvní metodou je vytýkání. Hledáme, co mají všechny členy společného.\n$$ 4x + 8 $$\nOba členy jdou vydělit čtyřkou. Čtyřku napíšeme před závorku a zbytek dáme dovnitř.\n$$ 4(x + 2) $$",
                 image:
                   "[Image illustrating factoring out common terms like pulling common items out of baskets]",
               },
               {
                 heading: "Použití vzorců pozpátku",
-                text: "Někdy vytýkání nestačí a musíme poznat skrytý vzorec. Vidíš $x^2 - 9$? To vypadá jako $a^2 - b^2$! Můžeme to tedy rozložit na dvě závorky: \n$$ x^2 - 9 = (x + 3)(x - 3) $$ \nRozklad je klíčový pro řešení složitějších rovnic a krácení zlomků.",
+                text: "Někdy vytýkání nestačí a musíme poznat skrytý vzorec. \nVidíš $x^2 - 9$? To vypadá jako $a^2 - b^2$! Můžeme to tedy rozložit na dvě závorky:\n\n$$ x^2 - 9 = (x + 3)(x - 3) $$\n\nRozklad je klíčový pro řešení složitějších rovnic a krácení zlomků.",
                 image: "placeholder-reverse-formula",
               },
             ],
@@ -3483,15 +3808,19 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c5_l5_t2",
-                question: "Rozlož na součin: $x^2 - 16$",
+                id: "c5_l5_t2_sequence",
+                type: "sequence",
+                question: "Seřaď kroky rozkladu $x^2 - 16$:",
                 options: [
-                  "$(x - 4)^2$",
-                  "$(x - 4)(x + 4)$",
-                  "$(x - 8)(x + 8)$",
-                  "$x(x - 16)$",
+                  "Poznám vzorec $a^2 - b^2$.",
+                  "$a$ je $x$, $b$ je $4$.",
+                  "Napíšu dvě závorky $(x-4)(x+4)$.",
                 ],
-                correctAnswer: 1,
+                correctAnswer: [
+                  "Poznám vzorec $a^2 - b^2$.",
+                  "$a$ je $x$, $b$ je $4$.",
+                  "Napíšu dvě závorky $(x-4)(x+4)$.",
+                ],
                 xp: 20,
               },
               {
@@ -3511,7 +3840,7 @@ export const mathZS = {
                 question: "Rozlož pomocí vzorce: $a^2 + 2a + 1$",
                 options: [
                   "$(a + 1)(a - 1)$",
-                  "$(a + 1)^2$",
+                  "$(a + 1)^2$ (vzorec $(a+b)^2$)",
                   "$a(a + 2)$",
                   "Nejde rozložit",
                 ],
@@ -3519,10 +3848,11 @@ export const mathZS = {
                 xp: 25,
               },
               {
-                id: "c5_l5_t5",
-                question: "Co mají společného členy $6ab$ a $9ac$?",
-                options: ["Jen $a$", "$3a$", "$6a$", "$abc$"],
-                correctAnswer: 1,
+                id: "c5_l5_t5_input",
+                type: "text-input",
+                question:
+                  "Vytkni číslo 3 z výrazu $3x + 9$. Napiš, co bude v závorce:",
+                correctAnswer: "x + 3",
                 xp: 20,
               },
             ],
@@ -3541,12 +3871,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Rovnice je váha",
-                text: "Představ si klasické miskové váhy. Uprostřed je znaménko $=$. To znamená, že levá miska váží přesně stejně jako pravá. Na jedné straně je pytlík s neznámým počtem mincí ($x$) a závaží, na druhé straně je jiné závaží. Naším úkolem je zjistit, co je v pytlíku. Pravidlo je jediné: Cokoliv uděláš s levou miskou, musíš udělat i s pravou. Jinak se váha převáží a rovnice přestane platit.",
-                image: "",
+                text: "Představ si klasické miskové váhy. Uprostřed je znaménko $=$. To znamená, že levá miska váží přesně stejně jako pravá. Na jedné straně je pytlík s neznámým počtem mincí ($x$) a závaží, na druhé straně je jiné závaží.\n\nNaším úkolem je zjistit, co je v pytlíku. Pravidlo je jediné: Cokoliv uděláš s levou miskou, musíš udělat i s pravou. Jinak se váha převáží a rovnice přestane platit.",
+                image:
+                  "[Image illustrating an equation as a balance scale with weights and variable x]",
               },
               {
                 heading: "Osamostatnění neznámé",
-                text: "Chceme, aby $x$ zůstalo na jedné straně úplně samo. Tomu říkáme 'osamostatnění neznámé'. Používáme k tomu ekvivalentní úpravy (úpravy, které nemění pravdivost rovnice).\n1. Přičítání/Odčítání: Mám $x + 5 = 12$. Abych měl jen $x$, musím odebrat 5. Ale musím to odebrat z obou stran! $$ x = 12 - 5 \\Rightarrow x = 7 $$",
+                text: "Chceme, aby $x$ zůstalo na jedné straně úplně samo. Tomu říkáme 'osamostatnění neznámé'. Používáme k tomu ekvivalentní úpravy (úpravy, které nemění pravdivost rovnice).\n\n1.  Přičítání/Odčítání: Mám $x + 5 = 12$. Abych měl jen $x$, musím odebrat 5. Ale musím to odebrat z obou stran! \n$$ x = 12 - 5 \\Rightarrow x = 7 $$",
                 image: "placeholder-equation-balance-steps",
               },
             ],
@@ -3566,7 +3897,8 @@ export const mathZS = {
               },
               {
                 id: "c6_l1_t2",
-                question: "Jakou úpravu provedeš pro vyřešení $x - 8 = 20$?",
+                question:
+                  "Jakou úpravu provedeš pro vyřešení $x - 8 = 20$? (Musíš zrušit minus 8)",
                 options: [
                   "Odečtu 8 od obou stran",
                   "Přičtu 8 k oběma stranám",
@@ -3577,10 +3909,10 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c6_l1_t3",
-                question: "Vyřeš rovnici: $10 + x = 25$",
-                options: ["$x = 35$", "$x = 15$", "$x = -15$", "$x = 250$"],
-                correctAnswer: 1,
+                id: "c6_l1_t3_input",
+                type: "text-input",
+                question: "Vyřeš rovnici: $10 + x = 25$. Napiš hodnotu x:",
+                correctAnswer: "15",
                 xp: 15,
               },
               {
@@ -3596,12 +3928,22 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c6_l1_t5",
-                question:
-                  "Vyřeš: $2x - x + 5 = 10$ (nejdřív zjednoduš levou stranu)",
-                options: ["$x = 5$", "$x = 15$", "$x = 2$", "$x = 10$"],
-                correctAnswer: 0,
-                xp: 20,
+                id: "c6_l1_t5_sequence",
+                type: "sequence",
+                question: "Seřaď kroky řešení rovnice $x + 3 = 10$:",
+                options: [
+                  "Mám rovnici $x + 3 = 10$.",
+                  "Rozhodnu se odečíst 3 od obou stran.",
+                  "Levá strana: $x + 3 - 3 = x$. Pravá strana: $10 - 3 = 7$.",
+                  "Výsledek je $x = 7$.",
+                ],
+                correctAnswer: [
+                  "Mám rovnici $x + 3 = 10$.",
+                  "Rozhodnu se odečíst 3 od obou stran.",
+                  "Levá strana: $x + 3 - 3 = x$. Pravá strana: $10 - 3 = 7$.",
+                  "Výsledek je $x = 7$.",
+                ],
+                xp: 25,
               },
             ],
           },
@@ -3611,37 +3953,39 @@ export const mathZS = {
           content: {
             sections: [
               {
-                heading: "Když je x v partě",
-                text: "Často nemáme jen jedno $x$, ale třeba $3x = 21$. To znamená 'tři krabice váží 21 kg'. Jak zjistím váhu jedné? Musím celou rovnici vydělit třemi. $$ \\frac{3x}{3} = \\frac{21}{3} \\Rightarrow x = 7 $$ Opačný případ: $\\frac{x}{4} = 5$. 'Čtvrtina krabice váží 5 kg'. Jak zjistím váhu celé? Vynásobím celou rovnici čtyřmi. $$ x = 5 \\cdot 4 = 20 $$",
+                heading: "Když je x v partě (Násobení)",
+                text: "Často nemáme jen jedno $x$, ale třeba $3x = 21$. To znamená 'tři krabice váží 21 kg'. Jak zjistím váhu jedné? Musím celou rovnici vydělit třemi.\n$$ \\frac{3x}{3} = \\frac{21}{3} \\Rightarrow x = 7 $$\n\nOpačný případ: $\\frac{x}{4} = 5$. 'Čtvrtina krabice váží 5 kg'. Jak zjistím váhu celé? Vynásobím celou rovnici čtyřmi.\n$$ x = 5 \\cdot 4 = 20 $$",
                 image:
                   "[Image illustrating division of an equation by a number using groups of items]",
               },
               {
                 heading: "Změna znaménka (Minus před x)",
-                text: "Co když nám vyjde $-x = 5$? My nechceme 'minus x', my chceme 'plus x'. Celou rovnici vynásobíme číslem $-1$. Tím se otočí znaménka na obou stranách. $$ -x \\cdot (-1) = 5 \\cdot (-1) \\Rightarrow x = -5 $$",
+                text: "Co když nám vyjde $-x = 5$? My nechceme 'minus x', my chceme 'plus x'. \n\nCelou rovnici vynásobíme číslem -1. Tím se otočí znaménka na obou stranách.\n$$ -x \\cdot (-1) = 5 \\cdot (-1) \\Rightarrow x = -5 $$",
                 image: "placeholder-equation-sign-flip",
               },
             ],
             tasks: [
               {
                 id: "c6_l2_t1",
-                question: "Jakou úpravu uděláš v rovnici $4x = 20$?",
+                question:
+                  "Jakou úpravu uděláš v rovnici $4x = 20$? (Mezi 4 a x je krát)",
                 options: ["Odečtu 4", "Vydělím 4", "Vynásobím 4", "Vydělím 20"],
                 correctAnswer: 1,
                 xp: 15,
               },
               {
-                id: "c6_l2_t2",
-                question: "Vyřeš: $\\frac{x}{2} = 6$",
-                options: ["$x = 3$", "$x = 12$", "$x = 8$", "$x = 4$"],
-                correctAnswer: 1,
+                id: "c6_l2_t2_input",
+                type: "text-input",
+                question:
+                  "Vyřeš: $\\frac{x}{2} = 6$. (Neznámé číslo děleno dvěma je 6. Kolik je to číslo?)",
+                correctAnswer: "12",
                 xp: 20,
               },
               {
-                id: "c6_l2_t3",
-                question: "Vyřeš: $-2x = 10$",
-                options: ["$x = 5$", "$x = -5$", "$x = 20$", "$x = -20$"],
-                correctAnswer: 1,
+                id: "c6_l2_t3_input",
+                type: "text-input",
+                question: "Vyřeš: $-2x = 10$. (Pozor na znaménko)",
+                correctAnswer: "-5",
                 xp: 20,
               },
               {
@@ -3652,10 +3996,19 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c6_l2_t5",
-                question: "Vyřeš: $3x + 2 = 17$ (dvě úpravy za sebou!)",
-                options: ["$x = 6$", "$x = 5$", "$x = 15$", "$x = 3$"],
-                correctAnswer: 1,
+                id: "c6_l2_t5_sequence",
+                type: "sequence",
+                question: "Seřaď kroky řešení $3x + 2 = 17$:",
+                options: [
+                  "Nejdřív odečtu 2 (zbyde $3x = 15$).",
+                  "Pak vydělím 3.",
+                  "Výsledek je $x = 5$.",
+                ],
+                correctAnswer: [
+                  "Nejdřív odečtu 2 (zbyde $3x = 15$).",
+                  "Pak vydělím 3.",
+                  "Výsledek je $x = 5$.",
+                ],
                 xp: 30,
               },
             ],
@@ -3667,13 +4020,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Úklid před počítáním",
-                text: "Složitá rovnice je jako neuklizený pokoj. Než začneš hledat $x$, musíš uklidit.\n1. Odstraň závorky: Roznásob je. $2(x+3)$ se změní na $2x+6$.\n2. Odstraň zlomky: To je nejdůležitější trik! Celou rovnici (každý člen!) vynásob společným jmenovatelem. Zlomky zmizí a zbyde ti krásná rovnice s celými čísly.",
+                text: "Složitá rovnice je jako neuklizený pokoj. Než začneš hledat $x$, musíš uklidit.\n\n1.  Odstraň závorky: Roznásob je. $2(x+3)$ se změní na $2x+6$.\n2.  Odstraň zlomky: To je nejdůležitější trik! Celou rovnici (každý člen!) vynásob společným jmenovatelem. Zlomky zmizí a zbyde ti krásná rovnice s celými čísly.",
                 image:
                   "[Image showing step-by-step removal of fractions in an equation by multiplying by LCD]",
               },
               {
-                heading: "Postup řešení",
-                text: "Když zmizí závorky a zlomky: \n3. Dej všechna $x$ na jednu stranu (třeba doleva) a všechna čísla na druhou (doprava). Při přehazování přes $=$ měníme znaménko (plus na minus a naopak).\n4. Sečti $x$ a čísla.\n5. Vyděl rovnici číslem u $x$.",
+                heading: "Postup řešení (Třídění)",
+                text: "Když zmizí závorky a zlomky, nastává fáze třídění:\n3.  Dej všechna $x$ na jednu stranu (třeba doleva) a všechna čísla na druhou (doprava). \n    * Při přehazování přes $=$ měníme znaménko (plus na minus a naopak).\n4.  Sečti $x$ a čísla.\n5.  Vyděl rovnici číslem u $x$.",
                 image: "placeholder-equation-sorting-terms",
               },
             ],
@@ -3681,21 +4034,17 @@ export const mathZS = {
               {
                 id: "c6_l3_t1",
                 question:
-                  "Čím vynásobíš rovnici $\\frac{x}{2} + \\frac{x}{3} = 5$, aby zmizely zlomky?",
-                options: [
-                  "Dvojkou",
-                  "Trojkou",
-                  "Pětkou",
-                  "Šestkou (společný násobek)",
-                ],
+                  "Čím vynásobíš rovnici $\\frac{x}{2} + \\frac{x}{3} = 5$, aby zmizely zlomky? (Hledáš společný násobek 2 a 3)",
+                options: ["Dvojkou", "Trojkou", "Pětkou", "Šestkou"],
                 correctAnswer: 3,
                 xp: 20,
               },
               {
-                id: "c6_l3_t2",
-                question: "Vyřeš: $2(x - 1) = 8$",
-                options: ["$x = 5$", "$x = 3$", "$x = 4$", "$x = 9$"],
-                correctAnswer: 0,
+                id: "c6_l3_t2_input",
+                type: "text-input",
+                question:
+                  "Vyřeš: $2(x - 1) = 8$. (Roznásob závorku: $2x - 2 = 8$...)",
+                correctAnswer: "5",
                 xp: 20,
               },
               {
@@ -3704,7 +4053,7 @@ export const mathZS = {
                   "Co uděláš s členem $+3x$, když ho chceš převést zleva doprava?",
                 options: [
                   "Nic, zůstane $+3x$",
-                  "Změním ho na $-3x$",
+                  "Změním ho na $-3x$ (změna znaménka)",
                   "Vydělím ho třemi",
                   "Smažu ho",
                 ],
@@ -3712,16 +4061,27 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c6_l3_t4",
-                question: "Vyřeš: $5x = 2x + 9$ (převeď x k sobě)",
-                options: ["$x = 9$", "$x = 3$", "$x = 4,5$", "$x = -3$"],
-                correctAnswer: 1,
-                xp: 25,
+                id: "c6_l3_t4_sequence",
+                type: "sequence",
+                question: "Seřaď kroky řešení $5x = 2x + 9$:",
+                options: [
+                  "Převedu $2x$ doleva (změním na $-2x$).",
+                  "Získám $5x - 2x = 9$, tedy $3x = 9$.",
+                  "Vydělím 3.",
+                  "Výsledek $x = 3$.",
+                ],
+                correctAnswer: [
+                  "Převedu $2x$ doleva (změním na $-2x$).",
+                  "Získám $5x - 2x = 9$, tedy $3x = 9$.",
+                  "Vydělím 3.",
+                  "Výsledek $x = 3$.",
+                ],
+                xp: 30,
               },
               {
                 id: "c6_l3_t5",
                 question: "Je $x=1$ řešením rovnice $x + 1 = 2x$?",
-                options: ["Ano (1+1 = 2·1)", "Ne", "Nelze určit"],
+                options: ["Ano (protože $1+1 = 2$)", "Ne", "Nelze určit"],
                 correctAnswer: 0,
                 xp: 15,
               },
@@ -3734,13 +4094,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Z češtiny do matematiky",
-                text: "Nejtěžší na slovní úloze je sestavit rovnici. Musíme příběh přeložit.\n- 'Číslo $x$ zvětšené o 5' $\\rightarrow x + 5$\n- 'Trojnásobek čísla' $\\rightarrow 3x$\n- 'Petr je o 3 roky starší než Jana'. Pokud Jana je $x$, Petr je $x+3$.",
+                text: "Nejtěžší na slovní úloze je sestavit rovnici. Musíme příběh přeložit do jazyka algebry.\n* 'Číslo $x$ zvětšené o 5' $\\rightarrow x + 5$\n* 'Trojnásobek čísla' $\\rightarrow 3x$\n* 'Petr je o 3 roky starší než Jana'. Pokud Jana je $x$, Petr je $x+3$.",
                 image:
                   "[Image showing text phrases translated into algebraic expressions]",
               },
               {
                 heading: "Pohyb (s = v · t)",
-                text: "Klasická úloha: Jedno auto vyjede z Prahy, druhé z Brna. Kdy se potkají? Klíčem je dráha ($s$). \n$$ s_{celkem} = s_{auto1} + s_{auto2} $$\nProtože dráha je rychlost krát čas ($s = v \\cdot t$), rovnice vypadá takto: $$ s_{celkem} = v_1 \\cdot t + v_2 \\cdot t $$ Za $t$ dosadíme neznámou a řešíme.",
+                text: "Klasická úloha: Jedno auto vyjede z Prahy, druhé z Brna. Kdy se potkají? Klíčem je dráha ($s$). \n\n$$ s_{celkem} = s_{auto1} + s_{auto2} $$\n\nProtože dráha je rychlost krát čas ($s = v \\cdot t$), rovnice často vypadá takto: \n$$ s_{celkem} = v_1 \\cdot t + v_2 \\cdot t $$\nZa $t$ dosadíme neznámou a řešíme.",
                 image: "",
               },
             ],
@@ -3754,17 +4114,23 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c6_l4_t2",
+                id: "c6_l4_t2_sequence",
+                type: "sequence",
                 question:
-                  "Součet tří po sobě jdoucích čísel je 15. Jak sestavíš rovnici?",
+                  "Sestav rovnici pro úlohu: 'Součet tří po sobě jdoucích čísel je 15':",
                 options: [
-                  "$x + x + x = 15$",
-                  "$x + (x+1) + (x+2) = 15$",
-                  "$x \\cdot 3 = 15$",
-                  "$x + 1 + 2 = 15$",
+                  "První číslo je $x$.",
+                  "Druhé je $x+1$.",
+                  "Třetí je $x+2$.",
+                  "Rovnice: $x + (x+1) + (x+2) = 15$.",
                 ],
-                correctAnswer: 1,
-                xp: 25,
+                correctAnswer: [
+                  "První číslo je $x$.",
+                  "Druhé je $x+1$.",
+                  "Třetí je $x+2$.",
+                  "Rovnice: $x + (x+1) + (x+2) = 15$.",
+                ],
+                xp: 30,
               },
               {
                 id: "c6_l4_t3",
@@ -3779,23 +4145,24 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c6_l4_t4",
+                id: "c6_l4_t4_input",
+                type: "text-input",
                 question:
-                  "Jeden dělník udělá práci za 10 hodin. Jakou část práce udělá za 1 hodinu?",
-                options: ["$1/10$", "$10/1$", "Celou", "$50\\,\\%$"],
-                correctAnswer: 0,
+                  "Otec (40 let) je 4x starší než syn. Kolik je synovi?",
+                correctAnswer: "10",
                 xp: 20,
               },
               {
                 id: "c6_l4_t5",
-                question: "Otec (40) je 4x starší než syn. Kolik je synovi?",
+                question:
+                  "Jeden dělník udělá práci za 10 hodin. Jakou část práce udělá za 1 hodinu?",
                 options: [
-                  "$4$ roky",
-                  "$10$ let ($4 \\cdot x = 40$)",
-                  "$15$ let",
-                  "$36$ let",
+                  "$1/10$ (jednu desetinu)",
+                  "$10/1$",
+                  "Celou",
+                  "$50\\,\\%$",
                 ],
-                correctAnswer: 1,
+                correctAnswer: 0,
                 xp: 20,
               },
             ],
@@ -3807,12 +4174,12 @@ export const mathZS = {
             sections: [
               {
                 heading: "Dvě stopy pro detektiva",
-                text: "Někdy máme dvě neznámé ($x$ a $y$). Abychom je našli, potřebujeme dvě rovnice (dvě informace). \n1. Součet dvou čísel je 10 ($x + y = 10$).\n2. Jejich rozdíl je 2 ($x - y = 2$).\nTohle je soustava rovnic. Hledáme čísla, která splňují OBA řádky zároveň.",
+                text: "Někdy máme dvě neznámé ($x$ a $y$). Abychom je našli, potřebujeme dvě rovnice (dvě informace). \n1.  Součet dvou čísel je 10 ($x + y = 10$).\n2.  Jejich rozdíl je 2 ($x - y = 2$).\n\nTohle je soustava rovnic. Hledáme čísla, která splňují OBA řádky zároveň.",
                 image: "",
               },
               {
                 heading: "Metoda sčítací",
-                text: "Nejrychlejší metoda je rovnice sečíst pod sebou. \n$$ (x + y) + (x - y) = 10 + 2 $$\n$y$ a $-y$ se vyruší (zmizí)! Zbyde: $$ 2x = 12 \\Rightarrow x = 6 $$ Teď už jen dosadíme $x$ zpátky a zjistíme, že $y = 4$.",
+                text: "Nejrychlejší metoda je rovnice sečíst pod sebou. \n$$ (x + y) + (x - y) = 10 + 2 $$\n$y$ a $-y$ se vyruší (zmizí)! Zbyde: \n$$ 2x = 12 \\Rightarrow x = 6 $$\nTeď už jen dosadíme $x$ zpátky a zjistíme, že $y = 4$.",
                 image: "placeholder-system-equations-elimination",
               },
             ],
@@ -3831,16 +4198,22 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c6_l5_t2",
-                question: "Vyřeš soustavu sečtením: $x+y=5, x-y=1$",
+                id: "c6_l5_t2_sequence",
+                type: "sequence",
+                question: "Vyřeš soustavu sečtením ($x+y=5, x-y=1$):",
                 options: [
-                  "$x=3, y=2$",
-                  "$x=4, y=1$",
-                  "$x=2, y=3$",
-                  "$x=5, y=0$",
+                  "Sečtu rovnice: $2x = 6$.",
+                  "Vypočítám $x = 3$.",
+                  "Dosadím $x$ do první rovnice ($3+y=5$).",
+                  "Vypočítám $y = 2$.",
                 ],
-                correctAnswer: 0,
-                xp: 25,
+                correctAnswer: [
+                  "Sečtu rovnice: $2x = 6$.",
+                  "Vypočítám $x = 3$.",
+                  "Dosadím $x$ do první rovnice ($3+y=5$).",
+                  "Vypočítám $y = 2$.",
+                ],
+                xp: 30,
               },
               {
                 id: "c6_l5_t3",
@@ -3857,7 +4230,7 @@ export const mathZS = {
               {
                 id: "c6_l5_t4",
                 question:
-                  "V ohradě jsou slepice a králíci. Mají 5 hlav a 14 nohou. Sestav rovnice ($s$+slepice, $k$=králíci).",
+                  "V ohradě jsou slepice a králíci. Mají 5 hlav a 14 nohou. Která soustava je správně? ($s$=slepice, $k$=králíci)",
                 options: [
                   "$s+k=5, 2s+4k=14$",
                   "$s+k=14, 2s+4k=5$",
@@ -3873,7 +4246,7 @@ export const mathZS = {
                   "Co se stane s $y$ při sečtení rovnic $2x + y = 10$ a $3x - y = 5$?",
                 options: [
                   "Bude z toho $2y$",
-                  "Zmizí (vyruší se)",
+                  "Zmizí (vyruší se, protože $y - y = 0$)",
                   "Změní se na $y^2$",
                   "Bude z toho nula na pravé straně",
                 ],
@@ -3896,13 +4269,14 @@ export const mathZS = {
             sections: [
               {
                 heading: "Funkční automat",
-                text: "Představ si funkci jako automat na nápoje. Vhodíš minci (vstupní číslo $x$), automat zachrastí (provede výpočet podle předpisu) a vypadne nápoj (výstupní číslo $y$). Pravidlo funkce zní: Pro každé $x$ existuje právě jedno $y$. Nemůže se stát, že vhodíš pětikorunu a jednou vypadne cola a podruhé nic. To by nebyla funkce, ale rozbitý automat.",
-                image: "",
+                text: "Představ si funkci jako automat na nápoje. Vhodíš minci (vstupní číslo $x$), automat zachrastí (provede výpočet podle předpisu) a vypadne nápoj (výstupní číslo $y$).\n\nZlaté pravidlo funkce: Pro každé $x$ existuje právě jedno $y$. Nemůže se stát, že vhodíš pětikorunu a jednou vypadne cola a podruhé nic (nebo dvě různé věci). To by nebyla funkce, ale rozbitý automat.",
+                image:
+                  "[Image illustrating a function machine taking input x and producing output y]",
               },
               {
                 heading: "Reného mapa (Kartézská soustava)",
-                text: "Abychom funkci viděli, musíme ji nakreslit. Používáme k tomu dvě osy, které se kříží v nule (počátek). \n- Osa $x$ je vodorovná (leží). \n- Osa $y$ je svislá (stojí). \nKaždý bod má svou adresu – souřadnice $[x; y]$. Například bod $A[2; 3]$ najdeš tak, že jdeš 2 kroky doprava a 3 kroky nahoru.",
-                image: "",
+                text: "Abychom funkci viděli, musíme ji nakreslit. Používáme k tomu dvě osy, které se kříží v nule (počátek $[0;0]$). \n* Osa $x$ je vodorovná (leží).\n* Osa $y$ je svislá (stojí).\n\nKaždý bod má svou adresu – souřadnice $[x; y]$. Například bod $A[2; 3]$ najdeš tak, že jdeš 2 kroky doprava a 3 kroky nahoru.",
+                image: "placeholder-coordinate-system-points",
               },
             ],
             tasks: [
@@ -3919,16 +4293,22 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c7_l1_t2",
-                question: "Kde leží bod $A[-2; 0]$?",
+                id: "c7_l1_t2_sequence",
+                type: "sequence",
+                question: "Seřaď kroky, jak najít bod A[3; -2]:",
                 options: [
-                  "Na ose $y$",
-                  "Na ose $x$ (vlevo od nuly)",
-                  "Vpravo nahoře",
-                  "V počátku",
+                  "Začnu v počátku [0;0].",
+                  "Jdu o 3 dílky doprava (po ose x).",
+                  "Jdu o 2 dílky dolů (po ose y).",
+                  "Udělám křížek.",
                 ],
-                correctAnswer: 1,
-                xp: 15,
+                correctAnswer: [
+                  "Začnu v počátku [0;0].",
+                  "Jdu o 3 dílky doprava (po ose x).",
+                  "Jdu o 2 dílky dolů (po ose y).",
+                  "Udělám křížek.",
+                ],
+                xp: 20,
               },
               {
                 id: "c7_l1_t3",
@@ -3943,10 +4323,11 @@ export const mathZS = {
                 xp: 20,
               },
               {
-                id: "c7_l1_t4",
-                question: "Mám předpis $y = 2x$. Jaké $y$ vyjde pro $x = 3$?",
-                options: ["$5$", "$6$", "$1$", "$23$"],
-                correctAnswer: 1,
+                id: "c7_l1_t4_input",
+                type: "text-input",
+                question:
+                  "Mám předpis $y = 2x$. Jaké $y$ vyjde pro $x = 5$? (Napiš číslo)",
+                correctAnswer: "10",
                 xp: 15,
               },
               {
@@ -3971,12 +4352,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Rovná čára",
-                text: "Lineární funkce má předpis $y = ax + b$ (nebo $kx + q$). Jejím grafem je vždy přímka. K sestrojení přímky ti stačí znát pouhé dva body! Vypočítáš si je tabulkou (dosadíš libovolná dvě $x$), vyneseš do grafu a spojíš pravítkem. Nekonečná čára je na světě.",
-                image: "",
+                text: "Lineární funkce má předpis $y = ax + b$. Jejím grafem je vždy přímka. \n\nK sestrojení přímky ti stačí znát pouhé dva body! Vypočítáš si je tabulkou (dosadíš libovolná dvě $x$, třeba 0 a 1), vyneseš do grafu a spojíš pravítkem. Nekonečná čára je na světě.",
+                image:
+                  "[Image showing a straight line graph on a coordinate plane]",
               },
               {
-                heading: "Co dělají písmenka $a$ a $b$?",
-                text: "- Číslo $a$ (u $x$) určuje sklon. Když je kladné, funkce roste (jde do kopce). Když je záporné, funkce klesá (z kopce). Čím je číslo větší, tím je kopec prudší.\n- Číslo $b$ (samostatné) určuje posun. Říká nám, kde přímka protne svislou osu $y$.",
+                heading: "Co dělají písmenka a a b?",
+                text: "* Číslo $a$ (sklon): Když je kladné, funkce roste (jde do kopce). Když je záporné, funkce klesá (z kopce). Čím je číslo větší, tím je kopec prudší.\n* Číslo $b$ (posun): Říká nám, kde přesně přímka protne svislou osu $y$.",
                 image: "placeholder-linear-slope-intercept",
               },
             ],
@@ -4001,10 +4383,11 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c7_l2_t3",
-                question: "Kde protne funkce $y = 5x + 4$ osu $y$?",
-                options: ["V bodě 5", "V bodě 4", "V bodě 0", "V bodě -4"],
-                correctAnswer: 1,
+                id: "c7_l2_t3_input",
+                type: "text-input",
+                question:
+                  "V jaké hodnotě protne funkce $y = 5x + 4$ osu y? (Je to číslo b).",
+                correctAnswer: "4",
                 xp: 20,
               },
               {
@@ -4016,10 +4399,17 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c7_l2_t5",
-                question: "Která funkce roste nejrychleji (je nejprudší)?",
-                options: ["$y = x$", "$y = 2x$", "$y = 10x$", "$y = 0,5x$"],
-                correctAnswer: 2,
+                id: "c7_l2_t5_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď funkce od nejmírnější po nejprudší (podle čísla u x):",
+                options: ["$y = 1x$", "$y = 2x$", "$y = 5x$", "$y = 10x$"],
+                correctAnswer: [
+                  "$y = 1x$",
+                  "$y = 2x$",
+                  "$y = 5x$",
+                  "$y = 10x$",
+                ],
                 xp: 25,
               },
             ],
@@ -4031,12 +4421,12 @@ export const mathZS = {
             sections: [
               {
                 heading: "Startujeme z nuly",
-                text: "Přímá úměrnost je nejjednodušší lineární funkce. Její předpis je $y = k \\cdot x$. Chybí tam to 'plus něco' na konci. To znamená, že graf vždy prochází počátkem – bodem $[0; 0]$. Pokud si nic nekoupím ($x=0$), nic nezaplatím ($y=0$).",
+                text: "Přímá úměrnost je nejjednodušší lineární funkce. Její předpis je $y = k \\cdot x$. Chybí tam to 'plus něco' na konci.\n\nTo znamená, že graf vždy prochází počátkem – bodem $[0; 0]$. Logicky: Pokud si koupím 0 rohlíků ($x=0$), zaplatím 0 korun ($y=0$).",
                 image:
                   "[Image comparing direct variation graph starting at 0,0 vs general linear function]",
               },
               {
-                heading: "Konstanta úměrnosti $k$",
+                heading: "Konstanta úměrnosti k",
                 text: "Číslo $k$ nám říká, kolikrát se $y$ zvětší. Například $y = 3x$. Když se $x$ zvětší o 1, $y$ se zvětší o 3. Je to vlastně cena za jeden kus.",
                 image: "placeholder-direct-variation-slope",
               },
@@ -4047,7 +4437,7 @@ export const mathZS = {
                 question: "Která rovnice představuje přímou úměrnost?",
                 options: [
                   "$y = 2x + 1$",
-                  "$y = 5x$",
+                  "$y = 5x$ (nemá +b)",
                   "$y = x^2$",
                   "$y = 5 / x$",
                 ],
@@ -4067,16 +4457,12 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c7_l3_t3",
-                question: "Pokud 1 kg stojí 20 Kč, jaký je předpis funkce?",
-                options: [
-                  "$y = 20 + x$",
-                  "$y = 20x$",
-                  "$y = x / 20$",
-                  "$y = 20$",
-                ],
-                correctAnswer: 1,
-                xp: 20,
+                id: "c7_l3_t3_input",
+                type: "text-input",
+                question:
+                  "Pokud 1 kg stojí 20 Kč, kolik stojí 5 kg? (Napiš číslo)",
+                correctAnswer: "100",
+                xp: 15,
               },
               {
                 id: "c7_l3_t4",
@@ -4111,12 +4497,12 @@ export const mathZS = {
             sections: [
               {
                 heading: "Prohnutá křivka",
-                text: "Co se stane, když $x$ umocníme? Dostaneme funkci $y = x^2$. \n- $1^2 = 1$\n- $2^2 = 4$\n- $3^2 = 9$ (roste to hrozně rychle!)\nAle pozor: $(-2)^2$ je taky $4$! Grafem není přímka, ale symetrická křivka ve tvaru písmene U, které říkáme parabola.",
+                text: "Co se stane, když $x$ umocníme? Dostaneme funkci $y = x^2$. \n* $1^2 = 1$\n* $2^2 = 4$\n* $3^2 = 9$ (roste to hrozně rychle!)\n\nAle pozor: $(-2)^2$ je taky $4$! Grafem není přímka, ale symetrická křivka ve tvaru písmene U, které říkáme parabola.",
                 image: "",
               },
               {
                 heading: "Smějící se a smutná parabola",
-                text: "Základní parabola $y = x^2$ se 'směje' (otevřená nahoru). Když před ni dáme minus ($y = -x^2$), parabola se otočí dolů a je 'smutná'. Parabola popisuje spoustu věcí v přírodě – třeba dráhu hozeného míče nebo tvar visutého mostu.",
+                text: "* Základní parabola $y = x^2$ se směje (je otevřená nahoru $\\cup$).\n* Když před ni dáme minus ($y = -x^2$), parabola se otočí dolů a je smutná ($\\cap$).\n\nParabola popisuje spoustu věcí v přírodě – třeba dráhu hozeného míče nebo tvar visutého mostu.",
                 image: "placeholder-parabola-types",
               },
             ],
@@ -4129,10 +4515,11 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c7_l4_t2",
-                question: "Vypočítej $y$ pro $x = -3$ ve funkci $y = x^2$.",
-                options: ["$-9$", "$9$", "$6$", "$-6$"],
-                correctAnswer: 1,
+                id: "c7_l4_t2_input",
+                type: "text-input",
+                question:
+                  "Vypočítej y pro $x = -3$ ve funkci $y = x^2$. (Napiš výsledek)",
+                correctAnswer: "9",
                 xp: 15,
               },
               {
@@ -4140,7 +4527,7 @@ export const mathZS = {
                 question: "Jak vypadá graf $y = -x^2$?",
                 options: [
                   "Jako U (směje se)",
-                  "Jako kopec (obrácené U)",
+                  "Jako kopec / obrácené U (smutná)",
                   "Jako přímka",
                   "Jako vlnovka",
                 ],
@@ -4150,16 +4537,22 @@ export const mathZS = {
               {
                 id: "c7_l4_t4",
                 question: "Který bod neleží na parabole $y = x^2$?",
-                options: ["$[2; 4]$", "$[3; 9]$", "$[1; 1]$", "$[2; 5]$"],
+                options: [
+                  "$[2; 4]$",
+                  "$[3; 9]$",
+                  "$[1; 1]$",
+                  "$[2; 5]$ (protože $2^2$ není 5)",
+                ],
                 correctAnswer: 3,
                 xp: 20,
               },
               {
-                id: "c7_l4_t5",
+                id: "c7_l4_t5_sequence",
+                type: "sequence",
                 question:
-                  "Kde má parabola $y = x^2$ svůj vrchol (nejnižší bod)?",
-                options: ["$[0; 0]$", "$[1; 1]$", "Nemá vrchol", "$[0; 1]$"],
-                correctAnswer: 0,
+                  "Seřaď hodnoty $y=x^2$ pro $x=1, x=2, x=3$ od nejmenší:",
+                options: ["1", "4", "9"],
+                correctAnswer: ["1", "4", "9"],
                 xp: 15,
               },
             ],
@@ -4171,12 +4564,12 @@ export const mathZS = {
             sections: [
               {
                 heading: "Dělení neznámou",
-                text: "Předpis $y = \\frac{k}{x}$ znamená, že $x$ je ve jmenovateli. Čím větší číslo dáme dolů (za $x$), tím menší je výsledek ($y$). \n- $100 : 1 = 100$\n- $100 : 100 = 1$\nGrafem jsou dva oblouky, kterým říkáme hyperbola. Nikdy se nedotknou os! Proč? Protože nulou nelze dělit ($x$ nesmí být $0$) a výsledek taky nikdy nebude přesně $0$.",
+                text: "Předpis $y = \\frac{k}{x}$ znamená, že $x$ je ve jmenovateli. Čím větší číslo dáme dolů (za $x$), tím menší je výsledek ($y$). \n* $100 : 1 = 100$\n* $100 : 100 = 1$\n\nGrafem jsou dva oblouky, kterým říkáme hyperbola. Nikdy se nedotknou os! Proč? Protože nulou nelze dělit ($x$ nesmí být $0$) a výsledek taky nikdy nebude přesně $0$.",
                 image: "",
               },
               {
                 heading: "Praktické využití",
-                text: "Nepřímá úměrnost popisuje situace 'společné práce'. Když jeden člověk uklízí halu 10 hodin, dva lidé ji uklidí za 5 hodin ($y = 10 / x$). Graf jde prudce dolů a pak se blíží k nule, ale nikdy nezastaví.",
+                text: "Nepřímá úměrnost popisuje situace 'společné práce' nebo 'dělení kořisti'. \nKdyž jeden člověk uklízí halu 10 hodin, dva lidé ji uklidí za 5 hodin ($y = 10 / x$). Graf jde prudce dolů a pak se blíží k nule, ale nikdy nezastaví.",
                 image: "placeholder-inverse-variation-workers",
               },
             ],
@@ -4190,22 +4583,22 @@ export const mathZS = {
               },
               {
                 id: "c7_l5_t2",
-                question: "Proč se graf nikdy nedotkne osy $y$?",
+                question: "Proč se graf hyperboly nikdy nedotkne osy y?",
                 options: [
                   "Protože se mu nechce",
                   "Protože za $x$ nesmíme dosadit nulu (nulou nelze dělit)",
-                  "Protože osa $y$ je moc vysoko",
+                  "Protože osa y je moc vysoko",
                   "Dotkne se jí, když je $x$ velké",
                 ],
                 correctAnswer: 1,
                 xp: 20,
               },
               {
-                id: "c7_l5_t3",
+                id: "c7_l5_t3_input",
+                type: "text-input",
                 question:
-                  "Urči hodnotu $y$ pro $x = 2$ ve funkci $y = 10 / x$.",
-                options: ["$20$", "$5$", "$8$", "$12$"],
-                correctAnswer: 1,
+                  "Urči hodnotu y pro $x = 2$ ve funkci $y = 10 / x$. Napiš číslo:",
+                correctAnswer: "5",
                 xp: 15,
               },
               {
@@ -4214,24 +4607,29 @@ export const mathZS = {
                 options: [
                   "$y = 5x$",
                   "$y = x - 5$",
-                  "$y = 5 / x$",
+                  "$y = 5 / x$ (x je ve jmenovateli)",
                   "$y = x / 5$",
                 ],
                 correctAnswer: 2,
                 xp: 15,
               },
               {
-                id: "c7_l5_t5",
-                question:
-                  "Co se stane s časem práce, když zdvojnásobíme počet dělníků (nepřímá úměra)?",
+                id: "c7_l5_t5_sequence",
+                type: "sequence",
+                question: "Seřaď logickou úvahu o dělnících (nepřímá úměra):",
                 options: [
-                  "Zdvojnásobí se",
-                  "Zůstane stejný",
-                  "Klesne na polovinu",
-                  "Zvýší se o 2 hodiny",
+                  "1 dělník pracuje 10 hodin.",
+                  "Přijdou další, je jich 5 (5x víc).",
+                  "Čas se 5x zmenší.",
+                  "Výsledek je 2 hodiny.",
                 ],
-                correctAnswer: 2,
-                xp: 20,
+                correctAnswer: [
+                  "1 dělník pracuje 10 hodin.",
+                  "Přijdou další, je jich 5 (5x víc).",
+                  "Čas se 5x zmenší.",
+                  "Výsledek je 2 hodiny.",
+                ],
+                xp: 25,
               },
             ],
           },
@@ -4249,13 +4647,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Cena peněz",
-                text: "Když si půjčíš auto, platíš nájem. Když si půjčíš peníze, platíš úrok. Úrok je cena za půjčení peněz. \n- Když peníze uložíš do banky, ty půjčuješ bance $\\rightarrow$ banka platí úrok tobě.\n- Když si vezmeš půjčku, banka půjčuje tobě $\\rightarrow$ ty platíš úrok bance.\nVýše úroku závisí na úrokové sazbě (např. $5\\,\\%$ p.a. – per annum, tedy ročně).",
+                text: "Když si půjčíš auto, platíš nájem. Když si půjčíš peníze, platíš úrok. Úrok je cena za půjčení peněz na určitou dobu.\n\nFunguje to oběma směry:\n* Spoření: Ty půjčuješ peníze bance $\\rightarrow$ banka platí úrok tobě (vyděláváš).\n* Půjčka: Banka půjčuje tobě $\\rightarrow$ ty platíš úrok bance (proděláváš).\n\nVýše úroku závisí na úrokové sazbě (např. $5\\,\\%$ p.a. – *per annum*, tedy ročně).",
                 image:
-                  "[Image illustrating money growing over time with interest]",
+                  "[Image illustrating money growing over time with interest added to a piggy bank]",
               },
               {
                 heading: "Jednoduché úročení",
-                text: "Jak spočítat úrok za jeden rok? Použijeme vzoreček z procent: $$ úrok = \\frac{sazba \\cdot částka}{100} $$ Pokud uložím $1\\,000$ Kč na $5\\,\\%$, úrok je $50$ Kč. Na konci roku mám $1\\,050$ Kč. Pozor, stát si z úroku obvykle ukousne daň (často $15\\,\\%$), takže reálně dostaneš o trochu méně.",
+                text: "Jak spočítat úrok za jeden rok? Použijeme klasický vzoreček z procent.\n$$ úrok = \\frac{sazba \\cdot částka}{100} $$\n\nPříklad: Uložím $1\\,000$ Kč na úrok $5\\,\\%$.\n1.  $1\\,\\%$ z tisícovky je $10$ Kč.\n2.  $5\\,\\%$ je tedy $50$ Kč.\nNa konci roku mám $1\\,050$ Kč. (Pozor, v reálu si stát z úroku vezme ještě $15\\,\\%$ daň).",
                 image: "placeholder-interest-calculation",
               },
             ],
@@ -4273,16 +4671,11 @@ export const mathZS = {
                 xp: 10,
               },
               {
-                id: "c8_l1_t2",
+                id: "c8_l1_t2_input",
+                type: "text-input",
                 question:
-                  "Půjčím si $10\\,000$ Kč s úrokem $10\\,\\%$. Kolik musím po roce vrátit?",
-                options: [
-                  "$10\\,000$ Kč",
-                  "$10\\,100$ Kč",
-                  "$11\\,000$ Kč",
-                  "$15\\,000$ Kč",
-                ],
-                correctAnswer: 2,
+                  "Půjčím si 10 000 Kč s úrokem 10 %. Kolik Kč činí samotný úrok? (Napiš číslo)",
+                correctAnswer: "1000",
                 xp: 20,
               },
               {
@@ -4298,22 +4691,28 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c8_l1_t4",
-                question: "Vypočítej $1\\,\\%$ úrok z $1\\,000\\,000$ Kč.",
+                id: "c8_l1_t4_sequence",
+                type: "sequence",
+                question: "Seřaď kroky výpočtu konečné částky na účtu:",
                 options: [
-                  "$100$ Kč",
-                  "$1\\,000$ Kč",
-                  "$10\\,000$ Kč",
-                  "$100\\,000$ Kč",
+                  "Mám vloženou částku (jistinu).",
+                  "Vypočítám úrok podle procent.",
+                  "Odečtu daň z úroku (15%).",
+                  "Čistý úrok přičtu k jistině.",
                 ],
-                correctAnswer: 2,
-                xp: 20,
+                correctAnswer: [
+                  "Mám vloženou částku (jistinu).",
+                  "Vypočítám úrok podle procent.",
+                  "Odečtu daň z úroku (15%).",
+                  "Čistý úrok přičtu k jistině.",
+                ],
+                xp: 25,
               },
               {
                 id: "c8_l1_t5",
                 question: "Co je 'jistina'?",
                 options: [
-                  "Původní půjčená částka",
+                  "Původní vložená/půjčená částka",
                   "Úrok",
                   "Poplatek bance",
                   "Jistota, že peníze vrátím",
@@ -4330,13 +4729,13 @@ export const mathZS = {
             sections: [
               {
                 heading: "Sněhová koule",
-                text: "Albert Einstein prý řekl, že složené úročení je osmý div světa. Proč? Protože úroky se připisují k jistině a další rok se počítají úroky i z těch minulých úroků! \n1. rok: máš $100$, úrok $10\\,\\%$ $\\rightarrow$ máš $110$.\n2. rok: počítáš $10\\,\\%$ ze $110$! Úrok je $11$. Máš $121$.\n3. rok: počítáš $10\\,\\%$ ze $121$... \nPeníze nerostou lineárně, ale exponenciálně (čím dál rychleji).",
+                text: "Albert Einstein prý řekl, že složené úročení je osmý div světa. Proč? Protože úroky se nevyplácejí, ale připisují k jistině. Další rok se tedy počítají úroky i z těch minulých úroků!\n\n1.  rok: máš $100$ Kč, úrok $10\\,\\%$ $\\rightarrow$ máš $110$ Kč.\n2.  rok: počítáš $10\\,\\%$ už ze $110$ Kč! Úrok je $11$ Kč. Máš $121$ Kč.\n3.  rok: počítáš $10\\,\\%$ ze $121$ Kč...\n\nPeníze nerostou rovnoměrně, ale jako sněhová koule – čím dál rychleji.",
                 image:
-                  "[Image illustrating compound interest as a rolling snowball getting bigger]",
+                  "[Image illustrating compound interest as a rolling snowball getting bigger vs linear growth]",
               },
               {
                 heading: "Dobrý sluha, zlý pán",
-                text: "Složené úročení je skvělé, když spoříš (bohatneš rychleji). Ale je to katastrofa, když dlužíš a nesplácíš. Dluh narůstá raketovou rychlostí. Proto je tak nebezpečné brát si půjčky s vysokým úrokem.",
+                text: "Složené úročení je skvělé, když spoříš (tvé bohatství roste exponenciálně). Ale je to naprostá katastrofa, když dlužíš a nesplácíš. Dluh narůstá raketovou rychlostí, protože platíš 'úroky z úroků'. Proto je tak nebezpečné brát si půjčky s vysokým úrokem.",
                 image: "placeholder-compound-growth-graph",
               },
             ],
@@ -4354,50 +4753,53 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c8_l2_t2",
+                id: "c8_l2_t2_sequence",
+                type: "sequence",
+                question:
+                  "Seřaď růst částky 1000 Kč při 10% úroku (složené úročení):",
+                options: [
+                  "Začátek: 1000 Kč",
+                  "Po 1. roce: 1100 Kč (+100)",
+                  "Po 2. roce: 1210 Kč (+110)",
+                  "Po 3. roce: 1331 Kč (+121)",
+                ],
+                correctAnswer: [
+                  "Začátek: 1000 Kč",
+                  "Po 1. roce: 1100 Kč (+100)",
+                  "Po 2. roce: 1210 Kč (+110)",
+                  "Po 3. roce: 1331 Kč (+121)",
+                ],
+                xp: 25,
+              },
+              {
+                id: "c8_l2_t3_input",
+                type: "text-input",
+                question:
+                  "Máš 100 Kč a úrok je 50 %. Kolik budeš mít po 2 letech? (1. rok: 150, 2. rok: 150 + polovina ze 150...)",
+                correctAnswer: "225",
+                xp: 25,
+              },
+              {
+                id: "c8_l2_t4",
                 question: "Kdy peníze rostou rychleji?",
                 options: [
                   "Při jednoduchém úročení",
                   "Při složeném úročení",
-                  "Je to stejné",
-                  "Když je schovám pod polštář",
+                  "Je to jedno",
+                  "Když jsou pod matrací",
                 ],
                 correctAnswer: 1,
                 xp: 10,
               },
               {
-                id: "c8_l2_t3",
-                question:
-                  "Máš $100$ Kč, úrok $50\\,\\%$. Kolik máš po 2 letech (složené úročení)?",
-                options: [
-                  "$200$ Kč",
-                  "$225$ Kč (1. rok 150, 2. rok 150 + 75)",
-                  "$150$ Kč",
-                  "$300$ Kč",
-                ],
-                correctAnswer: 1,
-                xp: 25,
-              },
-              {
-                id: "c8_l2_t4",
-                question: "Kdy je složené úročení nebezpečné?",
-                options: [
-                  "Když spoříš na důchod",
-                  "Když si půjčíš a nesplácíš (dluh rychle roste)",
-                  "Když vyhraješ ve sportce",
-                  "Nikdy",
-                ],
-                correctAnswer: 1,
-                xp: 15,
-              },
-              {
                 id: "c8_l2_t5",
-                question: "Vzoreček pro složené úročení obsahuje:",
+                question:
+                  "Vzoreček pro složené úročení využívá matematickou operaci:",
                 options: [
                   "Sčítání",
-                  "Mocninu (násobení sebe sama)",
-                  "Odmocninu",
-                  "Jen dělení",
+                  "Mocnění (na entou)",
+                  "Odmocňování",
+                  "Dělení beze zbytku",
                 ],
                 correctAnswer: 1,
                 xp: 20,
@@ -4411,27 +4813,53 @@ export const mathZS = {
             sections: [
               {
                 heading: "Hrubá vs. Čistá mzda",
-                text: "Ve smlouvě podepíšeš hrubou mzdu (třeba $30\\,000$ Kč). Na účet ti ale přijde čistá mzda (třeba $24\\,000$ Kč). Kam zmizel zbytek? Zaměstnavatel za tebe musel odvést:\n1. Zdravotní pojištění (doktoři).\n2. Sociální pojištění (důchody, nemocenská).\n3. Daň z příjmu (policie, školy, silnice).\nNikdy nepočítej s hrubou mzdou jako s penězi, které můžeš utratit!",
+                text: "Ve smlouvě podepíšeš hrubou mzdu (třeba $30\\,000$ Kč). Na účet ti ale přijde čistá mzda (třeba $24\\,000$ Kč). Kam zmizel zbytek? Zaměstnavatel za tebe musel odvést státu:\n\n1.  Zdravotní pojištění (aby tě ošetřili u doktora).\n2.  Sociální pojištění (na důchody a nemocenskou).\n3.  Daň z příjmu (na policii, školy, silnice).\n\nNikdy nepočítej s hrubou mzdou jako s penězi, které můžeš utratit!",
                 image:
                   "[Image illustrating gross salary pie chart with slices cut out for taxes and insurance]",
               },
               {
                 heading: "DPH (Daň z přidané hodnoty)",
-                text: "Tuhle daň platíme všichni každý den. Když si koupíš rohlík nebo mobil, v ceně je započteno DPH (základní sazba v ČR je $21\\,\\%$). Obchodník si nechá jen část peněz (cenu bez daně) a DPH musí poslat státu. $$ Cena_{s DPH} = Cena_{bez DPH} \\cdot 1,21 $$",
+                text: "Tuhle daň platíme všichni každý den. Když si koupíš rohlík nebo mobil, v ceně je už započteno DPH (základní sazba v ČR je $21\\,\\%$).\n\nObchodník si nechá jen část peněz (cenu bez daně) a DPH musí poslat státu.\n$$ Cena_{s DPH} = Cena_{bez DPH} \\cdot 1,21 $$",
                 image: "placeholder-vat-receipt",
               },
             ],
             tasks: [
               {
                 id: "c8_l3_t1",
-                question: "Která mzda ti přijde na účet?",
+                question: "Která mzda ti reálně přijde na bankovní účet?",
                 options: ["Hrubá", "Čistá", "Superhrubá", "Minimální"],
                 correctAnswer: 1,
                 xp: 10,
               },
               {
-                id: "c8_l3_t2",
-                question: "Co NENÍ součástí srážek ze mzdy?",
+                id: "c8_l3_t2_sequence",
+                type: "sequence",
+                question: "Seřaď, jak se z hrubé mzdy stane čistá:",
+                options: [
+                  "Mám hrubou mzdu.",
+                  "Odečte se sociální a zdravotní pojištění.",
+                  "Odečte se záloha na daň.",
+                  "Zbude čistá mzda k výplatě.",
+                ],
+                correctAnswer: [
+                  "Mám hrubou mzdu.",
+                  "Odečte se sociální a zdravotní pojištění.",
+                  "Odečte se záloha na daň.",
+                  "Zbude čistá mzda k výplatě.",
+                ],
+                xp: 25,
+              },
+              {
+                id: "c8_l3_t3_input",
+                type: "text-input",
+                question:
+                  "Výrobek stojí 100 Kč bez DPH. Sazba DPH je 21 %. Kolik zaplatíš u pokladny? (Napiš číslo)",
+                correctAnswer: "121",
+                xp: 20,
+              },
+              {
+                id: "c8_l3_t4",
+                question: "Co NENÍ součástí běžných srážek ze mzdy?",
                 options: [
                   "Zdravotní pojištění",
                   "Sociální pojištění",
@@ -4442,33 +4870,13 @@ export const mathZS = {
                 xp: 15,
               },
               {
-                id: "c8_l3_t3",
-                question:
-                  "Výrobek stojí $100$ Kč bez DPH ($21\\,\\%$). Kolik zaplatíš u pokladny?",
-                options: ["$100$ Kč", "$121$ Kč", "$79$ Kč", "$21$ Kč"],
-                correctAnswer: 1,
-                xp: 20,
-              },
-              {
-                id: "c8_l3_t4",
-                question: "Komu jdou peníze z daní?",
+                id: "c8_l3_t5",
+                question: "Komu nakonec skončí peníze vybrané na DPH?",
                 options: [
                   "Obchodníkovi",
-                  "Státu a obcím",
+                  "Státu (do státního rozpočtu)",
                   "Tvému šéfovi",
                   "Bance",
-                ],
-                correctAnswer: 1,
-                xp: 10,
-              },
-              {
-                id: "c8_l3_t5",
-                question: "Jaká je základní sazba DPH v ČR (přibližně)?",
-                options: [
-                  "$10\\,\\%$",
-                  "$21\\,\\%$",
-                  "$50\\,\\%$",
-                  "$5\\,\\%$",
                 ],
                 correctAnswer: 1,
                 xp: 10,
@@ -4482,44 +4890,48 @@ export const mathZS = {
             sections: [
               {
                 heading: "Průměr může lhát",
-                text: "Aritmetický průměr znáš: sečteš všechna čísla a vydělíš jejich počtem. Ale pozor! Představ si hospodu, kde sedí 5 dělníků s průměrným platem $20\\,000$. Najednou vejde miliardář Bill Gates. Průměrný plat v hospodě rázem vyletí na miliony. Zbohatli dělníci? Ne. Průměr je citlivý na extrémní hodnoty.",
-                image: "[Image illustrating mean vs median with salaries]",
+                text: "Aritmetický průměr znáš: sečteš všechna čísla a vydělíš jejich počtem. Ale pozor!\n\nPředstav si hospodu, kde sedí 5 lidí s platem $20\\,000$ Kč. Najednou vejde miliardář Bill Gates. Průměrný plat v hospodě rázem vyletí na miliony korun. Zbohatli ti původní hosté? Ne. Průměr je velmi citlivý na extrémní hodnoty (úlety).",
+                image:
+                  "[Image illustrating mean vs median with salaries in a pub]",
               },
               {
                 heading: "Medián: Spravedlivý střed",
-                text: "Medián je odolnější. Seřadíme všechny hodnoty od nejmenší po největší a vezmeme tu, která je přesně uprostřed. Když přijde Bill Gates, medián se skoro nezmění, protože miliardář bude jen na konci řady, ale prostřední člověk zůstane stejný. Medián lépe popisuje 'typickou' hodnotu.",
+                text: "Medián je odolnější. Seřadíme všechny hodnoty od nejmenší po největší a vezmeme tu, která je přesně uprostřed.\n\nKdyž přijde Bill Gates, medián se skoro nezmění, protože miliardář bude jen na konci řady, ale ten 'prostřední člověk' (typický host) zůstane stejný. Medián lépe popisuje realitu, když jsou ve skupině velké rozdíly.",
                 image: "placeholder-median-sorting",
               },
             ],
             tasks: [
               {
-                id: "c8_l4_t1",
-                question: "Vypočítej průměr známek: $1, 1, 5, 5$.",
-                options: ["$1$", "$5$", "$3$", "$2,5$"],
-                correctAnswer: 2,
+                id: "c8_l4_t1_input",
+                type: "text-input",
+                question:
+                  "Vypočítej průměr známek: 1, 1, 5, 5. (Součet je 12, počet je 4).",
+                correctAnswer: "3",
                 xp: 15,
               },
               {
-                id: "c8_l4_t2",
-                question: "Jak najdeš medián?",
+                id: "c8_l4_t2_sequence",
+                type: "sequence",
+                question: "Seřaď postup, jak najít medián:",
                 options: [
-                  "Sečtu čísla a vydělím",
-                  "Seřadím čísla podle velikosti a vezmu to uprostřed",
-                  "Vezmu nejčastější číslo",
-                  "Vezmu největší číslo",
+                  "Vezmu všechna data.",
+                  "Seřadím je od nejmenšího po největší.",
+                  "Najdu hodnotu, která je uprostřed řady.",
+                  "To je medián.",
                 ],
-                correctAnswer: 1,
-                xp: 15,
+                correctAnswer: [
+                  "Vezmu všechna data.",
+                  "Seřadím je od nejmenšího po největší.",
+                  "Najdu hodnotu, která je uprostřed řady.",
+                  "To je medián.",
+                ],
+                xp: 20,
               },
               {
                 id: "c8_l4_t3",
-                question: "Najdi medián čísel: $1, 2, 10, 100, 1000$.",
-                options: [
-                  "$10$ (je uprostřed)",
-                  "$222$ (průměr)",
-                  "$100$",
-                  "$2$",
-                ],
+                question:
+                  "Najdi medián čísel: 1, 2, 10, 100, 1000. (Které je uprostřed?)",
+                options: ["10", "222 (průměr)", "100", "2"],
                 correctAnswer: 0,
                 xp: 20,
               },
@@ -4541,7 +4953,7 @@ export const mathZS = {
                 options: [
                   "Vždy",
                   "Nikdy",
-                  "Když máme v datech extrémní výchylky (např. platy)",
+                  "Když data obsahují extrémní hodnoty (např. platy)",
                   "Když máme málo čísel",
                 ],
                 correctAnswer: 2,
@@ -4556,59 +4968,64 @@ export const mathZS = {
             sections: [
               {
                 heading: "Hra s náhodou",
-                text: "Jaká je šance, že na kostce padne šestka? Kostka má 6 stěn. Šestka je tam jen jedna. Šance je $1$ ku $6$. \nVzoreček je jednoduchý: $$ P(A) = \\frac{\\text{počet příznivých výsledků}}{\\text{počet všech možných výsledků}} $$ Výsledek je číslo mezi $0$ (nemožné) a $1$ (jisté). Často se udává v procentech.",
+                text: "Jaká je šance, že na kostce padne šestka? Kostka má 6 stěn. Šestka je tam jen jedna. Šance je 1 ku 6.\n\nVzoreček je jednoduchý:\n$$ P(A) = \\frac{\\text{počet příznivých výsledků}}{\\text{počet všech možných výsledků}} $$\n\nVýsledek je číslo mezi 0 (nemožné) a 1 (jisté). Často se násobí stem a udává v procentech.",
                 image:
                   "[Image showing probability formula favorable outcomes divided by total outcomes with dice example]",
               },
               {
                 heading: "Hod mincí",
-                text: "Mince má 2 strany (panna, orel). Jaká je šance, že padne orel? $1$ (orel) lomeno $2$ (všechny možnosti). $$ P = \\frac{1}{2} = 0,5 = 50\\,\\% $$ Ale pozor! To neznamená, že když hodíš dvakrát, musí padnout jednou orel. Znamená to, že když hodíš milionkrát, bude orel přibližně v polovině případů.",
+                text: "Mince má 2 strany (panna, orel). Jaká je šance, že padne orel? 1 (orel) lomeno 2 (všechny možnosti).\n$$ P = \\frac{1}{2} = 0,5 = 50\\,\\% $$\n\nAle pozor! To neznamená, že když hodíš dvakrát, musí jednou padnout orel. Znamená to, že když hodíš milionkrát, bude orel přibližně v polovině případů.",
                 image: "placeholder-coin-toss-probability",
               },
             ],
             tasks: [
               {
-                id: "c8_l5_t1",
+                id: "c8_l5_t1_input",
+                type: "text-input",
                 question:
-                  "Jaká je pravděpodobnost, že na kostce padne sudé číslo ($2, 4, 6$)?",
-                options: [
-                  "$1/6$",
-                  "$3/6 = 1/2$ ($50\\,\\%$)",
-                  "$2/6 = 1/3$",
-                  "$1/20$",
-                ],
-                correctAnswer: 1,
+                  "V osudí je 10 lístků, vyhrává jen 1. Jaká je pravděpodobnost výhry v procentech? (Napiš jen číslo)",
+                correctAnswer: "10",
                 xp: 20,
               },
               {
                 id: "c8_l5_t2",
                 question:
-                  "V osudí je 9 bílých koulí a 1 černá. Jaká je šance vytáhnout černou?",
-                options: [
-                  "$10\\,\\%$ ($1/10$)",
-                  "$90\\,\\%$",
-                  "$50\\,\\%$",
-                  "$1\\,\\%$",
-                ],
-                correctAnswer: 0,
+                  "Jaká je pravděpodobnost, že na kostce padne sudé číslo (2, 4, 6)?",
+                options: ["1/6", "3/6 = 1/2 (50 %)", "2/6 = 1/3", "1/20"],
+                correctAnswer: 1,
                 xp: 20,
               },
               {
                 id: "c8_l5_t3",
-                question: "Co znamená pravděpodobnost $0$?",
+                question: "Co znamená pravděpodobnost 0?",
                 options: [
                   "Jev nastane určitě",
                   "Je to 50 na 50",
-                  "Jev je nemožný",
+                  "Jev je nemožný (nikdy se nestane)",
                   "Malá šance",
                 ],
                 correctAnswer: 2,
                 xp: 10,
               },
               {
-                id: "c8_l5_t4",
-                question:
-                  "Jaká je šance vyhrát ve sportce (uhádnout 6 čísel ze 49)?",
+                id: "c8_l5_t4_sequence",
+                type: "sequence",
+                question: "Seřaď jevy od nemožného po jistý:",
+                options: [
+                  "Na kostce padne číslo 7 (0%).",
+                  "Na minci padne orel (50%).",
+                  "Vyberu červenou kuličku z pytlíku, kde jsou jen červené (100%).",
+                ],
+                correctAnswer: [
+                  "Na kostce padne číslo 7 (0%).",
+                  "Na minci padne orel (50%).",
+                  "Vyberu červenou kuličku z pytlíku, kde jsou jen červené (100%).",
+                ],
+                xp: 20,
+              },
+              {
+                id: "c8_l5_t5",
+                question: "Jaká je šance vyhrát hlavní cenu ve sportce?",
                 options: [
                   "Vysoká",
                   "50 na 50",
@@ -4617,13 +5034,6 @@ export const mathZS = {
                 ],
                 correctAnswer: 2,
                 xp: 10,
-              },
-              {
-                id: "c8_l5_t5",
-                question: "Vypočítej $P(A)$, když mám 3 výherní losy ze 100.",
-                options: ["$3\\,\\%$", "$30\\,\\%$", "$0,3\\,\\%$", "$1/3$"],
-                correctAnswer: 0,
-                xp: 20,
               },
             ],
           },
