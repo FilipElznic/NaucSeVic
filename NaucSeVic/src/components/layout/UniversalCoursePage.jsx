@@ -416,20 +416,6 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
               </li>
             </ul>
           </div>
-
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
-            <div className="relative z-10">
-              <h3 className="font-bold text-lg mb-2">Potřebujete pomoc?</h3>
-              <p className="text-gray-300 text-sm mb-4">
-                Náš AI asistent je připraven vám pomoci s jakýmkoliv problémem v
-                tomto kurzu.
-              </p>
-              <button className="w-full py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-lg text-sm font-medium transition-colors">
-                Zeptat se AI
-              </button>
-            </div>
-            <LucideIcons.Bot className="absolute -bottom-4 -right-4 w-32 h-32 text-white/5 rotate-12" />
-          </div>
         </div>
       </div>
     </div>

@@ -1242,9 +1242,16 @@ exports.submitQuiz = onCall(async (request) => {
 
         if (task.type === "sequence") {
           // For sequence, compare arrays
-          // We assume simple arrays of strings/numbers
-          isCorrect =
-            JSON.stringify(userAnswer) === JSON.stringify(task.correctAnswer);
+          // Handle string/number mismatch by converting to string
+          if (Array.isArray(userAnswer) && Array.isArray(task.correctAnswer)) {
+            isCorrect =
+              userAnswer.length === task.correctAnswer.length &&
+              userAnswer.every(
+                (val, i) => String(val) === String(task.correctAnswer[i])
+              );
+          } else {
+            isCorrect = false;
+          }
         } else if (task.type === "text-input") {
           // For text input, compare normalized strings
           const uNorm = String(userAnswer || "")
@@ -1280,13 +1287,13 @@ exports.submitQuiz = onCall(async (request) => {
         const userDoc = await transaction.get(userRef);
         if (userDoc.exists) {
           const userData = userDoc.data();
-          const currentXp = userData.xp || 0;
+          const currentXp = userData.profile?.xp || 0;
           const completedLessons = userData.completedLessons || [];
 
           // Only award XP if lesson wasn't already completed
           if (!completedLessons.includes(lessonId)) {
             transaction.update(userRef, {
-              xp: currentXp + xpAwarded,
+              "profile.xp": currentXp + xpAwarded,
               completedLessons: admin.firestore.FieldValue.arrayUnion(lessonId),
             });
           } else {
@@ -1360,12 +1367,13 @@ exports.completeLesson = onCall(async (request) => {
 
       const userData = userDoc.data();
       const completedLessons = userData.completedLessons || [];
+      const currentXp = userData.profile?.xp || 0;
 
       if (!completedLessons.includes(lessonId)) {
         // Award small XP for reading (e.g., 5 XP)
         const xpAwarded = 5;
         transaction.update(userRef, {
-          xp: (userData.xp || 0) + xpAwarded,
+          "profile.xp": currentXp + xpAwarded,
           completedLessons: admin.firestore.FieldValue.arrayUnion(lessonId),
         });
         return { success: true, xpGained: xpAwarded };

@@ -22,7 +22,8 @@ export const mathZS = {
               {
                 heading: "První kroky: Čísla 0 až 10",
                 text: "Všechno začíná nulou. 0 znamená 'nic' – jako prázdná miska na bonbóny. Když přidáme první bonbón, máme 1. Pak přidáváme další a počítáme stejně, jako máš prsty na rukou: 1, 2, 3, 4, 5 (jedna ruka), 6, 7, 8, 9... až dojdeme k číslu 10. \n\n\n\nČísla od 0 do 9 se nazývají jednociferná, protože se píší jen jedním znakem. Ale číslo 10 je speciální – je to první číslo dvojciferné (píše se pomocí jedničky a nuly). Desítka je jako plný balíček, máme plné obě ruce prstů!",
-                image: "",
+                image:
+                  "https://firebasestorage.googleapis.com/v0/b/naucsevic.firebasestorage.app/o/mattCh1l1.png?alt=media&token=c44442fb-0f89-4a87-b76a-3065b4fd21a2",
               },
               {
                 heading: "Výprava za desítku: 11 až 20",

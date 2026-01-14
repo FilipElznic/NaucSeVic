@@ -468,15 +468,33 @@ const LecturePage = () => {
                                   )}
 
                                   {section.image && (
-                                    <div className="my-6 bg-gray-100 dark:bg-zinc-800 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 aspect-video flex items-center justify-center">
-                                      <div className="text-center text-gray-500 dark:text-gray-400">
-                                        <LucideIcons.Image
-                                          size={48}
-                                          className="mx-auto mb-2 opacity-50"
-                                        />
-                                        <span className="text-sm">
-                                          Obrázek: {section.image}
-                                        </span>
+                                    <div className="my-6 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-sm">
+                                      <img
+                                        src={section.image}
+                                        alt={section.heading || "Obrázek lekce"}
+                                        className="w-full h-auto object-cover max-h-[500px]"
+                                        loading="lazy"
+                                        onError={(e) => {
+                                          e.target.style.display = "none";
+                                          // Fallback to placeholder if image fails to load
+                                          e.target.nextSibling.style.display =
+                                            "flex";
+                                        }}
+                                      />
+                                      <div
+                                        className="hidden bg-gray-100 dark:bg-zinc-800 aspect-video items-center justify-center p-8"
+                                        style={{ display: "none" }}
+                                      >
+                                        <div className="text-center text-gray-500 dark:text-gray-400">
+                                          <LucideIcons.Image
+                                            size={48}
+                                            className="mx-auto mb-2 opacity-50"
+                                          />
+                                          <span className="text-sm">
+                                            Nepodařilo se načíst obrázek:{" "}
+                                            {section.image}
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
                                   )}
