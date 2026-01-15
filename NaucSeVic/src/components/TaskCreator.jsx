@@ -14,7 +14,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
     name: "",
     description: "",
     type: "multipleChoice",
-    difficulty: "easy",
+    difficulty: "zakladni_1",
     subject: "",
     xp: 10,
     explanation: "",
@@ -32,18 +32,29 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
 
   const difficulties = [
     {
-      value: "easy",
-      label: "Snadná",
+      value: "zakladni_1",
+      label: "Základní 1. stupeň",
       color: "text-green-600",
       bg: "bg-green-100",
     },
     {
-      value: "medium",
-      label: "Střední",
+      value: "zakladni_2",
+      label: "Základní 2. stupeň",
+      color: "text-blue-600",
+      bg: "bg-blue-100",
+    },
+    {
+      value: "stredni",
+      label: "Střední škola",
       color: "text-yellow-600",
       bg: "bg-yellow-100",
     },
-    { value: "hard", label: "Těžká", color: "text-red-600", bg: "bg-red-100" },
+    {
+      value: "vysoka",
+      label: "Vysoká škola",
+      color: "text-red-600",
+      bg: "bg-red-100",
+    },
   ];
 
   const subjects = [

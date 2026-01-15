@@ -212,6 +212,8 @@ exports.createUserProfile = onCall(async (request) => {
           xpGained: 0,
           coinsGained: 0,
           tasksFinished: 0,
+          lessonsFinished: 0,
+          chaptersFinished: 0,
         },
       },
     };
@@ -301,6 +303,8 @@ exports.recordTaskAttempt = onCall(async (request) => {
         xpGained: 0,
         coinsGained: 0,
         tasksFinished: 0,
+        lessonsFinished: 0,
+        chaptersFinished: 0,
         loginTime: now,
       };
 
@@ -641,6 +645,8 @@ exports.submitTaskAnswer = onCall(async (request) => {
         xpGained: 0,
         coinsGained: 0,
         tasksFinished: 0,
+        lessonsFinished: 0,
+        chaptersFinished: 0,
         loginTime: now,
       };
 
@@ -1292,9 +1298,51 @@ exports.submitQuiz = onCall(async (request) => {
 
           // Only award XP if lesson wasn't already completed
           if (!completedLessons.includes(lessonId)) {
+            // Progress Tracking
+            const today = new Date().toISOString().split("T")[0];
+            const todayProgress = userData.progress?.[today] || {
+              xpGained: 0,
+              coinsGained: 0,
+              tasksFinished: 0,
+              lessonsFinished: 0,
+              chaptersFinished: 0,
+              loginTime: admin.firestore.FieldValue.serverTimestamp(),
+            };
+
+            todayProgress.xpGained += xpAwarded;
+            todayProgress.lessonsFinished =
+              (todayProgress.lessonsFinished || 0) + 1;
+            todayProgress.tasksFinished =
+              (todayProgress.tasksFinished || 0) + correctCount;
+
+            // Check chapter completion
+            let chapterCompleted = false;
+            if (lessonData.chapterId) {
+              const chapterLessonsSnapshot = await transaction.get(
+                db
+                  .collection("lesson")
+                  .where("chapterId", "==", lessonData.chapterId)
+              );
+
+              const allLessonIds = chapterLessonsSnapshot.docs.map((d) => d.id);
+              const otherLessonIds = allLessonIds.filter(
+                (id) => id !== lessonId
+              );
+              const allOthersCompleted = otherLessonIds.every((id) =>
+                completedLessons.includes(id)
+              );
+
+              if (allOthersCompleted) {
+                chapterCompleted = true;
+                todayProgress.chaptersFinished =
+                  (todayProgress.chaptersFinished || 0) + 1;
+              }
+            }
+
             transaction.update(userRef, {
               "profile.xp": currentXp + xpAwarded,
               completedLessons: admin.firestore.FieldValue.arrayUnion(lessonId),
+              [`progress.${today}`]: todayProgress,
             });
           } else {
             // If already completed, return 0 XP but show success
@@ -1372,11 +1420,54 @@ exports.completeLesson = onCall(async (request) => {
       if (!completedLessons.includes(lessonId)) {
         // Award small XP for reading (e.g., 5 XP)
         const xpAwarded = 5;
+
+        // Progress Tracking
+        const today = new Date().toISOString().split("T")[0];
+        const todayProgress = userData.progress?.[today] || {
+          xpGained: 0,
+          coinsGained: 0,
+          tasksFinished: 0,
+          lessonsFinished: 0,
+          chaptersFinished: 0,
+          loginTime: admin.firestore.FieldValue.serverTimestamp(),
+        };
+
+        todayProgress.xpGained += xpAwarded;
+        todayProgress.lessonsFinished =
+          (todayProgress.lessonsFinished || 0) + 1;
+
+        // Check chapter completion
+        let chapterCompleted = false;
+        if (lessonData.chapterId) {
+          const chapterLessonsSnapshot = await transaction.get(
+            db
+              .collection("lesson")
+              .where("chapterId", "==", lessonData.chapterId)
+          );
+
+          const allLessonIds = chapterLessonsSnapshot.docs.map((d) => d.id);
+          const otherLessonIds = allLessonIds.filter((id) => id !== lessonId);
+          const allOthersCompleted = otherLessonIds.every((id) =>
+            completedLessons.includes(id)
+          );
+
+          if (allOthersCompleted) {
+            chapterCompleted = true;
+            todayProgress.chaptersFinished =
+              (todayProgress.chaptersFinished || 0) + 1;
+          }
+        }
+
         transaction.update(userRef, {
           "profile.xp": currentXp + xpAwarded,
           completedLessons: admin.firestore.FieldValue.arrayUnion(lessonId),
+          [`progress.${today}`]: todayProgress,
         });
-        return { success: true, xpGained: xpAwarded };
+        return {
+          success: true,
+          xpGained: xpAwarded,
+          chapterCompleted,
+        };
       } else {
         return { success: true, xpGained: 0, message: "Already completed" };
       }

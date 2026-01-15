@@ -261,7 +261,7 @@ const UniversalSubjectLayout = () => {
 
   return (
     <div
-      className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"
+      className="min-h-screen pt-20  bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"
       style={dynamicStyle}
     >
       {/* HEADER SECTION REMOVED - Using Global Navbar */}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useDarkMode } from "../../contexts/DarkModeContext";
 
 const Footer = () => {
@@ -104,22 +105,22 @@ const Footer = () => {
             vyhrazena.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a
-              href="#"
+            <Link
+              to="/terms"
               className={`hover:${
                 darkMode ? "text-white" : "text-gray-900"
               } transition-colors duration-200`}
             >
               Podmínky použití
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/privacy"
               className={`hover:${
                 darkMode ? "text-white" : "text-gray-900"
               } transition-colors duration-200`}
             >
               Ochrana soukromí
-            </a>
+            </Link>
           </div>
         </div>
       </div>

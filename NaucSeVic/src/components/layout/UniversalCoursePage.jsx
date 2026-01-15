@@ -158,7 +158,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
   }
 
   return (
-    <div className="animate-in fade-in duration-500">
+    <div className="animate-in   fade-in duration-500">
       {/* Course Header Card */}
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-200 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">
         {/* Background Decoration */}
