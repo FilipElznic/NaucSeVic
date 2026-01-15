@@ -264,8 +264,6 @@ const UniversalSubjectLayout = () => {
       className="min-h-screen pt-20  bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"
       style={dynamicStyle}
     >
-      {/* HEADER SECTION REMOVED - Using Global Navbar */}
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* LEVEL SELECTION TABS */}
         <div className="flex justify-center mb-8">
