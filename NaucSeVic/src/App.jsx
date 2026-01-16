@@ -33,6 +33,7 @@ const AdminGeometryManager = lazy(() =>
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
+const Home = lazy(() => import("./pages/Home"));
 
 const UniversalSubjectLayout = lazy(() =>
   import("./components/layout/UniversalSubjectLayout")
@@ -57,6 +58,8 @@ const PublicRoute = ({ children }) => {
 
 // App Routes component that uses the auth context
 const AppRoutes = () => {
+  const { user, loading } = useFirebaseAuth();
+
   return (
     <Router>
       <Suspense
@@ -70,9 +73,17 @@ const AppRoutes = () => {
           <Route
             path="/"
             element={
-              <Layout showNavbar={false}>
-                <LandingPage />
-              </Layout>
+              loading ? (
+                <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black">
+                  <LoadingSpinner size="xl" />
+                </div>
+              ) : user ? (
+                <Home />
+              ) : (
+                <Layout showNavbar={false}>
+                  <LandingPage />
+                </Layout>
+              )
             }
           />
 
