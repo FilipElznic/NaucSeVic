@@ -150,6 +150,18 @@ class CloudFunctionsService {
     }
   }
 
+  // Buy booster
+  async buyBooster(boosterId) {
+    try {
+      const buyFunction = httpsCallable(functions, "buyBooster");
+      const result = await buyFunction({ boosterId });
+      return result.data;
+    } catch (error) {
+      console.error("Error buying booster:", error);
+      throw error;
+    }
+  }
+
   // DEBUG: Add booster (Test only)
   async debugAddBooster(boosterId, amount = 1) {
     try {

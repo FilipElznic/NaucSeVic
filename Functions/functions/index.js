@@ -807,6 +807,84 @@ exports.activateBooster = onCall(async (request) => {
   }
 });
 
+// SECURED: Buy a booster item
+exports.buyBooster = onCall(async (request) => {
+  try {
+    if (!request.auth || !request.auth.uid) {
+      throw new HttpsError("unauthenticated", "Authentication required");
+    }
+
+    const { boosterId } = request.data || {};
+    const userId = request.auth.uid;
+    validateInput({ boosterId }, ["boosterId"]);
+    checkRateLimit(userId, "buyBooster", 10, 60000);
+
+    const shopItems = {
+      xp_boost_1h: { price: 100, name: "XP Boost (1h)" },
+      xp_boost_12h: { price: 500, name: "XP Boost (12h)" },
+      xp_boost_24h: { price: 1000, name: "XP Boost (24h)" },
+    };
+
+    const item = shopItems[boosterId];
+    if (!item) {
+      throw new HttpsError("invalid-argument", "Invalid item ID");
+    }
+
+    const userRef = admin.firestore().collection("users").doc(userId);
+
+    const result = await admin
+      .firestore()
+      .runTransaction(async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists)
+          throw new HttpsError("not-found", "User not found");
+
+        const userData = userDoc.data();
+        const userCoins =
+          userData.profile && userData.profile.coins !== undefined
+            ? userData.profile.coins
+            : userData.coins || 0;
+
+        if (userCoins < item.price) {
+          throw new HttpsError("failed-precondition", "Not enough coins");
+        }
+
+        // Check where coins are stored and update accordingly
+        const updateData = {
+          [`inventory.${boosterId}`]: admin.firestore.FieldValue.increment(1),
+        };
+
+        if (userData.profile && userData.profile.coins !== undefined) {
+          updateData["profile.coins"] = admin.firestore.FieldValue.increment(
+            -item.price
+          );
+        } else {
+          // Fallback if coins are at root level
+          updateData["coins"] = admin.firestore.FieldValue.increment(
+            -item.price
+          );
+        }
+
+        transaction.update(userRef, updateData);
+
+        return { remainingCoins: userCoins - item.price };
+      });
+
+    logger.info("Booster bought", { userId, boosterId, price: item.price });
+    return {
+      success: true,
+      message: `Zakoupeno: ${item.name}`,
+      remainingCoins: result.remainingCoins,
+    };
+  } catch (error) {
+    logger.error("Error buying booster", error);
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    throw new HttpsError("internal", error.message || "Failed to buy booster");
+  }
+});
+
 // DEBUG: Add booster to user inventory (FOR TESTING ONLY)
 exports.debugAddBooster = onCall(async (request) => {
   try {

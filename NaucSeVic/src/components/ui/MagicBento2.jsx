@@ -27,6 +27,43 @@ import {
   X,
 } from "lucide-react";
 
+// Helper component to ensure chart only renders when container has dimensions
+const MeasuredContainer = ({ children }) => {
+  const ref = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const checkDimensions = () => {
+      if (
+        ref.current &&
+        ref.current.offsetWidth > 0 &&
+        ref.current.offsetHeight > 0
+      ) {
+        setReady(true);
+      }
+    };
+
+    // Initial check
+    checkDimensions();
+
+    // Observer for changes
+    const ro = new ResizeObserver(checkDimensions);
+    ro.observe(ref.current);
+
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
+    >
+      {ready ? children : null}
+    </div>
+  );
+};
+
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = "132, 0, 255";
@@ -594,6 +631,75 @@ const MagicBento2 = ({
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [showAllCourses, setShowAllCourses] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [showShop, setShowShop] = useState(false);
+  const [selectedBooster, setSelectedBooster] = useState(null);
+  const [loadingAction, setLoadingAction] = useState(false);
+
+  const shopItems = [
+    {
+      id: "xp_boost_1h",
+      price: 100,
+      name: "XP Boost (1h)",
+      duration: "1 hodina",
+      multiplier: "2x",
+      icon: Zap,
+      color: "text-amber-400 bg-amber-500/20",
+    },
+    {
+      id: "xp_boost_12h",
+      price: 500,
+      name: "XP Boost (12h)",
+      duration: "12 hodin",
+      multiplier: "2x",
+      icon: Zap,
+      color: "text-purple-400 bg-purple-500/20",
+    },
+    {
+      id: "xp_boost_24h",
+      price: 1000,
+      name: "XP Boost (24h)",
+      duration: "24 hodin",
+      multiplier: "2x",
+      icon: Zap,
+      color: "text-emerald-400 bg-emerald-500/20",
+    },
+  ];
+
+  const handleBuyBooster = async (boosterId) => {
+    setLoadingAction(true);
+    try {
+      await cloudFunctionsService.buyBooster(boosterId);
+      const homeData = await cloudFunctionsService.getHomeData();
+      setData(homeData);
+      setShowShop(false);
+    } catch (error) {
+      console.error(error);
+      alert(error.message || "Chyba při nákupu");
+    } finally {
+      setLoadingAction(false);
+    }
+  };
+
+  const handleUseBooster = async () => {
+    if (!selectedBooster) return;
+    setLoadingAction(true);
+    try {
+      await cloudFunctionsService.activateBooster(selectedBooster);
+      const homeData = await cloudFunctionsService.getHomeData();
+      setData(homeData);
+      setSelectedBooster(null);
+    } catch (error) {
+      console.error(error);
+      alert(error.message || "Chyba při aktivaci");
+    } finally {
+      setLoadingAction(false);
+    }
+  };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1130,7 +1236,10 @@ const MagicBento2 = ({
                 <h3 className="text-sm font-semibold flex items-center gap-2">
                   <Zap className="text-amber-400" size={16} /> Boostery
                 </h3>
-                <button className="text-xs p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                <button
+                  onClick={() => setShowShop(true)}
+                  className="text-xs p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                >
                   <Plus size={14} />
                 </button>
               </div>
@@ -1166,6 +1275,7 @@ const MagicBento2 = ({
                       return (
                         <div
                           key={id}
+                          onClick={() => setSelectedBooster(id)}
                           className="flex-shrink-0 w-[130px] flex flex-col justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group snap-start"
                         >
                           <div className="flex items-start justify-between w-full mb-2">
@@ -1212,63 +1322,83 @@ const MagicBento2 = ({
                 />
                 Aktivita
               </h3>
-              <div
-                className="flex-1 w-full min-h-[140px]"
-                style={{ minWidth: 0, minHeight: "140px" }}
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={activityData}>
-                    <defs>
-                      <linearGradient id="colorXp" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                          offset="5%"
-                          stopColor="#8b5cf6"
-                          stopOpacity={0.3}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="#8b5cf6"
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke={isDarkMode ? "#ffffff10" : "#00000010"}
-                      vertical={false}
-                    />
-                    <XAxis
-                      dataKey="name"
-                      stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: isDarkMode ? "#0B0C15" : "#ffffff",
-                        borderColor: "#8b5cf6",
-                        color: isDarkMode ? "#fff" : "#000",
-                        borderRadius: "8px",
-                      }}
-                      cursor={{ stroke: "#8b5cf6", strokeWidth: 1 }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="xp"
-                      stroke="#8b5cf6"
-                      fillOpacity={1}
-                      fill="url(#colorXp)"
-                      strokeWidth={3}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+              <div className="flex-1 w-full min-h-[140px] min-w-0 relative">
+                <MeasuredContainer>
+                  <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                    minWidth={50}
+                    minHeight={50}
+                    debounce={300}
+                  >
+                    <AreaChart data={activityData}>
+                      <defs>
+                        <linearGradient
+                          id="colorXp"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="#8b5cf6"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="#8b5cf6"
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke={isDarkMode ? "#ffffff10" : "#00000010"}
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="name"
+                        stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <YAxis
+                        stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <Tooltip
+                        content={({ active, payload, label }) => {
+                          if (active && payload && payload.length) {
+                            return (
+                              <div className="bg-white/95 dark:bg-[#0B0C15]/95 border border-purple-500/30 p-2 rounded-lg shadow-lg text-xs min-w-[80px] text-center backdrop-blur-md">
+                                <p className="font-bold text-gray-800 dark:text-gray-200 mb-1">
+                                  {label}
+                                </p>
+                                <p className="text-purple-600 dark:text-purple-400 font-bold">
+                                  {payload[0].value} XP
+                                </p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                        cursor={{ stroke: "#8b5cf6", strokeWidth: 1 }}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="xp"
+                        stroke="#8b5cf6"
+                        fillOpacity={1}
+                        fill="url(#colorXp)"
+                        strokeWidth={3}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </MeasuredContainer>
               </div>
             </div>
           </BentoItem>
@@ -1548,6 +1678,116 @@ const MagicBento2 = ({
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Shop Modal */}
+      {showShop && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setShowShop(false)}
+        >
+          <div
+            className="bg-white dark:bg-[#0B0C15] w-full max-w-md rounded-2xl border border-white/10 p-6 shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Zap className="text-amber-500" />
+                Obchod s boostery
+              </h2>
+              <button
+                onClick={() => setShowShop(false)}
+                className="p-2 hover:bg-white/5 rounded-full transition-colors"
+                disabled={loadingAction}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {shopItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-lg ${item.color}`}>
+                      <item.icon size={20} />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm">{item.name}</h3>
+                      <p className="text-xs opacity-60">{item.duration}</p>
+                    </div>
+                  </div>
+                  <button
+                    disabled={loadingAction || userStats.coins < item.price}
+                    onClick={() => handleBuyBooster(item.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                      userStats.coins >= item.price
+                        ? "bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-500/20"
+                        : "bg-gray-200 dark:bg-gray-800 text-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    {item.price} <Star size={10} className="fill-current" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 flex justify-between items-center text-sm">
+              <span className="opacity-60">Vaše mince:</span>
+              <span className="font-bold flex items-center gap-1 text-amber-500">
+                {userStats.coins} <Star size={14} className="fill-current" />
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Use Booster Modal */}
+      {selectedBooster && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setSelectedBooster(null)}
+        >
+          <div
+            className="bg-white dark:bg-[#0B0C15] w-full max-w-sm rounded-2xl border border-white/10 p-6 shadow-2xl relative text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center text-purple-500 border border-purple-500/30">
+                <Zap size={32} />
+              </div>
+            </div>
+
+            <h3 className="text-xl font-bold mb-2">Použít booster?</h3>
+            <p className="text-sm opacity-60 mb-6">
+              Chcete aktivovat{" "}
+              <strong>
+                {shopItems.find((i) => i.id === selectedBooster)?.name ||
+                  "Booster"}
+              </strong>
+              ? Tím se zdvojnásobí zisk XP na určitou dobu.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setSelectedBooster(null)}
+                disabled={loadingAction}
+                className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 font-semibold text-sm hover:opacity-80 transition-opacity"
+              >
+                Zrušit
+              </button>
+              <button
+                onClick={handleUseBooster}
+                disabled={loadingAction}
+                className="flex-1 py-2.5 rounded-xl bg-purple-600 text-white font-semibold text-sm hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/20"
+              >
+                {loadingAction ? "Aktivuji..." : "Aktivovat"}
+              </button>
             </div>
           </div>
         </div>
