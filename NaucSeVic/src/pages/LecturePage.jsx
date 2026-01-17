@@ -24,6 +24,29 @@ const LecturePage = () => {
   const [expandedChapters, setExpandedChapters] = useState({});
   const [showQuiz, setShowQuiz] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const [activeBoost, setActiveBoost] = useState(null);
+
+  // Check for active booster
+  useEffect(() => {
+    if (userProfile?.activeBoosts?.xp) {
+      const xpBoost = userProfile.activeBoosts.xp;
+      const now = Date.now();
+      const endsAt = xpBoost.endsAt?.toMillis
+        ? xpBoost.endsAt.toMillis()
+        : xpBoost.endsAt?.seconds * 1000 || 0;
+
+      if (endsAt > now) {
+        setActiveBoost({
+          multiplier: xpBoost.multiplier,
+          endsAt: new Date(endsAt),
+        });
+      } else {
+        setActiveBoost(null);
+      }
+    } else {
+      setActiveBoost(null);
+    }
+  }, [userProfile]);
 
   // --- DATA RETRIEVAL ---
 
@@ -419,6 +442,7 @@ const LecturePage = () => {
                     <QuizComponent
                       tasks={currentLecture.content.tasks}
                       lessonId={currentLecture.id}
+                      activeBoost={activeBoost}
                       onComplete={async () => {
                         await refreshProfile();
                       }}

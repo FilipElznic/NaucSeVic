@@ -1,5 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { gsap } from "gsap";
+import { cloudFunctionsService } from "../../services/cloudFunctions";
+import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import {
   XAxis,
   YAxis,
@@ -19,6 +21,8 @@ import {
   Star,
   Activity,
   Target,
+  Plus,
+  Clock,
 } from "lucide-react";
 
 const DEFAULT_PARTICLE_COUNT = 12;
@@ -545,49 +549,78 @@ const MagicBento2 = ({
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
 
-  // Data & Content Logic
-  const activityData = [
-    { name: "Po", xp: 400 },
-    { name: "Út", xp: 300 },
-    { name: "St", xp: 600 },
-    { name: "Čt", xp: 450 },
-    { name: "Pá", xp: 700 },
-    { name: "So", xp: 500 },
-    { name: "Ne", xp: 800 },
+  const { user } = useFirebaseAuth();
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        try {
+          const homeData = await cloudFunctionsService.getHomeData();
+          setData(homeData);
+        } catch (error) {
+          console.error("Error fetching bento data:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [user]);
+
+  // Use real data or fallback to defaults while loading/if error
+  const activityData = data?.activityData || [
+    { name: "Po", xp: 0 },
+    { name: "Út", xp: 0 },
+    { name: "St", xp: 0 },
+    { name: "Čt", xp: 0 },
+    { name: "Pá", xp: 0 },
+    { name: "So", xp: 0 },
+    { name: "Ne", xp: 0 },
   ];
 
-  const userStats = {
-    name: "Filip Elznic",
-    email: "filip.elznic@example.com",
-    level: 12,
-    xp: 2450,
-    maxXp: 3000,
-    coins: 450,
-    streak: 15,
+  const userStats = data?.userStats || {
+    name: "Uživatel",
+    email: "...",
+    level: 1,
+    xp: 0,
+    maxXp: 100,
+    coins: 0,
+    streak: 0,
   };
 
-  const activeBoosters = [
-    {
-      id: 1,
-      name: "2x XP",
-      duration: "2h 30m",
-      icon: Zap,
-      color: "text-amber-400",
-    },
-    {
-      id: 2,
-      name: "Síla mozku",
-      duration: "45m",
-      icon: BrainIcon,
-      color: "text-purple-400",
-    },
-  ];
+  const activeBoosters = data?.activeBoosts || [];
+  const inventory = data?.inventory || {};
 
-  const upcomingTasks = [
-    { id: 1, title: "Kvíz z geometrie", time: "14:00 Dnes", type: "Quiz" },
-    { id: 2, title: "Fyzikální laboratoř", time: "Zítra", type: "Assignment" },
-    { id: 3, title: "Opakování matematiky", time: "St", type: "Review" },
-  ];
+  // Computed boosters display list (Active + Inventory Summary)
+  // We want to show active ones first, then maybe inventory counts?
+  // For the prompt requirement, we'll focus on active and inventory.
+
+  // Helper to format time left
+  const getTimeLeft = (endsAt) => {
+    if (!endsAt) return "";
+    const diff = endsAt - Date.now();
+    if (diff <= 0) return "Vypršel";
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${hours}h ${minutes}m`;
+  };
+
+  const favoriteCourses =
+    data?.favoriteCourses && data.favoriteCourses.length > 0
+      ? data.favoriteCourses
+      : [
+          // Fallback if empty to keep layout nice (or remove fallback to show empty state)
+          {
+            id: 1,
+            title: "Zatím žádné kurzy",
+            progress: 0,
+            color: "bg-gray-500",
+          },
+        ];
 
   // Calendar Logic
   const date = new Date();
@@ -601,29 +634,10 @@ const MagicBento2 = ({
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const padding = Array.from({ length: startingDayIndex }, () => null);
 
-  // Simulated active days
-  const activeDays = [3, 7, 12, 14, 18, 22, 25, 28];
-
-  const favoriteCourses = [
-    {
-      id: 1,
-      title: "Pokročilá geometrie",
-      progress: 75,
-      color: "bg-blue-500",
-    },
-    {
-      id: 2,
-      title: "Kvantová fyzika",
-      progress: 40,
-      color: "bg-fuchsia-500",
-    },
-    {
-      id: 3,
-      title: "Matematická analýza I",
-      progress: 90,
-      color: "bg-emerald-500",
-    },
-  ];
+  // Simulated active days for calendar visual (could come from activityData history in future)
+  const activeDays = activityData
+    .filter((d) => d.xp > 0)
+    .map((d) => new Date(d.date).getDate());
 
   // Wrapper for consistency
   const BentoItem = ({ children, className = "", style = {} }) => {
@@ -980,7 +994,10 @@ const MagicBento2 = ({
                   <div
                     className="bg-purple-600 h-full rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(147,51,234,0.5)]"
                     style={{
-                      width: `${(userStats.xp / userStats.maxXp) * 100}%`,
+                      width: `${Math.min(
+                        (userStats.xp / userStats.maxXp) * 100,
+                        100
+                      )}%`,
                     }}
                   ></div>
                 </div>
@@ -1035,14 +1052,70 @@ const MagicBento2 = ({
 
           {/* 2. Header */}
           <BentoItem className="justify-center">
-            <div className="relative z-10">
-              <h1 className="text-2xl font-bold flex items-center gap-2 mb-2">
-                Vítejte zpět, {userStats.name.split(" ")[0]}!{" "}
-                <span className="text-2xl">👋</span>
-              </h1>
-              <p className="opacity-60 text-sm">
-                Máte {upcomingTasks.length} nevyřízených úkolů na dnešek.
-              </p>
+            <div className="flex flex-col h-full relative z-10 w-full overflow-hidden">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-sm font-semibold flex items-center gap-2">
+                  <Zap className="text-amber-400" size={16} /> Boostery
+                </h3>
+                <button className="text-xs p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                  <Plus size={14} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                {/* Active Boosts */}
+                {activeBoosters.map((boost, index) => (
+                  <div
+                    key={`active-${index}`}
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/20"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400">
+                        <TrendingUp size={16} />
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold">
+                          {boost.multiplier}x XP
+                        </div>
+                        <div className="text-[10px] opacity-60 flex items-center gap-1">
+                          <Clock size={10} /> {getTimeLeft(boost.endsAt)}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                  </div>
+                ))}
+
+                {/* Inventory Summary */}
+                {Object.keys(inventory).length > 0
+                  ? Object.entries(inventory).map(([id, count]) => {
+                      if (count <= 0) return null;
+                      return (
+                        <div
+                          key={id}
+                          className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                              <Zap size={16} />
+                            </div>
+                            <div className="text-sm font-medium opacity-90">
+                              {id.includes("xp_boost") ? "XP Boost" : "Booster"}
+                            </div>
+                          </div>
+                          <div className="px-2 py-0.5 rounded-md bg-white/10 text-xs font-mono">
+                            x{count}
+                          </div>
+                        </div>
+                      );
+                    })
+                  : activeBoosters.length === 0 && (
+                      <div className="h-full flex flex-col items-center justify-center text-center opacity-40 p-4">
+                        <Zap size={24} className="mb-2" />
+                        <p className="text-xs">Žádné boostery</p>
+                      </div>
+                    )}
+              </div>
             </div>
           </BentoItem>
 
@@ -1054,7 +1127,7 @@ const MagicBento2 = ({
                   size={18}
                   className="text-purple-600 dark:text-purple-400"
                 />
-                Studijní aktivita
+                Aktivita
               </h3>
               <div
                 className="flex-1 w-full min-h-[140px]"
@@ -1118,6 +1191,8 @@ const MagicBento2 = ({
           </BentoItem>
 
           {/* 4. Calendar & Boosters */}
+
+          {/* in calendar use the users progress data and mark each day the activity was written to the database */}
           <BentoItem>
             <div className="flex flex-col h-full gap-4 relative z-10">
               {/* Calendar Section */}
@@ -1167,37 +1242,6 @@ const MagicBento2 = ({
                       );
                     })}
                   </div>
-                </div>
-              </div>
-
-              {/* Boosters Section */}
-              <div className="hidden xl:block">
-                <h3 className="text-sm font-semibold mb-2 flex items-center gap-2 text-blue-700 dark:text-fuchsia-300">
-                  <Zap
-                    size={16}
-                    className="text-blue-500 dark:text-fuchsia-500"
-                  />{" "}
-                  Aktivní vylepšení
-                </h3>
-                <div className="space-y-2">
-                  {activeBoosters.map((booster) => (
-                    <div
-                      key={booster.id}
-                      className="flex items-center gap-3 p-2 rounded-lg bg-black/5 dark:bg-purple-500/5 border border-black/5 dark:border-purple-500/20"
-                    >
-                      <div
-                        className={`p-1.5 rounded-md bg-white dark:bg-white/5 ${booster.color}`}
-                      >
-                        <booster.icon size={14} />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold">{booster.name}</div>
-                        <div className="text-[10px] text-blue-600 dark:text-purple-300">
-                          {booster.duration} zbývá
-                        </div>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
@@ -1252,7 +1296,7 @@ const MagicBento2 = ({
           <BentoItem>
             <div className="flex flex-col h-full relative z-10 w-full">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Pokračovat v učení</h3>
+                <h3 className="text-lg font-semibold">Oblíbené kurzy</h3>
                 <button className="text-xs text-blue-600 dark:text-purple-400 hover:text-blue-500 dark:hover:text-purple-300">
                   Zobrazit vše
                 </button>
@@ -1266,19 +1310,31 @@ const MagicBento2 = ({
                   >
                     <div className="flex items-start justify-between">
                       <div
-                        className={`w-10 h-10 rounded-lg ${course.color} flex items-center justify-center group-hover:scale-105 transition-transform`}
+                        className={`w-10 h-10 rounded-lg ${
+                          course.color || "bg-blue-500"
+                        } flex items-center justify-center group-hover:scale-105 transition-transform`}
                       >
                         <BookOpen size={18} className="text-white" />
                       </div>
-                      <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
-                        <PlayIcon size={14} className="ml-1 opacity-80" />
-                      </div>
+                      {/* Only show play icon if progress > 0 */}
+                      {course.progress > 0 && (
+                        <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
+                          <PlayIcon size={14} className="ml-1 opacity-80" />
+                        </div>
+                      )}
                     </div>
                     <div className="mt-4">
-                      <h4 className="text-sm font-bold mb-2">{course.title}</h4>
+                      <h4
+                        className="text-sm font-bold mb-2 line-clamp-1"
+                        title={course.title}
+                      >
+                        {course.title}
+                      </h4>
                       <div className="w-full h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
                         <div
-                          className={`h-full ${course.color} rounded-full`}
+                          className={`h-full ${
+                            course.color || "bg-blue-500"
+                          } rounded-full`}
                           style={{ width: `${course.progress}%` }}
                         ></div>
                       </div>

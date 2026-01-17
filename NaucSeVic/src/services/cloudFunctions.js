@@ -126,6 +126,18 @@ class CloudFunctionsService {
     }
   }
 
+  // Get home screen data
+  async getHomeData() {
+    try {
+      const functionRef = httpsCallable(functions, "getHomeData");
+      const result = await functionRef();
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching home data:", error);
+      throw error;
+    }
+  }
+
   // Activate booster
   async activateBooster(boosterId) {
     try {

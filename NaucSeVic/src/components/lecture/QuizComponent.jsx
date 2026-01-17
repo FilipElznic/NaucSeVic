@@ -16,7 +16,7 @@ import {
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import LatexRenderer from "../shared/LatexRenderer";
 
-const QuizComponent = ({ tasks, lessonId, onComplete }) => {
+const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
   const [userAnswers, setUserAnswers] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
@@ -74,8 +74,12 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
 
       if (response.data.passed) {
         if (response.data.xpGained > 0) {
+          const boostInfo = response.data.activeBoost
+            ? ` (Boost ${response.data.activeBoost.multiplier}x aktivní!)`
+            : "";
+
           toast.success(
-            `Gratulujeme! Získal jsi ${response.data.xpGained} XP!`
+            `Gratulujeme! Získal jsi ${response.data.xpGained} XP!${boostInfo}`
           );
         }
         if (onComplete) {
@@ -253,6 +257,12 @@ const QuizComponent = ({ tasks, lessonId, onComplete }) => {
       <div className="sticky top-4 z-10 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
         <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
           <span>Postup v testu</span>
+          {activeBoost && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-700 animate-pulse">
+              <Trophy className="w-3 h-3 mr-1" />
+              Boost {activeBoost.multiplier}x
+            </span>
+          )}
           <span>{Math.round(progress)}%</span>
         </div>
         <div className="h-2 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">

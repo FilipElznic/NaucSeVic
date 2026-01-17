@@ -1434,7 +1434,8 @@ exports.submitQuiz = onCall(async (request) => {
 
       const scorePercentage = (correctCount / tasks.length) * 100;
       const passed = scorePercentage >= 80; // 80% threshold to pass
-      const xpAwarded = passed ? potentialXp : 0;
+      let xpAwarded = passed ? potentialXp : 0;
+      let activeBoost = null;
 
       // 4. Update User (XP and Progress)
       if (passed) {
@@ -1446,6 +1447,22 @@ exports.submitQuiz = onCall(async (request) => {
 
           // Only award XP if lesson wasn't already completed
           if (!completedLessons.includes(lessonId)) {
+            // APPLY BOOSTER LOGIC HERE
+            if (userData.activeBoosts && userData.activeBoosts.xp) {
+              const xpBoost = userData.activeBoosts.xp;
+              const nowMillis = Date.now();
+              const endsAtMillis = xpBoost.endsAt.toMillis();
+
+              if (endsAtMillis > nowMillis) {
+                const multiplier = xpBoost.multiplier || 1;
+                xpAwarded = Math.floor(xpAwarded * multiplier);
+                activeBoost = {
+                  multiplier: multiplier,
+                  expiresAt: xpBoost.endsAt,
+                };
+              }
+            }
+
             // Progress Tracking
             const today = new Date().toISOString().split("T")[0];
             const todayProgress = userData.progress?.[today] || {
@@ -1514,6 +1531,7 @@ exports.submitQuiz = onCall(async (request) => {
         xpGained: xpAwarded,
         passed,
         corrections,
+        activeBoost,
       };
     });
 
@@ -1521,6 +1539,122 @@ exports.submitQuiz = onCall(async (request) => {
   } catch (error) {
     console.error("Quiz submission error:", error);
     throw new HttpsError("internal", "Chyba při vyhodnocování testu.");
+  }
+});
+
+// SECURED: Get comprehensive home screen data
+exports.getHomeData = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Authentication required");
+  }
+
+  const userId = request.auth.uid;
+  const db = admin.firestore();
+
+  try {
+    const userDoc = await db.collection("users").doc(userId).get();
+    if (!userDoc.exists) {
+      throw new HttpsError("not-found", "User profile not found");
+    }
+
+    const userData = userDoc.data();
+    const today = new Date().toISOString().split("T")[0];
+
+    // 1. Process Activity Data (Last 7 days)
+    const activityData = [];
+    const days = ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const dayName = days[d.getDay()];
+
+      const dayProgress = userData.progress?.[dateStr] || {};
+      activityData.push({
+        name: dayName,
+        xp: dayProgress.xpGained || 0,
+        date: dateStr,
+      });
+    }
+
+    // 2. Determine Streak
+    // Basic streak calculation going backwards from yesterday
+    let streak = 0;
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let checkDate = yesterday;
+
+    // Check if user was active today to keep streak alive
+    const todayProgress = userData.progress?.[today];
+    if (
+      todayProgress &&
+      (todayProgress.xpGained > 0 || todayProgress.loginTime)
+    ) {
+      streak = 1;
+    }
+
+    // Go back in time
+    while (true) {
+      const dateStr = checkDate.toISOString().split("T")[0];
+      if (userData.progress?.[dateStr]?.xpGained > 0) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+
+    // 3. Process Active Boosts
+    const processedBoosts = [];
+    if (userData.activeBoosts) {
+      const now = Date.now();
+      Object.keys(userData.activeBoosts).forEach((key) => {
+        const boost = userData.activeBoosts[key];
+        const endsAt = boost.endsAt?.toMillis ? boost.endsAt.toMillis() : 0;
+        if (endsAt > now) {
+          processedBoosts.push({
+            type: key,
+            multiplier: boost.multiplier,
+            endsAt: endsAt,
+            sourceItem: boost.sourceItem,
+          });
+        }
+      });
+    }
+
+    // 4. Favourite Courses (Mock logic or real if available)
+    // If favouriteCourses doesn't exist, we can infer from progress/completedLessons in future
+    // For now returning what is stored or empty
+    const favoriteCourses = userData.favoriteCourses || [];
+
+    // 5. User Stats
+    // Calculate level based on XP (simple formula: level = floor(sqrt(xp/100))) or linear
+    const xp = userData.profile?.xp || 0;
+    const level = Math.floor(Math.sqrt(xp / 100)) + 1;
+    const nextLevelXp = Math.pow(level, 2) * 100; // XP needed for next level
+
+    // Construct response
+    return {
+      userStats: {
+        name:
+          `${userData.firstName || ""} ${userData.lastName || ""}`.trim() ||
+          "Uživatel",
+        email: request.auth.token.email || "",
+        level: level,
+        xp: xp,
+        maxXp: nextLevelXp,
+        coins: userData.profile?.coins || 0,
+        streak: streak,
+      },
+      activityData: activityData,
+      activeBoosts: processedBoosts,
+      inventory: userData.inventory || {},
+      favoriteCourses: favoriteCourses,
+      progress: userData.progress?.[today] || {},
+    };
+  } catch (error) {
+    console.error("Error fetching home data:", error);
+    throw new HttpsError("internal", "Failed to fetch home data");
   }
 });
 
