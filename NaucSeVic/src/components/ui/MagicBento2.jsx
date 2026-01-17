@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { cloudFunctionsService } from "../../services/cloudFunctions";
+import { subjectConfig } from "../../config/subjectConfig";
 import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
 import {
   XAxis,
@@ -23,6 +24,7 @@ import {
   Target,
   Plus,
   Clock,
+  X,
 } from "lucide-react";
 
 const DEFAULT_PARTICLE_COUNT = 12;
@@ -507,7 +509,7 @@ const GlobalSpotlight = ({
 
 const BentoCardGrid = ({ children, gridRef }) => (
   <div
-    className="bento-section grid gap-6 p-4 w-full max-w-[1400px] select-none relative"
+    className="bento-section grid gap-6 p-4 w-full max-w-[1600px] select-none relative"
     style={{ fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)" }}
     ref={gridRef}
   >
@@ -531,6 +533,45 @@ const useMobileDetection = () => {
   return isMobile;
 };
 
+const parseCourseDetails = (courseId) => {
+  if (!courseId || typeof courseId !== "string") return null;
+
+  const parts = courseId.split("_");
+  // Check if it matches expected format (at least subject_difficulty)
+  // But be lenient if it's just one word? No, user said "data format like this"
+  if (parts.length < 2) return null;
+
+  const subjectMap = {
+    matematika: "Matematika",
+    fyzika: "Fyzika",
+    chemie: "Chemie",
+    cestina: "Čeština",
+    anglictina: "Angličtina",
+    biologie: "Biologie",
+    dejepis: "Dějepis",
+    zemepis: "Zeměpis",
+  };
+
+  const rawSubject = parts[0];
+  const rawDifficulty = parts[1];
+  const rawLevel = parts[2];
+
+  const subject =
+    subjectMap[rawSubject] ||
+    rawSubject.charAt(0).toUpperCase() + rawSubject.slice(1);
+
+  let difficulty = rawDifficulty.toUpperCase();
+  if (rawDifficulty === "zs") difficulty = "ZŠ";
+  else if (rawDifficulty === "ss") difficulty = "SŠ";
+  else if (rawDifficulty === "vs") difficulty = "VŠ";
+
+  return {
+    subject,
+    difficulty,
+    level: rawLevel,
+  };
+};
+
 const MagicBento2 = ({
   textAutoHide = true,
   enableStars = true,
@@ -552,6 +593,7 @@ const MagicBento2 = ({
   const { user } = useFirebaseAuth();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const [showAllCourses, setShowAllCourses] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -583,14 +625,19 @@ const MagicBento2 = ({
   ];
 
   const userStats = data?.userStats || {
-    name: "Uživatel",
-    email: "...",
+    name: user?.displayName || "Uživatel",
+    email: user?.email || "...",
     level: 1,
     xp: 0,
     maxXp: 100,
     coins: 0,
     streak: 0,
   };
+
+  // If backend returned "Uživatel" but we have a display name, prefer display name
+  if (userStats.name === "Uživatel" && user?.displayName) {
+    userStats.name = user.displayName;
+  }
 
   const activeBoosters = data?.activeBoosts || [];
   const inventory = data?.inventory || {};
@@ -609,18 +656,39 @@ const MagicBento2 = ({
     return `${hours}h ${minutes}m`;
   };
 
-  const favoriteCourses =
-    data?.favoriteCourses && data.favoriteCourses.length > 0
-      ? data.favoriteCourses
-      : [
-          // Fallback if empty to keep layout nice (or remove fallback to show empty state)
-          {
-            id: 1,
-            title: "Zatím žádné kurzy",
-            progress: 0,
-            color: "bg-gray-500",
-          },
-        ];
+  const rawFavoriteCourses = data?.favoriteCourses;
+  let favoriteCourses = [];
+
+  if (rawFavoriteCourses && rawFavoriteCourses.length > 0) {
+    favoriteCourses = rawFavoriteCourses.map((course) => {
+      // Handle string format (e.g. "matematika_zs_1")
+      if (typeof course === "string") {
+        const details = parseCourseDetails(course);
+        const subjectKey = course.split("_")[0];
+        const config = subjectConfig[subjectKey];
+        const colorName = config?.themeColor || "blue";
+
+        return {
+          id: course,
+          title: details ? details.subject : course,
+          progress: 0, // Mock progress for now
+          color: `bg-${colorName}-500`,
+          details: details,
+        };
+      }
+      // If it's already an object, return as is
+      return course;
+    });
+  } else {
+    favoriteCourses = [
+      {
+        id: "fallback",
+        title: "Zatím žádné kurzy",
+        progress: 0,
+        color: "bg-gray-500",
+      },
+    ];
+  }
 
   // Calendar Logic
   const date = new Date();
@@ -640,8 +708,13 @@ const MagicBento2 = ({
     .map((d) => new Date(d.date).getDate());
 
   // Wrapper for consistency
-  const BentoItem = ({ children, className = "", style = {} }) => {
-    const baseClassName = `card flex flex-col justify-between relative w-full h-full p-6 rounded-[24px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
+  const BentoItem = ({
+    children,
+    className = "",
+    style = {},
+    padding = "p-6",
+  }) => {
+    const baseClassName = `card flex flex-col justify-between relative w-full h-full ${padding} rounded-[24px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
       enableBorderGlow ? "card--border-glow" : ""
     } ${className}`;
 
@@ -1062,27 +1135,27 @@ const MagicBento2 = ({
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+              <div className="flex-1 flex overflow-x-auto gap-2 pb-2 custom-scrollbar mask-gradient-right">
                 {/* Active Boosts */}
                 {activeBoosters.map((boost, index) => (
                   <div
                     key={`active-${index}`}
-                    className="flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/20"
+                    className="flex-shrink-0 w-[130px] flex flex-col justify-between p-3 rounded-xl bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 snap-start"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-start justify-between w-full mb-2">
                       <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400">
                         <TrendingUp size={16} />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold">
-                          {boost.multiplier}x XP
-                        </div>
-                        <div className="text-[10px] opacity-60 flex items-center gap-1">
-                          <Clock size={10} /> {getTimeLeft(boost.endsAt)}
-                        </div>
+                      <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse mt-1"></div>
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold">
+                        {boost.multiplier}x XP
+                      </div>
+                      <div className="text-[10px] opacity-60 flex items-center gap-1">
+                        <Clock size={10} /> {getTimeLeft(boost.endsAt)}
                       </div>
                     </div>
-                    <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
                   </div>
                 ))}
 
@@ -1093,26 +1166,36 @@ const MagicBento2 = ({
                       return (
                         <div
                           key={id}
-                          className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group"
+                          className="flex-shrink-0 w-[130px] flex flex-col justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group snap-start"
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-start justify-between w-full mb-2">
                             <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
                               <Zap size={16} />
                             </div>
-                            <div className="text-sm font-medium opacity-90">
-                              {id.includes("xp_boost") ? "XP Boost" : "Booster"}
+                            <div className="px-1.5 py-0.5 rounded-md bg-white/10 text-[10px] font-mono">
+                              x{count}
                             </div>
                           </div>
-                          <div className="px-2 py-0.5 rounded-md bg-white/10 text-xs font-mono">
-                            x{count}
+                          <div>
+                            <div
+                              className="text-sm font-medium opacity-90 truncate"
+                              title={
+                                id.includes("xp_boost") ? "XP Boost" : "Booster"
+                              }
+                            >
+                              {id.includes("xp_boost") ? "XP Boost" : "Booster"}
+                            </div>
+                            <div className="text-[10px] opacity-50">Použít</div>
                           </div>
                         </div>
                       );
                     })
                   : activeBoosters.length === 0 && (
-                      <div className="h-full flex flex-col items-center justify-center text-center opacity-40 p-4">
-                        <Zap size={24} className="mb-2" />
-                        <p className="text-xs">Žádné boostery</p>
+                      <div className="w-full flex items-center justify-center text-center opacity-40 p-4 min-h-[100px]">
+                        <div className="flex flex-col items-center">
+                          <Zap size={24} className="mb-2" />
+                          <p className="text-xs">Žádné boostery</p>
+                        </div>
                       </div>
                     )}
               </div>
@@ -1193,55 +1276,58 @@ const MagicBento2 = ({
           {/* 4. Calendar & Boosters */}
 
           {/* in calendar use the users progress data and mark each day the activity was written to the database */}
-          <BentoItem>
-            <div className="flex flex-col h-full gap-4 relative z-10">
+          <BentoItem padding="p-4">
+            <div className="flex flex-col h-full overflow-hidden relative z-10">
               {/* Calendar Section */}
-              <div className="flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-semibold flex items-center gap-2">
-                      <CalendarIcon size={16} /> {monthName} {year}
+              <div className="flex-1 flex flex-col min-h-0">
+                <div className="flex-shrink-0 mb-2">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-xs font-semibold flex items-center gap-1.5">
+                      <CalendarIcon size={14} /> {monthName} {year}
                     </h3>
                   </div>
 
-                  <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1 opacity-60">
+                  <div className="grid grid-cols-7 gap-1 text-center text-[9px] opacity-60">
                     {daysOfWeek.map((day) => (
                       <div key={day} className="font-medium">
                         {day}
                       </div>
                     ))}
                   </div>
-                  <div className="grid grid-cols-7 gap-1 text-center text-xs">
-                    {padding.map((_, index) => (
-                      <div key={`pad-${index}`} />
-                    ))}
-                    {days.map((day) => {
-                      const isToday = day === date.getDate();
-                      const isActive = activeDays.includes(day);
-                      return (
-                        <div
-                          key={day}
-                          className={`aspect-square flex flex-col items-center justify-center rounded-lg cursor-pointer transition-colors relative
-                                ${
-                                  isToday
-                                    ? "bg-purple-600 text-white font-bold shadow-[0_0_10px_rgba(147,51,234,0.5)]"
-                                    : "hover:bg-black/5 dark:hover:bg-purple-500/10 opacity-80"
-                                }
-                                ${
-                                  isActive && !isToday
-                                    ? "bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-500/30"
-                                    : ""
-                                }
-                                `}
-                        >
-                          <span>{day}</span>
-                          {isActive && !isToday && (
-                            <div className="w-1 h-1 bg-fuchsia-500 dark:bg-fuchsia-400 rounded-full mt-0.5 shadow-[0_0_5px_rgba(232,121,249,0.8)]"></div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
+                </div>
+
+                <div className="flex-1 grid grid-cols-7 grid-rows-6 gap-1 text-center text-[9px] min-h-0">
+                  {padding.map((_, index) => (
+                    <div key={`pad-${index}`} />
+                  ))}
+                  {days.map((day) => {
+                    const isToday = day === date.getDate();
+                    const isActive = activeDays.includes(day);
+                    return (
+                      <div
+                        key={day}
+                        className={`flex flex-col items-center justify-center rounded-md cursor-pointer transition-colors relative
+                              ${
+                                isToday
+                                  ? "bg-purple-600 text-white font-bold shadow-[0_0_10px_rgba(147,51,234,0.5)]"
+                                  : "hover:bg-black/5 dark:hover:bg-purple-500/10 opacity-80"
+                              }
+                              ${
+                                isActive && !isToday
+                                  ? "bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-500/30"
+                                  : ""
+                              }
+                              `}
+                      >
+                        <span className={`${isToday ? "text-[10px]" : ""}`}>
+                          {day}
+                        </span>
+                        {isActive && !isToday && (
+                          <div className="w-0.5 h-0.5 bg-fuchsia-500 dark:bg-fuchsia-400 rounded-full mt-0.5 shadow-[0_0_5px_rgba(232,121,249,0.8)]"></div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -1297,16 +1383,118 @@ const MagicBento2 = ({
             <div className="flex flex-col h-full relative z-10 w-full">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Oblíbené kurzy</h3>
-                <button className="text-xs text-blue-600 dark:text-purple-400 hover:text-blue-500 dark:hover:text-purple-300">
+                <button
+                  onClick={() => setShowAllCourses(true)}
+                  className="text-xs text-blue-600 dark:text-purple-400 hover:text-blue-500 dark:hover:text-purple-300"
+                >
                   Zobrazit vše
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {favoriteCourses.map((course) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                {favoriteCourses.slice(0, 3).map((course) => {
+                  const details =
+                    course.details || parseCourseDetails(course.id);
+                  const displayTitle =
+                    course.title || (details ? details.subject : "Kurz");
+
+                  return (
+                    <div
+                      key={course.id}
+                      className="group flex flex-col justify-between p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div
+                          className={`w-8 h-8 rounded-lg ${
+                            course.color || "bg-blue-500"
+                          } flex items-center justify-center group-hover:scale-105 transition-transform`}
+                        >
+                          <BookOpen size={16} className="text-white" />
+                        </div>
+                        {/* Only show play icon if progress > 0 */}
+                        {course.progress > 0 && (
+                          <div className="w-6 h-6 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
+                            <PlayIcon size={12} className="ml-1 opacity-80" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="mt-3">
+                        <div className="mb-2">
+                          <h4
+                            className="text-xs font-bold line-clamp-1"
+                            title={displayTitle}
+                          >
+                            {displayTitle}
+                          </h4>
+                          {details && (
+                            <div className="flex items-center gap-1.5 text-[10px] opacity-70 mt-0.5">
+                              <span className="font-medium bg-white/10 px-1 py-px rounded">
+                                {details.difficulty}
+                              </span>
+                              {details.level && (
+                                <span className="font-mono bg-white/5 px-1 py-px rounded">
+                                  {details.level}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <div className="w-full h-1 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full ${
+                              course.color || "bg-blue-500"
+                            } rounded-full`}
+                            style={{ width: `${course.progress}%` }}
+                          ></div>
+                        </div>
+                        <div className="text-right mt-1">
+                          <span className="text-[10px] opacity-60">
+                            {course.progress}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </BentoItem>
+        </div>
+      </BentoCardGrid>
+
+      {/* All Courses Modal */}
+      {showAllCourses && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setShowAllCourses(false)}
+        >
+          <div
+            className="bg-white dark:bg-[#0B0C15] w-full max-w-2xl rounded-2xl border border-white/10 p-6 shadow-2xl relative overflow-hidden flex flex-col max-h-[80vh] dark:text-white"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <BookOpen className="text-purple-500" />
+                Všechny oblíbené kurzy
+              </h2>
+              <button
+                onClick={() => setShowAllCourses(false)}
+                className="p-2 hover:bg-white/5 rounded-full transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 overflow-y-auto pr-2 custom-scrollbar">
+              {favoriteCourses.map((course) => {
+                const details = course.details || parseCourseDetails(course.id);
+                const displayTitle =
+                  course.title || (details ? details.subject : "Kurz");
+
+                return (
                   <div
                     key={course.id}
-                    className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
+                    className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer min-h-[140px]"
                   >
                     <div className="flex items-start justify-between">
                       <div
@@ -1316,7 +1504,6 @@ const MagicBento2 = ({
                       >
                         <BookOpen size={18} className="text-white" />
                       </div>
-                      {/* Only show play icon if progress > 0 */}
                       {course.progress > 0 && (
                         <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
                           <PlayIcon size={14} className="ml-1 opacity-80" />
@@ -1324,12 +1511,26 @@ const MagicBento2 = ({
                       )}
                     </div>
                     <div className="mt-4">
-                      <h4
-                        className="text-sm font-bold mb-2 line-clamp-1"
-                        title={course.title}
-                      >
-                        {course.title}
-                      </h4>
+                      <div className="mb-2">
+                        <h4
+                          className="text-sm font-bold line-clamp-1"
+                          title={displayTitle}
+                        >
+                          {displayTitle}
+                        </h4>
+                        {details && (
+                          <div className="flex items-center gap-2 text-xs opacity-70 mt-0.5">
+                            <span className="font-medium bg-white/10 px-1.5 py-0.5 rounded text-[10px]">
+                              {details.difficulty}
+                            </span>
+                            {details.level && (
+                              <span className="font-mono bg-white/5 px-1.5 py-0.5 rounded text-[10px]">
+                                {details.level}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
                       <div className="w-full h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
                         <div
                           className={`h-full ${
@@ -1345,12 +1546,12 @@ const MagicBento2 = ({
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
-          </BentoItem>
+          </div>
         </div>
-      </BentoCardGrid>
+      )}
     </>
   );
 };

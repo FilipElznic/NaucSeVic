@@ -13,12 +13,12 @@ function Home2() {
         }`}
       >
         <MagicBento2
-          textAutoHide={true}
+          textAutoHide={false}
           enableStars={true}
           enableSpotlight={true}
           enableBorderGlow={true}
-          enableTilt={true}
-          enableMagnetism={true}
+          enableTilt={false}
+          enableMagnetism={false}
           clickEffect={true}
           spotlightRadius={300}
           particleCount={12}
