@@ -27,16 +27,16 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TaskCreator = lazy(() => import("./components/TaskCreator"));
-const AdminGeometryManager = lazy(() =>
-  import("./pages/geometry/AdminGeometryManager")
+const AdminGeometryManager = lazy(
+  () => import("./pages/geometry/AdminGeometryManager"),
 );
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
-const Home = lazy(() => import("./pages/Home"));
+const Home2 = lazy(() => import("./pages/Home2"));
 
-const UniversalSubjectLayout = lazy(() =>
-  import("./components/layout/UniversalSubjectLayout")
+const UniversalSubjectLayout = lazy(
+  () => import("./components/layout/UniversalSubjectLayout"),
 );
 
 // Protected Route component is now imported from components
@@ -78,7 +78,7 @@ const AppRoutes = () => {
                   <LoadingSpinner size="xl" />
                 </div>
               ) : user ? (
-                <Home />
+                <Home2 />
               ) : (
                 <Layout showNavbar={false}>
                   <LandingPage />
