@@ -618,69 +618,104 @@ exports.submitTaskAnswer = onCall(async (request) => {
       coinsEarned = 0;
     }
 
-    // Create task attempt record
-    const taskAttempt = {
-      attemptedAt: now,
-      isCorrect: isCorrect,
-      taskRef: admin.firestore().collection("tasks").doc(taskId),
-      type: taskData.type,
-      userAnswer: userAnswer,
-      xpEarned: xpEarned,
-    };
-
     // Update user profile
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
     const userRef = admin.firestore().collection("users").doc(userId);
 
-    await admin.firestore().runTransaction(async (transaction) => {
-      const userDoc = await transaction.get(userRef);
+    // Variables for boost info to return
+    let activeBoost = null;
+    let baseXp = xpEarned;
 
-      if (!userDoc.exists) {
-        throw new Error("User profile not found");
-      }
+    const transactionResult = await admin
+      .firestore()
+      .runTransaction(async (transaction) => {
+        const userDoc = await transaction.get(userRef);
 
-      const userData = userDoc.data();
-      const currentProgress = userData.progress || {};
-      const todayProgress = currentProgress[today] || {
-        xpGained: 0,
-        coinsGained: 0,
-        tasksFinished: 0,
-        lessonsFinished: 0,
-        chaptersFinished: 0,
-        loginTime: now,
-      };
+        if (!userDoc.exists) {
+          throw new Error("User profile not found");
+        }
 
-      // Update today's progress
-      todayProgress.xpGained += xpEarned;
-      todayProgress.coinsGained += coinsEarned;
-      if (isCorrect) {
-        todayProgress.tasksFinished += 1;
-      }
+        const userData = userDoc.data();
+        let currentXp = baseXp;
+        let currentActiveBoost = null;
 
-      // Update user profile with task attempt and progress
-      transaction.update(userRef, {
-        [`completedTasks.${taskId}`]: taskAttempt,
-        [`progress.${today}`]: todayProgress,
-        "profile.xp": admin.firestore.FieldValue.increment(xpEarned),
-        "profile.coins": admin.firestore.FieldValue.increment(coinsEarned),
+        // Check for active XP booster
+        if (userData.activeBoosts && userData.activeBoosts.xp) {
+          const xpBoost = userData.activeBoosts.xp;
+          const nowMillis = Date.now(); // approximate synced time
+          const endsAtMillis = xpBoost.endsAt.toMillis();
+
+          if (endsAtMillis > nowMillis) {
+            const multiplier = xpBoost.multiplier || 1;
+            currentXp = Math.floor(currentXp * multiplier);
+            currentActiveBoost = {
+              multiplier: multiplier,
+              expiresAt: xpBoost.endsAt,
+            };
+          }
+        }
+
+        // Create task attempt record with final XP
+        const taskAttempt = {
+          attemptedAt: now,
+          isCorrect: isCorrect,
+          taskRef: admin.firestore().collection("tasks").doc(taskId),
+          type: taskData.type,
+          userAnswer: userAnswer,
+          xpEarned: currentXp, // This is now the boosted amount
+          baseXp: baseXp, // Keep track of base XP
+        };
+
+        const currentProgress = userData.progress || {};
+        const todayProgress = currentProgress[today] || {
+          xpGained: 0,
+          coinsGained: 0,
+          tasksFinished: 0,
+          lessonsFinished: 0,
+          chaptersFinished: 0,
+          loginTime: now,
+        };
+
+        // Update today's progress
+        todayProgress.xpGained += currentXp;
+        todayProgress.coinsGained += coinsEarned;
+        if (isCorrect) {
+          todayProgress.tasksFinished += 1;
+        }
+
+        // Update user profile with task attempt and progress
+        transaction.update(userRef, {
+          [`completedTasks.${taskId}`]: taskAttempt,
+          [`progress.${today}`]: todayProgress,
+          "profile.xp": admin.firestore.FieldValue.increment(currentXp),
+          "profile.coins": admin.firestore.FieldValue.increment(coinsEarned),
+        });
+
+        return { finalXp: currentXp, activeBoost: currentActiveBoost };
       });
-    });
+
+    xpEarned = transactionResult.finalXp;
+    activeBoost = transactionResult.activeBoost;
 
     logger.info("Task answer submitted", {
       userId,
       taskId,
       isCorrect,
-      xpEarned,
+      xpEarned, // Boosted
+      baseXp,
       coinsEarned,
       taskType: taskData.type,
+      activeBoost,
     });
 
     return {
       success: true,
       isCorrect: isCorrect,
       xpEarned: xpEarned,
+      baseXp: baseXp,
       coinsEarned: coinsEarned,
       explanation: taskData.explanation,
+      activeBoost: activeBoost,
       correctAnswer: isCorrect
         ? null
         : taskData.correctAnswer || taskData.correctAnswers,
@@ -691,6 +726,119 @@ exports.submitTaskAnswer = onCall(async (request) => {
       userId: request.auth && request.auth.uid,
     });
     throw new Error(error.message || "Failed to submit task answer");
+  }
+});
+
+// SECURED: Activate a booster item
+exports.activateBooster = onCall(async (request) => {
+  try {
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const { boosterId } = request.data || {};
+    const userId = request.auth.uid;
+    validateInput({ boosterId }, ["boosterId"]);
+    checkRateLimit(userId, "activateBooster", 10, 60000);
+
+    const boostDefinitions = {
+      xp_boost_1h: { durationHours: 1, type: "xp", multiplier: 2.0 },
+      xp_boost_12h: { durationHours: 12, type: "xp", multiplier: 2.0 },
+      xp_boost_24h: { durationHours: 24, type: "xp", multiplier: 2.0 },
+    };
+
+    const boostDef = boostDefinitions[boosterId];
+    if (!boostDef) {
+      throw new Error("Invalid booster ID");
+    }
+
+    const userRef = admin.firestore().collection("users").doc(userId);
+    const now = admin.firestore.Timestamp.now();
+
+    await admin.firestore().runTransaction(async (transaction) => {
+      const userDoc = await transaction.get(userRef);
+      if (!userDoc.exists) throw new Error("User not found");
+      const userData = userDoc.data();
+      const inventory = userData.inventory || {};
+
+      if (!inventory[boosterId] || inventory[boosterId] <= 0) {
+        throw new Error("You do not own this booster");
+      }
+
+      // Calculate end time
+      const activeBoosts = userData.activeBoosts || {};
+      const currentBoost = activeBoosts[boostDef.type];
+
+      let newEndsAt;
+      const durationMillis = boostDef.durationHours * 60 * 60 * 1000;
+
+      if (currentBoost && currentBoost.endsAt.toMillis() > now.toMillis()) {
+        // Extend
+        newEndsAt = new admin.firestore.Timestamp(
+          currentBoost.endsAt.seconds + durationMillis / 1000,
+          currentBoost.endsAt.nanoseconds
+        );
+      } else {
+        // New
+        newEndsAt = new admin.firestore.Timestamp(
+          now.seconds + durationMillis / 1000,
+          now.nanoseconds
+        );
+      }
+
+      const newBoostData = {
+        multiplier: boostDef.multiplier,
+        activatedAt: now,
+        endsAt: newEndsAt,
+        sourceItem: boosterId,
+      };
+
+      transaction.update(userRef, {
+        [`inventory.${boosterId}`]: admin.firestore.FieldValue.increment(-1),
+        [`activeBoosts.${boostDef.type}`]: newBoostData,
+      });
+    });
+
+    logger.info("Booster activated", { userId, boosterId });
+    return { success: true, message: "Booster activated" };
+  } catch (error) {
+    logger.error("Error activating booster", error);
+    throw new Error(error.message || "Failed to activate booster");
+  }
+});
+
+// DEBUG: Add booster to user inventory (FOR TESTING ONLY)
+exports.debugAddBooster = onCall(async (request) => {
+  try {
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const { boosterId, amount = 1 } = request.data || {};
+    const userId = request.auth.uid;
+    validateInput({ boosterId }, ["boosterId"]);
+
+    // Check if boosterId is valid
+    const validBoosters = ["xp_boost_1h", "xp_boost_12h", "xp_boost_24h"];
+    if (!validBoosters.includes(boosterId)) {
+      throw new Error("Invalid booster ID");
+    }
+
+    const userRef = admin.firestore().collection("users").doc(userId);
+
+    await userRef.update({
+      [`inventory.${boosterId}`]: admin.firestore.FieldValue.increment(amount),
+    });
+
+    logger.info("Debug: Added booster to inventory", {
+      userId,
+      boosterId,
+      amount,
+    });
+    return { success: true, message: `Added ${amount} x ${boosterId}` };
+  } catch (error) {
+    logger.error("Error adding booster (debug)", error);
+    throw new Error(error.message || "Failed to add booster");
   }
 });
 

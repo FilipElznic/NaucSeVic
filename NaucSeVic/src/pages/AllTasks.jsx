@@ -42,6 +42,7 @@ const AllTasks = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [showHints, setShowHints] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [activeBoost, setActiveBoost] = useState(null);
 
   const subjects = [
     { value: "all", label: "Všechny předměty" },
@@ -199,6 +200,28 @@ const AllTasks = () => {
       // Load user's completed tasks if logged in
       let userCompletedTasks = {};
       if (user) {
+        // Fetch user profile to get active boosts
+        const userProfile = await userService.getUserProfile(user.uid);
+        if (userProfile?.activeBoosts?.xp) {
+          const xpBoost = userProfile.activeBoosts.xp;
+          const now = Date.now();
+          const endsAt = xpBoost.endsAt?.toMillis
+            ? xpBoost.endsAt.toMillis()
+            : 0;
+
+          if (endsAt > now) {
+            setActiveBoost({
+              multiplier: xpBoost.multiplier,
+              endsAt: new Date(endsAt),
+            });
+            console.log("Active XP Boost detected:", xpBoost);
+          } else {
+            setActiveBoost(null);
+          }
+        } else {
+          setActiveBoost(null);
+        }
+
         userCompletedTasks = await userService.getCompletedTasks(user.uid);
         setCompletedTaskIds(userCompletedTasks);
         console.log("User completed tasks:", userCompletedTasks);
@@ -321,8 +344,14 @@ const AllTasks = () => {
       if (result.isCorrect !== undefined) {
         // Show toast first
         if (result.isCorrect) {
+          const boostMsg = result.activeBoost
+            ? `(Boost ${result.activeBoost.multiplier}x!)`
+            : activeBoost
+            ? `(Boost ${activeBoost.multiplier}x!)`
+            : "";
+
           toast.success(
-            `🎉 Správně! +${result.xpEarned} XP, +${result.coinsEarned} mincí`,
+            `🎉 Správně! +${result.xpEarned} XP ${boostMsg}, +${result.coinsEarned} mincí`,
             {
               position: "top-right",
               autoClose: 5000,
@@ -451,6 +480,24 @@ const AllTasks = () => {
             Procházejte a řešte úkoly ze všech předmětů. Získávejte XP a
             zlepšujte své znalosti.
           </p>
+
+          {activeBoost && (
+            <div className="mt-4 flex justify-center">
+              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 text-yellow-700 dark:text-yellow-300 px-4 py-2 rounded-full border border-yellow-400/30 shadow-sm animate-pulse-slow">
+                <TrendingUp className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
+                <span className="font-bold">
+                  Aktivní XP Boost: {activeBoost.multiplier}x
+                </span>
+                <span className="text-sm opacity-80 border-l border-yellow-500/30 pl-2 ml-1">
+                  vyprší v{" "}
+                  {activeBoost.endsAt.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Filters and Search */}
@@ -643,8 +690,17 @@ const AllTasks = () => {
                     {selectedTask.name}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-zinc-400">
-                    {getSubjectLabel(selectedTask.subject)} • {selectedTask.xp}{" "}
-                    XP
+                    {getSubjectLabel(selectedTask.subject)} •{" "}
+                    {activeBoost ? (
+                      <span className="text-yellow-600 dark:text-yellow-400 font-bold inline-flex items-center">
+                        {selectedTask.xp * activeBoost.multiplier} XP
+                        <span className="ml-1 text-xs bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 rounded">
+                          {activeBoost.multiplier}x
+                        </span>
+                      </span>
+                    ) : (
+                      `${selectedTask.xp} XP`
+                    )}
                   </p>
                 </div>
               </div>

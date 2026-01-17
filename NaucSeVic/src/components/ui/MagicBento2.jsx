@@ -1,43 +1,65 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { gsap } from "gsap";
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+} from "recharts";
+import {
+  User,
+  Zap,
+  TrendingUp,
+  Calendar as CalendarIcon,
+  BookOpen,
+  Award,
+  Star,
+  Activity,
+  Target,
+} from "lucide-react";
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = "132, 0, 255";
 const MOBILE_BREAKPOINT = 768;
 
-const cardData = [
-  {
-    title: "Profile & Stats",
-    description: "Level 12 • 2450/3000 XP",
-    label: "User Profile",
-  },
-  {
-    title: "Welcome Back, Filip!",
-    description: "3 upcoming tasks for today",
-    label: "Dashboard",
-  },
-  {
-    title: "Study Activity",
-    description: "Weekly learning progress",
-    label: "Analytics",
-  },
-  {
-    title: "Calendar & Boosters",
-    description: "Upcoming events & active effects",
-    label: "Schedule",
-  },
-  {
-    title: "Quick Actions",
-    description: "Daily quiz, Leaderboard",
-    label: "Actions",
-  },
-  {
-    title: "Active Courses",
-    description: "Geometry, Physics, Math Analysis",
-    label: "Learning",
-  },
-];
+// Simple icons component for usage
+const BrainIcon = (props) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M9.5 2A2.5 12.15 0 0 1 12 4.15 2.5 12.15 0 0 1 14.5 2c2 0 4.05 1.65 4.05 4.5V11c0 .9-.55 1.6-1.55 1.6-2 0-3.05-1.15-4-3.5 0 0-1.5 1.65-2 3-1 2.5-3.5 2.5-3.5 2.5A3.5 3.5 0 0 1 2 11c0-2.85 2.05-4.5 4.05-4.5A2.5 2.5 0 0 1 9.5 2Z" />
+    <path d="M2.5 14.5A3.5 3.5 0 0 0 4.5 21a2.5 2.5 0 0 0 2.5-2.5 2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2-3" />
+  </svg>
+);
+
+const PlayIcon = ({ size = 24, className = "" }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+  </svg>
+);
 
 const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
   const el = document.createElement("div");
@@ -100,8 +122,8 @@ const ParticleCard = ({
       createParticleElement(
         Math.random() * width,
         Math.random() * height,
-        glowColor,
-      ),
+        glowColor
+      )
     );
     particlesInitialized.current = true;
   }, [particleCount, glowColor]);
@@ -143,7 +165,7 @@ const ParticleCard = ({
         gsap.fromTo(
           clone,
           { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" },
+          { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" }
         );
 
         gsap.to(clone, {
@@ -258,7 +280,7 @@ const ParticleCard = ({
         Math.hypot(x, y),
         Math.hypot(x - rect.width, y),
         Math.hypot(x, y - rect.height),
-        Math.hypot(x - rect.width, y - rect.height),
+        Math.hypot(x - rect.width, y - rect.height)
       );
 
       const ripple = document.createElement("div");
@@ -288,7 +310,7 @@ const ParticleCard = ({
           duration: 0.8,
           ease: "power2.out",
           onComplete: () => ripple.remove(),
-        },
+        }
       );
     };
 
@@ -332,6 +354,7 @@ const GlobalSpotlight = ({
   enabled = true,
   spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
   glowColor = DEFAULT_GLOW_COLOR,
+  isDarkMode = true,
 }) => {
   const spotlightRef = useRef(null);
   const isInsideSection = useRef(false);
@@ -358,7 +381,7 @@ const GlobalSpotlight = ({
       z-index: 200;
       opacity: 0;
       transform: translate(-50%, -50%);
-      mix-blend-mode: screen;
+      mix-blend-mode: ${isDarkMode ? "screen" : "normal"};
     `;
     document.body.appendChild(spotlight);
     spotlightRef.current = spotlight;
@@ -419,7 +442,7 @@ const GlobalSpotlight = ({
           e.clientX,
           e.clientY,
           glowIntensity,
-          spotlightRadius,
+          spotlightRadius
         );
       });
 
@@ -434,8 +457,8 @@ const GlobalSpotlight = ({
         minDistance <= proximity
           ? 0.8
           : minDistance <= fadeDistance
-            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
-            : 0;
+          ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
+          : 0;
 
       gsap.to(spotlightRef.current, {
         opacity: targetOpacity,
@@ -466,14 +489,21 @@ const GlobalSpotlight = ({
       document.removeEventListener("mouseleave", handleMouseLeave);
       spotlightRef.current?.parentNode?.removeChild(spotlightRef.current);
     };
-  }, [gridRef, disableAnimations, enabled, spotlightRadius, glowColor]);
+  }, [
+    gridRef,
+    disableAnimations,
+    enabled,
+    spotlightRadius,
+    glowColor,
+    isDarkMode,
+  ]);
 
   return null;
 };
 
 const BentoCardGrid = ({ children, gridRef }) => (
   <div
-    className="bento-section grid gap-4 p-4 w-full max-w-[1400px] select-none relative"
+    className="bento-section grid gap-6 p-4 w-full max-w-[1400px] select-none relative"
     style={{ fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)" }}
     ref={gridRef}
   >
@@ -509,10 +539,236 @@ const MagicBento2 = ({
   glowColor = DEFAULT_GLOW_COLOR,
   clickEffect = true,
   enableMagnetism = true,
+  isDarkMode = true,
 }) => {
   const gridRef = useRef(null);
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
+
+  // Data & Content Logic
+  const activityData = [
+    { name: "Po", xp: 400 },
+    { name: "Út", xp: 300 },
+    { name: "St", xp: 600 },
+    { name: "Čt", xp: 450 },
+    { name: "Pá", xp: 700 },
+    { name: "So", xp: 500 },
+    { name: "Ne", xp: 800 },
+  ];
+
+  const userStats = {
+    name: "Filip Elznic",
+    email: "filip.elznic@example.com",
+    level: 12,
+    xp: 2450,
+    maxXp: 3000,
+    coins: 450,
+    streak: 15,
+  };
+
+  const activeBoosters = [
+    {
+      id: 1,
+      name: "2x XP",
+      duration: "2h 30m",
+      icon: Zap,
+      color: "text-amber-400",
+    },
+    {
+      id: 2,
+      name: "Síla mozku",
+      duration: "45m",
+      icon: BrainIcon,
+      color: "text-purple-400",
+    },
+  ];
+
+  const upcomingTasks = [
+    { id: 1, title: "Kvíz z geometrie", time: "14:00 Dnes", type: "Quiz" },
+    { id: 2, title: "Fyzikální laboratoř", time: "Zítra", type: "Assignment" },
+    { id: 3, title: "Opakování matematiky", time: "St", type: "Review" },
+  ];
+
+  // Calendar Logic
+  const date = new Date();
+  const monthName = date.toLocaleString("cs-CZ", { month: "long" });
+  const year = date.getFullYear();
+  const daysInMonth = new Date(year, date.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(year, date.getMonth(), 1).getDay(); // 0 = Sun
+  const startingDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; // Mon start
+
+  const daysOfWeek = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"];
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+  const padding = Array.from({ length: startingDayIndex }, () => null);
+
+  // Simulated active days
+  const activeDays = [3, 7, 12, 14, 18, 22, 25, 28];
+
+  const favoriteCourses = [
+    {
+      id: 1,
+      title: "Pokročilá geometrie",
+      progress: 75,
+      color: "bg-blue-500",
+    },
+    {
+      id: 2,
+      title: "Kvantová fyzika",
+      progress: 40,
+      color: "bg-fuchsia-500",
+    },
+    {
+      id: 3,
+      title: "Matematická analýza I",
+      progress: 90,
+      color: "bg-emerald-500",
+    },
+  ];
+
+  // Wrapper for consistency
+  const BentoItem = ({ children, className = "", style = {} }) => {
+    const baseClassName = `card flex flex-col justify-between relative w-full h-full p-6 rounded-[24px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
+      enableBorderGlow ? "card--border-glow" : ""
+    } ${className}`;
+
+    const cardStyle = {
+      backgroundColor: "var(--background-dark)",
+      borderColor: "var(--border-color)",
+      color: "var(--white)",
+      "--glow-x": "50%",
+      "--glow-y": "50%",
+      "--glow-intensity": "0",
+      "--glow-radius": "200px",
+      ...style,
+    };
+
+    if (enableStars) {
+      return (
+        <ParticleCard
+          className={baseClassName}
+          style={cardStyle}
+          disableAnimations={shouldDisableAnimations}
+          particleCount={particleCount}
+          glowColor={glowColor}
+          enableTilt={enableTilt}
+          clickEffect={clickEffect}
+          enableMagnetism={enableMagnetism}
+        >
+          {children}
+        </ParticleCard>
+      );
+    }
+
+    return (
+      <div
+        className={baseClassName}
+        style={cardStyle}
+        ref={(el) => {
+          if (!el) return;
+
+          const handleMouseMove = (e) => {
+            if (shouldDisableAnimations) return;
+
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            if (enableTilt) {
+              const rotateX = ((y - centerY) / centerY) * -10;
+              const rotateY = ((x - centerX) / centerX) * 10;
+
+              gsap.to(el, {
+                rotateX,
+                rotateY,
+                duration: 0.1,
+                ease: "power2.out",
+                transformPerspective: 1000,
+              });
+            }
+
+            if (enableMagnetism) {
+              const magnetX = (x - centerX) * 0.05;
+              const magnetY = (y - centerY) * 0.05;
+
+              gsap.to(el, {
+                x: magnetX,
+                y: magnetY,
+                duration: 0.3,
+                ease: "power2.out",
+              });
+            }
+          };
+
+          const handleMouseLeave = () => {
+            if (shouldDisableAnimations) return;
+
+            if (enableTilt) {
+              gsap.to(el, {
+                rotateX: 0,
+                rotateY: 0,
+                duration: 0.3,
+                ease: "power2.out",
+              });
+            }
+
+            if (enableMagnetism) {
+              gsap.to(el, {
+                x: 0,
+                y: 0,
+                duration: 0.3,
+                ease: "power2.out",
+              });
+            }
+          };
+
+          const handleClick = (e) => {
+            if (!clickEffect || shouldDisableAnimations) return;
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const maxDistance = Math.max(
+              Math.hypot(x, y),
+              Math.hypot(x - rect.width, y),
+              Math.hypot(x, y - rect.height),
+              Math.hypot(x - rect.width, y - rect.height)
+            );
+            const ripple = document.createElement("div");
+            ripple.style.cssText = `
+              position: absolute;
+              width: ${maxDistance * 2}px;
+              height: ${maxDistance * 2}px;
+              border-radius: 50%;
+              background: radial-gradient(circle, rgba(${glowColor}, 0.4) 0%, rgba(${glowColor}, 0.2) 30%, transparent 70%);
+              left: ${x - maxDistance}px;
+              top: ${y - maxDistance}px;
+              pointer-events: none;
+              z-index: 1000;
+            `;
+            el.appendChild(ripple);
+            gsap.fromTo(
+              ripple,
+              { scale: 0, opacity: 1 },
+              {
+                scale: 1,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                onComplete: () => ripple.remove(),
+              }
+            );
+          };
+
+          el.addEventListener("mousemove", handleMouseMove);
+          el.addEventListener("mouseleave", handleMouseLeave);
+          el.addEventListener("click", handleClick);
+        }}
+      >
+        {children}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -524,17 +780,20 @@ const MagicBento2 = ({
             --glow-intensity: 0;
             --glow-radius: 200px;
             --glow-color: ${glowColor};
-            --border-color: #392e4e;
-            --background-dark: #060010;
-            --white: hsl(0, 0%, 100%);
+            --border-color: ${isDarkMode ? "#392e4e" : "#94a3b8"};
+            --background-dark: ${isDarkMode ? "#060010" : "#ffffff"};
+            --white: ${isDarkMode ? "hsl(0, 0%, 100%)" : "#020617"};
             --purple-primary: rgba(132, 0, 255, 1);
             --purple-glow: rgba(132, 0, 255, 0.2);
             --purple-border: rgba(132, 0, 255, 0.8);
+            --shadow-primary: ${
+              isDarkMode ? "rgba(46, 24, 78, 0.4)" : "rgba(0, 0, 0, 0.25)"
+            };
           }
           
           .card-responsive {
             display: grid;
-            gap: 1rem;
+            gap: 1.5rem;
             grid-template-columns: 1fr;
             width: 100%;
             margin: 0 auto;
@@ -553,15 +812,15 @@ const MagicBento2 = ({
             
             1. Sidebar (Left): Col 1, Row 1-3
             2. Header (Top Right): Col 2-4, Row 1
-            3. Activity (Middle Left): Col 2-3, Row 2
-            4. Calendar/Boosters (Middle Right): Col 4, Row 2
+            3. Activity (Middle Left): Col 2-3, Row 2 (Height min 300px)
+            4. Calendar/Boosters (Middle Right): Col 4, Row 2 (Height min 300px)
             5. Quick Actions (Bottom Left): Col 2, Row 3
             6. Courses (Bottom Right): Col 3-4, Row 3
           */
           @media (min-width: 1024px) {
             .card-responsive {
               grid-template-columns: repeat(4, 1fr);
-              grid-template-rows: auto auto auto;
+              grid-template-rows: auto 260px 260px;
             }
             
             /* Sidebar */
@@ -581,14 +840,12 @@ const MagicBento2 = ({
             .card-responsive .card:nth-child(3) {
               grid-column: 2 / span 2;
               grid-row: 2;
-              min-height: 300px;
             }
 
             /* Calendar/Assistant */
             .card-responsive .card:nth-child(4) {
               grid-column: 4;
               grid-row: 2;
-              min-height: 300px;
             }
             
             /* Quick Actions */
@@ -629,7 +886,7 @@ const MagicBento2 = ({
           }
           
           .card--border-glow:hover {
-            box-shadow: 0 4px 20px rgba(46, 24, 78, 0.4), 0 0 30px rgba(${glowColor}, 0.2);
+            box-shadow: 0 4px 20px var(--shadow-primary), 0 0 30px rgba(${glowColor}, 0.2);
           }
           
           .particle::before {
@@ -689,195 +946,353 @@ const MagicBento2 = ({
           enabled={enableSpotlight}
           spotlightRadius={spotlightRadius}
           glowColor={glowColor}
+          isDarkMode={isDarkMode}
         />
       )}
 
       <BentoCardGrid gridRef={gridRef}>
         <div className="card-responsive">
-          {cardData.map((card, index) => {
-            const baseClassName = `card flex flex-col justify-between relative w-full h-full p-6 rounded-[24px] border border-solid font-light overflow-hidden transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
-              enableBorderGlow ? "card--border-glow" : ""
-            }`;
-
-            const cardStyle = {
-              backgroundColor: card.color || "var(--background-dark)",
-              borderColor: "var(--border-color)",
-              color: "var(--white)",
-              "--glow-x": "50%",
-              "--glow-y": "50%",
-              "--glow-intensity": "0",
-              "--glow-radius": "200px",
-            };
-
-            if (enableStars) {
-              return (
-                <ParticleCard
-                  key={index}
-                  className={baseClassName}
-                  style={cardStyle}
-                  disableAnimations={shouldDisableAnimations}
-                  particleCount={particleCount}
-                  glowColor={glowColor}
-                  enableTilt={enableTilt}
-                  clickEffect={clickEffect}
-                  enableMagnetism={enableMagnetism}
-                >
-                  <div className="card__header flex justify-between gap-3 relative text-white z-10">
-                    <span className="card__label text-sm uppercase tracking-wider opacity-70">
-                      {card.label}
-                    </span>
+          {/* 1. Sidebar (User Stats) */}
+          <BentoItem>
+            <div className="flex flex-col h-full gap-6 relative z-10 hidden lg:flex">
+              <div className="flex flex-col items-center gap-4 text-center">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-1">
+                  <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
+                    <User size={48} className="text-gray-400" />
                   </div>
-                  <div className="card__content flex flex-col relative text-white z-10 mt-auto">
-                    <h3
-                      className={`card__title font-medium text-xl m-0 mb-2 ${textAutoHide ? "text-clamp-1" : ""}`}
-                    >
-                      {card.title}
-                    </h3>
-                    <p
-                      className={`card__description text-sm leading-6 opacity-60 ${textAutoHide ? "text-clamp-2" : ""}`}
-                    >
-                      {card.description}
-                    </p>
-                  </div>
-                </ParticleCard>
-              );
-            }
-
-            return (
-              <div
-                key={index}
-                className={baseClassName}
-                style={cardStyle}
-                ref={(el) => {
-                  if (!el) return;
-
-                  const handleMouseMove = (e) => {
-                    if (shouldDisableAnimations) return;
-
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-
-                    if (enableTilt) {
-                      const rotateX = ((y - centerY) / centerY) * -10;
-                      const rotateY = ((x - centerX) / centerX) * 10;
-
-                      gsap.to(el, {
-                        rotateX,
-                        rotateY,
-                        duration: 0.1,
-                        ease: "power2.out",
-                        transformPerspective: 1000,
-                      });
-                    }
-
-                    if (enableMagnetism) {
-                      const magnetX = (x - centerX) * 0.05;
-                      const magnetY = (y - centerY) * 0.05;
-
-                      gsap.to(el, {
-                        x: magnetX,
-                        y: magnetY,
-                        duration: 0.3,
-                        ease: "power2.out",
-                      });
-                    }
-                  };
-
-                  const handleMouseLeave = () => {
-                    if (shouldDisableAnimations) return;
-
-                    if (enableTilt) {
-                      gsap.to(el, {
-                        rotateX: 0,
-                        rotateY: 0,
-                        duration: 0.3,
-                        ease: "power2.out",
-                      });
-                    }
-
-                    if (enableMagnetism) {
-                      gsap.to(el, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.3,
-                        ease: "power2.out",
-                      });
-                    }
-                  };
-
-                  const handleClick = (e) => {
-                    if (!clickEffect || shouldDisableAnimations) return;
-
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    const maxDistance = Math.max(
-                      Math.hypot(x, y),
-                      Math.hypot(x - rect.width, y),
-                      Math.hypot(x, y - rect.height),
-                      Math.hypot(x - rect.width, y - rect.height),
-                    );
-
-                    const ripple = document.createElement("div");
-                    ripple.style.cssText = `
-                      position: absolute;
-                      width: ${maxDistance * 2}px;
-                      height: ${maxDistance * 2}px;
-                      border-radius: 50%;
-                      background: radial-gradient(circle, rgba(${glowColor}, 0.4) 0%, rgba(${glowColor}, 0.2) 30%, transparent 70%);
-                      left: ${x - maxDistance}px;
-                      top: ${y - maxDistance}px;
-                      pointer-events: none;
-                      z-index: 1000;
-                    `;
-
-                    el.appendChild(ripple);
-
-                    gsap.fromTo(
-                      ripple,
-                      {
-                        scale: 0,
-                        opacity: 1,
-                      },
-                      {
-                        scale: 1,
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        onComplete: () => ripple.remove(),
-                      },
-                    );
-                  };
-
-                  el.addEventListener("mousemove", handleMouseMove);
-                  el.addEventListener("mouseleave", handleMouseLeave);
-                  el.addEventListener("click", handleClick);
-                }}
-              >
-                <div className="card__header flex justify-between gap-3 relative text-white z-10">
-                  <span className="card__label text-sm uppercase tracking-wider opacity-70">
-                    {card.label}
-                  </span>
                 </div>
-                <div className="card__content flex flex-col relative text-white z-10 mt-auto">
-                  <h3
-                    className={`card__title font-medium text-xl m-0 mb-2 ${textAutoHide ? "text-clamp-1" : ""}`}
-                  >
-                    {card.title}
-                  </h3>
-                  <p
-                    className={`card__description text-sm leading-6 opacity-60 ${textAutoHide ? "text-clamp-2" : ""}`}
-                  >
-                    {card.description}
+                <div>
+                  <h2 className="text-xl font-bold">{userStats.name}</h2>
+                  <p className="text-sm opacity-60 break-all">
+                    {userStats.email}
                   </p>
                 </div>
               </div>
-            );
-          })}
+
+              <div className="space-y-4 w-full">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="opacity-60">Úroveň {userStats.level}</span>
+                  <span className="font-mono text-purple-600 dark:text-purple-400">
+                    {userStats.xp} / {userStats.maxXp} XP
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="bg-purple-600 h-full rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(147,51,234,0.5)]"
+                    style={{
+                      width: `${(userStats.xp / userStats.maxXp) * 100}%`,
+                    }}
+                  ></div>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <div className="bg-black/5 dark:bg-[#0B0C15]/50 border border-transparent dark:border-white/5 rounded-xl p-3 flex flex-col items-center">
+                  <Star
+                    className="text-amber-500 dark:text-amber-400 mb-1"
+                    size={20}
+                  />
+                  <span className="font-bold">{userStats.coins}</span>
+                  <span className="text-[10px] opacity-60 uppercase">
+                    Mince
+                  </span>
+                </div>
+                <div className="bg-black/5 dark:bg-[#0B0C15]/50 border border-transparent dark:border-white/5 rounded-xl p-3 flex flex-col items-center">
+                  <Zap
+                    className="text-blue-500 dark:text-fuchsia-500 mb-1"
+                    size={20}
+                  />
+                  <span className="font-bold">{userStats.streak}</span>
+                  <span className="text-[10px] opacity-60 uppercase">
+                    Série
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-auto">
+                <button className="w-full py-2 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl text-sm transition-colors border border-black/5 dark:border-white/5">
+                  Upravit profil
+                </button>
+              </div>
+            </div>
+            {/* Mobile Fallback for sidebar content */}
+            <div className="flex flex-col h-full gap-4 relative z-10 lg:hidden">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-0.5">
+                  <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
+                    <User size={24} className="text-gray-400" />
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold">{userStats.name}</h2>
+                  <span className="text-xs font-mono text-purple-600 dark:text-purple-400">
+                    Lvl {userStats.level} • {userStats.xp} XP
+                  </span>
+                </div>
+              </div>
+            </div>
+          </BentoItem>
+
+          {/* 2. Header */}
+          <BentoItem className="justify-center">
+            <div className="relative z-10">
+              <h1 className="text-2xl font-bold flex items-center gap-2 mb-2">
+                Vítejte zpět, {userStats.name.split(" ")[0]}!{" "}
+                <span className="text-2xl">👋</span>
+              </h1>
+              <p className="opacity-60 text-sm">
+                Máte {upcomingTasks.length} nevyřízených úkolů na dnešek.
+              </p>
+            </div>
+          </BentoItem>
+
+          {/* 3. Activity Graph */}
+          <BentoItem>
+            <div className="flex flex-col h-full relative z-10 w-full">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Activity
+                  size={18}
+                  className="text-purple-600 dark:text-purple-400"
+                />
+                Studijní aktivita
+              </h3>
+              <div
+                className="flex-1 w-full min-h-[140px]"
+                style={{ minWidth: 0, minHeight: "140px" }}
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={activityData}>
+                    <defs>
+                      <linearGradient id="colorXp" x1="0" y1="0" x2="0" y2="1">
+                        <stop
+                          offset="5%"
+                          stopColor="#8b5cf6"
+                          stopOpacity={0.3}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#8b5cf6"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke={isDarkMode ? "#ffffff10" : "#00000010"}
+                      vertical={false}
+                    />
+                    <XAxis
+                      dataKey="name"
+                      stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <YAxis
+                      stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
+                      fontSize={12}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: isDarkMode ? "#0B0C15" : "#ffffff",
+                        borderColor: "#8b5cf6",
+                        color: isDarkMode ? "#fff" : "#000",
+                        borderRadius: "8px",
+                      }}
+                      cursor={{ stroke: "#8b5cf6", strokeWidth: 1 }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="xp"
+                      stroke="#8b5cf6"
+                      fillOpacity={1}
+                      fill="url(#colorXp)"
+                      strokeWidth={3}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </BentoItem>
+
+          {/* 4. Calendar & Boosters */}
+          <BentoItem>
+            <div className="flex flex-col h-full gap-4 relative z-10">
+              {/* Calendar Section */}
+              <div className="flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold flex items-center gap-2">
+                      <CalendarIcon size={16} /> {monthName} {year}
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1 opacity-60">
+                    {daysOfWeek.map((day) => (
+                      <div key={day} className="font-medium">
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-7 gap-1 text-center text-xs">
+                    {padding.map((_, index) => (
+                      <div key={`pad-${index}`} />
+                    ))}
+                    {days.map((day) => {
+                      const isToday = day === date.getDate();
+                      const isActive = activeDays.includes(day);
+                      return (
+                        <div
+                          key={day}
+                          className={`aspect-square flex flex-col items-center justify-center rounded-lg cursor-pointer transition-colors relative
+                                ${
+                                  isToday
+                                    ? "bg-purple-600 text-white font-bold shadow-[0_0_10px_rgba(147,51,234,0.5)]"
+                                    : "hover:bg-black/5 dark:hover:bg-purple-500/10 opacity-80"
+                                }
+                                ${
+                                  isActive && !isToday
+                                    ? "bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-400 border border-fuchsia-500/30"
+                                    : ""
+                                }
+                                `}
+                        >
+                          <span>{day}</span>
+                          {isActive && !isToday && (
+                            <div className="w-1 h-1 bg-fuchsia-500 dark:bg-fuchsia-400 rounded-full mt-0.5 shadow-[0_0_5px_rgba(232,121,249,0.8)]"></div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Boosters Section */}
+              <div className="hidden xl:block">
+                <h3 className="text-sm font-semibold mb-2 flex items-center gap-2 text-blue-700 dark:text-fuchsia-300">
+                  <Zap
+                    size={16}
+                    className="text-blue-500 dark:text-fuchsia-500"
+                  />{" "}
+                  Aktivní vylepšení
+                </h3>
+                <div className="space-y-2">
+                  {activeBoosters.map((booster) => (
+                    <div
+                      key={booster.id}
+                      className="flex items-center gap-3 p-2 rounded-lg bg-black/5 dark:bg-purple-500/5 border border-black/5 dark:border-purple-500/20"
+                    >
+                      <div
+                        className={`p-1.5 rounded-md bg-white dark:bg-white/5 ${booster.color}`}
+                      >
+                        <booster.icon size={14} />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold">{booster.name}</div>
+                        <div className="text-[10px] text-blue-600 dark:text-purple-300">
+                          {booster.duration} zbývá
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </BentoItem>
+
+          {/* 5. Quick Actions */}
+          <BentoItem>
+            <div className="flex flex-col h-full relative z-10 w-full">
+              <h3 className="text-lg font-semibold mb-4">Rychlé akce</h3>
+              <div className="grid grid-cols-2 gap-3 h-full">
+                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
+                  <BookOpen
+                    size={20}
+                    className="mb-2 text-emerald-500 dark:text-emerald-400 group-hover:scale-110 transition-transform"
+                  />
+                  <span className="text-[10px] font-medium opacity-80">
+                    Pokračovat
+                  </span>
+                </button>
+                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
+                  <Target
+                    size={20}
+                    className="mb-2 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform"
+                  />
+                  <span className="text-[10px] font-medium opacity-80">
+                    Denní kvíz
+                  </span>
+                </button>
+                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
+                  <TrendingUp
+                    size={20}
+                    className="mb-2 text-blue-500 dark:text-purple-400 group-hover:scale-110 transition-transform"
+                  />
+                  <span className="text-[10px] font-medium opacity-80">
+                    Statistiky
+                  </span>
+                </button>
+                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
+                  <Award
+                    size={20}
+                    className="mb-2 text-amber-500 dark:text-fuchsia-400 group-hover:scale-110 transition-transform"
+                  />
+                  <span className="text-[10px] font-medium opacity-80">
+                    Žebříček
+                  </span>
+                </button>
+              </div>
+            </div>
+          </BentoItem>
+
+          {/* 6. Active Courses */}
+          <BentoItem>
+            <div className="flex flex-col h-full relative z-10 w-full">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Pokračovat v učení</h3>
+                <button className="text-xs text-blue-600 dark:text-purple-400 hover:text-blue-500 dark:hover:text-purple-300">
+                  Zobrazit vše
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {favoriteCourses.map((course) => (
+                  <div
+                    key={course.id}
+                    className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div
+                        className={`w-10 h-10 rounded-lg ${course.color} flex items-center justify-center group-hover:scale-105 transition-transform`}
+                      >
+                        <BookOpen size={18} className="text-white" />
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
+                        <PlayIcon size={14} className="ml-1 opacity-80" />
+                      </div>
+                    </div>
+                    <div className="mt-4">
+                      <h4 className="text-sm font-bold mb-2">{course.title}</h4>
+                      <div className="w-full h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${course.color} rounded-full`}
+                          style={{ width: `${course.progress}%` }}
+                        ></div>
+                      </div>
+                      <div className="text-right mt-1">
+                        <span className="text-xs opacity-60">
+                          {course.progress}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </BentoItem>
         </div>
       </BentoCardGrid>
     </>

@@ -126,6 +126,30 @@ class CloudFunctionsService {
     }
   }
 
+  // Activate booster
+  async activateBooster(boosterId) {
+    try {
+      const activateFunction = httpsCallable(functions, "activateBooster");
+      const result = await activateFunction({ boosterId });
+      return result.data;
+    } catch (error) {
+      console.error("Error activating booster:", error);
+      throw error;
+    }
+  }
+
+  // DEBUG: Add booster (Test only)
+  async debugAddBooster(boosterId, amount = 1) {
+    try {
+      const addFunction = httpsCallable(functions, "debugAddBooster");
+      const result = await addFunction({ boosterId, amount });
+      return result.data;
+    } catch (error) {
+      console.error("Error adding booster:", error);
+      throw error;
+    }
+  }
+
   // Generic HTTP API call to the api endpoint
   async callApi(method = "GET", data = null) {
     try {

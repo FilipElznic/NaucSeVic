@@ -17,7 +17,7 @@ import ProtectedRoute from "./components/guards/ProtectedRoute";
 import AdminRoute from "./components/guards/AdminRoute";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import LandingPage from "./pages/LandingPage";
-
+import Home from "./pages/Home";
 // Lazy load pages for better performance
 const ModernLogin = lazy(() => import("./pages/auth/ModernLogin"));
 const ModernRegister = lazy(() => import("./pages/auth/ModernRegister"));
@@ -27,16 +27,17 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TaskCreator = lazy(() => import("./components/TaskCreator"));
-const AdminGeometryManager = lazy(
-  () => import("./pages/geometry/AdminGeometryManager"),
+const AdminGeometryManager = lazy(() =>
+  import("./pages/geometry/AdminGeometryManager")
 );
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
+const BoosterTestPage = lazy(() => import("./pages/BoosterTestPage")); // Debug page
 const Home2 = lazy(() => import("./pages/Home2"));
 
-const UniversalSubjectLayout = lazy(
-  () => import("./components/layout/UniversalSubjectLayout"),
+const UniversalSubjectLayout = lazy(() =>
+  import("./components/layout/UniversalSubjectLayout")
 );
 
 // Protected Route component is now imported from components
@@ -96,6 +97,7 @@ const AppRoutes = () => {
               </PublicRoute>
             }
           />
+          <Route path="/home" element={<Home />} />
           <Route
             path="/registrace"
             element={
@@ -235,6 +237,15 @@ const AppRoutes = () => {
                   <TestPage />
                 </Layout>
               </AdminRoute>
+            }
+          />
+
+          <Route
+            path="/booster"
+            element={
+              <Layout>
+                <BoosterTestPage />
+              </Layout>
             }
           />
 
