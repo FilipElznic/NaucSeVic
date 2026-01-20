@@ -26,6 +26,9 @@ import {
   Plus,
   Clock,
   X,
+  Trophy,
+  Flame,
+  Coins,
 } from "lucide-react";
 
 // Helper component to ensure chart only renders when container has dimensions
@@ -623,6 +626,8 @@ const MagicBento2 = ({
   clickEffect = true,
   enableMagnetism = true,
   isDarkMode = true,
+  leaderboard = [],
+  leaderboardLoading = false,
 }) => {
   const gridRef = useRef(null);
   const isMobile = useMobileDetection();
@@ -708,6 +713,12 @@ const MagicBento2 = ({
       navigate(`/kurz/${parts.join("/")}`);
       setShowAllCourses(false);
     } else if (parts.length >= 2) {
+      // Fix for matematika ZŠ routing (1 -> 1-stupen, 2 -> 2-stupen)
+      if (parts[0] === "matematika" && parts[1] === "zs") {
+        if (parts[2] === "1") parts[2] = "1-stupen";
+        if (parts[2] === "2") parts[2] = "2-stupen";
+      }
+
       // It looks like subject/level (e.g. matematika_ss)
       navigate(`/predmety/${parts.join("/")}`);
       setShowAllCourses(false);
@@ -1006,15 +1017,22 @@ const MagicBento2 = ({
           }
           
           .card-responsive {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 100%;
+            margin: 0 auto;
+          }
+
+          .dashboard-grid {
             display: grid;
             gap: 1.5rem;
             grid-template-columns: 1fr;
             width: 100%;
-            margin: 0 auto;
           }
           
           @media (min-width: 600px) {
-            .card-responsive {
+            .dashboard-grid {
               grid-template-columns: repeat(2, 1fr);
             }
           }
@@ -1033,45 +1051,60 @@ const MagicBento2 = ({
           */
           @media (min-width: 1024px) {
             .card-responsive {
+              display: flex;
+              flex-direction: column;
+              gap: 2rem;
+            }
+
+            .dashboard-grid {
+              display: grid;
+              gap: 1.5rem;
               grid-template-columns: repeat(4, 1fr);
               grid-template-rows: auto 260px 260px;
+              width: 100%;
             }
             
             /* Sidebar */
-            .card-responsive .card:nth-child(1) {
+            .dashboard-grid .card:nth-child(1) {
               grid-column: 1;
               grid-row: 1 / span 3;
             }
             
             /* Header */
-            .card-responsive .card:nth-child(2) {
+            .dashboard-grid .card:nth-child(2) {
               grid-column: 2 / span 3;
               grid-row: 1;
               min-height: 120px;
             }
             
             /* Activity Graph */
-            .card-responsive .card:nth-child(3) {
+            .dashboard-grid .card:nth-child(3) {
               grid-column: 2 / span 2;
               grid-row: 2;
             }
 
             /* Calendar/Assistant */
-            .card-responsive .card:nth-child(4) {
+            .dashboard-grid .card:nth-child(4) {
               grid-column: 4;
               grid-row: 2;
             }
             
             /* Quick Actions */
-            .card-responsive .card:nth-child(5) {
+            .dashboard-grid .card:nth-child(5) {
               grid-column: 2;
               grid-row: 3;
             }
 
             /* Courses */
-            .card-responsive .card:nth-child(6) {
+            .dashboard-grid .card:nth-child(6) {
               grid-column: 3 / span 2;
               grid-row: 3;
+            }
+
+            /* Leaderboard Container */
+            .leaderboard-container {
+               width: 100%;
+               margin-top: 200px
             }
           }
           
@@ -1166,298 +1199,310 @@ const MagicBento2 = ({
 
       <BentoCardGrid gridRef={gridRef}>
         <div className="card-responsive">
-          {/* 1. Sidebar (User Stats) */}
-          <BentoItem>
-            <div className="flex flex-col h-full gap-6 relative z-10 hidden lg:flex">
-              <div className="flex flex-col items-center gap-4 text-center">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-1">
-                  <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
-                    <User size={48} className="text-gray-400" />
+          <div className="dashboard-grid">
+            {/* 1. Sidebar (User Stats) */}
+            <BentoItem>
+              <div className="flex flex-col h-full gap-6 relative z-10 hidden lg:flex">
+                <div className="flex flex-col items-center gap-4 text-center">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-1">
+                    <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
+                      <User size={48} className="text-gray-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold">{userStats.name}</h2>
+                    <p className="text-sm opacity-60 break-all">
+                      {userStats.email}
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <h2 className="text-xl font-bold">{userStats.name}</h2>
-                  <p className="text-sm opacity-60 break-all">
-                    {userStats.email}
-                  </p>
-                </div>
-              </div>
 
-              <div className="space-y-4 w-full">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="opacity-60">Úroveň {userStats.level}</span>
-                  <span className="font-mono text-purple-600 dark:text-purple-400">
-                    {userStats.xp} / {userStats.maxXp} XP
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
-                  <div
-                    className="bg-purple-600 h-full rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(147,51,234,0.5)]"
-                    style={{
-                      width: `${Math.min(
-                        (userStats.xp / userStats.maxXp) * 100,
-                        100,
-                      )}%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                <div className="bg-black/5 dark:bg-[#0B0C15]/50 border border-transparent dark:border-white/5 rounded-xl p-3 flex flex-col items-center">
-                  <Star
-                    className="text-amber-500 dark:text-amber-400 mb-1"
-                    size={20}
-                  />
-                  <span className="font-bold">{userStats.coins}</span>
-                  <span className="text-[10px] opacity-60 uppercase">
-                    Mince
-                  </span>
-                </div>
-                <div className="bg-black/5 dark:bg-[#0B0C15]/50 border border-transparent dark:border-white/5 rounded-xl p-3 flex flex-col items-center">
-                  <Zap
-                    className="text-blue-500 dark:text-fuchsia-500 mb-1"
-                    size={20}
-                  />
-                  <span className="font-bold">{userStats.streak}</span>
-                  <span className="text-[10px] opacity-60 uppercase">
-                    Série
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-auto">
-                <button className="w-full py-2 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl text-sm transition-colors border border-black/5 dark:border-white/5">
-                  Upravit profil
-                </button>
-              </div>
-            </div>
-            {/* Mobile Fallback for sidebar content */}
-            <div className="flex flex-col h-full gap-4 relative z-10 lg:hidden">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-0.5">
-                  <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
-                    <User size={24} className="text-gray-400" />
+                <div className="space-y-4 w-full">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="opacity-60">Úroveň {userStats.level}</span>
+                    <span className="font-mono text-purple-600 dark:text-purple-400">
+                      {userStats.xp} / {userStats.maxXp} XP
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
+                    <div
+                      className="bg-purple-600 h-full rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(147,51,234,0.5)]"
+                      style={{
+                        width: `${Math.min(
+                          (userStats.xp / userStats.maxXp) * 100,
+                          100,
+                        )}%`,
+                      }}
+                    ></div>
                   </div>
                 </div>
-                <div>
-                  <h2 className="text-lg font-bold">{userStats.name}</h2>
-                  <span className="text-xs font-mono text-purple-600 dark:text-purple-400">
-                    Lvl {userStats.level} • {userStats.xp} XP
-                  </span>
+
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <div className="bg-black/5 dark:bg-[#0B0C15]/50 border border-transparent dark:border-white/5 rounded-xl p-3 flex flex-col items-center">
+                    <Star
+                      className="text-amber-500 dark:text-amber-400 mb-1"
+                      size={20}
+                    />
+                    <span className="font-bold">{userStats.coins}</span>
+                    <span className="text-[10px] opacity-60 uppercase">
+                      Mince
+                    </span>
+                  </div>
+                  <div className="bg-black/5 dark:bg-[#0B0C15]/50 border border-transparent dark:border-white/5 rounded-xl p-3 flex flex-col items-center">
+                    <Zap
+                      className="text-blue-500 dark:text-fuchsia-500 mb-1"
+                      size={20}
+                    />
+                    <span className="font-bold">{userStats.streak}</span>
+                    <span className="text-[10px] opacity-60 uppercase">
+                      Série
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-auto">
+                  <button className="w-full py-2 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl text-sm transition-colors border border-black/5 dark:border-white/5">
+                    Upravit profil
+                  </button>
                 </div>
               </div>
-            </div>
-          </BentoItem>
-
-          {/* 2. Header */}
-          <BentoItem className="justify-center">
-            <div className="flex flex-col h-full relative z-10 w-full overflow-hidden">
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-sm font-semibold flex items-center gap-2">
-                  <Zap className="text-amber-400" size={16} /> Boostery
-                </h3>
-                <button
-                  onClick={() => setShowShop(true)}
-                  className="text-xs p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                >
-                  <Plus size={14} />
-                </button>
+              {/* Mobile Fallback for sidebar content */}
+              <div className="flex flex-col h-full gap-4 relative z-10 lg:hidden">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-0.5">
+                    <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
+                      <User size={24} className="text-gray-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold">{userStats.name}</h2>
+                    <span className="text-xs font-mono text-purple-600 dark:text-purple-400">
+                      Lvl {userStats.level} • {userStats.xp} XP
+                    </span>
+                  </div>
+                </div>
               </div>
+            </BentoItem>
 
-              <div className="flex-1 flex overflow-x-auto gap-2 pb-2 custom-scrollbar mask-gradient-right">
-                {/* Active Boosts */}
-                {activeBoosters.map((boost, index) => (
-                  <div
-                    key={`active-${index}`}
-                    className="flex-shrink-0 w-[130px] flex flex-col justify-between p-3 rounded-xl bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 snap-start"
+            {/* 2. Header */}
+            <BentoItem className="justify-center">
+              <div className="flex flex-col h-full relative z-10 w-full overflow-hidden">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-sm font-semibold flex items-center gap-2">
+                    <Zap className="text-amber-400" size={16} /> Boostery
+                  </h3>
+                  <button
+                    onClick={() => setShowShop(true)}
+                    className="text-xs p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                   >
-                    <div className="flex items-start justify-between w-full mb-2">
-                      <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400">
-                        <TrendingUp size={16} />
+                    <Plus size={14} />
+                  </button>
+                </div>
+
+                <div className="flex-1 flex overflow-x-auto gap-2 pb-2 custom-scrollbar mask-gradient-right">
+                  {/* Active Boosts */}
+                  {activeBoosters.map((boost, index) => (
+                    <div
+                      key={`active-${index}`}
+                      className="flex-shrink-0 w-[130px] flex flex-col justify-between p-3 rounded-xl bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 snap-start"
+                    >
+                      <div className="flex items-start justify-between w-full mb-2">
+                        <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400">
+                          <TrendingUp size={16} />
+                        </div>
+                        <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse mt-1"></div>
                       </div>
-                      <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse mt-1"></div>
+                      <div>
+                        <div className="text-sm font-bold">
+                          {boost.multiplier}x XP
+                        </div>
+                        <div className="text-[10px] opacity-60 flex items-center gap-1">
+                          <Clock size={10} /> {getTimeLeft(boost.endsAt)}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-sm font-bold">
-                        {boost.multiplier}x XP
-                      </div>
-                      <div className="text-[10px] opacity-60 flex items-center gap-1">
-                        <Clock size={10} /> {getTimeLeft(boost.endsAt)}
-                      </div>
+                  ))}
+
+                  {/* Inventory Summary */}
+                  {Object.keys(inventory).length > 0
+                    ? Object.entries(inventory).map(([id, count]) => {
+                        if (count <= 0) return null;
+                        return (
+                          <div
+                            key={id}
+                            onClick={() => setSelectedBooster(id)}
+                            className="flex-shrink-0 w-[130px] flex flex-col justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group snap-start"
+                          >
+                            <div className="flex items-start justify-between w-full mb-2">
+                              <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                                <Zap size={16} />
+                              </div>
+                              <div className="px-1.5 py-0.5 rounded-md bg-white/10 text-[10px] font-mono">
+                                x{count}
+                              </div>
+                            </div>
+                            <div>
+                              <div
+                                className="text-sm font-medium opacity-90 truncate"
+                                title={
+                                  shopItems.find((item) => item.id === id)
+                                    ?.name ||
+                                  (id.includes("xp_boost")
+                                    ? "XP Boost"
+                                    : "Booster")
+                                }
+                              >
+                                {shopItems.find((item) => item.id === id)
+                                  ?.name ||
+                                  (id.includes("xp_boost")
+                                    ? "XP Boost"
+                                    : "Booster")}
+                              </div>
+                              <div className="text-[10px] opacity-50">
+                                {shopItems.find((item) => item.id === id)
+                                  ?.duration || "Použít"}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : activeBoosters.length === 0 && (
+                        <div className="w-full flex items-center justify-center text-center opacity-40 p-4 min-h-[100px]">
+                          <div className="flex flex-col items-center">
+                            <Zap size={24} className="mb-2" />
+                            <p className="text-xs">Žádné boostery</p>
+                          </div>
+                        </div>
+                      )}
+                </div>
+              </div>
+            </BentoItem>
+
+            {/* 3. Activity Graph */}
+            <BentoItem>
+              <div className="flex flex-col h-full relative z-10 w-full">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Activity
+                    size={18}
+                    className="text-purple-600 dark:text-purple-400"
+                  />
+                  Aktivita
+                </h3>
+                <div className="flex-1 w-full min-h-[140px] min-w-0 relative">
+                  <MeasuredContainer>
+                    <ResponsiveContainer
+                      width="100%"
+                      height="100%"
+                      minWidth={50}
+                      minHeight={50}
+                      debounce={300}
+                    >
+                      <AreaChart data={activityData}>
+                        <defs>
+                          <linearGradient
+                            id="colorXp"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#8b5cf6"
+                              stopOpacity={0.3}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#8b5cf6"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke={isDarkMode ? "#ffffff10" : "#00000010"}
+                          vertical={false}
+                        />
+                        <XAxis
+                          dataKey="name"
+                          stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
+                          fontSize={12}
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <YAxis
+                          stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
+                          fontSize={12}
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <Tooltip
+                          content={({ active, payload, label }) => {
+                            if (active && payload && payload.length) {
+                              return (
+                                <div className="bg-white/95 dark:bg-[#0B0C15]/95 border border-purple-500/30 p-2 rounded-lg shadow-lg text-xs min-w-[80px] text-center backdrop-blur-md">
+                                  <p className="font-bold text-gray-800 dark:text-gray-200 mb-1">
+                                    {label}
+                                  </p>
+                                  <p className="text-purple-600 dark:text-purple-400 font-bold">
+                                    {payload[0].value} XP
+                                  </p>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                          cursor={{ stroke: "#8b5cf6", strokeWidth: 1 }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="xp"
+                          stroke="#8b5cf6"
+                          fillOpacity={1}
+                          fill="url(#colorXp)"
+                          strokeWidth={3}
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </MeasuredContainer>
+                </div>
+              </div>
+            </BentoItem>
+
+            {/* 4. Calendar & Boosters */}
+
+            {/* in calendar use the users progress data and mark each day the activity was written to the database */}
+            <BentoItem padding="p-4">
+              <div className="flex flex-col h-full overflow-hidden relative z-10">
+                {/* Calendar Section */}
+                <div className="flex-1 flex flex-col min-h-0">
+                  <div className="flex-shrink-0 mb-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="text-xs font-semibold flex items-center gap-1.5">
+                        <CalendarIcon size={14} /> {monthName} {year}
+                      </h3>
+                    </div>
+
+                    <div className="grid grid-cols-7 gap-1 text-center text-[9px] opacity-60">
+                      {daysOfWeek.map((day) => (
+                        <div key={day} className="font-medium">
+                          {day}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
 
-                {/* Inventory Summary */}
-                {Object.keys(inventory).length > 0
-                  ? Object.entries(inventory).map(([id, count]) => {
-                      if (count <= 0) return null;
+                  <div className="flex-1 grid grid-cols-7 grid-rows-6 gap-1 text-center text-[9px] min-h-0">
+                    {padding.map((_, index) => (
+                      <div key={`pad-${index}`} />
+                    ))}
+                    {days.map((day) => {
+                      const isToday = day === date.getDate();
+                      const isActive = activeDays.includes(day);
                       return (
                         <div
-                          key={id}
-                          onClick={() => setSelectedBooster(id)}
-                          className="flex-shrink-0 w-[130px] flex flex-col justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group snap-start"
-                        >
-                          <div className="flex items-start justify-between w-full mb-2">
-                            <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
-                              <Zap size={16} />
-                            </div>
-                            <div className="px-1.5 py-0.5 rounded-md bg-white/10 text-[10px] font-mono">
-                              x{count}
-                            </div>
-                          </div>
-                          <div>
-                            <div
-                              className="text-sm font-medium opacity-90 truncate"
-                              title={
-                                id.includes("xp_boost") ? "XP Boost" : "Booster"
-                              }
-                            >
-                              {id.includes("xp_boost") ? "XP Boost" : "Booster"}
-                            </div>
-                            <div className="text-[10px] opacity-50">Použít</div>
-                          </div>
-                        </div>
-                      );
-                    })
-                  : activeBoosters.length === 0 && (
-                      <div className="w-full flex items-center justify-center text-center opacity-40 p-4 min-h-[100px]">
-                        <div className="flex flex-col items-center">
-                          <Zap size={24} className="mb-2" />
-                          <p className="text-xs">Žádné boostery</p>
-                        </div>
-                      </div>
-                    )}
-              </div>
-            </div>
-          </BentoItem>
-
-          {/* 3. Activity Graph */}
-          <BentoItem>
-            <div className="flex flex-col h-full relative z-10 w-full">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Activity
-                  size={18}
-                  className="text-purple-600 dark:text-purple-400"
-                />
-                Aktivita
-              </h3>
-              <div className="flex-1 w-full min-h-[140px] min-w-0 relative">
-                <MeasuredContainer>
-                  <ResponsiveContainer
-                    width="100%"
-                    height="100%"
-                    minWidth={50}
-                    minHeight={50}
-                    debounce={300}
-                  >
-                    <AreaChart data={activityData}>
-                      <defs>
-                        <linearGradient
-                          id="colorXp"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="5%"
-                            stopColor="#8b5cf6"
-                            stopOpacity={0.3}
-                          />
-                          <stop
-                            offset="95%"
-                            stopColor="#8b5cf6"
-                            stopOpacity={0}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                        stroke={isDarkMode ? "#ffffff10" : "#00000010"}
-                        vertical={false}
-                      />
-                      <XAxis
-                        dataKey="name"
-                        stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <YAxis
-                        stroke={isDarkMode ? "#6b7280" : "#94a3b8"}
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <Tooltip
-                        content={({ active, payload, label }) => {
-                          if (active && payload && payload.length) {
-                            return (
-                              <div className="bg-white/95 dark:bg-[#0B0C15]/95 border border-purple-500/30 p-2 rounded-lg shadow-lg text-xs min-w-[80px] text-center backdrop-blur-md">
-                                <p className="font-bold text-gray-800 dark:text-gray-200 mb-1">
-                                  {label}
-                                </p>
-                                <p className="text-purple-600 dark:text-purple-400 font-bold">
-                                  {payload[0].value} XP
-                                </p>
-                              </div>
-                            );
-                          }
-                          return null;
-                        }}
-                        cursor={{ stroke: "#8b5cf6", strokeWidth: 1 }}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="xp"
-                        stroke="#8b5cf6"
-                        fillOpacity={1}
-                        fill="url(#colorXp)"
-                        strokeWidth={3}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </MeasuredContainer>
-              </div>
-            </div>
-          </BentoItem>
-
-          {/* 4. Calendar & Boosters */}
-
-          {/* in calendar use the users progress data and mark each day the activity was written to the database */}
-          <BentoItem padding="p-4">
-            <div className="flex flex-col h-full overflow-hidden relative z-10">
-              {/* Calendar Section */}
-              <div className="flex-1 flex flex-col min-h-0">
-                <div className="flex-shrink-0 mb-2">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-xs font-semibold flex items-center gap-1.5">
-                      <CalendarIcon size={14} /> {monthName} {year}
-                    </h3>
-                  </div>
-
-                  <div className="grid grid-cols-7 gap-1 text-center text-[9px] opacity-60">
-                    {daysOfWeek.map((day) => (
-                      <div key={day} className="font-medium">
-                        {day}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex-1 grid grid-cols-7 grid-rows-6 gap-1 text-center text-[9px] min-h-0">
-                  {padding.map((_, index) => (
-                    <div key={`pad-${index}`} />
-                  ))}
-                  {days.map((day) => {
-                    const isToday = day === date.getDate();
-                    const isActive = activeDays.includes(day);
-                    return (
-                      <div
-                        key={day}
-                        className={`flex flex-col items-center justify-center rounded-md cursor-pointer transition-colors relative
+                          key={day}
+                          className={`flex flex-col items-center justify-center rounded-md cursor-pointer transition-colors relative
                               ${
                                 isToday
                                   ? "bg-purple-600 text-white font-bold shadow-[0_0_10px_rgba(147,51,234,0.5)]"
@@ -1469,242 +1514,342 @@ const MagicBento2 = ({
                                   : ""
                               }
                               `}
+                        >
+                          <span className={`${isToday ? "text-[10px]" : ""}`}>
+                            {day}
+                          </span>
+                          {isActive && !isToday && (
+                            <div className="w-0.5 h-0.5 bg-fuchsia-500 dark:bg-fuchsia-400 rounded-full mt-0.5 shadow-[0_0_5px_rgba(232,121,249,0.8)]"></div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </BentoItem>
+
+            {/* 5. Quick Actions */}
+            <BentoItem>
+              <div className="flex flex-col h-full relative z-10 w-full">
+                <h3 className="text-lg font-semibold mb-4">Rychlé akce</h3>
+                <div className="grid grid-cols-2 gap-3 h-full">
+                  <button
+                    onClick={() => navigate("/vsechny-ukoly")}
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                  >
+                    <BookOpen
+                      size={20}
+                      className="mb-2 text-emerald-500 dark:text-emerald-400 group-hover:scale-110 transition-transform"
+                    />
+                    <span className="text-[10px] font-medium opacity-80">
+                      Úkoly
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => navigate("/vsechny-simulace")}
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                  >
+                    <Target
+                      size={20}
+                      className="mb-2 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform"
+                    />
+                    <span className="text-[10px] font-medium opacity-80">
+                      Simulace
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => navigate("/statistiky")}
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                  >
+                    <TrendingUp
+                      size={20}
+                      className="mb-2 text-blue-500 dark:text-purple-400 group-hover:scale-110 transition-transform"
+                    />
+                    <span className="text-[10px] font-medium opacity-80">
+                      Statistiky
+                    </span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      document
+                        .getElementById("zebricek")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                  >
+                    <Award
+                      size={20}
+                      className="mb-2 text-amber-500 dark:text-fuchsia-400 group-hover:scale-110 transition-transform"
+                    />
+                    <span className="text-[10px] font-medium opacity-80">
+                      Žebříček
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </BentoItem>
+
+            {/* 6. Active Courses */}
+            <BentoItem>
+              <div className="flex flex-col h-full relative z-10 w-full">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold">Oblíbené kurzy</h3>
+                  <button
+                    onClick={() => setShowAllCourses(true)}
+                    className="text-xs text-blue-600 dark:text-purple-400 hover:text-blue-500 dark:hover:text-purple-300"
+                  >
+                    Zobrazit vše
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {favoriteCourses.slice(0, 3).map((course) => {
+                    const details =
+                      course.details || parseCourseDetails(course.id);
+                    const displayTitle =
+                      course.title || (details ? details.subject : "Kurz");
+
+                    return (
+                      <div
+                        key={course.id}
+                        onClick={() => handleCourseClick(course.id)}
+                        className="group flex flex-col justify-between p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
                       >
-                        <span className={`${isToday ? "text-[10px]" : ""}`}>
-                          {day}
-                        </span>
-                        {isActive && !isToday && (
-                          <div className="w-0.5 h-0.5 bg-fuchsia-500 dark:bg-fuchsia-400 rounded-full mt-0.5 shadow-[0_0_5px_rgba(232,121,249,0.8)]"></div>
-                        )}
+                        <div className="flex items-start justify-between">
+                          <div
+                            className={`w-8 h-8 rounded-lg ${
+                              course.color || "bg-blue-500"
+                            } flex items-center justify-center group-hover:scale-105 transition-transform`}
+                          >
+                            <BookOpen size={16} className="text-white" />
+                          </div>
+                          {/* Only show play icon if progress > 0 */}
+                          {course.progress > 0 && (
+                            <div className="w-6 h-6 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
+                              <PlayIcon size={12} className="ml-1 opacity-80" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-3">
+                          <div className="mb-2">
+                            <h4
+                              className="text-xs font-bold line-clamp-1"
+                              title={displayTitle}
+                            >
+                              {displayTitle}
+                            </h4>
+                            {details && (
+                              <div className="flex items-center gap-1.5 text-[10px] opacity-70 mt-0.5">
+                                <span className="font-medium bg-white/10 px-1 py-px rounded">
+                                  {details.difficulty}
+                                </span>
+                                {details.level && (
+                                  <span className="font-mono bg-white/5 px-1 py-px rounded">
+                                    {details.level}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                          <div className="w-full h-1 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${
+                                course.color || "bg-blue-500"
+                              } rounded-full`}
+                              style={{ width: `${course.progress}%` }}
+                            ></div>
+                          </div>
+                          <div className="text-right mt-1">
+                            <span className="text-[10px] opacity-60">
+                              {course.progress}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </BentoItem>
+          </div>{" "}
+          {/* 6. Ends Dashboard Grid */}
+          {/* All Courses Modal */}
+          {showAllCourses && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+              onClick={() => setShowAllCourses(false)}
+            >
+              <div
+                className="bg-white dark:bg-[#0B0C15] w-full max-w-2xl rounded-2xl border border-white/10 p-6 shadow-2xl relative overflow-hidden flex flex-col max-h-[80vh] dark:text-white"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <BookOpen className="text-purple-500" />
+                    Všechny oblíbené kurzy
+                  </h2>
+                  <button
+                    onClick={() => setShowAllCourses(false)}
+                    className="p-2 hover:bg-white/5 rounded-full transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 overflow-y-auto pr-2 custom-scrollbar">
+                  {favoriteCourses.map((course) => {
+                    const details =
+                      course.details || parseCourseDetails(course.id);
+                    const displayTitle =
+                      course.title || (details ? details.subject : "Kurz");
+
+                    return (
+                      <div
+                        key={course.id}
+                        onClick={() => handleCourseClick(course.id)}
+                        className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer min-h-[140px]"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div
+                            className={`w-10 h-10 rounded-lg ${
+                              course.color || "bg-blue-500"
+                            } flex items-center justify-center group-hover:scale-105 transition-transform`}
+                          >
+                            <BookOpen size={18} className="text-white" />
+                          </div>
+                          {course.progress > 0 && (
+                            <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
+                              <PlayIcon size={14} className="ml-1 opacity-80" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-4">
+                          <div className="mb-2">
+                            <h4
+                              className="text-sm font-bold line-clamp-1"
+                              title={displayTitle}
+                            >
+                              {displayTitle}
+                            </h4>
+                            {details && (
+                              <div className="flex items-center gap-2 text-xs opacity-70 mt-0.5">
+                                <span className="font-medium bg-white/10 px-1.5 py-0.5 rounded text-[10px]">
+                                  {details.difficulty}
+                                </span>
+                                {details.level && (
+                                  <span className="font-mono bg-white/5 px-1.5 py-0.5 rounded text-[10px]">
+                                    {details.level}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                          <div className="w-full h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${
+                                course.color || "bg-blue-500"
+                              } rounded-full`}
+                              style={{ width: `${course.progress}%` }}
+                            ></div>
+                          </div>
+                          <div className="text-right mt-1">
+                            <span className="text-xs opacity-60">
+                              {course.progress}%
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
                 </div>
               </div>
             </div>
-          </BentoItem>
-
-          {/* 5. Quick Actions */}
-          <BentoItem>
-            <div className="flex flex-col h-full relative z-10 w-full">
-              <h3 className="text-lg font-semibold mb-4">Rychlé akce</h3>
-              <div className="grid grid-cols-2 gap-3 h-full">
-                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
-                  <BookOpen
-                    size={20}
-                    className="mb-2 text-emerald-500 dark:text-emerald-400 group-hover:scale-110 transition-transform"
-                  />
-                  <span className="text-[10px] font-medium opacity-80">
-                    Pokračovat
-                  </span>
-                </button>
-                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
-                  <Target
-                    size={20}
-                    className="mb-2 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform"
-                  />
-                  <span className="text-[10px] font-medium opacity-80">
-                    Denní kvíz
-                  </span>
-                </button>
-                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
-                  <TrendingUp
-                    size={20}
-                    className="mb-2 text-blue-500 dark:text-purple-400 group-hover:scale-110 transition-transform"
-                  />
-                  <span className="text-[10px] font-medium opacity-80">
-                    Statistiky
-                  </span>
-                </button>
-                <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group">
-                  <Award
-                    size={20}
-                    className="mb-2 text-amber-500 dark:text-fuchsia-400 group-hover:scale-110 transition-transform"
-                  />
-                  <span className="text-[10px] font-medium opacity-80">
-                    Žebříček
-                  </span>
-                </button>
-              </div>
-            </div>
-          </BentoItem>
-
-          {/* 6. Active Courses */}
-          <BentoItem>
-            <div className="flex flex-col h-full relative z-10 w-full">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Oblíbené kurzy</h3>
-                <button
-                  onClick={() => setShowAllCourses(true)}
-                  className="text-xs text-blue-600 dark:text-purple-400 hover:text-blue-500 dark:hover:text-purple-300"
-                >
-                  Zobrazit vše
-                </button>
+          )}
+          {/* 7. Leaderboard */}
+          <BentoItem padding="p-6" className="leaderboard-container">
+            <div className="flex flex-col  relative z-10 w-full h-[50vh] text-gray-900 dark:text-white">
+              <div className="flex items-center gap-3 mb-6">
+                <Trophy className="w-6 h-6 text-yellow-500" />
+                <h3 className="text-xl font-bold">Žebříček nejlepších</h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                {favoriteCourses.slice(0, 3).map((course) => {
-                  const details =
-                    course.details || parseCourseDetails(course.id);
-                  const displayTitle =
-                    course.title || (details ? details.subject : "Kurz");
+              {leaderboardLoading ? (
+                <div className="flex justify-center flex-1 items-center min-h-[100px]">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {leaderboard.map((user, index) => {
+                    const pos = index + 1;
+                    const isTop3 = pos <= 3;
 
-                  return (
-                    <div
-                      key={course.id}
-                      onClick={() => handleCourseClick(course.id)}
-                      className="group flex flex-col justify-between p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
-                    >
-                      <div className="flex items-start justify-between">
-                        <div
-                          className={`w-8 h-8 rounded-lg ${
-                            course.color || "bg-blue-500"
-                          } flex items-center justify-center group-hover:scale-105 transition-transform`}
-                        >
-                          <BookOpen size={16} className="text-white" />
-                        </div>
-                        {/* Only show play icon if progress > 0 */}
-                        {course.progress > 0 && (
-                          <div className="w-6 h-6 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
-                            <PlayIcon size={12} className="ml-1 opacity-80" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="mt-3">
-                        <div className="mb-2">
-                          <h4
-                            className="text-xs font-bold line-clamp-1"
-                            title={displayTitle}
-                          >
-                            {displayTitle}
-                          </h4>
-                          {details && (
-                            <div className="flex items-center gap-1.5 text-[10px] opacity-70 mt-0.5">
-                              <span className="font-medium bg-white/10 px-1 py-px rounded">
-                                {details.difficulty}
-                              </span>
-                              {details.level && (
-                                <span className="font-mono bg-white/5 px-1 py-px rounded">
-                                  {details.level}
-                                </span>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                        <div className="w-full h-1 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+                    let bgClass = "bg-white/5 dark:bg-black/20";
+                    let borderClass = "border-black/5 dark:border-white/5";
+                    let iconColor = "text-gray-400";
+
+                    if (pos === 1) {
+                      bgClass =
+                        "bg-gradient-to-br from-yellow-500/10 to-amber-500/5";
+                      borderClass = "border-yellow-500/30";
+                      iconColor = "text-yellow-500";
+                    } else if (pos === 2) {
+                      bgClass =
+                        "bg-gradient-to-br from-gray-400/10 to-slate-400/5";
+                      borderClass = "border-gray-400/30";
+                      iconColor = "text-gray-400";
+                    } else if (pos === 3) {
+                      bgClass =
+                        "bg-gradient-to-br from-orange-500/10 to-red-500/5";
+                      borderClass = "border-orange-500/30";
+                      iconColor = "text-orange-500";
+                    }
+
+                    return (
+                      <div
+                        key={user.userId || index}
+                        className={`flex items-center justify-between p-4 rounded-xl border ${bgClass} ${borderClass} transition-all hover:scale-[1.02]`}
+                      >
+                        <div className="flex items-center gap-4">
                           <div
-                            className={`h-full ${
-                              course.color || "bg-blue-500"
-                            } rounded-full`}
-                            style={{ width: `${course.progress}%` }}
-                          ></div>
+                            className={`flex items-center justify-center w-8 h-8 rounded-lg font-bold ${pos === 1 ? "bg-yellow-500 text-black" : pos === 2 ? "bg-gray-400 text-black" : pos === 3 ? "bg-orange-500 text-black" : "bg-white/10"}`}
+                          >
+                            {pos}
+                          </div>
+                          <div>
+                            <span className="font-bold block truncate max-w-[120px]">
+                              {user.name}
+                            </span>
+                            <div className="flex items-center gap-3 text-xs opacity-60 mt-1">
+                              <span className="flex items-center gap-1">
+                                <Flame size={12} className="text-orange-500" />{" "}
+                                {user.streak}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Coins size={12} className="text-yellow-500" />{" "}
+                                {user.coins}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-right mt-1">
-                          <span className="text-[10px] opacity-60">
-                            {course.progress}%
-                          </span>
-                        </div>
+                        <span className="font-mono font-bold text-purple-600 dark:text-purple-400">
+                          {user.xp} XP
+                        </span>
                       </div>
+                    );
+                  })}
+
+                  {leaderboard.length === 0 && (
+                    <div className="col-span-full text-center py-8 opacity-50">
+                      Zatím žádná data k zobrazení.
                     </div>
-                  );
-                })}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
           </BentoItem>
         </div>
       </BentoCardGrid>
-
-      {/* All Courses Modal */}
-      {showAllCourses && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
-          onClick={() => setShowAllCourses(false)}
-        >
-          <div
-            className="bg-white dark:bg-[#0B0C15] w-full max-w-2xl rounded-2xl border border-white/10 p-6 shadow-2xl relative overflow-hidden flex flex-col max-h-[80vh] dark:text-white"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                <BookOpen className="text-purple-500" />
-                Všechny oblíbené kurzy
-              </h2>
-              <button
-                onClick={() => setShowAllCourses(false)}
-                className="p-2 hover:bg-white/5 rounded-full transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 overflow-y-auto pr-2 custom-scrollbar">
-              {favoriteCourses.map((course) => {
-                const details = course.details || parseCourseDetails(course.id);
-                const displayTitle =
-                  course.title || (details ? details.subject : "Kurz");
-
-                return (
-                  <div
-                    key={course.id}
-                    onClick={() => handleCourseClick(course.id)}
-                    className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer min-h-[140px]"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div
-                        className={`w-10 h-10 rounded-lg ${
-                          course.color || "bg-blue-500"
-                        } flex items-center justify-center group-hover:scale-105 transition-transform`}
-                      >
-                        <BookOpen size={18} className="text-white" />
-                      </div>
-                      {course.progress > 0 && (
-                        <div className="w-8 h-8 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-black/10 dark:group-hover:bg-white/20">
-                          <PlayIcon size={14} className="ml-1 opacity-80" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-4">
-                      <div className="mb-2">
-                        <h4
-                          className="text-sm font-bold line-clamp-1"
-                          title={displayTitle}
-                        >
-                          {displayTitle}
-                        </h4>
-                        {details && (
-                          <div className="flex items-center gap-2 text-xs opacity-70 mt-0.5">
-                            <span className="font-medium bg-white/10 px-1.5 py-0.5 rounded text-[10px]">
-                              {details.difficulty}
-                            </span>
-                            {details.level && (
-                              <span className="font-mono bg-white/5 px-1.5 py-0.5 rounded text-[10px]">
-                                {details.level}
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <div className="w-full h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full ${
-                            course.color || "bg-blue-500"
-                          } rounded-full`}
-                          style={{ width: `${course.progress}%` }}
-                        ></div>
-                      </div>
-                      <div className="text-right mt-1">
-                        <span className="text-xs opacity-60">
-                          {course.progress}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Shop Modal */}
       {showShop && (

@@ -63,7 +63,6 @@ Functions/
 1.  **Clone the repository**.
 
 2.  **Configure Firebase**:
-
     - Navigate to your Firebase project settings and copy your web app's Firebase configuration.
     - Create a `.env` file in the `NaucSeVic/` directory.
     - Populate it with your Firebase credentials, using `VITE_` as a prefix for each environment variable (e.g., `VITE_FIREBASE_API_KEY=...`).
@@ -286,7 +285,7 @@ The main application structure and routing are defined in `NaucSeVic/src/App.jsx
 
 The application implements robust route protection to manage access to different parts of the site:
 
-- **`ProtectedRoute`**: Wraps routes that should only be accessible to authenticated (logged-in) users. If a non-authenticated user tries to access these routes, they will be redirected. It is used for pages like `/predmety` and `/all-tasks`.
+- **`ProtectedRoute`**: Wraps routes that should only be accessible to authenticated (logged-in) users. If a non-authenticated user tries to access these routes, they will be redirected. It is used for pages like `/predmety` and `/vsechny-ukoly`.
 - **`AdminRoute`**: A more specific protected route that is only accessible to users with administrative privileges. This is used for pages like `/create-task`.
 - **`PublicRoute`**: Wraps routes that are only for non-authenticated users, such as the login and registration pages (`/prihlaseni`, `/registrace`). If a logged-in user tries to access these, they are redirected to the main application page.
 

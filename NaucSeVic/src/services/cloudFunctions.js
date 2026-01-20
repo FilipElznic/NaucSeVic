@@ -20,7 +20,7 @@ class CloudFunctionsService {
     try {
       const initProfileFunction = httpsCallable(
         functions,
-        "initializeUserProfile"
+        "initializeUserProfile",
       );
       const result = await initProfileFunction({ firstName, lastName });
       return result.data;
@@ -35,7 +35,7 @@ class CloudFunctionsService {
     try {
       const createProfileFunction = httpsCallable(
         functions,
-        "createUserProfile"
+        "createUserProfile",
       );
       const result = await createProfileFunction({ uid, profileData });
       return result.data;
@@ -62,7 +62,7 @@ class CloudFunctionsService {
     try {
       const createTaskFunction = httpsCallable(
         functions,
-        "createEducationalTask"
+        "createEducationalTask",
       );
       const result = await createTaskFunction(taskData);
       return result.data;
@@ -104,7 +104,7 @@ class CloudFunctionsService {
     try {
       const recordAttemptFunction = httpsCallable(
         functions,
-        "recordTaskAttempt"
+        "recordTaskAttempt",
       );
       const result = await recordAttemptFunction(attemptData);
       return result.data;
@@ -203,6 +203,19 @@ class CloudFunctionsService {
     } catch (error) {
       console.error("Error calling API:", error);
       throw error;
+    }
+  }
+
+  // Get leaderboard data
+  async getLeaderboard(limit = 10) {
+    try {
+      const getLeaderboardFunction = httpsCallable(functions, "getLeaderboard");
+      const result = await getLeaderboardFunction({ limit });
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching leaderboard:", error);
+      // Return empty array on error to prevent breakages
+      return { leaderboard: [] };
     }
   }
 }

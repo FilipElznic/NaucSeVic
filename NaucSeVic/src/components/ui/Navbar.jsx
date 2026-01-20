@@ -79,7 +79,7 @@ const Navbar = () => {
   const navigationItems = [
     {
       name: "Všechny úkoly",
-      href: "/all-tasks",
+      href: "/vsechny-ukoly",
       icon: BookMarked,
       protected: true,
       adminOnly: false,

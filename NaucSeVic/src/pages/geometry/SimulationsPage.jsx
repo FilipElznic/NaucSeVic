@@ -1,7 +1,6 @@
 import React from "react";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import GeometryGallery from "../../components/geometry/GeometryGallery";
 
 const SimulationsPage = () => {
   return (
@@ -28,9 +27,6 @@ const SimulationsPage = () => {
           </p>
         </div>
       </div>
-
-      {/* This component fetches Firestore collection `geometricBodies` and renders image + Spline + formulas */}
-      <GeometryGallery />
     </div>
   );
 };

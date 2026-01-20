@@ -1,0 +1,10 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "dummy-task",
+			"type": "shell",
+			"command": "echo \"Updating functions/index.js...\""
+		}
+	]
+}

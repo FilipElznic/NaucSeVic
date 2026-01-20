@@ -1857,3 +1857,86 @@ exports.completeLesson = onCall(async (request) => {
     throw new HttpsError("internal", "Chyba při dokončování lekce.");
   }
 });
+
+// Fetch Leaderboard Data (Secure)
+exports.getLeaderboard = onCall(async (request) => {
+  // Optional: Check if user is authenticated
+  if (!request.auth) {
+    // throw new HttpsError('unauthenticated', 'The function must be called while authenticated.');
+  }
+
+  try {
+    const limit = request.data.limit || 10;
+    const usersRef = admin.firestore().collection("users");
+
+    // Create query: top XP
+    // Note: This sorts by XP. To sort by streak, we would need to store streak in the document.
+    const snapshot = await usersRef
+      .orderBy("profile.xp", "desc")
+      .limit(limit)
+      .get();
+
+    const leaderboard = [];
+
+    // Helper to calculate streak from progress map
+    const calculateStreak = (progress) => {
+      if (!progress) return 0;
+
+      const now = new Date();
+      // Date keys are stored as UTC YYYY-MM-DD strings in the database
+      const today = now.toISOString().split("T")[0];
+
+      const yesterdayDate = new Date(now);
+      yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+      const yesterday = yesterdayDate.toISOString().split("T")[0];
+
+      let currentStreak = 0;
+      let dateObj = null;
+      let checkDate = null;
+
+      // Check if streak is active (activity today or yesterday)
+      if (progress[today]) {
+        checkDate = today;
+        dateObj = new Date(now);
+      } else if (progress[yesterday]) {
+        checkDate = yesterday;
+        dateObj = new Date(yesterdayDate);
+      } else {
+        return 0;
+      }
+
+      // Count backwards
+      while (progress[checkDate]) {
+        currentStreak++;
+        // Move to previous day
+        dateObj.setDate(dateObj.getDate() - 1);
+        checkDate = dateObj.toISOString().split("T")[0];
+      }
+
+      return currentStreak;
+    };
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const profile = data.profile || {};
+
+      // Construct name from profile.name and profile.surname
+      const fullName =
+        [profile.name, profile.surname].filter(Boolean).join(" ") ||
+        "Neznámý uživatel";
+
+      leaderboard.push({
+        userId: doc.id,
+        name: fullName,
+        xp: profile.xp || 0,
+        coins: profile.coins || 0,
+        streak: calculateStreak(data.progress),
+      });
+    });
+
+    return { leaderboard };
+  } catch (error) {
+    console.error("Get leaderboard error:", error);
+    throw new HttpsError("internal", "Chyba při načítání žebříčku.");
+  }
+});

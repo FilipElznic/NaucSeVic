@@ -27,8 +27,9 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 const TaskCreator = lazy(() => import("./components/TaskCreator"));
-const AdminGeometryManager = lazy(() =>
-  import("./pages/geometry/AdminGeometryManager")
+const StatisticsPage = lazy(() => import("./pages/StatisticsPage"));
+const AdminGeometryManager = lazy(
+  () => import("./pages/geometry/AdminGeometryManager"),
 );
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
@@ -36,8 +37,8 @@ const TestPage = lazy(() => import("./pages/TestPage"));
 const BoosterTestPage = lazy(() => import("./pages/BoosterTestPage")); // Debug page
 const Home2 = lazy(() => import("./pages/Home2"));
 
-const UniversalSubjectLayout = lazy(() =>
-  import("./components/layout/UniversalSubjectLayout")
+const UniversalSubjectLayout = lazy(
+  () => import("./components/layout/UniversalSubjectLayout"),
 );
 
 // Protected Route component is now imported from components
@@ -109,7 +110,7 @@ const AppRoutes = () => {
 
           {/* All Tasks */}
           <Route
-            path="/all-tasks"
+            path="/vsechny-ukoly"
             element={
               <ProtectedRoute>
                 <Layout>
@@ -119,9 +120,29 @@ const AppRoutes = () => {
             }
           />
 
+          {/* Statistics */}
+          <Route
+            path="/statistiky"
+            element={
+              <ProtectedRoute>
+                <StatisticsPage />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Simulations Page */}
           <Route
             path="/geometric-simulations"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SimulationsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/vsechny-simulace"
             element={
               <ProtectedRoute>
                 <Layout>

@@ -1,25 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDarkMode } from "../../contexts/DarkModeContext";
 
 const Footer = () => {
-  const { darkMode } = useDarkMode();
-
   return (
-    <footer
-      className={`${
-        darkMode ? "bg-zinc-950 text-gray-100" : "bg-gray-100 text-gray-600"
-      } transition-colors duration-300 z-[1000]`}
-    >
+    <footer className="bg-gray-100 text-gray-600 dark:bg-zinc-950 dark:text-gray-100 transition-colors duration-300 z-[1000]">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
-            <h3
-              className={`text-2xl font-bold mb-4 ${
-                darkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
+            <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
               NaucSeVic
             </h3>
             <p className="text-sm leading-relaxed max-w-md">
@@ -30,20 +19,14 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4
-              className={`font-semibold mb-4 ${
-                darkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
+            <h4 className="font-semibold mb-4 text-gray-900 dark:text-white">
               Rychlé odkazy
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href="#"
-                  className={`hover:${
-                    darkMode ? "text-white" : "text-gray-900"
-                  } transition-colors duration-200`}
+                  className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                 >
                   O nás
                 </a>
@@ -51,9 +34,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className={`hover:${
-                    darkMode ? "text-white" : "text-gray-900"
-                  } transition-colors duration-200`}
+                  className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                 >
                   Kurzy
                 </a>
@@ -61,9 +42,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className={`hover:${
-                    darkMode ? "text-white" : "text-gray-900"
-                  } transition-colors duration-200`}
+                  className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                 >
                   Kontakt
                 </a>
@@ -71,9 +50,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className={`hover:${
-                    darkMode ? "text-white" : "text-gray-900"
-                  } transition-colors duration-200`}
+                  className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                 >
                   Podpora
                 </a>
@@ -83,11 +60,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h4
-              className={`font-semibold mb-4 ${
-                darkMode ? "text-white" : "text-gray-900"
-              }`}
-            >
+            <h4 className="font-semibold mb-4 text-gray-900 dark:text-white">
               Kontakt
             </h4>
             <ul className="space-y-2 text-sm">
@@ -107,17 +80,13 @@ const Footer = () => {
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link
               to="/terms"
-              className={`hover:${
-                darkMode ? "text-white" : "text-gray-900"
-              } transition-colors duration-200`}
+              className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
             >
               Podmínky použití
             </Link>
             <Link
               to="/privacy"
-              className={`hover:${
-                darkMode ? "text-white" : "text-gray-900"
-              } transition-colors duration-200`}
+              className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
             >
               Ochrana soukromí
             </Link>
