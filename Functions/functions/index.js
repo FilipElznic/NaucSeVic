@@ -55,7 +55,7 @@ const checkRateLimit = (userId, action, maxRequests = 10, windowMs = 60000) => {
 
   // Clean old requests
   const validRequests = userRequests.filter(
-    (timestamp) => now - timestamp < windowMs
+    (timestamp) => now - timestamp < windowMs,
   );
 
   if (validRequests.length >= maxRequests) {
@@ -404,7 +404,7 @@ exports.createEducationalTask = onCall(async (request) => {
     // Type-specific validation
     if (type === "multipleChoice" && (!options || !correctAnswer)) {
       throw new Error(
-        "Multiple choice tasks require options and correctAnswer"
+        "Multiple choice tasks require options and correctAnswer",
       );
     }
     if (type === "multiAnswer" && !correctAnswers) {
@@ -604,8 +604,8 @@ exports.submitTaskAnswer = onCall(async (request) => {
           correctAnswers.some(
             (correct) =>
               sanitizeString(answer).toLowerCase() ===
-              sanitizeString(correct).toLowerCase()
-          )
+              sanitizeString(correct).toLowerCase(),
+          ),
         );
     }
 
@@ -776,13 +776,13 @@ exports.activateBooster = onCall(async (request) => {
         // Extend
         newEndsAt = new admin.firestore.Timestamp(
           currentBoost.endsAt.seconds + durationMillis / 1000,
-          currentBoost.endsAt.nanoseconds
+          currentBoost.endsAt.nanoseconds,
         );
       } else {
         // New
         newEndsAt = new admin.firestore.Timestamp(
           now.seconds + durationMillis / 1000,
-          now.nanoseconds
+          now.nanoseconds,
         );
       }
 
@@ -856,12 +856,12 @@ exports.buyBooster = onCall(async (request) => {
 
         if (userData.profile && userData.profile.coins !== undefined) {
           updateData["profile.coins"] = admin.firestore.FieldValue.increment(
-            -item.price
+            -item.price,
           );
         } else {
           // Fallback if coins are at root level
           updateData["coins"] = admin.firestore.FieldValue.increment(
-            -item.price
+            -item.price,
           );
         }
 
@@ -1043,7 +1043,7 @@ exports.onTaskUpdated = onDocumentUpdated("tasks/{taskId}", async (event) => {
           lastTaskCompleted: admin.firestore.FieldValue.serverTimestamp(),
           totalPoints: admin.firestore.FieldValue.increment(10),
         },
-        { merge: true }
+        { merge: true },
       );
 
       // Send notification if needed
@@ -1063,7 +1063,7 @@ exports.adminSeedGeometry = onCall(async (request) => {
   if (!request.auth) {
     throw new HttpsError(
       "unauthenticated",
-      "The function must be called while authenticated."
+      "The function must be called while authenticated.",
     );
   }
 
@@ -1072,7 +1072,7 @@ exports.adminSeedGeometry = onCall(async (request) => {
   if (!isUserAdmin) {
     throw new HttpsError(
       "permission-denied",
-      "Only admins can seed geometry data."
+      "Only admins can seed geometry data.",
     );
   }
 
@@ -1081,7 +1081,7 @@ exports.adminSeedGeometry = onCall(async (request) => {
   if (!bodies || !Array.isArray(bodies)) {
     throw new HttpsError(
       "invalid-argument",
-      "The function must be called with an array of geometric bodies."
+      "The function must be called with an array of geometric bodies.",
     );
   }
 
@@ -1117,7 +1117,7 @@ exports.seedDatabase = onCall(async (request) => {
   if (!request.auth) {
     throw new HttpsError(
       "unauthenticated",
-      "The function must be called while authenticated."
+      "The function must be called while authenticated.",
     );
   }
 
@@ -1132,7 +1132,7 @@ exports.seedDatabase = onCall(async (request) => {
   if (!content) {
     throw new HttpsError(
       "invalid-argument",
-      "The function must be called with content object."
+      "The function must be called with content object.",
     );
   }
 
@@ -1275,7 +1275,7 @@ exports.seedDatabase = onCall(async (request) => {
     logger.error("Error seeding database", error);
     throw new HttpsError(
       "internal",
-      "Error seeding database: " + error.message
+      "Error seeding database: " + error.message,
     );
   }
 });
@@ -1289,7 +1289,7 @@ exports.getCourseData = onCall(async (request) => {
   if (!subjectId || !levelId) {
     throw new HttpsError(
       "invalid-argument",
-      "The function must be called with subjectId and levelId."
+      "The function must be called with subjectId and levelId.",
     );
   }
 
@@ -1330,18 +1330,18 @@ exports.getCourseData = onCall(async (request) => {
       // Fix: "default" subLevel is stored as null in DB by the seeder
       if (targetSubLevel === "default") {
         chaptersDocs = chaptersDocs.filter(
-          (ch) => ch.subLevelId === null || ch.subLevelId === "default"
+          (ch) => ch.subLevelId === null || ch.subLevelId === "default",
         );
       } else {
         chaptersDocs = chaptersDocs.filter(
-          (ch) => ch.subLevelId && ch.subLevelId.toString() === targetSubLevel
+          (ch) => ch.subLevelId && ch.subLevelId.toString() === targetSubLevel,
         );
       }
     } else {
       // If no subLevelId requested, we want chapters with NO subLevelId (null)
       // OR chapters where subLevelId is "default" (if that's how it was stored)
       chaptersDocs = chaptersDocs.filter(
-        (ch) => ch.subLevelId === null || ch.subLevelId === "default"
+        (ch) => ch.subLevelId === null || ch.subLevelId === "default",
       );
     }
 
@@ -1402,7 +1402,7 @@ exports.getCourseData = onCall(async (request) => {
     logger.error("Error fetching course data", error);
     throw new HttpsError(
       "internal",
-      "Error fetching course data: " + error.message
+      "Error fetching course data: " + error.message,
     );
   }
 });
@@ -1479,7 +1479,7 @@ exports.submitQuiz = onCall(async (request) => {
             isCorrect =
               userAnswer.length === task.correctAnswer.length &&
               userAnswer.every(
-                (val, i) => String(val) === String(task.correctAnswer[i])
+                (val, i) => String(val) === String(task.correctAnswer[i]),
               );
           } else {
             isCorrect = false;
@@ -1564,15 +1564,15 @@ exports.submitQuiz = onCall(async (request) => {
               const chapterLessonsSnapshot = await transaction.get(
                 db
                   .collection("lesson")
-                  .where("chapterId", "==", lessonData.chapterId)
+                  .where("chapterId", "==", lessonData.chapterId),
               );
 
               const allLessonIds = chapterLessonsSnapshot.docs.map((d) => d.id);
               const otherLessonIds = allLessonIds.filter(
-                (id) => id !== lessonId
+                (id) => id !== lessonId,
               );
               const allOthersCompleted = otherLessonIds.every((id) =>
-                completedLessons.includes(id)
+                completedLessons.includes(id),
               );
 
               if (allOthersCompleted) {
@@ -1700,10 +1700,28 @@ exports.getHomeData = onCall(async (request) => {
       });
     }
 
-    // 4. Favourite Courses (Mock logic or real if available)
-    // If favouriteCourses doesn't exist, we can infer from progress/completedLessons in future
-    // For now returning what is stored or empty
-    const favoriteCourses = userData.favoriteCourses || [];
+    // 4. Favourite Courses
+    // Transform array of strings into array of objects with progress
+    let favoriteCourses = [];
+    const storedFavorites = userData.favoriteCourses || [];
+    const courseProgress = userData.courseProgress || {};
+
+    if (Array.isArray(storedFavorites)) {
+      favoriteCourses = storedFavorites.map((courseId) => {
+        // Handle if it's already an object (legacy support/mixed data)
+        if (typeof courseId === "object" && courseId !== null) {
+          return courseId;
+        }
+
+        const progressInfo = courseProgress[courseId] || {};
+        return {
+          id: courseId,
+          progress: progressInfo.progress || 0,
+          completedLessons: progressInfo.completedLessons || 0,
+          totalLessons: progressInfo.totalLessons || 0, // In case we store it later
+        };
+      });
+    }
 
     // 5. User Stats
     // Calculate level based on XP (simple formula: level = floor(sqrt(xp/100))) or linear
@@ -1764,7 +1782,7 @@ exports.completeLesson = onCall(async (request) => {
       if (lessonData.content?.tasks?.length > 0) {
         throw new HttpsError(
           "failed-precondition",
-          "Tuto lekci lze splnit pouze vypracováním testu."
+          "Tuto lekci lze splnit pouze vypracováním testu.",
         );
       }
 
@@ -1802,13 +1820,13 @@ exports.completeLesson = onCall(async (request) => {
           const chapterLessonsSnapshot = await transaction.get(
             db
               .collection("lesson")
-              .where("chapterId", "==", lessonData.chapterId)
+              .where("chapterId", "==", lessonData.chapterId),
           );
 
           const allLessonIds = chapterLessonsSnapshot.docs.map((d) => d.id);
           const otherLessonIds = allLessonIds.filter((id) => id !== lessonId);
           const allOthersCompleted = otherLessonIds.every((id) =>
-            completedLessons.includes(id)
+            completedLessons.includes(id),
           );
 
           if (allOthersCompleted) {

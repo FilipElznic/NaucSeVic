@@ -15,20 +15,59 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
   const { courseData, loading, error } = useCourseData(
     subject.id,
     level.id,
-    subLevel
+    subLevel,
   );
   const { userProfile, refreshProfile } = useUserProfile();
 
   // State for loading animation on the button
   const [updatingFavorite, setUpdatingFavorite] = useState(false);
   const [expandedChapter, setExpandedChapter] = useState(null);
+  const [progress, setProgress] = useState(0);
 
-  // Set first chapter expanded when data loads
+  // 1. Generate a stable Course ID based on props
+  const courseId = subLevel
+    ? `${subject.id}_${level.id}_${subLevel}`
+    : `${subject.id}_${level.id}`;
+
+  // Set first chapter expanded when data loads and calculate progress
   useEffect(() => {
     if (courseData?.chapters?.length > 0) {
       setExpandedChapter(courseData.chapters[0].id);
     }
   }, [courseData]);
+
+  useEffect(() => {
+    if (courseData && userProfile) {
+      let totalLessons = 0;
+      let completedCount = 0;
+      const completedIds = userProfile.completedLessons || [];
+
+      courseData.chapters?.forEach((chapter) => {
+        chapter.lessons?.forEach((lesson) => {
+          totalLessons++;
+          if (completedIds.includes(lesson.id)) {
+            completedCount++;
+          }
+        });
+      });
+
+      const newProgress =
+        totalLessons > 0
+          ? Math.round((completedCount / totalLessons) * 100)
+          : 0;
+      setProgress(newProgress);
+
+      // Save to DB if different from what's stored
+      const storedProgress = userProfile.courseProgress?.[courseId]?.progress;
+      const user = getAuth().currentUser; // Get current user directly to be safe
+
+      if (user && storedProgress !== newProgress) {
+        userService
+          .updateCourseProgress(user.uid, courseId, newProgress, completedCount)
+          .catch((err) => console.error("Failed to update progress", err));
+      }
+    }
+  }, [courseData, userProfile, courseId]);
 
   const toggleChapter = (chapterId) => {
     setExpandedChapter(expandedChapter === chapterId ? null : chapterId);
@@ -73,15 +112,10 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
     ) {
       handleStartLesson(
         courseData.chapters[0],
-        courseData.chapters[0].lessons[0]
+        courseData.chapters[0].lessons[0],
       );
     }
   };
-
-  // 1. Generate a stable Course ID based on props
-  const courseId = subLevel
-    ? `${subject.id}_${level.id}_${subLevel}`
-    : `${subject.id}_${level.id}`;
 
   // 2. Check if currently favorite
   const isFavorite = userProfile?.favoriteCourses?.includes(courseId);
@@ -106,7 +140,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
       toast.success(
         isFavorite
           ? "Kurz odebrán z oblíbených."
-          : "Kurz byl uložen do oblíbených."
+          : "Kurz byl uložen do oblíbených.",
       );
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -205,15 +239,13 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                 <span className="text-gray-700 dark:text-gray-300">
                   Váš postup
                 </span>
-                <span style={{ color: getThemeColor() }}>
-                  {courseData.progress}%
-                </span>
+                <span style={{ color: getThemeColor() }}>{progress}%</span>
               </div>
               <div className="h-3 w-full bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-1000 ease-out"
                   style={{
-                    width: `${courseData.progress}%`,
+                    width: `${progress}%`,
                     backgroundColor: getThemeColor(),
                   }}
                 />
@@ -243,8 +275,8 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
               {updatingFavorite
                 ? "Ukládám..."
                 : isFavorite
-                ? "Uloženo"
-                : "Uložit kurz"}
+                  ? "Uloženo"
+                  : "Uložit kurz"}
             </button>
           </div>
         </div>
@@ -316,8 +348,8 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                               lesson.status === "completed"
                                 ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"
                                 : lesson.status === "locked"
-                                ? "bg-gray-100 text-gray-400 dark:bg-zinc-800 dark:text-zinc-600"
-                                : "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+                                  ? "bg-gray-100 text-gray-400 dark:bg-zinc-800 dark:text-zinc-600"
+                                  : "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
                             }
                           `}
                           >
@@ -406,7 +438,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                 </span>
                 <span className="font-medium text-gray-900 dark:text-white">
                   {new Date(
-                    courseData.updatedAt || Date.now()
+                    courseData.updatedAt || Date.now(),
                   ).toLocaleDateString("cs-CZ", {
                     day: "numeric",
                     month: "long",

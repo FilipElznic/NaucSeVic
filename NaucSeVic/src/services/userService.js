@@ -56,13 +56,13 @@ class UserService {
         try {
           await cloudFunctionsService.initializeUserProfile(
             firstName,
-            lastName
+            lastName,
           );
           return true;
         } catch (error) {
           console.warn(
             "Cloud Function failed, creating profile locally:",
-            error
+            error,
           );
 
           // Fallback: create profile directly in Firestore
@@ -141,6 +141,30 @@ class UserService {
       return true;
     } catch (error) {
       console.error("Error toggling favorite course:", error);
+      throw error;
+    }
+  }
+
+  // Update course progress
+  async updateCourseProgress(userId, courseId, progress, completedLessons) {
+    try {
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
+
+      const userRef = doc(db, "users", userId);
+      const updates = {
+        [`courseProgress.${courseId}`]: {
+          progress,
+          completedLessons,
+          lastUpdated: new Date().toISOString(),
+        },
+      };
+
+      await updateDoc(userRef, updates);
+      return true;
+    } catch (error) {
+      console.error("Error updating course progress:", error);
       throw error;
     }
   }

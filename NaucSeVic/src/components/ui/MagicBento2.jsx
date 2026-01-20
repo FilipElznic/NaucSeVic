@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { cloudFunctionsService } from "../../services/cloudFunctions";
 import { subjectConfig } from "../../config/subjectConfig";
@@ -165,8 +166,8 @@ const ParticleCard = ({
       createParticleElement(
         Math.random() * width,
         Math.random() * height,
-        glowColor
-      )
+        glowColor,
+      ),
     );
     particlesInitialized.current = true;
   }, [particleCount, glowColor]);
@@ -208,7 +209,7 @@ const ParticleCard = ({
         gsap.fromTo(
           clone,
           { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" }
+          { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" },
         );
 
         gsap.to(clone, {
@@ -323,7 +324,7 @@ const ParticleCard = ({
         Math.hypot(x, y),
         Math.hypot(x - rect.width, y),
         Math.hypot(x, y - rect.height),
-        Math.hypot(x - rect.width, y - rect.height)
+        Math.hypot(x - rect.width, y - rect.height),
       );
 
       const ripple = document.createElement("div");
@@ -353,7 +354,7 @@ const ParticleCard = ({
           duration: 0.8,
           ease: "power2.out",
           onComplete: () => ripple.remove(),
-        }
+        },
       );
     };
 
@@ -485,7 +486,7 @@ const GlobalSpotlight = ({
           e.clientX,
           e.clientY,
           glowIntensity,
-          spotlightRadius
+          spotlightRadius,
         );
       });
 
@@ -500,8 +501,8 @@ const GlobalSpotlight = ({
         minDistance <= proximity
           ? 0.8
           : minDistance <= fadeDistance
-          ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
-          : 0;
+            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
+            : 0;
 
       gsap.to(spotlightRef.current, {
         opacity: targetOpacity,
@@ -628,6 +629,7 @@ const MagicBento2 = ({
   const shouldDisableAnimations = disableAnimations || isMobile;
 
   const { user } = useFirebaseAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [showAllCourses, setShowAllCourses] = useState(false);
@@ -694,6 +696,21 @@ const MagicBento2 = ({
       alert(error.message || "Chyba při aktivaci");
     } finally {
       setLoadingAction(false);
+    }
+  };
+
+  const handleCourseClick = (courseId) => {
+    if (!courseId) return;
+    const parts = courseId.split("_");
+
+    // Check if it's a lecture (has at least subject, level, chapter, lecture)
+    if (parts.length >= 4) {
+      navigate(`/kurz/${parts.join("/")}`);
+      setShowAllCourses(false);
+    } else if (parts.length >= 2) {
+      // It looks like subject/level (e.g. matematika_ss)
+      navigate(`/predmety/${parts.join("/")}`);
+      setShowAllCourses(false);
     }
   };
 
@@ -766,24 +783,28 @@ const MagicBento2 = ({
   let favoriteCourses = [];
 
   if (rawFavoriteCourses && rawFavoriteCourses.length > 0) {
-    favoriteCourses = rawFavoriteCourses.map((course) => {
-      // Handle string format (e.g. "matematika_zs_1")
-      if (typeof course === "string") {
-        const details = parseCourseDetails(course);
-        const subjectKey = course.split("_")[0];
-        const config = subjectConfig[subjectKey];
-        const colorName = config?.themeColor || "blue";
+    favoriteCourses = rawFavoriteCourses.map((courseItem) => {
+      let courseId = courseItem;
+      let progress = 0;
 
-        return {
-          id: course,
-          title: details ? details.subject : course,
-          progress: 0, // Mock progress for now
-          color: `bg-${colorName}-500`,
-          details: details,
-        };
+      // If object, extract ID and progress
+      if (typeof courseItem === "object" && courseItem !== null) {
+        courseId = courseItem.id;
+        progress = courseItem.progress || 0;
       }
-      // If it's already an object, return as is
-      return course;
+
+      const details = parseCourseDetails(courseId);
+      const subjectKey = courseId.split("_")[0];
+      const config = subjectConfig[subjectKey];
+      const colorName = config?.themeColor || "blue";
+
+      return {
+        id: courseId,
+        title: details ? details.subject : courseId,
+        progress: progress,
+        color: `bg-${colorName}-500`,
+        details: details,
+      };
     });
   } else {
     favoriteCourses = [
@@ -925,7 +946,7 @@ const MagicBento2 = ({
               Math.hypot(x, y),
               Math.hypot(x - rect.width, y),
               Math.hypot(x, y - rect.height),
-              Math.hypot(x - rect.width, y - rect.height)
+              Math.hypot(x - rect.width, y - rect.height),
             );
             const ripple = document.createElement("div");
             ripple.style.cssText = `
@@ -949,7 +970,7 @@ const MagicBento2 = ({
                 duration: 0.8,
                 ease: "power2.out",
                 onComplete: () => ripple.remove(),
-              }
+              },
             );
           };
 
@@ -1175,7 +1196,7 @@ const MagicBento2 = ({
                     style={{
                       width: `${Math.min(
                         (userStats.xp / userStats.maxXp) * 100,
-                        100
+                        100,
                       )}%`,
                     }}
                   ></div>
@@ -1531,6 +1552,7 @@ const MagicBento2 = ({
                   return (
                     <div
                       key={course.id}
+                      onClick={() => handleCourseClick(course.id)}
                       className="group flex flex-col justify-between p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
                     >
                       <div className="flex items-start justify-between">
@@ -1624,6 +1646,7 @@ const MagicBento2 = ({
                 return (
                   <div
                     key={course.id}
+                    onClick={() => handleCourseClick(course.id)}
                     className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer min-h-[140px]"
                   >
                     <div className="flex items-start justify-between">
@@ -1754,7 +1777,7 @@ const MagicBento2 = ({
           onClick={() => setSelectedBooster(null)}
         >
           <div
-            className="bg-white dark:bg-[#0B0C15] w-full max-w-sm rounded-2xl border border-white/10 p-6 shadow-2xl relative text-center"
+            className="bg-white dark:bg-[#0B0C15] w-full max-w-sm rounded-2xl border border-white/10 p-6 shadow-2xl relative text-center dark:text-white"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-center mb-4">
