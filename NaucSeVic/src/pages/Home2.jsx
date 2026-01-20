@@ -27,7 +27,7 @@ function Home2() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-20 w-full flex items-center justify-center p-4 transition-colors duration-300 bg-gray-50 dark:bg-[#060010]">
+      <div className="min-h-screen pt-20 w-full flex items-center justify-center p-4 transition-colors duration-300 bg-gray-50 dark:bg-black">
         <MagicBento2
           textAutoHide={false}
           enableStars={true}

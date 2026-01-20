@@ -111,21 +111,6 @@ const Navbar = () => {
       href: "/predmety/geometrie",
       description: "Planimetrie, stereometrie",
     },
-    {
-      name: "Čeština",
-      href: "/predmety/cestina",
-      description: "Gramatika, literatura a sloh",
-    },
-    {
-      name: "Informatika",
-      href: "/predmety/informatika",
-      description: "Programování, hardware a digitální svět",
-    },
-    {
-      name: "Chemie",
-      href: "/predmety/chemie",
-      description: "Prvky, reakce a pokusy",
-    },
   ];
 
   // Legal/public navigation items

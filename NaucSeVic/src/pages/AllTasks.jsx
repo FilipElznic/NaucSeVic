@@ -47,14 +47,8 @@ const AllTasks = () => {
   const subjects = [
     { value: "all", label: "Všechny předměty" },
     { value: "Matematika", label: "Matematika" },
-    { value: "Čeština", label: "Čeština" },
-    { value: "Angličtina", label: "Angličtina" },
+    { value: "Geometrie", label: "Geometrie" },
     { value: "Fyzika", label: "Fyzika" },
-    { value: "Chemie", label: "Chemie" },
-    { value: "Biologie", label: "Biologie" },
-    { value: "Dějepis", label: "Dějepis" },
-    { value: "Zeměpis", label: "Zeměpis" },
-    { value: "Informatika", label: "Informatika" },
     { value: "Ostatní", label: "Ostatní" },
   ];
 
@@ -276,7 +270,7 @@ const AllTasks = () => {
 
       // Show user-friendly message
       toast.error(
-        "Načítání úkolů z databáze se nezdařilo. Zobrazuji ukázková data."
+        "Načítání úkolů z databáze se nezdařilo. Zobrazuji ukázková data.",
       );
     } finally {
       setLoading(false);
@@ -336,7 +330,7 @@ const AllTasks = () => {
 
       const result = await cloudFunctionsService.submitTaskAnswer(
         selectedTask.id,
-        userAnswerData
+        userAnswerData,
       );
 
       console.log("Result from backend:", result);
@@ -347,8 +341,8 @@ const AllTasks = () => {
           const boostMsg = result.activeBoost
             ? `(Boost ${result.activeBoost.multiplier}x!)`
             : activeBoost
-            ? `(Boost ${activeBoost.multiplier}x!)`
-            : "";
+              ? `(Boost ${activeBoost.multiplier}x!)`
+              : "";
 
           toast.success(
             `🎉 Správně! +${result.xpEarned} XP ${boostMsg}, +${result.coinsEarned} mincí`,
@@ -359,7 +353,7 @@ const AllTasks = () => {
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
-            }
+            },
           );
         } else {
           toast.error("❌ Nesprávná odpověď. Zkuste to znovu!", {
@@ -377,8 +371,8 @@ const AllTasks = () => {
           prev.map((task) =>
             task.id === selectedTask.id
               ? { ...task, isCompletedByUser: result.isCorrect }
-              : task
-          )
+              : task,
+          ),
         );
 
         // Update completed tasks state
@@ -411,7 +405,7 @@ const AllTasks = () => {
       setSelectedOptions((prev) =>
         prev.includes(option)
           ? prev.filter((opt) => opt !== option)
-          : [...prev, option]
+          : [...prev, option],
       );
     } else {
       setSelectedOptions([option]);
@@ -594,7 +588,7 @@ const AllTasks = () => {
                         >
                           {
                             difficulties.find(
-                              (d) => d.value === task.difficulty
+                              (d) => d.value === task.difficulty,
                             )?.label
                           }
                         </span>

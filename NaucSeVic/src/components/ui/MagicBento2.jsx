@@ -585,12 +585,7 @@ const parseCourseDetails = (courseId) => {
   const subjectMap = {
     matematika: "Matematika",
     fyzika: "Fyzika",
-    chemie: "Chemie",
-    cestina: "Čeština",
-    anglictina: "Angličtina",
-    biologie: "Biologie",
-    dejepis: "Dějepis",
-    zemepis: "Zeměpis",
+    geometrie: "Geometrie",
   };
 
   const rawSubject = parts[0];
@@ -1006,7 +1001,7 @@ const MagicBento2 = ({
             --glow-radius: 200px;
             --glow-color: ${glowColor};
             --border-color: ${isDarkMode ? "#392e4e" : "#94a3b8"};
-            --background-dark: ${isDarkMode ? "#060010" : "#ffffff"};
+            --background-dark: ${isDarkMode ? "#000000" : "#ffffff"};
             --white: ${isDarkMode ? "hsl(0, 0%, 100%)" : "#020617"};
             --purple-primary: rgba(132, 0, 255, 1);
             --purple-glow: rgba(132, 0, 255, 0.2);
@@ -1104,7 +1099,8 @@ const MagicBento2 = ({
             /* Leaderboard Container */
             .leaderboard-container {
                width: 100%;
-               margin-top: 200px
+               
+
             }
           }
           
@@ -1767,11 +1763,28 @@ const MagicBento2 = ({
             </div>
           )}
           {/* 7. Leaderboard */}
+          <div
+            id="zebricek"
+            className="flex items-center justify-between w-full mb-4"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-md bg-gradient-to-tr from-yellow-400 to-amber-300/30 shadow-sm">
+                <Trophy className="w-6 h-6 text-yellow-500" />
+              </div>
+              <div>
+                <h2 className="text-lg md:text-xl font-extrabold text-black dark:text-white leading-tight">
+                  Žebříček uživatelů
+                </h2>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Seřazeno podle XP a série
+                </p>
+              </div>
+            </div>
+          </div>
           <BentoItem padding="p-6" className="leaderboard-container">
             <div className="flex flex-col  relative z-10 w-full h-[50vh] text-gray-900 dark:text-white">
               <div className="flex items-center gap-3 mb-6">
                 <Trophy className="w-6 h-6 text-yellow-500" />
-                <h3 className="text-xl font-bold">Žebříček nejlepších</h3>
               </div>
 
               {leaderboardLoading ? (
@@ -1779,7 +1792,7 @@ const MagicBento2 = ({
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar flex-1">
                   {leaderboard.map((user, index) => {
                     const pos = index + 1;
                     const isTop3 = pos <= 3;
@@ -1808,7 +1821,7 @@ const MagicBento2 = ({
                     return (
                       <div
                         key={user.userId || index}
-                        className={`flex items-center justify-between p-4 rounded-xl border ${bgClass} ${borderClass} transition-all hover:scale-[1.02]`}
+                        className={`flex items-center justify-between p-3 rounded-xl border ${bgClass} ${borderClass} transition-all hover:scale-[1.01]`}
                       >
                         <div className="flex items-center gap-4">
                           <div
@@ -1817,24 +1830,27 @@ const MagicBento2 = ({
                             {pos}
                           </div>
                           <div>
-                            <span className="font-bold block truncate max-w-[120px]">
+                            <span className="font-bold block truncate max-w-[150px] md:max-w-[300px]">
                               {user.name}
                             </span>
-                            <div className="flex items-center gap-3 text-xs opacity-60 mt-1">
-                              <span className="flex items-center gap-1">
-                                <Flame size={12} className="text-orange-500" />{" "}
-                                {user.streak}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Coins size={12} className="text-yellow-500" />{" "}
-                                {user.coins}
-                              </span>
-                            </div>
                           </div>
                         </div>
-                        <span className="font-mono font-bold text-purple-600 dark:text-purple-400">
-                          {user.xp} XP
-                        </span>
+
+                        <div className="flex items-center gap-6">
+                          <div className="flex items-center gap-3 text-xs md:text-sm">
+                            <span className="flex items-center gap-1.5 opacity-80">
+                              <Flame size={14} className="text-orange-500" />{" "}
+                              <span className="font-mono">{user.streak}</span>
+                            </span>
+                            <span className="flex items-center gap-1.5 opacity-80">
+                              <Coins size={14} className="text-yellow-500" />{" "}
+                              <span className="font-mono">{user.coins}</span>
+                            </span>
+                          </div>
+                          <span className="font-mono font-bold text-purple-600 dark:text-purple-400 min-w-[80px] text-right">
+                            {user.xp} XP
+                          </span>
+                        </div>
                       </div>
                     );
                   })}

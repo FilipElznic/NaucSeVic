@@ -17,7 +17,7 @@ import ProtectedRoute from "./components/guards/ProtectedRoute";
 import AdminRoute from "./components/guards/AdminRoute";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
 import LandingPage from "./pages/LandingPage";
-import Home from "./pages/Home";
+
 // Lazy load pages for better performance
 const ModernLogin = lazy(() => import("./pages/auth/ModernLogin"));
 const ModernRegister = lazy(() => import("./pages/auth/ModernRegister"));
@@ -34,7 +34,6 @@ const AdminGeometryManager = lazy(
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
-const BoosterTestPage = lazy(() => import("./pages/BoosterTestPage")); // Debug page
 const Home2 = lazy(() => import("./pages/Home2"));
 
 const UniversalSubjectLayout = lazy(
@@ -98,7 +97,7 @@ const AppRoutes = () => {
               </PublicRoute>
             }
           />
-          <Route path="/home" element={<Home />} />
+
           <Route
             path="/registrace"
             element={
@@ -258,15 +257,6 @@ const AppRoutes = () => {
                   <TestPage />
                 </Layout>
               </AdminRoute>
-            }
-          />
-
-          <Route
-            path="/booster"
-            element={
-              <Layout>
-                <BoosterTestPage />
-              </Layout>
             }
           />
 

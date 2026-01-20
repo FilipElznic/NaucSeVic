@@ -277,33 +277,6 @@ export const subjectConfig = {
       },
     },
   },
-  cestina: {
-    id: "cestina",
-    title: "Čeština",
-    themeColor: "red",
-    icon: "BookOpen",
-    dbBaseTag: "czech",
-    hasSubLevels: true,
-    description: "Gramatika, literatura a sloh.",
-  },
-  informatika: {
-    id: "informatika",
-    title: "Informatika",
-    themeColor: "emerald",
-    icon: "Monitor",
-    dbBaseTag: "it",
-    hasSubLevels: false,
-    description: "Programování, hardware a digitální svět.",
-  },
-  chemie: {
-    id: "chemie",
-    title: "Chemie",
-    themeColor: "yellow",
-    icon: "FlaskConical",
-    dbBaseTag: "chemistry",
-    hasSubLevels: false,
-    description: "Prvky, reakce a pokusy.",
-  },
 };
 
 export const levelsConfig = {
