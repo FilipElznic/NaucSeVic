@@ -1098,10 +1098,16 @@ const MagicBento2 = ({
 
             /* Leaderboard Container */
             .leaderboard-container {
-               width: 75%;
+               width: %;
 
                
 
+            }
+          }
+          
+          @media (max-width: 1023px) {
+            .leaderboard-container {
+              width: 100%;
             }
           }
           
@@ -1167,17 +1173,9 @@ const MagicBento2 = ({
             text-overflow: ellipsis;
           }
           
-          @media (max-width: 599px) {
-            .card-responsive {
-              grid-template-columns: 1fr;
-              width: 90%;
-              margin: 0 auto;
-              padding: 0.5rem;
-            }
-            
-            .card-responsive .card {
+          @media (max-width: 1023px) {
+            .leaderboard-container {
               width: 100%;
-              min-height: 180px;
             }
           }
         `}
@@ -1552,7 +1550,7 @@ const MagicBento2 = ({
                       className="mb-2 text-rose-500 dark:text-rose-400 group-hover:scale-110 transition-transform"
                     />
                     <span className="text-[10px] font-medium opacity-80">
-                      Simulace
+                      Geometrická tělesa
                     </span>
                   </button>
                   <button
@@ -1779,14 +1777,14 @@ const MagicBento2 = ({
               </div>
             </div>
           </div>
-          <div className="min-h-[60vh] flex flex-row gap-6">
-            <p className="text-white text-md w-1/4">
+          <div className="min-h-[60vh] flex flex-col lg:flex-row gap-6 max-w-[1600px] mx-auto">
+            <p className="text-white text-md w-full md:w-1/4">
               Sbírejte xp a zvyšujte svou pozici v žebříčku! Existují také xp
               boostery, které vám pomohou získat více xp za kratší dobu. Buďte
               aktivní a sledujte, jak se vaše pozice zlepšuje!
             </p>
 
-            <BentoItem padding="p-6" className="leaderboard-container ">
+            <BentoItem padding="p-4 md:p-6" className="leaderboard-container ">
               <div className="flex flex-col   relative z-10  h-[50vh] text-gray-900 dark:text-white">
                 <div className="flex items-center gap-3 mb-6">
                   <Trophy className="w-6 h-6 text-purple-500" />
