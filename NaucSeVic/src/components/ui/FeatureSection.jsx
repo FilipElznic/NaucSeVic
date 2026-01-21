@@ -1,9 +1,11 @@
 import CardSwap, { Card } from "./CardLanding";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Brain, Zap, Target } from "lucide-react";
 import StarBorder from "./StarBorder";
 
 const FeatureSection = () => {
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -32,7 +34,12 @@ const FeatureSection = () => {
               pro jedinečný učební zážitek.
             </p>
             <div className="flex justify-center">
-              <StarBorder as="button" color="purple" speed="1s">
+              <StarBorder
+                as="button"
+                color="purple"
+                speed="1s"
+                onClick={() => navigate("/prihlaseni")}
+              >
                 Začít se učit
               </StarBorder>
             </div>
@@ -45,10 +52,11 @@ const FeatureSection = () => {
                 <Brain className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Inteligentní učení
+                Studijní materiály
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Využijte sílu umělé inteligence pro personalizované vzdělávání.
+                Vyberte si, které materiály vám nejlépe vyhovují a jakou uroveň
+                chcete zvládnout.
               </p>
             </div>
 
@@ -57,10 +65,10 @@ const FeatureSection = () => {
                 <Zap className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Rychlý pokrok
+                Sledování pokroku
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Dosahujte svých cílů rychleji díky pokročilým metrikám.
+                Sledujte svůj pokrok a získejte body za plnění úkolů.
               </p>
             </div>
 
@@ -68,11 +76,11 @@ const FeatureSection = () => {
               <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-red-600 flex items-center justify-center shadow-lg mb-4">
                 <Target className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Personalizované úkoly
+              <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+                Interaktivní úkoly
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Získejte úkoly přesně podle vašich potřeb a tempa.
+              <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                Získejte nejen nudné úkoly, ale i interaktivní cvičení.
               </p>
             </div>
           </div>
@@ -94,7 +102,12 @@ const FeatureSection = () => {
                 metodami pro vytvoření unikátního učebního zážitku
                 přizpůsobeného právě vám.
               </p>
-              <StarBorder as="button" color="purple" speed="1s">
+              <StarBorder
+                as="button"
+                color="purple"
+                speed="1s"
+                onClick={() => navigate("/prihlaseni")}
+              >
                 Začít se učit
               </StarBorder>
             </div>
@@ -116,12 +129,12 @@ const FeatureSection = () => {
                       <Brain className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                        Inteligentní učení
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        Studijní materiály
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-                        Využijte sílu umělé inteligence pro personalizované
-                        vzdělávání
+                      <p className="text-gray-600 dark:text-gray-400">
+                        Vyberte si, které materiály vám nejlépe vyhovují a jakou
+                        uroveň chcete zvládnout.
                       </p>
                     </div>
                   </div>
@@ -140,11 +153,11 @@ const FeatureSection = () => {
                       <Zap className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                        Rychlý pokrok
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        Sledování pokroku
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-                        Dosahujte svých cílů rychleji díky pokročilým metrikám
+                      <p className="text-gray-600 dark:text-gray-400">
+                        Sledujte svůj pokrok a získejte body za plnění úkolů.
                       </p>
                     </div>
                   </div>
@@ -164,10 +177,10 @@ const FeatureSection = () => {
                     </div>
                     <div>
                       <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                        Personalizované úkoly
+                        Interaktivní úkoly
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-                        Získejte úkoly přesně podle vašich potřeb a tempa
+                        Získejte nejen nudné úkoly, ale i interaktivní cvičení.
                       </p>
                     </div>
                   </div>

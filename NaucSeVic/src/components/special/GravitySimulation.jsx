@@ -3,9 +3,11 @@ import FallingBall from "../../simulations/FallingBall";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import { X, ArrowRight, BookOpen } from "lucide-react";
+import CharacterAssistant from "../CharacterAssistant";
 
 const GravitySimulation = () => {
   const [open, setOpen] = useState(false);
+  const [showAssistant, setShowAssistant] = useState(false);
 
   return (
     <>
@@ -135,10 +137,27 @@ const GravitySimulation = () => {
                     že každou sekundu padá míč rychleji a rychleji! 🚀
                   </p>
 
-                  <p className="text-sm text-slate-500 dark:text-slate-500 italic mt-8 border-t border-slate-200 dark:border-zinc-800 pt-4">
-                    Tip: Vlevo vidíš míč, na který působí gravitace. Šipka
-                    ukazuje směr síly.
-                  </p>
+                  <button
+                    onClick={() => setShowAssistant(true)}
+                    className="text-sm text-left text-purple-600 dark:text-purple-400 italic mt-8 border-t border-slate-200 dark:border-zinc-800 pt-4 hover:underline cursor-pointer"
+                  >
+                    Tip: Klikni zde pro nápovědu od asistenta
+                  </button>
+
+                  {showAssistant && (
+                    <CharacterAssistant
+                      image="/ucitel.png"
+                      texts={[
+                        "Vlevo vidíš míč, na který působí gravitace.",
+                        "Červená šipka (vektor) ukazuje směr gravitační síly.",
+                        "Všimni si, že míč zrychluje směrem dolů, přesně podle Newtonova zákona!",
+                      ]}
+                      language="cs"
+                      enableBlur={false}
+                      onHide={() => setShowAssistant(false)}
+                      positions={["bottom-left", "bottom-left", "bottom-left"]}
+                    />
+                  )}
                 </div>
               </div>
             </div>

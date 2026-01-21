@@ -131,13 +131,13 @@ function CharacterAssistant({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.3 }}
-              className="relative bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl shadow-2xl p-1"
+              className="relative"
             >
-              <div className="bg-white dark:bg-gray-900 rounded-3xl p-6">
+              <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-200 dark:border-zinc-800 shadow-xl">
                 {/* Close Button */}
                 <button
                   onClick={handleHide}
-                  className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all hover:scale-110"
+                  className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 transition-all hover:scale-110"
                   aria-label={currentLabels.hide}
                   type="button"
                 >

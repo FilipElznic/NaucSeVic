@@ -12,7 +12,7 @@ const PricingSection = () => {
       gsap.fromTo(
         cardRef.current,
         { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 1, ease: "power2.out" }
+        { opacity: 1, scale: 1, duration: 1, ease: "power2.out" },
       );
     }
 
@@ -27,18 +27,16 @@ const PricingSection = () => {
           duration: 0.5,
           delay: 0.5 + index * 0.1,
           ease: "power2.out",
-        }
+        },
       );
     });
   }, []);
 
   const features = [
     "Neomezený přístup ke všem kurzům",
-    "Personalizované učení s AI",
-    "Certifikáty po dokončení",
-    "Komunitní podpora 24/7",
+
     "Mobilní i webová aplikace",
-    "Offline režim pro učení kdekoli",
+
     "Pokročilé sledování pokroku",
     "Interaktivní cvičení a kvízy",
   ];

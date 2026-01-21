@@ -19,7 +19,7 @@ const TestimonialSection = () => {
           duration: 0.8,
           delay: index * 0.2,
           ease: "power2.out",
-        }
+        },
       );
 
       // Hover animation
@@ -53,24 +53,21 @@ const TestimonialSection = () => {
 
   const testimonials = [
     {
-      name: "Anna Novotná",
-      role: "Studentka VŠE",
-      content:
-        "Díky této platformě jsem zvládla složité předměty mnohem lépe. Personalizované učení je skutečně revoluční!",
+      name: "",
+      role: "",
+      content: "",
       gradient: "from-indigo-500 to-purple-500",
     },
     {
-      name: "Tomáš Svoboda",
-      role: "IT Specialista",
-      content:
-        "Flexibilita a kvalita obsahu jsou neuvěřitelné. Mohu se učit ve svém tempu a všechno si hned prakticky vyzkoušet.",
+      name: "",
+      role: "",
+      content: "",
       gradient: "from-purple-500 to-pink-500",
     },
     {
-      name: "Marie Krásná",
-      role: "Učitelka",
-      content:
-        "Používám tuto platformu i pro své studenty. Interaktivní prvky a jasné vysvětlení jsou fantastické.",
+      name: "",
+      role: "",
+      content: "",
       gradient: "from-pink-500 to-indigo-500",
     },
   ];

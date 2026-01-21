@@ -13,45 +13,25 @@ const StatsSection = () => {
   const stats = [
     {
       icon: Users,
-      number: "15,000+",
+      number: "0+",
       label: "Aktivních studentů",
       description: "Každý měsíc",
       color: "from-indigo-500 to-purple-500",
     },
     {
       icon: BookOpen,
-      number: "800+",
+      number: "0+",
       label: "Kurzů a lekcí",
       description: "Ve všech oblastech",
       color: "from-purple-500 to-pink-500",
     },
-    {
-      icon: Trophy,
-      number: "98%",
-      label: "Míra úspěšnosti",
-      description: "Dokončených kurzů",
-      color: "from-pink-500 to-indigo-500",
-    },
-    {
-      icon: Target,
-      number: "50+",
-      label: "Expertních lektorů",
-      description: "Z praxe",
-      color: "from-indigo-500 to-purple-500",
-    },
+
     {
       icon: Clock,
-      number: "10,000+",
+      number: "0",
       label: "hodin obsahu",
       description: "Připraveno k učení",
       color: "from-purple-500 to-pink-500",
-    },
-    {
-      icon: TrendingUp,
-      number: "4.9/5",
-      label: "Průměrné hodnocení",
-      description: "Od našich studentů",
-      color: "from-pink-500 to-indigo-500",
     },
   ];
 

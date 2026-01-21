@@ -52,7 +52,7 @@ const FallingBall = () => {
     // A ball falling from the top
     const ballRadius = 40;
     const ball = Bodies.circle(width / 2, 80, ballRadius, {
-      restitution: 0.8, // Bouncy
+      restitution: 0.0, // No bounce
       friction: 0.005,
       density: 0.04,
       render: {
@@ -207,7 +207,7 @@ const FallingBall = () => {
       </div>
 
       {/* Helper text overlay at bottom */}
-      <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none opacity-60">
+      <div className="absolute top-4 left-0 right-0 text-center pointer-events-none opacity-60">
         <span className="px-3 py-1 bg-white/50 dark:bg-black/50 rounded-full text-xs font-medium text-slate-600 dark:text-slate-400">
           Chyť míč myší a hoď ho!
         </span>

@@ -7,6 +7,8 @@ import "katex/dist/katex.min.css";
 const GeometricBodyCard = ({ body }) => {
   const { name, description, formulas, type, assets } = body;
   const spline_url = body.spline_url || assets?.spline_url;
+  const image_url =
+    body.image || body.image_url || assets?.image || assets?.image_url;
   const [showModel, setShowModel] = useState(false);
   console.log("Rendering GeometricBodyCard for:", body);
 
@@ -38,22 +40,42 @@ const GeometricBodyCard = ({ body }) => {
           ) : (
             <button
               onClick={() => setShowModel(true)}
-              className="w-full h-full flex flex-col items-center justify-center p-8 cursor-pointer group hover:bg-white dark:hover:bg-zinc-900/50 transition-colors"
+              className="w-full h-full relative flex flex-col items-center justify-center p-8 cursor-pointer group overflow-hidden"
             >
-              <div className="w-20 h-20 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 ring-1 ring-blue-100 dark:ring-blue-800 shadow-sm">
-                <Play
-                  className="w-8 h-8 text-blue-600 dark:text-blue-400 ml-1"
-                  fill="currentColor"
-                />
+              {image_url && (
+                <>
+                  <img
+                    src={image_url}
+                    alt={name}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-white/80 dark:bg-zinc-950/80 group-hover:bg-white/60 dark:group-hover:bg-zinc-950/60 transition-all duration-300" />
+                </>
+              )}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-blue-50/90 dark:bg-blue-900/40 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 ring-1 ring-blue-100 dark:ring-blue-800 shadow-sm">
+                  <Play
+                    className="w-8 h-8 text-blue-600 dark:text-blue-400 ml-1"
+                    fill="currentColor"
+                  />
+                </div>
+                <p className="text-sm font-bold text-slate-900 dark:text-gray-100">
+                  Spustit 3D Model
+                </p>
+                <p className="text-xs text-slate-500 dark:text-gray-400 mt-1 text-center font-medium max-w-[200px]">
+                  Klikněte pro načtení interaktivní simulace
+                </p>
               </div>
-              <p className="text-sm font-bold text-slate-900 dark:text-gray-100">
-                Spustit 3D Model
-              </p>
-              <p className="text-xs text-slate-500 dark:text-gray-400 mt-1 text-center font-medium max-w-[200px]">
-                Klikněte pro načtení interaktivní simulace
-              </p>
             </button>
           )
+        ) : image_url ? (
+          <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
+            <img
+              src={image_url}
+              alt={name}
+              className="w-full h-full object-contain p-8 bg-white dark:bg-zinc-950"
+            />
+          </div>
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 dark:text-gray-600 p-8">
             <div className="w-32 h-32 rounded-2xl border-2 border-dashed border-slate-300 dark:border-zinc-700 flex items-center justify-center mb-4">

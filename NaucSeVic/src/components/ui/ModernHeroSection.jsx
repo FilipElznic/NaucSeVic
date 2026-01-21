@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDarkMode } from "../../contexts/DarkModeContext";
 import { ArrowRight, Play } from "lucide-react";
 import Navbar from "./Navbar";
 import LoadingSpinner from "./LoadingSpinner";
@@ -20,6 +21,7 @@ function ModernHeroSection() {
   const containerRef = useRef(null);
   const rectRef = useRef(null);
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -77,7 +79,10 @@ function ModernHeroSection() {
             ať už doma, ve škole nebo na cestách.
           </p>
           <div className="mt-8 flex w-full flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-center">
-            <button className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-xl">
+            <button
+              onClick={() => navigate("/prihlaseni")}
+              className="w-full sm:w-auto group inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-xl"
+            >
               Začít objevovat
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
@@ -139,17 +144,10 @@ function ModernHeroSection() {
                 </div>
               }
             >
-              <MagicBento
-                textAutoHide={true}
-                enableStars={true}
-                enableSpotlight={true}
-                enableBorderGlow={true}
-                enableTilt={true}
-                enableMagnetism={true}
-                clickEffect={true}
-                spotlightRadius={300}
-                particleCount={12}
-                glowColor="132, 0, 255"
+              <img
+                src={darkMode ? "/lp.png" : "/lpwhite.png"}
+                alt="Demo Content"
+                className="object-contain w-full h-full"
               />
             </Suspense>
           </div>
@@ -169,7 +167,10 @@ function ModernHeroSection() {
               </p>
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4  mb-16">
-                <button className="group inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-105 backdrop-blur-sm">
+                <button
+                  onClick={() => navigate("/prihlaseni")}
+                  className="group inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-105 backdrop-blur-sm"
+                >
                   Začít objevovat
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </button>

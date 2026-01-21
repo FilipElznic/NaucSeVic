@@ -1098,7 +1098,8 @@ const MagicBento2 = ({
 
             /* Leaderboard Container */
             .leaderboard-container {
-               width: 100%;
+               width: 75%;
+
                
 
             }
@@ -1768,102 +1769,100 @@ const MagicBento2 = ({
             className="flex items-center justify-between w-full mb-4"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-md bg-gradient-to-tr from-yellow-400 to-amber-300/30 shadow-sm">
-                <Trophy className="w-6 h-6 text-yellow-500" />
-              </div>
               <div>
-                <h2 className="text-lg md:text-xl font-extrabold text-black dark:text-white leading-tight">
+                <h2 className="md:text-8xl text-xl mt-32 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600">
                   Žebříček uživatelů
                 </h2>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <p className="text-lg text-gray-600 dark:text-gray-400">
                   Seřazeno podle XP a série
                 </p>
               </div>
             </div>
           </div>
-          <BentoItem padding="p-6" className="leaderboard-container">
-            <div className="flex flex-col  relative z-10 w-full h-[50vh] text-gray-900 dark:text-white">
-              <div className="flex items-center gap-3 mb-6">
-                <Trophy className="w-6 h-6 text-yellow-500" />
-              </div>
+          <div className="min-h-[60vh] flex flex-row gap-6">
+            <p className="text-white text-md w-1/4">
+              Sbírejte xp a zvyšujte svou pozici v žebříčku! Existují také xp
+              boostery, které vám pomohou získat více xp za kratší dobu. Buďte
+              aktivní a sledujte, jak se vaše pozice zlepšuje!
+            </p>
 
-              {leaderboardLoading ? (
-                <div className="flex justify-center flex-1 items-center min-h-[100px]">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+            <BentoItem padding="p-6" className="leaderboard-container ">
+              <div className="flex flex-col   relative z-10  h-[50vh] text-gray-900 dark:text-white">
+                <div className="flex items-center gap-3 mb-6">
+                  <Trophy className="w-6 h-6 text-purple-500" />
                 </div>
-              ) : (
-                <div className="flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar flex-1">
-                  {leaderboard.map((user, index) => {
-                    const pos = index + 1;
-                    const isTop3 = pos <= 3;
 
-                    let bgClass = "bg-white/5 dark:bg-black/20";
-                    let borderClass = "border-black/5 dark:border-white/5";
-                    let iconColor = "text-gray-400";
+                {leaderboardLoading ? (
+                  <div className="flex justify-center flex-1 items-center min-h-[100px]">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2 overflow-y-auto pr-2 custom-scrollbar ">
+                    {leaderboard.map((user, index) => {
+                      const pos = index + 1;
+                      const isTop3 = pos <= 3;
 
-                    if (pos === 1) {
-                      bgClass =
-                        "bg-gradient-to-br from-yellow-500/10 to-amber-500/5";
-                      borderClass = "border-yellow-500/30";
-                      iconColor = "text-yellow-500";
-                    } else if (pos === 2) {
-                      bgClass =
-                        "bg-gradient-to-br from-gray-400/10 to-slate-400/5";
-                      borderClass = "border-gray-400/30";
-                      iconColor = "text-gray-400";
-                    } else if (pos === 3) {
-                      bgClass =
-                        "bg-gradient-to-br from-orange-500/10 to-red-500/5";
-                      borderClass = "border-orange-500/30";
-                      iconColor = "text-orange-500";
-                    }
+                      let bgClass = "bg-white/5 dark:bg-black/20";
+                      let borderClass = "border-black/5 dark:border-white/5";
 
-                    return (
-                      <div
-                        key={user.userId || index}
-                        className={`flex items-center justify-between p-3 rounded-xl border ${bgClass} ${borderClass} transition-all hover:scale-[1.01]`}
-                      >
-                        <div className="flex items-center gap-4">
-                          <div
-                            className={`flex items-center justify-center w-8 h-8 rounded-lg font-bold ${pos === 1 ? "bg-yellow-500 text-black" : pos === 2 ? "bg-gray-400 text-black" : pos === 3 ? "bg-orange-500 text-black" : "bg-white/10"}`}
-                          >
-                            {pos}
+                      if (pos === 1) {
+                        bgClass = "bg-purple-500/10";
+                        borderClass = "border-purple-500/20";
+                      } else if (pos === 2) {
+                        bgClass = "bg-purple-400/10";
+                        borderClass = "border-purple-400/20";
+                      } else if (pos === 3) {
+                        bgClass = "bg-purple-300/10";
+                        borderClass = "border-purple-300/20";
+                      }
+
+                      return (
+                        <div
+                          key={user.userId || index}
+                          className={`flex items-center justify-between p-3 rounded-xl border ${bgClass} ${borderClass} transition-all`}
+                        >
+                          <div className="flex items-center gap-4">
+                            <div
+                              className={`flex items-center justify-center w-8 h-8 rounded-lg font-bold bg-white/10`}
+                            >
+                              {pos}
+                            </div>
+                            <div>
+                              <span className="font-bold block truncate max-w-[150px] md:max-w-[300px]">
+                                {user.name}
+                              </span>
+                            </div>
                           </div>
-                          <div>
-                            <span className="font-bold block truncate max-w-[150px] md:max-w-[300px]">
-                              {user.name}
+
+                          <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-3 text-xs md:text-sm">
+                              <span className="flex items-center gap-1.5 opacity-80">
+                                <Flame size={14} className="text-purple-500" />{" "}
+                                <span className="font-mono">{user.streak}</span>
+                              </span>
+                              <span className="flex items-center gap-1.5 opacity-80">
+                                <Coins size={14} className="text-purple-400" />{" "}
+                                <span className="font-mono">{user.coins}</span>
+                              </span>
+                            </div>
+                            <span className="font-mono font-bold text-purple-600 dark:text-purple-400 min-w-[80px] text-right">
+                              {user.xp} XP
                             </span>
                           </div>
                         </div>
+                      );
+                    })}
 
-                        <div className="flex items-center gap-6">
-                          <div className="flex items-center gap-3 text-xs md:text-sm">
-                            <span className="flex items-center gap-1.5 opacity-80">
-                              <Flame size={14} className="text-orange-500" />{" "}
-                              <span className="font-mono">{user.streak}</span>
-                            </span>
-                            <span className="flex items-center gap-1.5 opacity-80">
-                              <Coins size={14} className="text-yellow-500" />{" "}
-                              <span className="font-mono">{user.coins}</span>
-                            </span>
-                          </div>
-                          <span className="font-mono font-bold text-purple-600 dark:text-purple-400 min-w-[80px] text-right">
-                            {user.xp} XP
-                          </span>
-                        </div>
+                    {leaderboard.length === 0 && (
+                      <div className="col-span-full text-center py-8 opacity-50">
+                        Zatím žádná data k zobrazení.
                       </div>
-                    );
-                  })}
-
-                  {leaderboard.length === 0 && (
-                    <div className="col-span-full text-center py-8 opacity-50">
-                      Zatím žádná data k zobrazení.
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </BentoItem>
+                    )}
+                  </div>
+                )}
+              </div>
+            </BentoItem>
+          </div>
         </div>
       </BentoCardGrid>
 
@@ -1874,7 +1873,7 @@ const MagicBento2 = ({
           onClick={() => setShowShop(false)}
         >
           <div
-            className="bg-white dark:bg-[#0B0C15] w-full max-w-md rounded-2xl border border-white/10 p-6 shadow-2xl relative"
+            className="bg-white dark:bg-[#0B0C15] w-full max-w-md rounded-2xl border border-white/10 p-6 shadow-2xl relative dark:text-white"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-6">
