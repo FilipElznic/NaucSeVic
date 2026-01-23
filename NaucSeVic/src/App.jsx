@@ -34,7 +34,7 @@ const AdminGeometryManager = lazy(
 const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
-const Home2 = lazy(() => import("./pages/Home2"));
+const UserDashboard = lazy(() => import("./pages/UserDashboard"));
 
 const UniversalSubjectLayout = lazy(
   () => import("./components/layout/UniversalSubjectLayout"),
@@ -79,7 +79,7 @@ const AppRoutes = () => {
                   <LoadingSpinner size="xl" />
                 </div>
               ) : user ? (
-                <Home2 />
+                <UserDashboard />
               ) : (
                 <Layout showNavbar={false}>
                   <LandingPage />

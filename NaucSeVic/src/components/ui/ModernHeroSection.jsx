@@ -6,7 +6,6 @@ import Navbar from "./Navbar";
 import LoadingSpinner from "./LoadingSpinner";
 
 const LaserFlow = lazy(() => import("./LaserFlow"));
-const MagicBento = lazy(() => import("./MagicBento"));
 
 // NOTE: You can also adjust the variables in the shader for super detailed customization
 

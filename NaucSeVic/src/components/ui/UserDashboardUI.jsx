@@ -608,7 +608,7 @@ const parseCourseDetails = (courseId) => {
   };
 };
 
-const MagicBento2 = ({
+const UserDashboardUI = ({
   textAutoHide = true,
   enableStars = true,
   enableSpotlight = true,
@@ -1977,4 +1977,4 @@ const MagicBento2 = ({
   );
 };
 
-export default MagicBento2;
+export default UserDashboardUI;
