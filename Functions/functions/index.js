@@ -205,6 +205,7 @@ exports.createUserProfile = onCall(async (request) => {
         xp: 0,
         coins: 0,
       },
+      inventory: {},
       completedTasks: {},
       progress: {
         [today]: {
@@ -850,9 +851,15 @@ exports.buyBooster = onCall(async (request) => {
         }
 
         // Check where coins are stored and update accordingly
-        const updateData = {
-          [`inventory.${boosterId}`]: admin.firestore.FieldValue.increment(1),
-        };
+        const updateData = {};
+
+        // Handle inventory update
+        if (userData.inventory) {
+          updateData[`inventory.${boosterId}`] =
+            admin.firestore.FieldValue.increment(1);
+        } else {
+          updateData["inventory"] = { [boosterId]: 1 };
+        }
 
         if (userData.profile && userData.profile.coins !== undefined) {
           updateData["profile.coins"] = admin.firestore.FieldValue.increment(
@@ -1936,7 +1943,97 @@ exports.getLeaderboard = onCall(async (request) => {
 
     return { leaderboard };
   } catch (error) {
-    console.error("Get leaderboard error:", error);
-    throw new HttpsError("internal", "Chyba při načítání žebříčku.");
+    logger.error("Error fetching leaderboard", error);
+    throw new HttpsError(
+      "internal",
+      error.message || "Failed to fetch leaderboard",
+    );
+  }
+});
+
+// SECURED: Get user comprehensive statistics
+exports.getUserStatistics = onCall(async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Authentication required");
+  }
+
+  const userId = request.auth.uid;
+  const db = admin.firestore();
+
+  try {
+    const userDoc = await db.collection("users").doc(userId).get();
+    if (!userDoc.exists) {
+      throw new HttpsError("not-found", "User profile not found");
+    }
+
+    const userData = userDoc.data();
+    const progress = userData.progress || {};
+
+    // 1. Weekly Activity (Last 7 days)
+    const weeklyActivity = [];
+    const days = ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"];
+    const today = new Date();
+
+    // Create array for last 7 days including today
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(today.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const dayName = days[d.getDay()];
+
+      const dayData = progress[dateStr] || {};
+      weeklyActivity.push({
+        name: dayName, // For X-axis
+        fullDate: dateStr, // For tooltip
+        xp: dayData.xpGained || 0,
+        tasks: dayData.tasksFinished || 0,
+      });
+    }
+
+    // 2. Aggregate Total Stats from Progress History
+    let totalTasksFinished = 0;
+    let totalLessonsFinished = 0;
+    let totalLoginDays = 0;
+
+    Object.values(progress).forEach((dayData) => {
+      totalTasksFinished += dayData.tasksFinished || 0;
+      totalLessonsFinished += dayData.lessonsFinished || 0;
+      if (dayData.loginTime) totalLoginDays++;
+    });
+
+    // 3. Activity History for Heatmap (Last 365 days)
+    const activityHistory = {};
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+    // Iterate through progress map directly
+    Object.entries(progress).forEach(([dateStr, dayData]) => {
+      // Simple check if date is within range (optional, but good for payload size)
+      if (new Date(dateStr) >= oneYearAgo) {
+        activityHistory[dateStr] = {
+          value:
+            (dayData.tasksFinished || 0) + (dayData.lessonsFinished || 0) * 2, // Weighted activity
+          xp: dayData.xpGained || 0,
+        };
+      }
+    });
+
+    const xp = userData.profile?.xp || 0;
+    const level = Math.floor(Math.sqrt(xp / 100)) + 1;
+
+    return {
+      weeklyActivity,
+      activityHistory,
+      stats: {
+        totalXp: xp,
+        currentLevel: level,
+        totalTasks: totalTasksFinished,
+        totalLessons: totalLessonsFinished,
+        loginDays: totalLoginDays,
+      },
+    };
+  } catch (error) {
+    logger.error("Error fetching user statistics", error);
+    throw new HttpsError("internal", "Failed to get statistics");
   }
 });

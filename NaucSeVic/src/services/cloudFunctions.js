@@ -218,6 +218,21 @@ class CloudFunctionsService {
       return { leaderboard: [] };
     }
   }
+
+  // Get user statistics
+  async getUserStatistics() {
+    try {
+      const getStatisticsFunction = httpsCallable(
+        functions,
+        "getUserStatistics",
+      );
+      const result = await getStatisticsFunction();
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching user statistics:", error);
+      throw error;
+    }
+  }
 }
 
 // Export singleton instance
