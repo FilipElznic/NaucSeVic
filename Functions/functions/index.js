@@ -1017,6 +1017,151 @@ exports.initializeUserProfile = onCall(async (request) => {
   }
 });
 
+// SECURED: Update user profile (name, surname, email)
+exports.updateUserProfile = onCall(async (request) => {
+  try {
+    // Authentication required
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const userId = request.auth.uid;
+    const { firstName, lastName, email } = request.data || {};
+
+    // Rate limiting per user
+    checkRateLimit(userId, "updateProfile", 10, 60000); // 10 per minute
+
+    logger.info("Updating user profile", {
+      userId,
+      currentEmail: request.auth.token.email,
+      requestedChanges: {
+        firstName: !!firstName,
+        lastName: !!lastName,
+        email: !!email,
+      },
+    });
+
+    // Check if profile exists
+    const userRef = admin.firestore().collection("users").doc(userId);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      throw new Error("User profile not found");
+    }
+
+    // Prepare updates object
+    const updates = {};
+    let authUpdates = {};
+
+    // Sanitize and update firstName
+    if (firstName !== undefined) {
+      const sanitizedFirstName = sanitizeString(firstName);
+      if (sanitizedFirstName.length < 1) {
+        throw new Error("First name cannot be empty");
+      }
+      if (sanitizedFirstName.length > 50) {
+        throw new Error("First name is too long (max 50 characters)");
+      }
+      updates["profile.name"] = sanitizedFirstName;
+    }
+
+    // Sanitize and update lastName
+    if (lastName !== undefined) {
+      const sanitizedLastName = sanitizeString(lastName);
+      if (sanitizedLastName.length > 50) {
+        throw new Error("Last name is too long (max 50 characters)");
+      }
+      updates["profile.surname"] = sanitizedLastName;
+    }
+
+    // Handle email update (requires Admin SDK)
+    if (email !== undefined) {
+      const sanitizedEmail = email.trim().toLowerCase();
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(sanitizedEmail)) {
+        throw new Error("Invalid email format");
+      }
+
+      // Check if email is already in use by another user
+      try {
+        const existingUser = await admin.auth().getUserByEmail(sanitizedEmail);
+        if (existingUser.uid !== userId) {
+          throw new Error("Email is already in use by another account");
+        }
+      } catch (error) {
+        // If getUserByEmail throws error, email is not in use (which is good)
+        if (error.code !== "auth/user-not-found") {
+          throw error;
+        }
+      }
+
+      updates["profile.email"] = sanitizedEmail;
+      authUpdates.email = sanitizedEmail;
+    }
+
+    // Update Firestore user document
+    if (Object.keys(updates).length > 0) {
+      await userRef.update(updates);
+      logger.info("Firestore profile updated", {
+        userId,
+        updatedFields: Object.keys(updates),
+      });
+    }
+
+    // Update Firebase Auth user (email and displayName)
+    if (
+      Object.keys(authUpdates).length > 0 ||
+      firstName !== undefined ||
+      lastName !== undefined
+    ) {
+      const authUpdateData = { ...authUpdates };
+
+      // Update displayName if name or surname changed
+      if (firstName !== undefined || lastName !== undefined) {
+        const currentData = userDoc.data();
+        const newFirstName =
+          firstName !== undefined
+            ? sanitizeString(firstName)
+            : currentData.profile.name;
+        const newLastName =
+          lastName !== undefined
+            ? sanitizeString(lastName)
+            : currentData.profile.surname;
+        authUpdateData.displayName = `${newFirstName} ${newLastName}`.trim();
+      }
+
+      await admin.auth().updateUser(userId, authUpdateData);
+      logger.info("Firebase Auth user updated", {
+        userId,
+        updatedFields: Object.keys(authUpdateData),
+      });
+    }
+
+    // Get updated profile
+    const updatedDoc = await userRef.get();
+    const updatedProfile = updatedDoc.data().profile;
+
+    logger.info("User profile updated successfully", {
+      userId,
+      updatedFields: Object.keys(updates),
+    });
+
+    return {
+      success: true,
+      message: "Profile updated successfully",
+      profile: updatedProfile,
+    };
+  } catch (error) {
+    logger.error("Error updating user profile", {
+      error: error.message,
+      userId: request.auth && request.auth.uid,
+    });
+    throw new Error(error.message || "Failed to update profile");
+  }
+});
+
 // SECURED: Task update trigger with validation
 exports.onTaskUpdated = onDocumentUpdated("tasks/{taskId}", async (event) => {
   try {

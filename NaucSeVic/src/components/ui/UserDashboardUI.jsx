@@ -550,8 +550,8 @@ const GlobalSpotlight = ({
 
 const BentoCardGrid = ({ children, gridRef }) => (
   <div
-    className="bento-section grid gap-6 p-4 w-full max-w-[1600px] select-none relative"
-    style={{ fontSize: "clamp(1rem, 0.9rem + 0.5vw, 1.5rem)" }}
+    className="bento-section grid gap-3 sm:gap-6 p-2 sm:p-4 w-full max-w-[1600px] select-none relative"
+    style={{ fontSize: "clamp(0.875rem, 0.8rem + 0.5vw, 1.5rem)" }}
     ref={gridRef}
   >
     {children}
@@ -1014,21 +1014,30 @@ const UserDashboardUI = ({
           .card-responsive {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1rem;
             width: 100%;
             margin: 0 auto;
+            min-width: 0;
+          }
+          
+          @media (min-width: 600px) {
+            .card-responsive {
+              gap: 2rem;
+            }
           }
 
           .dashboard-grid {
             display: grid;
-            gap: 1.5rem;
+            gap: 0.75rem;
             grid-template-columns: 1fr;
             width: 100%;
+            min-width: 0;
           }
           
           @media (min-width: 600px) {
             .dashboard-grid {
               grid-template-columns: repeat(2, 1fr);
+              gap: 1.5rem;
             }
           }
           
@@ -1256,7 +1265,10 @@ const UserDashboardUI = ({
                 </div>
 
                 <div className="mt-auto">
-                  <button className="w-full py-2 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl text-sm transition-colors border border-black/5 dark:border-white/5">
+                  <button
+                    onClick={() => navigate("/profil")}
+                    className="w-full py-2 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl text-sm transition-colors border border-black/5 dark:border-white/5"
+                  >
                     Upravit profil
                   </button>
                 </div>
@@ -1764,30 +1776,33 @@ const UserDashboardUI = ({
           {/* 7. Leaderboard */}
           <div
             id="zebricek"
-            className="flex items-center justify-between w-full mb-4"
+            className="flex items-center justify-between w-full mb-4 sm:mb-6"
           >
             <div className="flex items-center gap-3">
               <div>
-                <h2 className="md:text-8xl text-xl mt-32 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600">
+                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl mt-12 sm:mt-16 md:mt-24 lg:mt-32 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600">
                   Žebříček uživatelů
                 </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
+                <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">
                   Seřazeno podle XP a série
                 </p>
               </div>
             </div>
           </div>
-          <div className="min-h-[60vh] flex flex-col lg:flex-row gap-6 max-w-[1600px] mx-auto">
-            <p className="text-white text-md w-full md:w-1/4">
+          <div className="min-h-[60vh] flex flex-col lg:flex-row gap-4 sm:gap-6 max-w-[1600px] mx-auto">
+            <p className="text-white text-sm sm:text-base md:text-md w-full lg:w-1/4 px-2 sm:px-0">
               Sbírejte xp a zvyšujte svou pozici v žebříčku! Existují také xp
               boostery, které vám pomohou získat více xp za kratší dobu. Buďte
               aktivní a sledujte, jak se vaše pozice zlepšuje!
             </p>
 
-            <BentoItem padding="p-4 md:p-6" className="leaderboard-container ">
-              <div className="flex flex-col   relative z-10  h-[50vh] text-gray-900 dark:text-white">
-                <div className="flex items-center gap-3 mb-6">
-                  <Trophy className="w-6 h-6 text-purple-500" />
+            <BentoItem
+              padding="p-3 sm:p-4 md:p-6"
+              className="leaderboard-container"
+            >
+              <div className="flex flex-col relative z-10 h-[50vh] text-gray-900 dark:text-white">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500" />
                 </div>
 
                 {leaderboardLoading ? (
@@ -1817,33 +1832,33 @@ const UserDashboardUI = ({
                       return (
                         <div
                           key={user.userId || index}
-                          className={`flex items-center justify-between p-3 rounded-xl border ${bgClass} ${borderClass} transition-all`}
+                          className={`flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-xl border ${bgClass} ${borderClass} transition-all gap-2 sm:gap-0 min-w-0`}
                         >
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-3 min-w-0">
                             <div
-                              className={`flex items-center justify-center w-8 h-8 rounded-lg font-bold bg-white/10`}
+                              className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg font-bold bg-white/10 text-xs sm:text-base flex-shrink-0`}
                             >
                               {pos}
                             </div>
-                            <div>
-                              <span className="font-bold block truncate max-w-[150px] md:max-w-[300px]">
+                            <div className="min-w-0 flex-1">
+                              <span className="font-bold block truncate text-sm sm:text-base">
                                 {user.name}
                               </span>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-6">
-                            <div className="flex items-center gap-3 text-xs md:text-sm">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 pl-10 sm:pl-0">
+                            <div className="flex items-center gap-3 text-xs">
                               <span className="flex items-center gap-1.5 opacity-80">
-                                <Flame size={14} className="text-purple-500" />{" "}
+                                <Flame size={12} className="text-purple-500" />{" "}
                                 <span className="font-mono">{user.streak}</span>
                               </span>
                               <span className="flex items-center gap-1.5 opacity-80">
-                                <Coins size={14} className="text-purple-400" />{" "}
+                                <Coins size={12} className="text-purple-400" />{" "}
                                 <span className="font-mono">{user.coins}</span>
                               </span>
                             </div>
-                            <span className="font-mono font-bold text-purple-600 dark:text-purple-400 min-w-[80px] text-right">
+                            <span className="font-mono font-bold text-purple-600 dark:text-purple-400 sm:min-w-[80px] sm:text-right text-xs sm:text-sm">
                               {user.xp} XP
                             </span>
                           </div>

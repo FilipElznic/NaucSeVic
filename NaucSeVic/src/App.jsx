@@ -35,6 +35,7 @@ const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
 const UserDashboard = lazy(() => import("./pages/UserDashboard"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
 const UniversalSubjectLayout = lazy(
   () => import("./components/layout/UniversalSubjectLayout"),
@@ -114,6 +115,18 @@ const AppRoutes = () => {
               <ProtectedRoute>
                 <Layout>
                   <AllTasks />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Profile Page */}
+          <Route
+            path="/profil"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ProfilePage />
                 </Layout>
               </ProtectedRoute>
             }

@@ -233,6 +233,21 @@ class CloudFunctionsService {
       throw error;
     }
   }
+
+  // Update user profile (name, surname, email)
+  async updateUserProfile(profileData) {
+    try {
+      const updateProfileFunction = httpsCallable(
+        functions,
+        "updateUserProfile",
+      );
+      const result = await updateProfileFunction(profileData);
+      return result.data;
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      throw error;
+    }
+  }
 }
 
 // Export singleton instance
