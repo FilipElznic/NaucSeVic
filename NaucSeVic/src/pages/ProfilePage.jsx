@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import { userService } from "../services/userService";
 import { cloudFunctionsService } from "../services/cloudFunctions";
+import { storageService } from "../services/storageService";
 import {
   User,
   Mail,
@@ -10,10 +11,10 @@ import {
   CheckCircle,
   AlertCircle,
   Loader,
-  Edit2,
-  X,
   Save,
   Shield,
+  Camera,
+  Trash2,
 } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -24,8 +25,9 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const fileInputRef = useRef(null);
 
   // Edit form state
   const [editForm, setEditForm] = useState({
@@ -63,18 +65,6 @@ const ProfilePage = () => {
     fetchUserProfile();
   }, [user, navigate]);
 
-  const handleEditToggle = () => {
-    if (isEditing) {
-      // Reset form to current values when canceling
-      setEditForm({
-        firstName: userProfile?.profile?.name || "",
-        lastName: userProfile?.profile?.surname || "",
-        email: user?.email || "",
-      });
-    }
-    setIsEditing(!isEditing);
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditForm((prev) => ({
@@ -107,8 +97,6 @@ const ProfilePage = () => {
         const updatedProfile = await userService.getUserProfile(user.uid);
         setUserProfile(updatedProfile);
 
-        setIsEditing(false);
-
         // If email changed, inform user they need to re-login
         if (editForm.email !== user.email) {
           toast.info(
@@ -127,6 +115,25 @@ const ProfilePage = () => {
       toast.error(error.message || "Nepodařilo se aktualizovat profil");
     } finally {
       setUpdateLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (
+      window.confirm(
+        "Opravdu chcete smazat svůj účet? Tato akce je nevratná a smazání veškerých dat nemusí být okamžité.",
+      )
+    ) {
+      try {
+        await user.delete();
+        toast.success("Účet byl smazán.");
+        navigate("/");
+      } catch (error) {
+        console.error("Error deleting user:", error);
+        toast.error(
+          "Pro smazání účtu se musíte znovu přihlásit (z bezpečnostních důvodů).",
+        );
+      }
     }
   };
 
@@ -152,6 +159,51 @@ const ProfilePage = () => {
     }
   };
 
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      toast.error("Prosím nahrajte obrázek");
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Obrázek je příliš velký (max 5MB)");
+      return;
+    }
+
+    try {
+      setUploadingPhoto(true);
+      const downloadURL = await storageService.uploadProfilePicture(
+        file,
+        user.uid,
+      );
+
+      // Update local state immediately
+      setUserProfile((prev) => ({
+        ...prev,
+        profile: {
+          ...prev.profile,
+          photoURL: downloadURL,
+        },
+      }));
+
+      toast.success("Profilová fotka byla úspěšně změněna");
+    } catch (error) {
+      console.error("Error uploading photo:", error);
+      toast.error("Nepodařilo se nahrát profilovou fotku");
+    } finally {
+      setUploadingPhoto(false);
+      // Reset input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 dark:bg-[#0f0f14]">
@@ -171,42 +223,80 @@ const ProfilePage = () => {
       : user?.displayName || "Uživatel";
 
   const userEmail = user?.email || "Není k dispozici";
+  const photoURL = userProfile?.profile?.photoURL || user?.photoURL;
 
   return (
-    <div className="h-[100vh] overflow-hidden bg-gray-50 dark:bg-[#0f0f14]">
-      <div className="h-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 mt-40">
-        <div className="h-full grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div className="lg:h-[100vh] min-h-screen lg:overflow-hidden overflow-auto bg-gray-50 dark:bg-[#0f0f14] flex items-center justify-center">
+      <div className="w-full max-w-7xl lg:h-full h-auto p-4 sm:p-6 lg:p-8 pb-20">
+        <div className="flex flex-col lg:flex-row gap-4 lg:h-full h-auto items-center">
           {/* Left Column - User Card */}
-          <div className="lg:col-span-1 flex flex-col gap-4">
-            {/* User Avatar Card */}
-            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6 flex flex-col items-center">
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500/20 to-purple-600/20 dark:from-purple-500/30 dark:to-purple-600/30 border-2 border-purple-500/30 dark:border-purple-500/50 flex items-center justify-center mb-4">
-                <User
-                  size={40}
-                  className="text-purple-600 dark:text-purple-400"
-                />
+          <div className="lg:w-1/3 w-full flex flex-col lg:h-[80vh] h-auto">
+            {/* User Avatar Card - Stretched to fill height */}
+            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6 flex flex-col items-center justify-between h-full">
+              {/* Top Content */}
+              <div className="w-full flex flex-col items-center">
+                <div className="relative group mb-6 mt-8">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-500/20 to-purple-600/20 dark:from-purple-500/30 dark:to-purple-600/30 border-2 border-purple-500/30 dark:border-purple-500/50 flex items-center justify-center overflow-hidden">
+                    {photoURL ? (
+                      <img
+                        src={photoURL}
+                        alt={displayName}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User
+                        size={56}
+                        className="text-purple-600 dark:text-purple-400"
+                      />
+                    )}
+                  </div>
+
+                  {uploadingPhoto ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                      <Loader className="w-8 h-8 animate-spin text-white" />
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                    >
+                      <Camera className="w-8 h-8 text-white" />
+                    </button>
+                  )}
+
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                  />
+                </div>
+
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                  {displayName}
+                </h2>
+                <p className="text-base text-gray-500 dark:text-gray-400 flex items-center gap-1.5 mb-8">
+                  <Mail size={16} />
+                  <span className="truncate max-w-[250px]">{userEmail}</span>
+                </p>
               </div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1 text-center">
-                {displayName}
-              </h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5 mb-4">
-                <Mail size={14} />
-                <span className="truncate max-w-[200px]">{userEmail}</span>
-              </p>
-              <div className="w-full pt-4 border-t border-gray-200 dark:border-[#2a2a35]">
-                <div className="flex items-center justify-between text-sm mb-2">
+
+              {/* Bottom Content - Stats */}
+              <div className="w-full pt-6 border-t border-gray-200 dark:border-[#2a2a35]">
+                <div className="flex items-center justify-between text-base mb-3">
                   <span className="text-gray-600 dark:text-gray-400">
                     Úroveň
                   </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                  <span className="font-semibold text-gray-900 dark:text-white text-lg">
                     {userProfile?.profile?.xp
                       ? Math.floor(userProfile.profile.xp / 100) + 1
                       : 1}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-base">
                   <span className="text-gray-600 dark:text-gray-400">XP</span>
-                  <span className="font-semibold text-purple-600 dark:text-purple-400">
+                  <span className="font-bold text-purple-600 dark:text-purple-400 text-lg">
                     {userProfile?.profile?.xp || 0}
                   </span>
                 </div>
@@ -215,9 +305,9 @@ const ProfilePage = () => {
           </div>
 
           {/* Right Column - Account Info & Security */}
-          <div className="lg:col-span-2 flex flex-col gap-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
+          <div className="lg:w-2/3 w-full flex flex-col gap-4 lg:h-[80vh] h-auto lg:overflow-y-auto overflow-visible scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
             {/* Account Information Card */}
-            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6">
+            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6 flex-1 flex flex-col">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <User
@@ -226,29 +316,11 @@ const ProfilePage = () => {
                   />
                   Informace o účtu
                 </h3>
-                <button
-                  onClick={handleEditToggle}
-                  disabled={updateLoading}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-[#2a2a35] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#323241] transition-colors disabled:opacity-50 text-sm"
-                >
-                  {isEditing ? (
-                    <>
-                      <X size={14} />
-                      <span>Zrušit</span>
-                    </>
-                  ) : (
-                    <>
-                      <Edit2 size={14} />
-                      <span>Upravit</span>
-                    </>
-                  )}
-                </button>
               </div>
-
-              {isEditing ? (
-                <div className="space-y-3">
+              <div className="flex-1 flex flex-col gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                    <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
                       Jméno
                     </label>
                     <input
@@ -256,13 +328,13 @@ const ProfilePage = () => {
                       name="firstName"
                       value={editForm.firstName}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Zadejte jméno"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                    <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
                       Příjmení
                     </label>
                     <input
@@ -270,33 +342,35 @@ const ProfilePage = () => {
                       name="lastName"
                       value={editForm.lastName}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Zadejte příjmení"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={editForm.email}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      placeholder="Zadejte email"
-                    />
-                    <p className="text-xs text-amber-600 dark:text-amber-500 mt-1.5 flex items-center gap-1">
-                      <AlertCircle size={12} />
-                      Změna emailu vyžaduje opětovné přihlášení
-                    </p>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={editForm.email}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Zadejte email"
+                  />
+                  <p className="text-xs text-amber-600 dark:text-amber-500 mt-1.5 flex items-center gap-1">
+                    <AlertCircle size={12} />
+                    Změna emailu vyžaduje opětovné přihlášení
+                  </p>
+                </div>
 
+                <div className="pt-2 mt-auto">
                   <button
                     onClick={handleSaveProfile}
                     disabled={updateLoading}
-                    className="w-full mt-2 px-4 py-2.5 rounded-lg font-medium text-white bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+                    className="w-full sm:w-auto px-6 py-2.5 rounded-lg font-medium text-white bg-purple-600 hover:bg-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
                   >
                     {updateLoading ? (
                       <>
@@ -311,30 +385,11 @@ const ProfilePage = () => {
                     )}
                   </button>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-[#2a2a35]">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Jméno
-                    </span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">
-                      {displayName}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between py-2">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Email
-                    </span>
-                    <span className="text-sm font-medium text-gray-900 dark:text-white truncate max-w-[200px]">
-                      {userEmail}
-                    </span>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
 
             {/* Security Card */}
-            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6">
+            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6 flex-1 flex flex-col">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Shield
                   size={18}
@@ -343,7 +398,7 @@ const ProfilePage = () => {
                 Zabezpečení
               </h3>
 
-              <div className="space-y-3">
+              <div className="flex-1 space-y-4">
                 <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-[#0f0f14] rounded-lg border border-gray-100 dark:border-[#2a2a35]">
                   <Key
                     size={18}
@@ -394,6 +449,30 @@ const ProfilePage = () => {
                           <span>Odeslat resetovací email</span>
                         </>
                       )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Delete Account Section */}
+                <div className="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-100 dark:border-red-900/30">
+                  <Trash2
+                    size={18}
+                    className="text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <h4 className="text-sm font-medium text-red-900 dark:text-red-400 mb-1">
+                      Smazat účet
+                    </h4>
+                    <p className="text-xs text-red-700 dark:text-red-300 mb-3">
+                      Trvale odstraní váš účet a veškerá data.
+                    </p>
+
+                    <button
+                      onClick={handleDeleteAccount}
+                      className="px-4 py-2 rounded-lg font-medium text-white text-sm transition-colors flex items-center gap-2 bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                    >
+                      <Trash2 size={14} />
+                      <span>Smazat účet</span>
                     </button>
                   </div>
                 </div>

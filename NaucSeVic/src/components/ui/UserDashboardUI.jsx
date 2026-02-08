@@ -1210,7 +1210,15 @@ const UserDashboardUI = ({
                 <div className="flex flex-col items-center gap-4 text-center">
                   <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-1">
                     <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
-                      <User size={48} className="text-gray-400" />
+                      {user?.photoURL ? (
+                        <img
+                          src={user.photoURL}
+                          alt={userStats.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <User size={48} className="text-gray-400" />
+                      )}
                     </div>
                   </div>
                   <div>
@@ -1278,7 +1286,15 @@ const UserDashboardUI = ({
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-0.5">
                     <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
-                      <User size={24} className="text-gray-400" />
+                      {user?.photoURL ? (
+                        <img
+                          src={user.photoURL}
+                          alt={userStats.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <User size={24} className="text-gray-400" />
+                      )}
                     </div>
                   </div>
                   <div>
