@@ -1162,6 +1162,40 @@ exports.updateUserProfile = onCall(async (request) => {
   }
 });
 
+// SECURED: Delete user account
+exports.deleteAccount = onCall(async (request) => {
+  try {
+    // Authentication required
+    if (!request.auth || !request.auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const userId = request.auth.uid;
+
+    // Rate limiting
+    checkRateLimit(userId, "deleteAccount", 1, 3600000); // 1 per hour
+
+    logger.info("Starting account deletion process", { userId });
+
+    // 1. Delete user document from 'users' collection
+    const userRef = admin.firestore().collection("users").doc(userId);
+    await userRef.delete();
+
+    // 2. Delete user from Firebase Auth
+    await admin.auth().deleteUser(userId);
+
+    logger.info("Account deleted successfully", { userId });
+
+    return { success: true, message: "Account deleted successfully" };
+  } catch (error) {
+    logger.error("Error deleting account", {
+      error: error.message,
+      userId: request.auth && request.auth.uid,
+    });
+    throw new Error(error.message || "Failed to delete account");
+  }
+});
+
 // SECURED: Task update trigger with validation
 exports.onTaskUpdated = onDocumentUpdated("tasks/{taskId}", async (event) => {
   try {

@@ -1231,9 +1231,9 @@ const UserDashboardUI = ({
 
                 <div className="space-y-4 w-full">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="opacity-60">Úroveň {userStats.level}</span>
+                    <span className="opacity-60">{userStats.xp} XP</span>
                     <span className="font-mono text-purple-600 dark:text-purple-400">
-                      {userStats.xp} / {userStats.maxXp} XP
+                      {userStats.maxXp} XP
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2 overflow-hidden">
@@ -1889,6 +1889,39 @@ const UserDashboardUI = ({
                     )}
                   </div>
                 )}
+              </div>
+            </BentoItem>
+          </div>
+        </div>
+        <div className="w-full mt-6">
+          <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 px-2">
+            <BentoItem padding="p-4">
+              <div className="relative z-10">
+                <h3 className="text-lg font-semibold mb-2">Blank Page A</h3>
+                <p className="text-sm opacity-60 mb-4">
+                  Jednoduchá prázdná stránka - varianta A.
+                </p>
+                <button
+                  onClick={() => navigate("/profile-alt-a")}
+                  className="px-3 py-2 rounded-lg bg-purple-600 text-white"
+                >
+                  Open
+                </button>
+              </div>
+            </BentoItem>
+
+            <BentoItem padding="p-4">
+              <div className="relative z-10">
+                <h3 className="text-lg font-semibold mb-2">Blank Page B</h3>
+                <p className="text-sm opacity-60 mb-4">
+                  Jednoduchá prázdná stránka - varianta B.
+                </p>
+                <button
+                  onClick={() => navigate("/profile-alt-b")}
+                  className="px-3 py-2 rounded-lg bg-purple-600 text-white"
+                >
+                  Open
+                </button>
               </div>
             </BentoItem>
           </div>

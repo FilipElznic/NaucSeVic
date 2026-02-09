@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
+import { useDarkMode } from "../contexts/DarkModeContext";
 import { userService } from "../services/userService";
 import { cloudFunctionsService } from "../services/cloudFunctions";
 import { storageService } from "../services/storageService";
@@ -17,10 +18,19 @@ import {
   Trash2,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import {
+  GlobalSpotlight,
+  ParticleCard,
+  DashboardEffectsStyles,
+  DEFAULT_GLOW_COLOR,
+} from "../components/ui/DashboardEffects";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user, resetPassword } = useFirebaseAuth();
+  const { darkMode } = useDarkMode(); // Get dark mode state
+  const gridRef = useRef(null); // Ref for global spotlight
+
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [resetLoading, setResetLoading] = useState(false);
@@ -121,17 +131,21 @@ const ProfilePage = () => {
   const handleDeleteAccount = async () => {
     if (
       window.confirm(
-        "Opravdu chcete smazat svůj účet? Tato akce je nevratná a smazání veškerých dat nemusí být okamžité.",
+        "Opravdu chcete smazat svůj účet? Tato akce je nevratná a smazání veškerých dat je trvalé.",
       )
     ) {
       try {
-        await user.delete();
+        // Use backend function for secure and complete deletion
+        await cloudFunctionsService.deleteAccount();
+
         toast.success("Účet byl smazán.");
         navigate("/");
+        // Force reload to clear any cached states
+        window.location.reload();
       } catch (error) {
         console.error("Error deleting user:", error);
         toast.error(
-          "Pro smazání účtu se musíte znovu přihlásit (z bezpečnostních důvodů).",
+          "Nepodařilo se smazat účet. Zkuste se odhlásit a znovu přihlásit.",
         );
       }
     }
@@ -206,7 +220,7 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 dark:bg-[#0f0f14]">
+      <div className="h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 dark:bg-black">
         <div className="text-center">
           <Loader className="w-10 h-10 animate-spin text-purple-500 dark:text-purple-400 mx-auto mb-3" />
           <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -225,14 +239,46 @@ const ProfilePage = () => {
   const userEmail = user?.email || "Není k dispozici";
   const photoURL = userProfile?.profile?.photoURL || user?.photoURL;
 
+  // Custom styles for particle cards to match dashboard design
+  const cardStyle = {
+    backgroundColor: "var(--background-dark)",
+    borderColor: "var(--border-color)",
+    "--glow-x": "50%",
+    "--glow-y": "50%",
+    "--glow-intensity": "0",
+    "--glow-radius": "200px",
+  };
+
   return (
-    <div className="lg:h-[100vh] min-h-screen lg:overflow-hidden overflow-auto bg-gray-50 dark:bg-[#0f0f14] flex items-center justify-center">
-      <div className="w-full max-w-7xl lg:h-full h-auto p-4 sm:p-6 lg:p-8 pb-20">
+    <div className="lg:h-[100vh] min-h-screen lg:overflow-hidden overflow-auto bg-gray-50 dark:bg-black flex items-center justify-center">
+      {/* Styles and Spotlight */}
+      <DashboardEffectsStyles
+        glowColor={DEFAULT_GLOW_COLOR}
+        isDarkMode={darkMode}
+      />
+      <GlobalSpotlight
+        gridRef={gridRef}
+        glowColor={DEFAULT_GLOW_COLOR}
+        isDarkMode={darkMode}
+        enabled={true}
+      />
+
+      <div
+        ref={gridRef}
+        className="w-full max-w-7xl lg:h-full h-auto p-4 sm:p-6 lg:p-8 pb-20 bento-section"
+      >
         <div className="flex flex-col lg:flex-row gap-4 lg:h-full h-auto items-center">
           {/* Left Column - User Card */}
           <div className="lg:w-1/3 w-full flex flex-col lg:h-[80vh] h-auto">
             {/* User Avatar Card - Stretched to fill height */}
-            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6 flex flex-col items-center justify-between h-full">
+            <ParticleCard
+              className="card card--border-glow rounded-[24px] border border-solid p-6 flex flex-col items-center justify-between h-full bg-white dark:bg-[#000000] border-gray-200 dark:border-[#392e4e]"
+              style={cardStyle}
+              glowColor={DEFAULT_GLOW_COLOR}
+              enableTilt={false}
+              clickEffect={true}
+              particleCount={12}
+            >
               {/* Top Content */}
               <div className="w-full flex flex-col items-center">
                 <div className="relative group mb-6 mt-8">
@@ -301,13 +347,18 @@ const ProfilePage = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </ParticleCard>
           </div>
 
           {/* Right Column - Account Info & Security */}
           <div className="lg:w-2/3 w-full flex flex-col gap-4 lg:h-[80vh] h-auto lg:overflow-y-auto overflow-visible scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
             {/* Account Information Card */}
-            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6 flex-1 flex flex-col">
+            <ParticleCard
+              className="card card--border-glow rounded-[24px] border border-solid p-6 flex-1 flex flex-col bg-white dark:bg-[#000000] border-gray-200 dark:border-[#392e4e]"
+              style={cardStyle}
+              glowColor={DEFAULT_GLOW_COLOR}
+              enableTilt={false}
+            >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   <User
@@ -366,7 +417,7 @@ const ProfilePage = () => {
                   </p>
                 </div>
 
-                <div className="pt-2 mt-auto">
+                <div className=" mt-auto">
                   <button
                     onClick={handleSaveProfile}
                     disabled={updateLoading}
@@ -386,10 +437,15 @@ const ProfilePage = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </ParticleCard>
 
             {/* Security Card */}
-            <div className="bg-white dark:bg-[#1a1a1f] rounded-xl border border-gray-200 dark:border-[#2a2a35] p-6 flex-1 flex flex-col">
+            <ParticleCard
+              className="card card--border-glow rounded-[24px] border border-solid p-6 flex-1 flex flex-col bg-white dark:bg-[#000000] border-gray-200 dark:border-[#392e4e]"
+              style={cardStyle}
+              glowColor={DEFAULT_GLOW_COLOR}
+              enableTilt={false}
+            >
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Shield
                   size={18}
@@ -399,7 +455,7 @@ const ProfilePage = () => {
               </h3>
 
               <div className="flex-1 space-y-4">
-                <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-[#0f0f14] rounded-lg border border-gray-100 dark:border-[#2a2a35]">
+                <div className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-[#0f0f14] rounded-lg border border-gray-100 dark:border-[#392e4e]">
                   <Key
                     size={18}
                     className="text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0"
@@ -411,18 +467,6 @@ const ProfilePage = () => {
                     <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
                       Odešleme vám email s odkazem pro resetování hesla
                     </p>
-
-                    {resetSuccess && (
-                      <div className="mb-3 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center gap-2">
-                        <CheckCircle
-                          size={14}
-                          className="text-green-600 dark:text-green-400 flex-shrink-0"
-                        />
-                        <p className="text-xs text-green-700 dark:text-green-300">
-                          Email byl odeslán. Zkontrolujte schránku.
-                        </p>
-                      </div>
-                    )}
 
                     <button
                       onClick={handlePasswordReset}
@@ -477,7 +521,7 @@ const ProfilePage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </ParticleCard>
           </div>
         </div>
       </div>

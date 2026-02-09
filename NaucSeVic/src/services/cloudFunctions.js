@@ -248,6 +248,18 @@ class CloudFunctionsService {
       throw error;
     }
   }
+
+  // Delete user account
+  async deleteAccount() {
+    try {
+      const deleteAccountFunction = httpsCallable(functions, "deleteAccount");
+      const result = await deleteAccountFunction();
+      return result.data;
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      throw error;
+    }
+  }
 }
 
 // Export singleton instance
