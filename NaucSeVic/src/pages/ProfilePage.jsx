@@ -237,7 +237,20 @@ const ProfilePage = () => {
       : user?.displayName || "Uživatel";
 
   const userEmail = user?.email || "Není k dispozici";
-  const photoURL = userProfile?.profile?.photoURL || user?.photoURL;
+  const isGoogleUser = user?.providerData?.some(
+    (p) => p?.providerId === "google.com",
+  );
+
+  const googleProvider = user?.providerData?.find(
+    (p) => p?.providerId === "google.com",
+  );
+
+  // Prefer Google account photo for users signed in via Google,
+  // otherwise use stored profile photo or Firebase user photo.
+  const photoURL =
+    (isGoogleUser && googleProvider?.photoURL) ||
+    userProfile?.profile?.photoURL ||
+    user?.photoURL;
 
   // Custom styles for particle cards to match dashboard design
   const cardStyle = {

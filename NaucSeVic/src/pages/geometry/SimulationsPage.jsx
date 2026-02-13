@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, Suspense } from "react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import GeometricBodyCard from "../../components/geometry/GeometricBodyCard";
+
+const GeometricBodyCard = React.lazy(
+  () => import("../../components/geometry/GeometricBodyCard"),
+);
 
 const SimulationsPage = () => {
   const [bodies, setBodies] = useState([]);
@@ -34,10 +37,12 @@ const SimulationsPage = () => {
     fetchBodies();
   }, []);
 
-  const filteredBodies = bodies.filter((body) => {
-    if (filter === "all") return true;
-    return body.type === filter;
-  });
+  const filteredBodies = useMemo(() => {
+    return bodies.filter((body) => {
+      if (filter === "all") return true;
+      return body.type === filter;
+    });
+  }, [bodies, filter]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white pt-24 pb-12">
@@ -104,9 +109,20 @@ const SimulationsPage = () => {
           </div>
         ) : (
           <div className="space-y-12">
-            {filteredBodies.map((body) => (
-              <GeometricBodyCard key={body.id} body={body} />
-            ))}
+            <Suspense
+              fallback={
+                <div className="flex flex-col items-center justify-center h-64 space-y-4">
+                  <Loader2 className="w-8 h-8 animate-spin text-blue-600/50" />
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">
+                    Načítání interaktivních prvků...
+                  </p>
+                </div>
+              }
+            >
+              {filteredBodies.map((body) => (
+                <GeometricBodyCard key={body.id} body={body} />
+              ))}
+            </Suspense>
 
             {filteredBodies.length === 0 && (
               <div className="text-center py-20 opacity-60 bg-gray-100 dark:bg-zinc-900 rounded-3xl border border-dashed border-gray-300 dark:border-zinc-800">
