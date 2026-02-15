@@ -49,7 +49,7 @@ const ModernRegister = () => {
       gsap.fromTo(
         headerRef.current,
         { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
       );
     }
 
@@ -57,7 +57,7 @@ const ModernRegister = () => {
       gsap.fromTo(
         cardRef.current,
         { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.8, delay: 0.2, ease: "power2.out" }
+        { opacity: 1, scale: 1, duration: 0.8, delay: 0.2, ease: "power2.out" },
       );
     }
   }, []);
@@ -81,7 +81,7 @@ const ModernRegister = () => {
 
   const passwordRequirements = validatePassword(formData.password);
   const isPasswordValid = Object.values(passwordRequirements).every(
-    (req) => req
+    (req) => req,
   );
 
   const handleEmailSignUp = async (e) => {
@@ -145,7 +145,7 @@ const ModernRegister = () => {
       } catch (profileError) {
         console.error("Profile creation error:", profileError);
         toast.warning(
-          "Registrace úspěšná, ale profil nebyl vytvořen. Bude vytvořen později."
+          "Registrace úspěšná, ale profil nebyl vytvořen. Bude vytvořen později.",
         );
       }
 
@@ -298,7 +298,7 @@ const ModernRegister = () => {
         {/* Form Card */}
         <div
           ref={cardRef}
-          className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 p-6 relative overflow-hidden group hover:border-purple-500/30 dark:hover:border-purple-500/30 transition-all duration-500"
+          className="bg-white dark:bg-zinc-900 border border-gray-500 dark:border-gray-800 p-6 relative overflow-hidden group hover:border-purple-500/30 dark:hover:border-purple-500/30 transition-all duration-500"
         >
           {/* Gradient corners */}
           <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-transparent" />
@@ -451,7 +451,7 @@ const ModernRegister = () => {
 
             {/* Password Requirements Indicator */}
             {formData.password && (
-              <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg p-3 space-y-2">
+              <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-500 dark:border-zinc-700 rounded-lg p-3 space-y-2">
                 <p className="text-xs font-medium text-gray-700 dark:text-zinc-300 mb-2">
                   Požadavky na heslo:
                 </p>
@@ -600,8 +600,8 @@ const ModernRegister = () => {
                   {!agreedToTerms && !isPasswordValid
                     ? "Vyplňte požadavky na heslo a odsouhlaste podmínky"
                     : !agreedToTerms
-                    ? "Musíte souhlasit s podmínkami používání"
-                    : "Heslo musí splňovat všechny požadavky"}
+                      ? "Musíte souhlasit s podmínkami používání"
+                      : "Heslo musí splňovat všechny požadavky"}
                 </p>
               </div>
             )}
@@ -671,7 +671,7 @@ const ModernRegister = () => {
           </div>
 
           {/* Footer Links */}
-          <div className="mt-6 text-center pt-6 border-t border-gray-200 dark:border-gray-800">
+          <div className="mt-6 text-center pt-6 border-t border-gray-500 dark:border-gray-800">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Už máte účet?{" "}
               <Link

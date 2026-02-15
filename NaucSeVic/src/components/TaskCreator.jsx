@@ -110,7 +110,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
         correctAnswer &&
         !validOptions.some(
           (option) =>
-            option.trim().toLowerCase() === correctAnswer.toLowerCase()
+            option.trim().toLowerCase() === correctAnswer.toLowerCase(),
         )
       ) {
         // Najdi první prázdnou pozici nebo přidej na konec
@@ -129,7 +129,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
     } else if (formData.type === "multiAnswer") {
       const validOptions = formData.options.filter((opt) => opt.trim());
       const validCorrectAnswers = formData.correctAnswers.filter((ans) =>
-        ans.trim()
+        ans.trim(),
       );
 
       if (validOptions.length > 0 && validCorrectAnswers.length > 0) {
@@ -138,8 +138,8 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
             !validOptions.some(
               (option) =>
                 option.trim().toLowerCase() ===
-                correctAnswer.trim().toLowerCase()
-            )
+                correctAnswer.trim().toLowerCase(),
+            ),
         );
 
         if (missingAnswers.length > 0) {
@@ -157,8 +157,8 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
           setFormData((prev) => ({ ...prev, options: newOptions }));
           toast.info(
             `Správné odpovědi byly automaticky přidány mezi možnosti: ${missingAnswers.join(
-              ", "
-            )}`
+              ", ",
+            )}`,
           );
         }
       }
@@ -199,7 +199,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
       const correctAnswerExists = validOptions.some(
         (option) =>
           option.trim().toLowerCase() ===
-          formData.correctAnswer.trim().toLowerCase()
+          formData.correctAnswer.trim().toLowerCase(),
       );
       if (!correctAnswerExists) {
         toast.error("Správná odpověď musí být jednou z nabízených možností");
@@ -212,7 +212,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
       }
     } else if (formData.type === "multiAnswer") {
       const validCorrectAnswers = formData.correctAnswers.filter((ans) =>
-        ans.trim()
+        ans.trim(),
       );
       if (validCorrectAnswers.length < 1) {
         toast.error("Musíte zadat alespoň jednu správnou odpověď");
@@ -230,12 +230,13 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
         (correctAnswer) =>
           validOptions.some(
             (option) =>
-              option.trim().toLowerCase() === correctAnswer.trim().toLowerCase()
-          )
+              option.trim().toLowerCase() ===
+              correctAnswer.trim().toLowerCase(),
+          ),
       );
       if (!allCorrectAnswersInOptions) {
         toast.error(
-          "Všechny správné odpovědi musí být mezi nabízenými možnostmi"
+          "Všechny správné odpovědi musí být mezi nabízenými možnostmi",
         );
         return false;
       }
@@ -304,22 +305,21 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
 
         // Final validation: all correct answers must be in options
         const missingAnswers = taskData.correctAnswers.filter(
-          (correctAnswer) => !taskData.options.includes(correctAnswer)
+          (correctAnswer) => !taskData.options.includes(correctAnswer),
         );
         if (missingAnswers.length > 0) {
           toast.error(
             `Kritická chyba: Správné odpovědi nejsou v možnostech: ${missingAnswers.join(
-              ", "
-            )}`
+              ", ",
+            )}`,
           );
           setLoading(false);
           return;
         }
       }
 
-      const result = await cloudFunctionsService.createEducationalTask(
-        taskData
-      );
+      const result =
+        await cloudFunctionsService.createEducationalTask(taskData);
 
       toast.success("Úloha byla úspěšně vytvořena!");
       if (onTaskCreated) {
@@ -351,7 +351,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
   return (
     <div className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-zinc-900 min-h-screen">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-gray-200 dark:border-zinc-700 p-6">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-gray-500 dark:border-zinc-700 p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
               <div className="flex items-center justify-center w-10 h-10 bg-indigo-600 rounded-lg mr-3">
@@ -497,7 +497,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
 
             {/* Type-specific fields */}
             {formData.type === "multipleChoice" && (
-              <div className="space-y-4 p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+              <div className="space-y-4 p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-500 dark:border-zinc-600">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                   📝 Výběr z možností
                 </h3>
@@ -544,7 +544,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
                           }
                           className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
                           placeholder={`Možnost ${String.fromCharCode(
-                            65 + index
+                            65 + index,
                           )}...`}
                         />
                         {formData.options.length > 2 && (
@@ -571,7 +571,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
             )}
 
             {formData.type === "written" && (
-              <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+              <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-500 dark:border-zinc-600">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
                   ✍️ Psaná odpověď
                 </h3>
@@ -591,7 +591,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
             )}
 
             {formData.type === "multiAnswer" && (
-              <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+              <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-500 dark:border-zinc-600">
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
                   ✅ Více správných odpovědí
                 </h3>
@@ -611,7 +611,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
                           handleArrayChange(
                             "correctAnswers",
                             index,
-                            e.target.value
+                            e.target.value,
                           )
                         }
                         className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
@@ -656,7 +656,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
                         }
                         className="flex-1 px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white"
                         placeholder={`Možnost ${String.fromCharCode(
-                          65 + index
+                          65 + index,
                         )}...`}
                       />
                       {formData.options.length > 2 && (
@@ -699,7 +699,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
             </div>
 
             {/* Hints */}
-            <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+            <div className="p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-500 dark:border-zinc-600">
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
                 💡 Nápovědy (volitelné)
               </h3>
@@ -740,7 +740,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
             </div>
 
             {/* Submit Button */}
-            <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-zinc-700">
+            <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-500 dark:border-zinc-700">
               {onClose && (
                 <button
                   type="button"

@@ -60,7 +60,7 @@ const LecturePage = () => {
   const { courseData, loading, error } = useCourseData(
     subjectId,
     levelId,
-    subLevel
+    subLevel,
   );
 
   const currentChapter = useMemo(() => {
@@ -197,7 +197,7 @@ const LecturePage = () => {
     if (!currentChapter) return;
 
     const currentLessonIdx = currentChapter.lessons.findIndex(
-      (l) => l.id === currentLecture.id
+      (l) => l.id === currentLecture.id,
     );
     if (currentLessonIdx < currentChapter.lessons.length - 1) {
       // Next lesson in same chapter
@@ -206,7 +206,7 @@ const LecturePage = () => {
     } else {
       // Next chapter?
       const currentChapterIdx = courseData.chapters.findIndex(
-        (ch) => ch.id === currentChapter.id
+        (ch) => ch.id === currentChapter.id,
       );
       if (currentChapterIdx < courseData.chapters.length - 1) {
         const nextChapter = courseData.chapters[currentChapterIdx + 1];
@@ -223,7 +223,7 @@ const LecturePage = () => {
     if (!currentChapter) return;
 
     const currentLessonIdx = currentChapter.lessons.findIndex(
-      (l) => l.id === currentLecture.id
+      (l) => l.id === currentLecture.id,
     );
     if (currentLessonIdx > 0) {
       const prevLesson = currentChapter.lessons[currentLessonIdx - 1];
@@ -231,7 +231,7 @@ const LecturePage = () => {
     } else {
       // Prev chapter
       const currentChapterIdx = courseData.chapters.findIndex(
-        (ch) => ch.id === currentChapter.id
+        (ch) => ch.id === currentChapter.id,
       );
       if (currentChapterIdx > 0) {
         const prevChapter = courseData.chapters[currentChapterIdx - 1];
@@ -263,31 +263,31 @@ const LecturePage = () => {
   const IconComponent = LucideIcons[activeSubject.icon] || LucideIcons.BookOpen;
 
   return (
-    <div className="h-screen bg-slate-50 dark:bg-zinc-950 flex flex-col overflow-hidden relative">
+    <div className="h-screen bg-slate-100 dark:bg-zinc-950 flex flex-col overflow-hidden relative">
       {/* Background decoration for light mode */}
       <div className="absolute inset-0 z-0 pointer-events-none dark:hidden overflow-hidden">
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-gradient-to-br from-indigo-50/40 to-purple-50/0 rounded-full blur-3xl opacity-60"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-gradient-to-tr from-blue-50/40 to-slate-50/0 rounded-full blur-3xl opacity-60"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-gradient-to-br from-indigo-100/40 to-purple-100/0 rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-gradient-to-tr from-blue-100/40 to-slate-100/0 rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
       </div>
 
       {/* Top Bar */}
-      <header className="bg-white/80 backdrop-blur-md dark:bg-zinc-900/90 border-b border-gray-200/50 dark:border-zinc-800 px-4 py-3 flex items-center justify-between shrink-0 z-50 relative">
+      <header className="bg-white dark:bg-zinc-900/90 border-b border-gray-300 dark:border-zinc-800 px-4 py-3 flex items-center justify-between shrink-0 z-50 relative shadow-sm">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg text-gray-600 dark:text-gray-400 transition-colors"
+            className="p-2 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded-lg text-gray-700 dark:text-gray-400 transition-colors"
           >
             <LucideIcons.Menu size={20} />
           </button>
           <button
             onClick={handleBack}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg text-gray-600 dark:text-gray-400 transition-colors"
+            className="p-2 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded-lg text-gray-700 dark:text-gray-400 transition-colors"
           >
             <LucideIcons.ArrowLeft size={20} />
           </button>
           <div className="hidden md:block">
-            <h1 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            <h1 className="text-sm font-medium text-gray-600 dark:text-gray-400">
               {courseData.title}
             </h1>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
@@ -299,14 +299,14 @@ const LecturePage = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrevLecture}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg text-gray-600 dark:text-gray-400 disabled:opacity-50"
+            className="p-2 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded-lg text-gray-700 dark:text-gray-400 disabled:opacity-50"
             disabled={false /* TODO: check if first */}
           >
             <LucideIcons.ChevronLeft size={20} />
           </button>
           <button
             onClick={handleNextLecture}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg text-gray-600 dark:text-gray-400 disabled:opacity-50"
+            className="p-2 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded-lg text-gray-700 dark:text-gray-400 disabled:opacity-50"
             disabled={false /* TODO: check if last */}
           >
             <LucideIcons.ChevronRight size={20} />
@@ -315,7 +315,7 @@ const LecturePage = () => {
           {/* Dark Mode Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 transition-all duration-300 ml-2"
+            className="p-2 rounded-lg bg-gray-200 dark:bg-zinc-800 hover:bg-gray-300 dark:hover:bg-zinc-700 transition-all duration-300 ml-2"
             aria-label="Toggle dark mode"
           >
             {darkMode ? (
@@ -331,7 +331,7 @@ const LecturePage = () => {
         {/* Sidebar */}
         <aside
           className={`
-          absolute md:relative z-40 h-full bg-white/60 backdrop-blur-xl dark:bg-zinc-900/95 border-r border-gray-200/50 dark:border-zinc-800
+          absolute md:relative z-40 h-full bg-white dark:bg-zinc-900/95 border-r border-gray-300 dark:border-zinc-800 shadow-md
           transition-all duration-300 ease-in-out overflow-y-auto overflow-x-hidden
           ${
             isSidebarOpen
@@ -349,25 +349,25 @@ const LecturePage = () => {
               {courseData.chapters.map((chapter) => (
                 <div
                   key={chapter.id}
-                  className="rounded-xl overflow-hidden border border-gray-100 dark:border-zinc-800"
+                  className="rounded-xl overflow-hidden border border-gray-300 dark:border-zinc-800 shadow-sm"
                 >
                   <button
                     onClick={() => toggleChapter(chapter.id)}
-                    className="w-full flex items-center justify-between p-3 bg-slate-50/80 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-800 transition-colors text-left backdrop-blur-sm"
+                    className="w-full flex items-center justify-between p-3 bg-slate-100 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-800 transition-colors text-left backdrop-blur-sm  border-gray-500 dark:border-zinc-800"
                   >
-                    <span className="font-medium text-sm text-gray-900 dark:text-white line-clamp-1">
+                    <span className="font-bold text-sm text-gray-900 dark:text-white line-clamp-1">
                       {chapter.title}
                     </span>
                     <LucideIcons.ChevronDown
                       size={16}
-                      className={`text-gray-400 transition-transform shrink-0 ${
+                      className={`text-gray-600 dark:text-gray-400 transition-transform shrink-0 ${
                         expandedChapters[chapter.id] ? "rotate-180" : ""
                       }`}
                     />
                   </button>
 
                   {expandedChapters[chapter.id] && (
-                    <div className="bg-white/40 dark:bg-zinc-900/40">
+                    <div className="bg-white dark:bg-zinc-900/40">
                       {chapter.lessons.map((lesson) => {
                         const isActive = lesson.id === currentLecture.id;
                         const isCompleted =
@@ -379,10 +379,10 @@ const LecturePage = () => {
                             onClick={() =>
                               navigate(getLectureUrl(chapter, lesson))
                             }
-                            className={`w-full flex items-center gap-3 p-3 text-left text-sm transition-colors border-l-2 ${
+                            className={`w-full flex items-center gap-3 p-3 text-left text-sm transition-colors border-l-4 ${
                               isActive
-                                ? "bg-blue-50/80 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-300"
-                                : "border-transparent hover:bg-white/50 dark:hover:bg-zinc-800/50 text-gray-600 dark:text-gray-400"
+                                ? "bg-blue-100 dark:bg-blue-900/20 border-blue-600 text-blue-900 dark:text-blue-300 font-medium"
+                                : "border-transparent hover:bg-gray-100 dark:hover:bg-zinc-800/50 text-gray-700 dark:text-gray-400"
                             }`}
                           >
                             {isCompleted ? (
@@ -425,7 +425,7 @@ const LecturePage = () => {
         <main className="flex-1 overflow-y-auto p-4 md:p-8 w-full bg-transparent dark:bg-zinc-950 relative z-10">
           <div className="max-w-6xl mx-auto">
             <ErrorBoundary>
-              <div className="bg-white/90 backdrop-blur-sm dark:bg-zinc-900 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-gray-100 dark:border-zinc-800 overflow-hidden min-h-[60vh] flex flex-col items-center justify-center p-8 md:p-12 text-center">
+              <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-300 dark:border-zinc-800 overflow-hidden min-h-[60vh] flex flex-col items-center justify-center p-8 md:p-12 text-center">
                 {showQuiz && currentLecture?.content?.tasks?.length > 0 ? (
                   <div className="w-full max-w-4xl mx-auto">
                     <div className="flex items-center justify-between mb-8">
@@ -434,7 +434,7 @@ const LecturePage = () => {
                       </h2>
                       <button
                         onClick={() => setShowQuiz(false)}
-                        className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                        className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-lg transition-colors border border-gray-500 dark:border-zinc-700"
                       >
                         Zpět k lekci
                       </button>
@@ -470,7 +470,7 @@ const LecturePage = () => {
 
                     {currentLecture.content ? (
                       typeof currentLecture.content === "string" ? (
-                        <div className="text-lg text-gray-800 dark:text-gray-200 max-w-2xl mb-8 p-6 bg-gray-50 dark:bg-zinc-800/50 rounded-xl border border-gray-100 dark:border-zinc-800">
+                        <div className="text-lg text-gray-900 dark:text-gray-200 max-w-2xl mb-8 p-6 bg-gray-100 dark:bg-zinc-800/50 rounded-xl border border-gray-300 dark:border-zinc-800 shadow-inner">
                           <LatexRenderer text={currentLecture.content} />
                         </div>
                       ) : (
@@ -480,19 +480,19 @@ const LecturePage = () => {
                               (section, idx) => (
                                 <div key={idx} className="space-y-6">
                                   {section.heading && (
-                                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-zinc-800 pb-2">
+                                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-300 dark:border-zinc-800 pb-2">
                                       {section.heading}
                                     </h3>
                                   )}
 
                                   {section.text && (
-                                    <div className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    <div className="text-lg text-gray-800 dark:text-gray-300 leading-relaxed">
                                       <LatexRenderer text={section.text} />
                                     </div>
                                   )}
 
                                   {section.image && (
-                                    <div className="my-6 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700 shadow-sm">
+                                    <div className="my-6 rounded-xl overflow-hidden border border-gray-300 dark:border-zinc-700 shadow-lg">
                                       <img
                                         src={section.image}
                                         alt={section.heading || "Obrázek lekce"}
@@ -540,7 +540,7 @@ const LecturePage = () => {
                                     </div>
                                   )}
                                 </div>
-                              )
+                              ),
                             )}
                         </div>
                       )
@@ -560,7 +560,7 @@ const LecturePage = () => {
                       currentLecture.content.tasks.length > 0 ? (
                         <button
                           onClick={() => setShowQuiz(true)}
-                          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                          className="px-6 py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-lg transition-colors shadow-lg shadow-blue-500/30"
                         >
                           Spustit cvičení
                         </button>
@@ -568,7 +568,7 @@ const LecturePage = () => {
                         <button
                           onClick={handleCompleteLesson}
                           disabled={completing}
-                          className="px-6 py-2.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-900 dark:text-white font-medium rounded-lg transition-colors disabled:opacity-50"
+                          className="px-6 py-2.5 bg-white dark:bg-zinc-800 border-2 border-gray-300 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-900 dark:text-white font-bold rounded-lg transition-colors disabled:opacity-50 shadow-md"
                         >
                           {completing
                             ? "Ukládání..."

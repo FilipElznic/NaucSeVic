@@ -505,7 +505,7 @@ const AllTasks = () => {
                 placeholder="Hledat úkoly..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-zinc-400"
+                className="w-full pl-10 pr-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-500 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white placeholder-gray-500 dark:placeholder-zinc-400"
               />
             </div>
 
@@ -513,7 +513,7 @@ const AllTasks = () => {
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="w-full px-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white"
+              className="w-full px-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-500 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white"
             >
               {subjects.map((subject) => (
                 <option key={subject.value} value={subject.value}>
@@ -526,7 +526,7 @@ const AllTasks = () => {
             <select
               value={selectedDifficulty}
               onChange={(e) => setSelectedDifficulty(e.target.value)}
-              className="w-full px-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white"
+              className="w-full px-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-500 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white"
             >
               {difficulties.map((difficulty) => (
                 <option key={difficulty.value} value={difficulty.value}>
@@ -539,7 +539,7 @@ const AllTasks = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full px-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-200 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white"
+              className="w-full px-4 py-3 bg-white/80 dark:bg-zinc-800/80 border border-gray-500 dark:border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:text-white"
             >
               {sortOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -674,7 +674,7 @@ const AllTasks = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-zinc-900 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-zinc-700">
+            <div className="flex items-center justify-between p-6 border-b border-gray-500 dark:border-zinc-700">
               <div className="flex items-center space-x-3">
                 <span className="text-2xl">
                   {getTaskTypeIcon(selectedTask.type)}
@@ -729,7 +729,7 @@ const AllTasks = () => {
                         className={`w-full text-left p-3 rounded-xl border-2 transition-all ${
                           selectedOptions.includes(option)
                             ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300"
-                            : "border-gray-200 dark:border-zinc-700 hover:border-indigo-300 dark:hover:border-indigo-600"
+                            : "border-gray-500 dark:border-zinc-700 hover:border-indigo-300 dark:hover:border-indigo-600"
                         }`}
                       >
                         <div className="flex items-center space-x-3">
@@ -763,7 +763,7 @@ const AllTasks = () => {
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
                     placeholder="Zde napište vaši odpověď..."
-                    className="w-full p-3 border-2 border-gray-200 dark:border-zinc-700 rounded-xl focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none resize-none bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
+                    className="w-full p-3 border-2 border-gray-500 dark:border-zinc-700 rounded-xl focus:border-indigo-500 dark:focus:border-indigo-400 focus:outline-none resize-none bg-white dark:bg-zinc-800 text-gray-900 dark:text-white"
                     rows="4"
                   />
                 </div>
@@ -782,7 +782,7 @@ const AllTasks = () => {
                         className={`w-full text-left p-3 rounded-xl border-2 transition-all ${
                           selectedOptions.includes(option)
                             ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300"
-                            : "border-gray-200 dark:border-zinc-700 hover:border-indigo-300 dark:hover:border-indigo-600"
+                            : "border-gray-500 dark:border-zinc-700 hover:border-indigo-300 dark:hover:border-indigo-600"
                         }`}
                       >
                         <div className="flex items-center space-x-3">
@@ -844,7 +844,7 @@ const AllTasks = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-zinc-700">
+            <div className="flex items-center justify-between p-6 border-t border-gray-500 dark:border-zinc-700">
               <button
                 onClick={handleCloseTask}
                 className="px-4 py-2 text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 transition-colors"

@@ -45,7 +45,7 @@ const TestPage = () => {
                 // If content is completely missing (undefined/null) or empty
                 if (!processed.content) {
                   console.warn(
-                    `Fixing missing content for lesson: ${processed.title}`
+                    `Fixing missing content for lesson: ${processed.title}`,
                   );
                   processed.content = { sections: [], tasks: [] };
                 } else {
@@ -69,7 +69,7 @@ const TestPage = () => {
 
     if (
       !window.confirm(
-        "Are you sure you want to overwrite the database with local content?"
+        "Are you sure you want to overwrite the database with local content?",
       )
     ) {
       return;
@@ -103,7 +103,7 @@ const TestPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-8">
-      <div className="max-w-2xl mx-auto bg-white dark:bg-zinc-900 rounded-2xl shadow-xl p-8 border border-gray-200 dark:border-zinc-800">
+      <div className="max-w-2xl mx-auto bg-white dark:bg-zinc-900 rounded-2xl shadow-xl p-8 border border-gray-500 dark:border-zinc-800">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
           Admin Tools
         </h1>

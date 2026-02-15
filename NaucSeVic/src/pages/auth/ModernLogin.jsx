@@ -40,7 +40,7 @@ const ModernLogin = () => {
       gsap.fromTo(
         headerRef.current,
         { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
       );
     }
 
@@ -48,7 +48,7 @@ const ModernLogin = () => {
       gsap.fromTo(
         cardRef.current,
         { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.8, delay: 0.2, ease: "power2.out" }
+        { opacity: 1, scale: 1, duration: 0.8, delay: 0.2, ease: "power2.out" },
       );
     }
   }, [location]);
@@ -195,7 +195,7 @@ const ModernLogin = () => {
         {/* Form Card */}
         <div
           ref={cardRef}
-          className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 p-8 relative overflow-hidden group hover:border-purple-500/30 dark:hover:border-purple-500/30 transition-all duration-500"
+          className="bg-white dark:bg-zinc-900 border border-gray-500 dark:border-gray-800 p-8 relative overflow-hidden group hover:border-purple-500/30 dark:hover:border-purple-500/30 transition-all duration-500"
         >
           {/* Gradient corners */}
           <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-transparent" />
@@ -375,7 +375,7 @@ const ModernLogin = () => {
             )}
 
             {!forgotPassword && (
-              <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-800">
+              <div className="text-center pt-4 border-t border-gray-500 dark:border-gray-800">
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   Nemáte účet?{" "}
                   <Link

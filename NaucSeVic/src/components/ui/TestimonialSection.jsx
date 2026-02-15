@@ -91,7 +91,7 @@ const TestimonialSection = () => {
             <div
               key={index}
               ref={(el) => (cardsRef.current[index] = el)}
-              className="relative p-8 border border-gray-200 dark:border-gray-800 transition-all duration-300 group"
+              className="relative p-8 border border-gray-500 dark:border-gray-800 transition-all duration-300 group"
             >
               {/* Gradient accent on top */}
               <div
@@ -111,7 +111,7 @@ const TestimonialSection = () => {
               </p>
 
               {/* Author */}
-              <div className="border-t border-gray-200 dark:border-gray-800 pt-6">
+              <div className="border-t border-gray-500 dark:border-gray-800 pt-6">
                 <h4 className="font-medium text-gray-900 dark:text-white mb-1">
                   {testimonial.name}
                 </h4>

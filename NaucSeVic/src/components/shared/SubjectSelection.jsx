@@ -67,7 +67,7 @@ const LevelCard = ({
   return (
     <div
       onClick={() => navigate(path)}
-      className={`group relative p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 ${hoverColor} transition-all duration-300 cursor-pointer overflow-hidden hover:shadow-2xl`}
+      className={`group relative p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-sm border border-zinc-500 dark:border-zinc-800 ${hoverColor} transition-all duration-300 cursor-pointer overflow-hidden hover:shadow-2xl`}
     >
       <div
         className={`absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity duration-300 ${theme.icon}`}

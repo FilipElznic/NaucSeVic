@@ -14,7 +14,7 @@ const LoadingSpinner = ({ size = "md", className = "" }) => {
         className={`
           ${sizes[size]} 
           border-4 
-          border-gray-200 
+          border-gray-500 
           dark:border-gray-700 
           border-t-indigo-600 
           dark:border-t-indigo-400 

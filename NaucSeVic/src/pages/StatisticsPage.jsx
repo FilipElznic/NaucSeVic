@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Layout from "../components/layout/Layout";
 import {
   BarChart,
@@ -13,10 +13,66 @@ import {
 } from "recharts";
 import cloudFunctionsService from "../services/cloudFunctions";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
-import { BookOpen, CheckCircle, Zap, Calendar, TrendingUp } from "lucide-react";
+import {
+  BookOpen,
+  CheckCircle,
+  Zap,
+  Calendar,
+  TrendingUp,
+  Wallet,
+  ListTodo,
+} from "lucide-react";
 import { useDarkMode } from "../contexts/DarkModeContext";
 
 // --- Components ---
+
+const MeasuredContainer = ({ children }) => {
+  const ref = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (ref.current) {
+      setReady(true);
+    }
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
+    >
+      {ready ? children : null}
+    </div>
+  );
+};
+
+const BentoItem = ({
+  children,
+  className = "",
+  style = {},
+  padding = "p-6",
+  isDarkMode = true,
+}) => {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[24px] border transition-all duration-300 ${padding} ${className} group hover:-translate-y-1 ${
+        isDarkMode
+          ? "bg-white/5 border-white/10 hover:bg-white/10 hover:border-purple-500/30 shadow-lg shadow-black/20 hover:shadow-purple-500/10"
+          : "bg-white border-gray-200 hover:border-purple-200 shadow-xl shadow-gray-200/50 hover:shadow-purple-200/50"
+      }`}
+      style={style}
+    >
+      <div
+        className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none ${
+          isDarkMode
+            ? "bg-[radial-gradient(circle_at_var(--mouse-x,50%)_var(--mouse-y,50%),rgba(168,85,247,0.15),transparent_50%)]"
+            : "bg-[radial-gradient(circle_at_var(--mouse-x,50%)_var(--mouse-y,50%),rgba(168,85,247,0.05),transparent_50%)]"
+        }`}
+      />
+      {children}
+    </div>
+  );
+};
 
 const StatCard = ({ icon: Icon, title, value, color, isDarkMode }) => (
   <div
@@ -284,7 +340,7 @@ const CustomChartTooltip = ({ active, payload, label, isDarkMode }) => {
         className={`p-3 border rounded-xl shadow-lg backdrop-blur-sm ${
           isDarkMode
             ? "bg-gray-900/95 border-purple-500/30"
-            : "bg-white/95 border-gray-200"
+            : "bg-white/95 border-gray-500"
         }`}
       >
         <p
@@ -313,6 +369,18 @@ const StatisticsPage = () => {
   const [error, setError] = useState(null);
   const { darkMode } = useDarkMode();
 
+  const handleMouseMove = (e) => {
+    const cards = document.querySelectorAll(".group");
+    for (const card of cards) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+    }
+  };
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -327,6 +395,11 @@ const StatisticsPage = () => {
     };
 
     fetchStats();
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   if (loading) {
@@ -353,262 +426,337 @@ const StatisticsPage = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto p-4 md:p-8 max-w-7xl">
-        {/* Hero Header Section */}
-        <div
-          className={`relative rounded-3xl overflow-hidden mb-8 p-8 lg:p-12 ${
-            darkMode
-              ? "bg-gradient-to-br from-purple-950/30 via-violet-950/20 to-fuchsia-950/30 border border-purple-500/20"
-              : "bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] shadow-gray-300/50"
-          }`}
-        >
-          {/* Futuristic background effects */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div
-              className={`absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl ${
-                darkMode ? "bg-purple-600/10" : "bg-purple-200/30"
-              }`}
-              style={{ transform: "translate(30%, -30%)" }}
-            />
-            <div
-              className={`absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl ${
-                darkMode ? "bg-fuchsia-600/10" : "bg-fuchsia-200/30"
-              }`}
-              style={{ transform: "translate(-30%, 30%)" }}
-            />
-          </div>
-
-          <div className="relative z-10">
-            <h1
-              className={`text-4xl lg:text-6xl font-black mb-4 ${
-                darkMode
-                  ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
-                  : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
-              }`}
-            >
-              Váš Pokrok
-            </h1>
-            <p
-              className={`text-base lg:text-lg ${
-                darkMode ? "text-purple-200/70" : "text-gray-600"
-              }`}
-            >
-              Detailní přehled vašich úspěchů a statistik
-            </p>
-          </div>
-        </div>
-
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            icon={Zap}
-            title="Celkem XP"
-            value={userStats.totalXp}
-            color={darkMode ? "text-amber-400" : "text-amber-600"}
-            isDarkMode={darkMode}
-          />
-          <StatCard
-            icon={CheckCircle}
-            title="Splněné úkoly"
-            value={userStats.totalTasks}
-            color={darkMode ? "text-emerald-400" : "text-emerald-600"}
-            isDarkMode={darkMode}
-          />
-          <StatCard
-            icon={BookOpen}
-            title="Dokončené lekce"
-            value={userStats.totalLessons}
-            color={darkMode ? "text-blue-400" : "text-blue-600"}
-            isDarkMode={darkMode}
-          />
-          <StatCard
-            icon={Calendar}
-            title="Dny aktivity"
-            value={userStats.loginDays}
-            color={darkMode ? "text-purple-400" : "text-purple-600"}
-            isDarkMode={darkMode}
-          />
-        </div>
-
-        {/* Main Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* XP Chart */}
-          <div
-            className={`relative rounded-2xl overflow-hidden p-6 transition-all duration-300 ${
+      <div className="container mx-auto p-4 md:p-8 max-w-[1600px] overflow-hidden">
+        {/* Main Header */}
+        <div className="text-center mb-12 mt-8">
+          <h1
+            className={`text-6xl md:text-8xl font-black mb-4 pb-4 ${
               darkMode
-                ? "bg-gradient-to-br from-purple-950/40 to-violet-950/40 border border-purple-500/20"
-                : "bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100"
+                ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
+                : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
             }`}
           >
-            {/* Decorative element */}
-            <div
-              className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl ${
-                darkMode ? "bg-purple-500/10" : "bg-purple-100/50"
-              }`}
-            />
+            Statistiky
+          </h1>
+          <p
+            className={`text-lg md:text-xl max-w-2xl mx-auto ${
+              darkMode ? "text-purple-200/70" : "text-gray-600"
+            }`}
+          >
+            Detailní přehled o tvém studiu a postupu. Podívej se, jak se
+            zlepšuješ.
+          </p>
+        </div>
 
-            <div className="relative z-10">
-              <h2
-                className={`text-xl font-bold mb-6 flex items-center gap-2 ${
-                  darkMode ? "text-white" : "text-gray-900"
+        {/* Big XP Graph Section */}
+        <div className="w-full flex justify-center mb-24">
+          <BentoItem
+            className="w-full max-w-[90%] lg:max-w-[80%] h-[400px] md:h-[500px]"
+            padding="p-0"
+            isDarkMode={darkMode}
+          >
+            {/* Header for context */}
+            <div className="absolute top-6 left-6 z-20">
+              <div
+                className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md ${
+                  darkMode
+                    ? "bg-purple-500/10 border border-purple-500/20 text-purple-200"
+                    : "bg-white/80 border border-purple-200 text-purple-700"
                 }`}
               >
-                <div
-                  className={`p-2 rounded-lg ${
-                    darkMode ? "bg-purple-500/20" : "bg-amber-100"
-                  }`}
-                >
-                  <Zap
-                    className={`w-5 h-5 ${darkMode ? "text-amber-400" : "text-amber-600"}`}
-                    strokeWidth={2.5}
-                  />
-                </div>
-                Týdenní XP
-              </h2>
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={weeklyActivity}>
-                    <defs>
-                      <linearGradient id="colorXp" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                          offset="5%"
-                          stopColor={darkMode ? "#a78bfa" : "#8b5cf6"}
-                          stopOpacity={0.8}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor={darkMode ? "#c084fc" : "#a855f7"}
-                          stopOpacity={0.1}
-                        />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      vertical={false}
-                      stroke={
-                        darkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"
-                      }
-                    />
-                    <XAxis
-                      dataKey="name"
-                      stroke={darkMode ? "#a78bfa" : "#8b5cf6"}
-                      tick={{
-                        fill: darkMode ? "#a78bfa" : "#8b5cf6",
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      stroke={darkMode ? "#a78bfa" : "#8b5cf6"}
-                      tick={{
-                        fill: darkMode ? "#a78bfa" : "#8b5cf6",
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                      tickLine={false}
-                    />
-                    <Tooltip
-                      content={<CustomChartTooltip isDarkMode={darkMode} />}
-                      cursor={{
-                        stroke: darkMode ? "#a78bfa" : "#8b5cf6",
-                        strokeWidth: 2,
-                        strokeDasharray: "4 4",
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="xp"
-                      stroke={darkMode ? "#a78bfa" : "#8b5cf6"}
-                      strokeWidth={3}
-                      fillOpacity={1}
-                      fill="url(#colorXp)"
-                      animationDuration={2000}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                <Zap size={18} />
+                <span className="font-bold">Týdenní XP Aktivita</span>
               </div>
             </div>
-          </div>
 
-          {/* Tasks Chart */}
+            <MeasuredContainer>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={weeklyActivity}
+                  margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="xpGradientBig"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor={darkMode ? "#a78bfa" : "#8b5cf6"}
+                        stopOpacity={0.8}
+                      />
+                      <stop
+                        offset="100%"
+                        stopColor={darkMode ? "#c084fc" : "#a855f7"}
+                        stopOpacity={0.05}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke={
+                      darkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"
+                    }
+                  />
+                  <Tooltip
+                    cursor={{
+                      stroke: darkMode
+                        ? "rgba(255,255,255,0.1)"
+                        : "rgba(0,0,0,0.1)",
+                      strokeWidth: 2,
+                    }}
+                    contentStyle={{
+                      backgroundColor: darkMode
+                        ? "rgba(15, 16, 22, 0.9)"
+                        : "rgba(255, 255, 255, 0.9)",
+                      border: darkMode
+                        ? "1px solid rgba(168, 139, 250, 0.2)"
+                        : "1px solid rgba(229, 231, 235, 1)",
+                      borderRadius: "12px",
+                      boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+                      backdropFilter: "blur(8px)",
+                    }}
+                    itemStyle={{
+                      color: darkMode ? "#fff" : "#000",
+                      fontWeight: 700,
+                    }}
+                    labelStyle={{ display: "none" }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="xp"
+                    stroke={darkMode ? "#a78bfa" : "#8b5cf6"}
+                    strokeWidth={4}
+                    fill="url(#xpGradientBig)"
+                    animationDuration={1500}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </MeasuredContainer>
+          </BentoItem>
+        </div>
+
+        {/* Detailed Stats Section */}
+        <div className="w-full mt-12 col-span-full mb-24">
           <div
-            className={`relative rounded-2xl overflow-hidden p-6 transition-all duration-300 ${
-              darkMode
-                ? "bg-gradient-to-br from-purple-950/40 to-violet-950/40 border border-purple-500/20"
-                : "bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100"
-            }`}
+            className={`relative rounded-3xl overflow-hidden transition-all duration-300 `}
           >
-            {/* Decorative element */}
-            <div
-              className={`absolute bottom-0 left-0 w-32 h-32 rounded-full blur-2xl ${
-                darkMode ? "bg-fuchsia-500/10" : "bg-emerald-100/50"
-              }`}
-            />
-
-            <div className="relative z-10">
-              <h2
-                className={`text-xl font-bold mb-6 flex items-center gap-2 ${
-                  darkMode ? "text-white" : "text-gray-900"
-                }`}
-              >
-                <div
-                  className={`p-2 rounded-lg ${
-                    darkMode ? "bg-purple-500/20" : "bg-emerald-100"
+            {/* Content Container */}
+            <div className="relative z-10 p-4 lg:p-12 ">
+              {/* Header Section */}
+              <div className="text-start mb-12">
+                <h2
+                  className={`text-4xl lg:text-7xl font-black mb-4 pb-4 ${
+                    darkMode
+                      ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
+                      : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
                   }`}
                 >
-                  <CheckCircle
-                    className={`w-5 h-5 ${darkMode ? "text-emerald-400" : "text-emerald-600"}`}
-                    strokeWidth={2.5}
-                  />
+                  Detailní přehled úkolů
+                </h2>
+                <div className="w-24 h-2 bg-gradient-to-r from-purple-500 to-fuchsia-500 rounded-full mb-6"></div>
+              </div>
+
+              {/* SECTION 1: Tasks */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-24">
+                {/* Left Column: Text Description */}
+                <div className="flex flex-col justify-center space-y-8 order-2 lg:order-1">
+                  <h3
+                    className={`text-3xl lg:text-5xl font-black leading-tight ${
+                      darkMode ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    Splněné úkoly <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+                      každý týden
+                    </span>
+                  </h3>
+
+                  <p
+                    className={`text-lg leading-relaxed ${
+                      darkMode ? "text-purple-200/70" : "text-gray-600"
+                    }`}
+                  >
+                    Sleduj, kolik úkolů se ti podařilo dokončit. Pravidelné
+                    plnění úkolů je klíčem k úspěchu. Graf ti ukáže tvou
+                    produktivitu v jednotlivých dnech.
+                  </p>
+
+                  <div className="flex gap-4 mt-4">
+                    <StatCard
+                      icon={CheckCircle}
+                      title="Hotové úkoly"
+                      value={userStats.totalTasks}
+                      color={darkMode ? "text-emerald-400" : "text-emerald-600"}
+                      isDarkMode={darkMode}
+                    />
+                  </div>
                 </div>
-                Splněné úkoly
-              </h2>
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={weeklyActivity}>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      vertical={false}
-                      stroke={
-                        darkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"
-                      }
+
+                {/* Right Column: Tasks Graph */}
+                <BentoItem
+                  className="min-h-[400px] flex flex-col gap-6 order-1 lg:order-2"
+                  padding="p-6 md:p-8"
+                  isDarkMode={darkMode}
+                >
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div
+                        className={`p-2 rounded-lg ${darkMode ? "bg-emerald-500/20 text-emerald-300" : "bg-emerald-100 text-emerald-600"}`}
+                      >
+                        <ListTodo size={20} />
+                      </div>
+                      <h4
+                        className={`text-lg font-bold ${darkMode ? "text-white" : "text-gray-900"}`}
+                      >
+                        Aktivita úkolů
+                      </h4>
+                    </div>
+                    <MeasuredContainer>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={weeklyActivity}>
+                          <Bar
+                            dataKey="tasks"
+                            fill={darkMode ? "#34d399" : "#10b981"}
+                            radius={[8, 8, 0, 0]}
+                          />
+                          <XAxis
+                            dataKey="name"
+                            tick={{
+                              fill: darkMode ? "#9ca3af" : "#4b5563",
+                              fontSize: 12,
+                            }}
+                            tickLine={false}
+                            axisLine={false}
+                          />
+                          <Tooltip
+                            cursor={{ fill: "transparent" }}
+                            contentStyle={{
+                              backgroundColor: darkMode ? "#1f2937" : "#fff",
+                              borderColor: darkMode ? "#374151" : "#e5e7eb",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </MeasuredContainer>
+                  </div>
+                </BentoItem>
+              </div>
+
+              {/* SECTION 2: XP/Coins */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                {/* Left Column: XP/Coins Graph - Alternating Layout */}
+                <BentoItem
+                  className="min-h-[400px] flex flex-col gap-6 order-1"
+                  padding="p-6 md:p-8"
+                  isDarkMode={darkMode}
+                >
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div
+                        className={`p-2 rounded-lg ${darkMode ? "bg-amber-500/20 text-amber-300" : "bg-amber-100 text-amber-600"}`}
+                      >
+                        <Wallet size={20} />
+                      </div>
+                      <h4
+                        className={`text-lg font-bold ${darkMode ? "text-white" : "text-gray-900"}`}
+                      >
+                        Získané mince
+                      </h4>
+                    </div>
+                    <MeasuredContainer>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={weeklyActivity}>
+                          <defs>
+                            <linearGradient
+                              id="coinsGradient"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="#fbbf24"
+                                stopOpacity={0.8}
+                              />
+                              <stop
+                                offset="95%"
+                                stopColor="#fbbf24"
+                                stopOpacity={0}
+                              />
+                            </linearGradient>
+                          </defs>
+                          <Area
+                            type="monotone"
+                            dataKey="coinsGained"
+                            stroke="#fbbf24"
+                            fill="url(#coinsGradient)"
+                            strokeWidth={3}
+                          />
+                          <XAxis
+                            dataKey="name"
+                            tick={{
+                              fill: darkMode ? "#9ca3af" : "#4b5563",
+                              fontSize: 12,
+                            }}
+                            axisLine={false}
+                            tickLine={false}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: darkMode ? "#1f2937" : "#fff",
+                              borderColor: darkMode ? "#374151" : "#e5e7eb",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </MeasuredContainer>
+                  </div>
+                </BentoItem>
+
+                {/* Right Column: Text Description */}
+                <div className="flex flex-col justify-center space-y-8 order-2">
+                  <h3
+                    className={`text-3xl lg:text-5xl font-black leading-tight ${
+                      darkMode ? "text-white" : "text-gray-900"
+                    }`}
+                  >
+                    Sbírání mincí <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+                      za aktivitu
+                    </span>
+                  </h3>
+
+                  <p
+                    className={`text-lg leading-relaxed ${
+                      darkMode ? "text-purple-200/70" : "text-gray-600"
+                    }`}
+                  >
+                    Získávej mince za každou dokončenou lekci a splněný úkol.
+                    Využij je v obchodě pro nákup boosterů a speciálních
+                    vylepšení.
+                  </p>
+
+                  <div className="flex gap-4 mt-4">
+                    <StatCard
+                      icon={Wallet}
+                      title="Mince v týdnu"
+                      value={weeklyActivity.reduce(
+                        (acc, cur) => acc + (cur.coinsGained || 0),
+                        0,
+                      )}
+                      color={darkMode ? "text-amber-400" : "text-amber-600"}
+                      isDarkMode={darkMode}
                     />
-                    <XAxis
-                      dataKey="name"
-                      stroke={darkMode ? "#a78bfa" : "#8b5cf6"}
-                      tick={{
-                        fill: darkMode ? "#a78bfa" : "#8b5cf6",
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      stroke={darkMode ? "#a78bfa" : "#8b5cf6"}
-                      tick={{
-                        fill: darkMode ? "#a78bfa" : "#8b5cf6",
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                      tickLine={false}
-                    />
-                    <Tooltip
-                      content={<CustomChartTooltip isDarkMode={darkMode} />}
-                      cursor={{
-                        fill: darkMode
-                          ? "rgba(168, 139, 250, 0.05)"
-                          : "rgba(139, 92, 246, 0.05)",
-                      }}
-                    />
-                    <Bar
-                      dataKey="tasks"
-                      fill={darkMode ? "#a78bfa" : "#8b5cf6"}
-                      radius={[8, 8, 0, 0]}
-                      animationDuration={2000}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

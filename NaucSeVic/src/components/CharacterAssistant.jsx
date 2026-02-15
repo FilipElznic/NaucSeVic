@@ -168,7 +168,7 @@ function CharacterAssistant({
 
                 {/* Navigation Buttons */}
                 {texts.length > 1 && (
-                  <div className="flex items-center justify-between gap-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+                  <div className="flex items-center justify-between gap-4 pt-4 border-t border-gray-500 dark:border-gray-800">
                     <button
                       onClick={handlePrevious}
                       disabled={currentIndex === 0}

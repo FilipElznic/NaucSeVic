@@ -1008,7 +1008,7 @@ const UserDashboardUI = ({
             --glow-intensity: 0;
             --glow-radius: 200px;
             --glow-color: ${glowColor};
-            --border-color: ${isDarkMode ? "#392e4e" : "#94a3b8"};
+            --border-color: ${isDarkMode ? "#392e4e" : "#111111"};
             --background-dark: ${isDarkMode ? "#000000" : "#ffffff"};
             --white: ${isDarkMode ? "hsl(0, 0%, 100%)" : "#020617"};
             --purple-primary: rgba(132, 0, 255, 1);
@@ -1783,352 +1783,499 @@ const UserDashboardUI = ({
               </div>
             </div>
           )}
-          {/* 7. Leaderboard */}
-          <div
-            id="zebricek"
-            className="flex items-center justify-between w-full mb-4 sm:mb-6"
-          >
-            <div className="flex items-center gap-3">
-              <div>
-                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl mt-12 sm:mt-16 md:mt-24 lg:mt-32 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600">
-                  Žebříček uživatelů
-                </h2>
-                <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">
-                  Seřazeno podle XP a série
-                </p>
+          <div className="w-full mt-12 col-span-full">
+            <div
+              className={`relative rounded-3xl overflow-hidden transition-all duration-300 `}
+            >
+              {/* Content Container */}
+              <div className="relative z-10 p-8 lg:p-12 ">
+                {/* Header Section */}
+                <div className="text-center mb-8">
+                  <h2
+                    className={`text-4xl lg:text-8xl font-black mb-4 pb-4 text-start ${
+                      isDarkMode
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
+                        : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
+                    }`}
+                  >
+                    Sleduj svůj pokrok
+                  </h2>
+                  <p
+                    className={`text-sm lg:text-base max-w-2xl text-start  ${
+                      isDarkMode ? "text-purple-200/70" : "text-gray-600"
+                    }`}
+                  >
+                    Vizualizuj svůj růst a objevuj detailní analytiku svého
+                    studia
+                  </p>
+                </div>
+
+                {/* Two Column Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                  {/* XP Graph Section */}
+                  <BentoItem
+                    className={`min-h-[320px] relative overflow-hidden group transition-all duration-300 }`}
+                  >
+                    {/* Decorative corner accents */}
+
+                    <div className="relative z-10 flex flex-col h-full p-6">
+                      {/* Graph Header */}
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`p-2.5 rounded-xl ${
+                              isDarkMode
+                                ? "bg-purple-500/20 text-purple-300"
+                                : "bg-purple-100 text-purple-600"
+                            }`}
+                          >
+                            <TrendingUp size={22} strokeWidth={2.5} />
+                          </div>
+                          <div>
+                            <h3
+                              className={`text-xl font-bold ${
+                                isDarkMode ? "text-white" : "text-gray-900"
+                              }`}
+                            >
+                              XP Trend
+                            </h3>
+                            <p
+                              className={`text-xs mt-0.5 ${
+                                isDarkMode
+                                  ? "text-purple-300/60"
+                                  : "text-gray-500"
+                              }`}
+                            >
+                              Posledních 7 dní
+                            </p>
+                          </div>
+                        </div>
+                        <div
+                          className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 ${
+                            isDarkMode
+                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30"
+                              : "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          }`}
+                        >
+                          <TrendingUp size={14} />
+                          +32%
+                        </div>
+                      </div>
+
+                      {/* Chart Container */}
+                      <div className="flex-1 w-full min-h-[200px] relative">
+                        <MeasuredContainer>
+                          <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart
+                              data={[
+                                { day: "Po", xp: 150 },
+                                { day: "Út", xp: 280 },
+                                { day: "St", xp: 420 },
+                                { day: "Čt", xp: 280 },
+                                { day: "Pá", xp: 730 },
+                                { day: "So", xp: 450 },
+                                { day: "Ne", xp: 950 },
+                              ]}
+                              margin={{
+                                top: 10,
+                                right: 10,
+                                left: -20,
+                                bottom: 0,
+                              }}
+                            >
+                              <defs>
+                                <linearGradient
+                                  id="xpGradient"
+                                  x1="0"
+                                  y1="0"
+                                  x2="0"
+                                  y2="1"
+                                >
+                                  <stop
+                                    offset="0%"
+                                    stopColor={
+                                      isDarkMode ? "#a78bfa" : "#8b5cf6"
+                                    }
+                                    stopOpacity={0.9}
+                                  />
+                                  <stop
+                                    offset="100%"
+                                    stopColor={
+                                      isDarkMode ? "#c084fc" : "#a855f7"
+                                    }
+                                    stopOpacity={0.1}
+                                  />
+                                </linearGradient>
+                              </defs>
+                              <CartesianGrid
+                                strokeDasharray="3 3"
+                                vertical={false}
+                                stroke={
+                                  isDarkMode
+                                    ? "rgba(255,255,255,0.06)"
+                                    : "rgba(0,0,0,0.06)"
+                                }
+                              />
+                              <XAxis
+                                dataKey="day"
+                                stroke={isDarkMode ? "#a78bfa" : "#8b5cf6"}
+                                style={{ fontSize: "12px", fontWeight: "600" }}
+                                tickLine={false}
+                              />
+                              <YAxis hide />
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: isDarkMode
+                                    ? "rgba(15, 16, 22, 0.95)"
+                                    : "rgba(255, 255, 255, 0.95)",
+                                  border: isDarkMode
+                                    ? "1px solid rgba(168, 139, 250, 0.3)"
+                                    : "1px solid rgba(229, 231, 235, 1)",
+                                  borderRadius: "12px",
+                                  boxShadow:
+                                    "0 10px 40px -10px rgba(0, 0, 0, 0.3)",
+                                  backdropFilter: "blur(10px)",
+                                }}
+                                itemStyle={{
+                                  color: isDarkMode ? "#d8b4fe" : "#7c3aed",
+                                  fontWeight: "600",
+                                }}
+                                labelStyle={{
+                                  color: isDarkMode ? "#fff" : "#000",
+                                  fontWeight: "700",
+                                }}
+                                formatter={(value) => [
+                                  `${value} XP`,
+                                  "Získáno",
+                                ]}
+                              />
+                              <Area
+                                type="monotone"
+                                dataKey="xp"
+                                stroke={isDarkMode ? "#a78bfa" : "#8b5cf6"}
+                                strokeWidth={3}
+                                fill="url(#xpGradient)"
+                                animationDuration={2000}
+                              />
+                            </AreaChart>
+                          </ResponsiveContainer>
+                        </MeasuredContainer>
+                      </div>
+                    </div>
+                  </BentoItem>
+
+                  {/* Statistics Info Section */}
+                  <div
+                    className={`min-h-[320px] relative overflow-hidden transition-all duration-300 `}
+                  >
+                    <div className="relative z-10 flex flex-col justify-center h-full p-8 lg:p-10">
+                      {/* Badge */}
+
+                      {/* Main Content */}
+                      <h3
+                        className={`text-3xl lg:text-4xl font-black mb-4 leading-tight ${
+                          isDarkMode
+                            ? "text-transparent bg-clip-text bg-gradient-to-br from-purple-200 to-fuchsia-200"
+                            : "text-transparent bg-clip-text bg-gradient-to-br from-purple-900 to-fuchsia-900"
+                        }`}
+                      >
+                        Pokročilé statistiky čekají
+                      </h3>
+
+                      <p
+                        className={`text-base lg:text-lg mb-8 leading-relaxed ${
+                          isDarkMode ? "text-purple-200/80" : "text-gray-700"
+                        }`}
+                      >
+                        Zjisti svůj skutečný pokrok. Náš statistický systém ti
+                        ukáže detailní přehled tvého studia, silné stránky a
+                        oblasti ke zlepšení.
+                      </p>
+
+                      {/* Features List */}
+                      <div className="space-y-3 mb-8">
+                        {[
+                          "Detailní XP historie",
+                          "Analýza výkonnosti",
+                          "Personalizované tipy",
+                        ].map((feature, i) => (
+                          <div key={i} className="flex items-center gap-3">
+                            <div
+                              className={`w-1.5 h-1.5 rounded-full ${
+                                isDarkMode ? "bg-purple-400" : "bg-purple-600"
+                              }`}
+                            />
+                            <span
+                              className={`text-sm font-medium ${
+                                isDarkMode
+                                  ? "text-purple-300/90"
+                                  : "text-gray-700"
+                              }`}
+                            >
+                              {feature}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* CTA Button */}
+                      <button
+                        onClick={() => navigate("/statistiky")}
+                        className={`group relative w-1/2 inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 ${
+                          isDarkMode
+                            ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40"
+                            : "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-lg shadow-purple-300/50 hover:shadow-xl hover:shadow-purple-400/60"
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          Zobrazit statistiky
+                          <PlayIcon
+                            size={18}
+                            className="transition-transform group-hover:translate-x-1"
+                          />
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="min-h-[60vh] flex flex-col lg:flex-row gap-4 sm:gap-6 max-w-[1600px] mx-auto">
-            <BentoItem padding="p-3 sm:p-4 md:p-6">
-              <div className="flex flex-col relative z-10 h-[50vh]  text-gray-900 dark:text-white ">
-                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500" />
+          <div className="w-full mt-12 col-span-full">
+            <div
+              className={`relative rounded-3xl overflow-hidden transition-all duration-300 `}
+            >
+              {/* Content Container */}
+              <div className="relative z-10 p-8 lg:p-12 ">
+                {/* Header Section */}
+                <div className="text-start mb-8">
+                  <h2
+                    className={`text-4xl lg:text-8xl font-black mb-4 pb-4 text-center ${
+                      isDarkMode
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
+                        : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
+                    }`}
+                  >
+                    Prohlédněte si <br></br>Geometrická Tělesa
+                  </h2>
                 </div>
 
-                {leaderboardLoading ? (
-                  <div className="flex justify-center flex-1 items-center min-h-[100px]">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-2 w-full overflow-y-auto pr-2 custom-scrollbar ">
-                    {leaderboard.map((user, index) => {
-                      const pos = index + 1;
-                      const isTop3 = pos <= 3;
+                {/* Two Column Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                  <div
+                    className={`min-h-[320px] relative overflow-hidden transition-all duration-300 `}
+                  >
+                    <div className="relative z-10 flex flex-col justify-center h-full p-8 lg:p-10">
+                      {/* Badge */}
 
-                      let bgClass = "bg-white/5 dark:bg-black/20";
-                      let borderClass = "border-black/5 dark:border-white/5";
+                      {/* Main Content */}
+                      <h3
+                        className={`text-3xl lg:text-4xl font-black mb-4 leading-tight ${
+                          isDarkMode
+                            ? "text-transparent bg-clip-text bg-gradient-to-br from-purple-200 to-fuchsia-200"
+                            : "text-transparent bg-clip-text bg-gradient-to-br from-purple-900 to-fuchsia-900"
+                        }`}
+                      >
+                        Geometrická tělesa čekají
+                      </h3>
 
-                      if (pos === 1) {
-                        bgClass = "bg-purple-500/10";
-                        borderClass = "border-purple-500/20";
-                      } else if (pos === 2) {
-                        bgClass = "bg-purple-400/10";
-                        borderClass = "border-purple-400/20";
-                      } else if (pos === 3) {
-                        bgClass = "bg-purple-300/10";
-                        borderClass = "border-purple-300/20";
-                      }
+                      <p
+                        className={`text-base lg:text-lg mb-8 leading-relaxed ${
+                          isDarkMode ? "text-purple-200/80" : "text-gray-700"
+                        }`}
+                      >
+                        Objevuj svět 3D geometrie. Prohlédni si interaktivní
+                        modely těles, nauč se jejich vlastnosti a procvič si
+                        výpočty objemů a povrchů.
+                      </p>
 
-                      return (
-                        <div
-                          key={user.userId || index}
-                          className={`flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-xl border ${bgClass} ${borderClass} transition-all gap-2 sm:gap-0 min-w-0`}
-                        >
-                          <div className="flex items-center gap-3 min-w-0">
+                      {/* Features List */}
+                      <div className="space-y-3 mb-8">
+                        {[
+                          "Interaktivní 3D modely",
+                          "Vzorce a výpočty",
+                          "Praktické příklady",
+                        ].map((feature, i) => (
+                          <div key={i} className="flex items-center gap-3">
                             <div
-                              className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg font-bold bg-white/10 text-xs sm:text-base flex-shrink-0`}
+                              className={`w-1.5 h-1.5 rounded-full ${
+                                isDarkMode ? "bg-purple-400" : "bg-purple-600"
+                              }`}
+                            />
+                            <span
+                              className={`text-sm font-medium ${
+                                isDarkMode
+                                  ? "text-purple-300/90"
+                                  : "text-gray-700"
+                              }`}
                             >
-                              {pos}
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="font-bold block truncate text-sm sm:text-base">
-                                {user.name}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 pl-10 sm:pl-0">
-                            <div className="flex items-center gap-3 text-xs">
-                              <span className="flex items-center gap-1.5 opacity-80">
-                                <Flame size={12} className="text-purple-500" />{" "}
-                                <span className="font-mono">{user.streak}</span>
-                              </span>
-                              <span className="flex items-center gap-1.5 opacity-80">
-                                <Coins size={12} className="text-purple-400" />{" "}
-                                <span className="font-mono">{user.coins}</span>
-                              </span>
-                            </div>
-                            <span className="font-mono font-bold text-purple-600 dark:text-purple-400 sm:min-w-[80px] sm:text-right text-xs sm:text-sm">
-                              {user.xp} XP
+                              {feature}
                             </span>
                           </div>
-                        </div>
-                      );
-                    })}
-
-                    {leaderboard.length === 0 && (
-                      <div className="col-span-full text-center py-8 opacity-50">
-                        Zatím žádná data k zobrazení.
+                        ))}
                       </div>
-                    )}
+
+                      {/* CTA Button */}
+                      <button
+                        onClick={() => navigate("/vsechny-simulace")}
+                        className={`group relative w-1/2 inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 ${
+                          isDarkMode
+                            ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40"
+                            : "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-lg shadow-purple-300/50 hover:shadow-xl hover:shadow-purple-400/60"
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          Prozkoumat tělesa
+                          <PlayIcon
+                            size={18}
+                            className="transition-transform group-hover:translate-x-1"
+                          />
+                        </span>
+                      </button>
+                    </div>
                   </div>
-                )}
+                  <BentoItem
+                    className={`min-h-[320px] relative overflow-hidden group transition-all duration-300 }`}
+                  >
+                    {/* Decorative corner accents */}
+                  </BentoItem>
+
+                  {/* Statistics Info Section */}
+                </div>
               </div>
-            </BentoItem>
+            </div>
+          </div>
+          <div className="w-full mt-12 col-span-full mb-[20vh]" id="zebricek">
+            <div
+              className={`relative rounded-3xl overflow-hidden transition-all duration-300 `}
+            >
+              {/* Content Container */}
+              <div className="relative z-10 p-8 lg:p-12 ">
+                {/* Header Section */}
+                <div className="text-start mb-8">
+                  <h2
+                    className={`text-4xl lg:text-8xl font-black mb-4 pb-4 text-center ${
+                      isDarkMode
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
+                        : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
+                    }`}
+                  >
+                    Žebříček uživatelů
+                  </h2>
+                  <p
+                    className={`text-sm lg:text-base max-w-2xl mx-auto text-center ${
+                      isDarkMode ? "text-purple-200/70" : "text-gray-600"
+                    }`}
+                  >
+                    Seřazeno podle XP a série. Soutěž s ostatními a dostaň se na
+                    vrchol!
+                  </p>
+                </div>
+
+                {/* Two Column Layout */}
+                <div className="grid grid-cols-1 gap-6 lg:gap-8">
+                  <BentoItem
+                    className={`min-h-[320px] relative overflow-hidden group transition-all duration-300 }`}
+                  >
+                    <div className="flex flex-col relative w-[100%] z-10 h-[50vh]  text-gray-900 dark:text-white ">
+                      <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                        <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500" />
+                        <span
+                          className={`text-xl font-bold ${
+                            isDarkMode ? "text-white" : "text-gray-900"
+                          }`}
+                        >
+                          Top Studenti
+                        </span>
+                      </div>
+
+                      {leaderboardLoading ? (
+                        <div className="flex justify-center flex-1 items-center min-h-[100px]">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2 w-full overflow-y-auto pr-2 custom-scrollbar  ">
+                          {leaderboard.map((user, index) => {
+                            const pos = index + 1;
+                            const isTop3 = pos <= 3;
+
+                            let bgClass = "bg-white/5 dark:bg-black/20";
+                            let borderClass =
+                              "border-black/5 dark:border-white/5";
+
+                            if (pos === 1) {
+                              bgClass = "bg-purple-500/10";
+                              borderClass = "border-purple-500/20";
+                            } else if (pos === 2) {
+                              bgClass = "bg-purple-400/10";
+                              borderClass = "border-purple-400/20";
+                            } else if (pos === 3) {
+                              bgClass = "bg-purple-300/10";
+                              borderClass = "border-purple-300/20";
+                            }
+
+                            return (
+                              <div
+                                key={user.userId || index}
+                                className={`flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 rounded-xl border ${bgClass} ${borderClass} transition-all gap-2 sm:gap-0 min-w-0`}
+                              >
+                                <div className="flex items-center gap-3 min-w-0">
+                                  <div
+                                    className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg font-bold bg-white/10 text-xs sm:text-base flex-shrink-0`}
+                                  >
+                                    {pos}
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <span className="font-bold block truncate text-sm sm:text-base">
+                                      {user.name}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 pl-10 sm:pl-0">
+                                  <div className="flex items-center gap-3 text-xs">
+                                    <span className="flex items-center gap-1.5 opacity-80">
+                                      <Flame
+                                        size={12}
+                                        className="text-purple-500"
+                                      />{" "}
+                                      <span className="font-mono">
+                                        {user.streak}
+                                      </span>
+                                    </span>
+                                    <span className="flex items-center gap-1.5 opacity-80">
+                                      <Coins
+                                        size={12}
+                                        className="text-purple-400"
+                                      />{" "}
+                                      <span className="font-mono">
+                                        {user.coins}
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <span className="font-mono font-bold text-purple-600 dark:text-purple-400 sm:min-w-[80px] sm:text-right text-xs sm:text-sm">
+                                    {user.xp} XP
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+
+                          {leaderboard.length === 0 && (
+                            <div className="col-span-full text-center py-8 opacity-50">
+                              Zatím žádná data k zobrazení.
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </BentoItem>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         {/* Statistics & XP Progress Section */}
-        <div className="w-full mt-12 col-span-full">
-          <div
-            className={`relative rounded-3xl overflow-hidden transition-all duration-300 `}
-          >
-            {/* Content Container */}
-            <div className="relative z-10 p-8 lg:p-12 ">
-              {/* Header Section */}
-              <div className="text-center mb-8">
-                <h2
-                  className={`text-4xl lg:text-8xl font-black mb-4 pb-4 text-start ${
-                    isDarkMode
-                      ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
-                      : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
-                  }`}
-                >
-                  Sleduj svůj pokrok
-                </h2>
-                <p
-                  className={`text-sm lg:text-base max-w-2xl text-start  ${
-                    isDarkMode ? "text-purple-200/70" : "text-gray-600"
-                  }`}
-                >
-                  Vizualizuj svůj růst a objevuj detailní analytiku svého studia
-                </p>
-              </div>
-
-              {/* Two Column Layout */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                {/* XP Graph Section */}
-                <BentoItem
-                  className={`min-h-[320px] relative overflow-hidden group transition-all duration-300 }`}
-                >
-                  {/* Decorative corner accents */}
-
-                  <div className="relative z-10 flex flex-col h-full p-6">
-                    {/* Graph Header */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`p-2.5 rounded-xl ${
-                            isDarkMode
-                              ? "bg-purple-500/20 text-purple-300"
-                              : "bg-purple-100 text-purple-600"
-                          }`}
-                        >
-                          <TrendingUp size={22} strokeWidth={2.5} />
-                        </div>
-                        <div>
-                          <h3
-                            className={`text-xl font-bold ${
-                              isDarkMode ? "text-white" : "text-gray-900"
-                            }`}
-                          >
-                            XP Trend
-                          </h3>
-                          <p
-                            className={`text-xs mt-0.5 ${
-                              isDarkMode
-                                ? "text-purple-300/60"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            Posledních 7 dní
-                          </p>
-                        </div>
-                      </div>
-                      <div
-                        className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 ${
-                          isDarkMode
-                            ? "bg-emerald-500/20 text-emerald-300 border border-emerald-400/30"
-                            : "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                        }`}
-                      >
-                        <TrendingUp size={14} />
-                        +32%
-                      </div>
-                    </div>
-
-                    {/* Chart Container */}
-                    <div className="flex-1 w-full min-h-[200px] relative">
-                      <MeasuredContainer>
-                        <ResponsiveContainer width="100%" height="100%">
-                          <AreaChart
-                            data={[
-                              { day: "Po", xp: 150 },
-                              { day: "Út", xp: 280 },
-                              { day: "St", xp: 420 },
-                              { day: "Čt", xp: 280 },
-                              { day: "Pá", xp: 730 },
-                              { day: "So", xp: 450 },
-                              { day: "Ne", xp: 950 },
-                            ]}
-                            margin={{
-                              top: 10,
-                              right: 10,
-                              left: -20,
-                              bottom: 0,
-                            }}
-                          >
-                            <defs>
-                              <linearGradient
-                                id="xpGradient"
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                              >
-                                <stop
-                                  offset="0%"
-                                  stopColor={isDarkMode ? "#a78bfa" : "#8b5cf6"}
-                                  stopOpacity={0.9}
-                                />
-                                <stop
-                                  offset="100%"
-                                  stopColor={isDarkMode ? "#c084fc" : "#a855f7"}
-                                  stopOpacity={0.1}
-                                />
-                              </linearGradient>
-                            </defs>
-                            <CartesianGrid
-                              strokeDasharray="3 3"
-                              vertical={false}
-                              stroke={
-                                isDarkMode
-                                  ? "rgba(255,255,255,0.06)"
-                                  : "rgba(0,0,0,0.06)"
-                              }
-                            />
-                            <XAxis
-                              dataKey="day"
-                              stroke={isDarkMode ? "#a78bfa" : "#8b5cf6"}
-                              style={{ fontSize: "12px", fontWeight: "600" }}
-                              tickLine={false}
-                            />
-                            <YAxis hide />
-                            <Tooltip
-                              contentStyle={{
-                                backgroundColor: isDarkMode
-                                  ? "rgba(15, 16, 22, 0.95)"
-                                  : "rgba(255, 255, 255, 0.95)",
-                                border: isDarkMode
-                                  ? "1px solid rgba(168, 139, 250, 0.3)"
-                                  : "1px solid rgba(229, 231, 235, 1)",
-                                borderRadius: "12px",
-                                boxShadow:
-                                  "0 10px 40px -10px rgba(0, 0, 0, 0.3)",
-                                backdropFilter: "blur(10px)",
-                              }}
-                              itemStyle={{
-                                color: isDarkMode ? "#d8b4fe" : "#7c3aed",
-                                fontWeight: "600",
-                              }}
-                              labelStyle={{
-                                color: isDarkMode ? "#fff" : "#000",
-                                fontWeight: "700",
-                              }}
-                              formatter={(value) => [`${value} XP`, "Získáno"]}
-                            />
-                            <Area
-                              type="monotone"
-                              dataKey="xp"
-                              stroke={isDarkMode ? "#a78bfa" : "#8b5cf6"}
-                              strokeWidth={3}
-                              fill="url(#xpGradient)"
-                              animationDuration={2000}
-                            />
-                          </AreaChart>
-                        </ResponsiveContainer>
-                      </MeasuredContainer>
-                    </div>
-                  </div>
-                </BentoItem>
-
-                {/* Statistics Info Section */}
-                <div
-                  className={`min-h-[320px] relative overflow-hidden transition-all duration-300 `}
-                >
-                  <div className="relative z-10 flex flex-col justify-center h-full p-8 lg:p-10">
-                    {/* Badge */}
-
-                    {/* Main Content */}
-                    <h3
-                      className={`text-3xl lg:text-4xl font-black mb-4 leading-tight ${
-                        isDarkMode
-                          ? "text-transparent bg-clip-text bg-gradient-to-br from-purple-200 to-fuchsia-200"
-                          : "text-transparent bg-clip-text bg-gradient-to-br from-purple-900 to-fuchsia-900"
-                      }`}
-                    >
-                      Pokročilé statistiky čekají
-                    </h3>
-
-                    <p
-                      className={`text-base lg:text-lg mb-8 leading-relaxed ${
-                        isDarkMode ? "text-purple-200/80" : "text-gray-700"
-                      }`}
-                    >
-                      Zjisti svůj skutečný pokrok. Náš statistický systém ti
-                      ukáže detailní přehled tvého studia, silné stránky a
-                      oblasti ke zlepšení.
-                    </p>
-
-                    {/* Features List */}
-                    <div className="space-y-3 mb-8">
-                      {[
-                        "Detailní XP historie",
-                        "Analýza výkonnosti",
-                        "Personalizované tipy",
-                      ].map((feature, i) => (
-                        <div key={i} className="flex items-center gap-3">
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              isDarkMode ? "bg-purple-400" : "bg-purple-600"
-                            }`}
-                          />
-                          <span
-                            className={`text-sm font-medium ${
-                              isDarkMode
-                                ? "text-purple-300/90"
-                                : "text-gray-700"
-                            }`}
-                          >
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* CTA Button */}
-                    <button
-                      onClick={() => navigate("/statistiky")}
-                      className={`group relative w-1/2 inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 ${
-                        isDarkMode
-                          ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40"
-                          : "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-lg shadow-purple-300/50 hover:shadow-xl hover:shadow-purple-400/60"
-                      }`}
-                    >
-                      <span className="flex items-center gap-2">
-                        Zobrazit statistiky
-                        <PlayIcon
-                          size={18}
-                          className="transition-transform group-hover:translate-x-1"
-                        />
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </BentoCardGrid>
 
       {/* Shop Modal */}
@@ -2185,7 +2332,7 @@ const UserDashboardUI = ({
               ))}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-800 flex justify-between items-center text-sm">
+            <div className="mt-6 pt-4 border-t border-gray-500 dark:border-gray-800 flex justify-between items-center text-sm">
               <span className="opacity-60">Vaše mince:</span>
               <span className="font-bold flex items-center gap-1 text-amber-500">
                 {userStats.coins} <Star size={14} className="fill-current" />

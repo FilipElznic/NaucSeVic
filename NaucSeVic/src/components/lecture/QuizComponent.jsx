@@ -79,7 +79,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
             : "";
 
           toast.success(
-            `Gratulujeme! Získal jsi ${response.data.xpGained} XP!${boostInfo}`
+            `Gratulujeme! Získal jsi ${response.data.xpGained} XP!${boostInfo}`,
           );
         }
         if (onComplete) {
@@ -101,7 +101,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
   const allAnswered =
     tasks.length > 0 && Object.keys(userAnswers).length === tasks.length;
   const progress = Math.round(
-    ((currentTaskIndex + (hasAnsweredCurrent ? 1 : 0)) / tasks.length) * 100
+    ((currentTaskIndex + (hasAnsweredCurrent ? 1 : 0)) / tasks.length) * 100,
   );
 
   if (result) {
@@ -109,7 +109,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-8 border border-zinc-200 dark:border-zinc-800 shadow-xl text-center max-w-3xl mx-auto"
+        className="bg-white dark:bg-zinc-900/50 backdrop-blur-xl rounded-2xl p-8 border border-zinc-500 dark:border-zinc-800 shadow-xl text-center max-w-3xl mx-auto"
       >
         <div className="mb-8">
           <motion.div
@@ -254,7 +254,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Progress Bar */}
-      <div className="sticky top-4 z-10 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <div className="sticky top-4 z-10 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md p-4 rounded-2xl border border-zinc-500 dark:border-zinc-800 shadow-sm">
         <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
           <span>Postup v testu</span>
           {activeBoost && (
@@ -283,7 +283,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
-            className="bg-white dark:bg-zinc-900 rounded-2xl p-6 md:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm"
+            className="bg-white dark:bg-zinc-900 rounded-2xl p-6 md:p-8 border border-zinc-500 dark:border-zinc-800 shadow-sm"
           >
             <div className="flex gap-4 mb-6">
               <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold text-sm shrink-0">
@@ -347,7 +347,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
                       <Reorder.Item
                         key={item}
                         value={item}
-                        className="p-4 bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 shadow-sm cursor-grab active:cursor-grabbing flex items-center justify-between"
+                        className="p-4 bg-white dark:bg-zinc-800 rounded-xl border border-zinc-500 dark:border-zinc-700 shadow-sm cursor-grab active:cursor-grabbing flex items-center justify-between"
                       >
                         <span className="font-medium text-gray-700 dark:text-gray-300">
                           <LatexRenderer text={item} />
@@ -366,7 +366,7 @@ const QuizComponent = ({ tasks, lessonId, onComplete, activeBoost }) => {
                     type="text"
                     value={userAnswers[currentTaskIndex] || ""}
                     onChange={(e) => handleAnswerChange(e.target.value)}
-                    className="w-full p-4 text-lg rounded-xl border-2 border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 focus:border-blue-500 focus:outline-none transition-colors dark:text-white"
+                    className="w-full p-4 text-lg rounded-xl border-2 border-zinc-500 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 focus:border-blue-500 focus:outline-none transition-colors dark:text-white"
                     placeholder="Napište odpověď..."
                   />
                 </div>

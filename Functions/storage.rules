@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is owner
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // -------------------------------------------------------------------------
+    // 1. Profile Pictures (profile_pics/{userId}/...)
+    // -------------------------------------------------------------------------
+    // - Read: Public (everyone can view profile pics for leaderboards etc.)
+    // - Write: Only the authenticated user can upload to their own folder
+    match /profile_pics/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isOwner(userId);
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. Geometric Bodies (goemetricBodies/... and corrected geometricBodies/...)
+    // -------------------------------------------------------------------------
+    // - Read: Public
+    // - Write: Admin only (implicitly denied for users)
+    match /geometricBodies/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    // Support for potential initial typo/legacy in requirements
+    match /goemetricBodies/{allPaths=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. Lecture Pictures (MathCH1, MathCH2, etc.)
+    // -------------------------------------------------------------------------
+    // Matches top-level folders starting with "MathCH" followed by one or more digits
+    // - Read: Public
+    // - Write: Admin only
+    match /{folderName}/{allPaths=**} {
+      allow read: if folderName.matches('MathCH[0-9]+');
+      // No write allowed here, so admin only
+    }
+    
+    // Default deny for everything else is implicit if no match
+  }
+}

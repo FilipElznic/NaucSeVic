@@ -64,7 +64,7 @@ const PricingSection = () => {
         <div className="max-w-3xl mx-auto">
           <div
             ref={cardRef}
-            className="relative border border-gray-200 dark:border-gray-800 p-12 group hover:border-purple-500/50 dark:hover:border-purple-500/50 transition-all duration-500"
+            className="relative border border-gray-500 dark:border-gray-800 p-12 group hover:border-purple-500/50 dark:hover:border-purple-500/50 transition-all duration-500"
           >
             {/* Gradient corners */}
             <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-transparent" />
@@ -103,7 +103,7 @@ const PricingSection = () => {
             </div>
 
             {/* CTA Button */}
-            <div className="text-center pt-8 border-t border-gray-200 dark:border-gray-800">
+            <div className="text-center pt-8 border-t border-gray-500 dark:border-gray-800">
               <button className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-medium hover:shadow-2xl hover:scale-105 transition-all duration-300">
                 Začít učit zdarma
                 <ArrowRight className="ml-3 h-5 w-5" />
@@ -140,7 +140,7 @@ const PricingSection = () => {
             ].map((item, index) => (
               <div
                 key={index}
-                className="border border-gray-200 dark:border-gray-800 p-6 hover:border-purple-500/50 dark:hover:border-purple-500/50 transition-all duration-300 group"
+                className="border border-gray-500 dark:border-gray-800 p-6 hover:border-purple-500/50 dark:hover:border-purple-500/50 transition-all duration-300 group"
               >
                 <div
                   className={`w-12 h-1 bg-gradient-to-r ${item.gradient} mb-4 group-hover:w-16 transition-all duration-300`}

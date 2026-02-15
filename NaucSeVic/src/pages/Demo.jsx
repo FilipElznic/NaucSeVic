@@ -268,7 +268,7 @@ const LocalQuiz = ({ quizData, onComplete, onReset }) => {
   if (showResult) {
     const passed = score / quizData.length >= 0.5;
     return (
-      <div className="bg-white  dark:bg-zinc-800 rounded-2xl p-8 text-center border border-gray-200 dark:border-zinc-700 shadow-xl max-w-xl mx-auto  animate-in zoom-in-50">
+      <div className="bg-white  dark:bg-zinc-800 rounded-2xl p-8 text-center border border-gray-500 dark:border-zinc-700 shadow-xl max-w-xl mx-auto  animate-in zoom-in-50">
         <div
           className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${passed ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" : "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"}`}
         >
@@ -308,7 +308,7 @@ const LocalQuiz = ({ quizData, onComplete, onReset }) => {
       </div>
 
       {/* Question Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-gray-200 dark:border-zinc-800 shadow-lg min-h-[300px] flex flex-col">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-gray-500 dark:border-zinc-800 shadow-lg min-h-[300px] flex flex-col">
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-8">
           {currentQuestion.question}
         </h3>
@@ -417,7 +417,7 @@ function Demo() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-300">
         {/* Navbar Shim */}
-        <div className="h-16 border-b mt-20 border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center px-4 md:px-8 sticky top-0 z-40">
+        <div className="h-16 mt-20 border-gray-500 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center px-4 md:px-8 sticky top-0 z-40">
           <button
             onClick={() => setView("course")}
             className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 font-medium transition-colors"
@@ -447,7 +447,7 @@ function Demo() {
           </div>
 
           {/* QUIZ SECTION */}
-          <div className="mt-12 pt-12 border-t-2 border-dashed border-gray-200 dark:border-zinc-800">
+          <div className="mt-12 pt-12 border-t-2 border-dashed border-gray-500 dark:border-zinc-800">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
               <Zap className="text-amber-500 fill-current" />
               Ověření znalostí
@@ -468,7 +468,7 @@ function Demo() {
     <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-300 p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
         {/* Course Header */}
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-200 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-500 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
           <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
@@ -516,7 +516,7 @@ function Demo() {
             return (
               <div
                 key={chapter.id}
-                className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-500 dark:border-zinc-800 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
               >
                 <button
                   onClick={() => toggleChapter(chapter.id)}
@@ -560,7 +560,7 @@ function Demo() {
                           return (
                             <div
                               key={lesson.id}
-                              className="group flex items-center justify-between p-4 rounded-xl hover:bg-white dark:hover:bg-zinc-800 border border-transparent hover:border-gray-200 dark:hover:border-zinc-700 transition-all cursor-pointer"
+                              className="group flex items-center justify-between p-4 rounded-xl hover:bg-white dark:hover:bg-zinc-800 border border-transparent hover:border-gray-500 dark:hover:border-zinc-700 transition-all cursor-pointer"
                               onClick={() =>
                                 handleStartLesson(chapter.id, lesson.id)
                               }
@@ -591,7 +591,7 @@ function Demo() {
                                 </div>
                               </div>
 
-                              <button className="px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-purple-600 dark:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                              <button className="px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-500 dark:border-zinc-700 rounded-lg text-sm font-medium text-purple-600 dark:text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
                                 Spustit
                               </button>
                             </div>

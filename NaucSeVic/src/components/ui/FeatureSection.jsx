@@ -47,7 +47,7 @@ const FeatureSection = () => {
 
           {/* Static cards (no animation) */}
           <div className="w-full max-w-xl grid grid-cols-1 gap-4">
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-[#060010] text-left">
+            <div className="rounded-2xl border border-zinc-500 dark:border-zinc-800 p-6 bg-white dark:bg-[#060010] text-left">
               <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg mb-4">
                 <Brain className="w-7 h-7 text-white" />
               </div>
@@ -60,7 +60,7 @@ const FeatureSection = () => {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-[#060010] text-left">
+            <div className="rounded-2xl border border-zinc-500 dark:border-zinc-800 p-6 bg-white dark:bg-[#060010] text-left">
               <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg mb-4">
                 <Zap className="w-7 h-7 text-white" />
               </div>
@@ -72,7 +72,7 @@ const FeatureSection = () => {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-[#060010] text-left">
+            <div className="rounded-2xl border border-zinc-500 dark:border-zinc-800 p-6 bg-white dark:bg-[#060010] text-left">
               <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-red-600 flex items-center justify-center shadow-lg mb-4">
                 <Target className="w-7 h-7 text-white" />
               </div>

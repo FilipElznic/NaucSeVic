@@ -125,7 +125,7 @@ const UniversalSubjectLayout = () => {
                 <Link
                   key={subject.id}
                   to={`/predmety/${subject.id}`}
-                  className="group relative bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-zinc-800"
+                  className="group relative bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-500 dark:border-zinc-800"
                 >
                   {/* Gradient Header */}
                   <div
@@ -234,7 +234,7 @@ const UniversalSubjectLayout = () => {
   // --- SUB-LEVEL SELECTION MODE RENDER ---
   if (isSubLevelSelectionMode) {
     const subLevelsForSelection = Object.values(
-      activeLevelConfig.subLevels
+      activeLevelConfig.subLevels,
     ).map((sl) => ({
       ...sl,
       icon: LucideIcons[sl.icon] || LucideIcons.HelpCircle,
@@ -261,13 +261,13 @@ const UniversalSubjectLayout = () => {
 
   return (
     <div
-      className="min-h-screen pt-20  bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"
+      className="min-h-screen pt-20  bg-gray-100 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300"
       style={dynamicStyle}
     >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* LEVEL SELECTION TABS */}
         <div className="flex justify-center mb-8">
-          <div className="bg-white dark:bg-zinc-900 p-1 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm inline-flex">
+          <div className="bg-white dark:bg-zinc-900 p-1.5 rounded-xl border-2 border-gray-400 dark:border-zinc-800 shadow-xl inline-flex">
             {/* Use levelsData if available for dynamic tabs, fallback to levelsConfig */}
             {(activeSubject.levelsData
               ? Object.values(activeSubject.levelsData)
@@ -276,10 +276,10 @@ const UniversalSubjectLayout = () => {
               <button
                 key={level.id}
                 onClick={() => handleLevelChange(level.id)}
-                className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                   activeLevelId === level.id
-                    ? `bg-${activeSubject.themeColor}-500 text-white shadow-md`
-                    : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-800"
+                    ? `bg-${activeSubject.themeColor}-600 text-white shadow-lg`
+                    : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-800"
                 }`}
                 // Inline style fallback for dynamic color if Tailwind class is purged
                 style={
@@ -297,8 +297,8 @@ const UniversalSubjectLayout = () => {
         {/* SUB-LEVEL SWITCHER (Conditional) */}
         {showSubLevelSwitch && (
           <div className="flex justify-center mb-8 animate-in fade-in slide-in-from-top-4 duration-300">
-            <div className="flex items-center gap-4 bg-white dark:bg-zinc-900 px-6 py-3 rounded-full border border-gray-200 dark:border-zinc-800 shadow-sm">
-              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-4 bg-white dark:bg-zinc-900 px-6 py-3 rounded-full border-2 border-gray-300 dark:border-zinc-800 shadow-md">
+              <span className="text-sm font-bold text-gray-600 dark:text-gray-400">
                 Stupeň ZŠ:
               </span>
               <div className="flex gap-2">
@@ -308,8 +308,8 @@ const UniversalSubjectLayout = () => {
                     onClick={() => handleSubLevelChange(num)}
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                       subLevel === num
-                        ? `bg-${activeSubject.themeColor}-100 text-${activeSubject.themeColor}-700 ring-2 ring-${activeSubject.themeColor}-500 dark:bg-${activeSubject.themeColor}-900/50 dark:text-${activeSubject.themeColor}-300`
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-zinc-800 dark:text-gray-400"
+                        ? `bg-${activeSubject.themeColor}-100 text-${activeSubject.themeColor}-800 ring-2 ring-${activeSubject.themeColor}-600 dark:bg-${activeSubject.themeColor}-900/50 dark:text-${activeSubject.themeColor}-300`
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-zinc-800 dark:text-gray-400"
                     }`}
                   >
                     {num}.
@@ -333,7 +333,7 @@ const UniversalSubjectLayout = () => {
 
           {/* Special Component Injection - VISIBLE BELOW COURSE IF EXISTS */}
           {SpecialComponent && (
-            <div className="my-8 animate-in zoom-in-95 duration-300 border-t border-gray-200 dark:border-zinc-800 pt-8">
+            <div className="my-8 animate-in zoom-in-95 duration-300 border-t-2 border-gray-300 dark:border-zinc-800 pt-8">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   Interaktivní nástroje

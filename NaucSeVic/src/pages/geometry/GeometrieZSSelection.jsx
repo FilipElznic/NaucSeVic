@@ -14,7 +14,7 @@ const GradeCard = ({
   return (
     <div
       onClick={onClick}
-      className="group relative p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-pink-500 dark:hover:border-pink-500 transition-all duration-300 cursor-pointer overflow-hidden hover:shadow-2xl hover:shadow-pink-500/20"
+      className="group relative p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-500 dark:border-zinc-800 hover:border-pink-500 dark:hover:border-pink-500 transition-all duration-300 cursor-pointer overflow-hidden hover:shadow-2xl hover:shadow-pink-500/20"
     >
       <div
         className={`absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity duration-300 text-${color}-500`}

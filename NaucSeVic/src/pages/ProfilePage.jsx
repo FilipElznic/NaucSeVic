@@ -285,7 +285,7 @@ const ProfilePage = () => {
           <div className="lg:w-1/3 w-full flex flex-col lg:h-[80vh] h-auto">
             {/* User Avatar Card - Stretched to fill height */}
             <ParticleCard
-              className="card card--border-glow rounded-[24px] border border-solid p-6 flex flex-col items-center justify-between h-full bg-white dark:bg-[#000000] border-gray-200 dark:border-[#392e4e]"
+              className="card card--border-glow rounded-[24px] border border-solid p-6 flex flex-col items-center justify-between h-full bg-white dark:bg-[#000000] border-gray-500 dark:border-[#392e4e]"
               style={cardStyle}
               glowColor={DEFAULT_GLOW_COLOR}
               enableTilt={false}
@@ -342,7 +342,7 @@ const ProfilePage = () => {
               </div>
 
               {/* Bottom Content - Stats */}
-              <div className="w-full pt-6 border-t border-gray-200 dark:border-[#2a2a35]">
+              <div className="w-full pt-6 border-t border-gray-500 dark:border-[#2a2a35]">
                 <div className="flex items-center justify-between text-base mb-3">
                   <span className="text-gray-600 dark:text-gray-400">
                     Úroveň
@@ -367,7 +367,7 @@ const ProfilePage = () => {
           <div className="lg:w-2/3 w-full flex flex-col gap-4 lg:h-[80vh] h-auto lg:overflow-y-auto overflow-visible scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
             {/* Account Information Card */}
             <ParticleCard
-              className="card card--border-glow rounded-[24px] border border-solid p-6 flex-1 flex flex-col bg-white dark:bg-[#000000] border-gray-200 dark:border-[#392e4e]"
+              className="card card--border-glow rounded-[24px] border border-solid p-6 flex-1 flex flex-col bg-white dark:bg-[#000000] border-gray-500 dark:border-[#392e4e]"
               style={cardStyle}
               glowColor={DEFAULT_GLOW_COLOR}
               enableTilt={false}
@@ -392,7 +392,7 @@ const ProfilePage = () => {
                       name="firstName"
                       value={editForm.firstName}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-500 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Zadejte jméno"
                     />
                   </div>
@@ -406,7 +406,7 @@ const ProfilePage = () => {
                       name="lastName"
                       value={editForm.lastName}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-500 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       placeholder="Zadejte příjmení"
                     />
                   </div>
@@ -421,7 +421,7 @@ const ProfilePage = () => {
                     name="email"
                     value={editForm.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-200 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0f0f14] border border-gray-500 dark:border-[#2a2a35] text-gray-900 dark:text-white text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     placeholder="Zadejte email"
                   />
                   <p className="text-xs text-amber-600 dark:text-amber-500 mt-1.5 flex items-center gap-1">
@@ -454,7 +454,7 @@ const ProfilePage = () => {
 
             {/* Security Card */}
             <ParticleCard
-              className="card card--border-glow rounded-[24px] border border-solid p-6 flex-1 flex flex-col bg-white dark:bg-[#000000] border-gray-200 dark:border-[#392e4e]"
+              className="card card--border-glow rounded-[24px] border border-solid p-6 flex-1 flex flex-col bg-white dark:bg-[#000000] border-gray-500 dark:border-[#392e4e]"
               style={cardStyle}
               glowColor={DEFAULT_GLOW_COLOR}
               enableTilt={false}

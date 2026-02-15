@@ -22,7 +22,7 @@ const PrivacyPage = () => {
         </div>
 
         {/* Content */}
-        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-200 dark:border-zinc-700 p-8">
+        <div className="bg-white dark:bg-zinc-800 rounded-2xl shadow-sm border border-gray-500 dark:border-zinc-700 p-8">
           <div className="prose prose-gray dark:prose-invert max-w-none">
             <h2>1. Úvod</h2>
             <p>

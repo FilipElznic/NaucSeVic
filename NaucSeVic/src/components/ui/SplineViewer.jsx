@@ -6,7 +6,7 @@ export default function SplineViewer({ url }) {
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className="w-full h-full relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700">
+    <div className="w-full h-full relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-zinc-800 border border-gray-500 dark:border-zinc-700">
       {loading && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400">
           <Loader2 className="w-8 h-8 animate-spin mb-2" />

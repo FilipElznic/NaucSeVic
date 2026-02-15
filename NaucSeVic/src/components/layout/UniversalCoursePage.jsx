@@ -194,7 +194,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
   return (
     <div className="animate-in   fade-in duration-500">
       {/* Course Header Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-200 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">
+      <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-500 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">
         {/* Background Decoration */}
         <div
           className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-10 -translate-y-1/2 translate-x-1/3 pointer-events-none"
@@ -265,7 +265,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
             <button
               onClick={handleToggleFavorite}
               disabled={updatingFavorite}
-              className="px-6 py-3 rounded-xl font-bold bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all flex items-center justify-center gap-2"
+              className="px-6 py-3 rounded-xl font-bold bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 border border-gray-500 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all flex items-center justify-center gap-2"
             >
               {isFavorite ? (
                 <LucideIcons.Star className="w-5 h-5 text-yellow-500" />
@@ -295,7 +295,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
             {courseData.chapters.map((chapter) => (
               <div
                 key={chapter.id}
-                className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-zinc-800 overflow-hidden transition-all"
+                className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-500 dark:border-zinc-800 overflow-hidden transition-all"
               >
                 <button
                   onClick={() => toggleChapter(chapter.id)}
@@ -338,9 +338,9 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                     {chapter.lessons.map((lesson) => (
                       <div
                         key={lesson.id}
-                        className="flex items-center justify-between p-4 pl-20 hover:bg-white dark:hover:bg-zinc-800 transition-colors border-b border-gray-100 dark:border-zinc-800 last:border-0 group cursor-pointer"
+                        className="flex items-center justify-between p-4 pl-20 hover:bg-white dark:hover:bg-zinc-800 transition-colors border-t border-gray-300 dark:border-zinc-800 group cursor-pointer"
                       >
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4 ">
                           <div
                             className={`
                             w-8 h-8 rounded-full flex items-center justify-center
@@ -394,7 +394,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
                               e.stopPropagation();
                               handleStartLesson(chapter, lesson);
                             }}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1.5 text-xs font-medium bg-white dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-600"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1.5 text-xs font-medium  dark:bg-zinc-700 border border-gray-500 dark:border-zinc-600 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-600"
                           >
                             Spustit
                           </button>
@@ -410,7 +410,7 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
 
         {/* Sidebar: Stats & Info */}
         <div className="space-y-6">
-          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-200 dark:border-zinc-800 shadow-sm">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-500 dark:border-zinc-800 shadow-sm">
             <h3 className="font-bold text-gray-900 dark:text-white mb-4">
               O kurzu
             </h3>
