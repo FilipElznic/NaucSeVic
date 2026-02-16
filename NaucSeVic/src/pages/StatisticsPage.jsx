@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Layout from "../components/layout/Layout";
+import { gsap } from "gsap";
 import {
   BarChart,
   Bar,
@@ -24,7 +25,190 @@ import {
 } from "lucide-react";
 import { useDarkMode } from "../contexts/DarkModeContext";
 
+const DEFAULT_SPOTLIGHT_RADIUS = 300;
+const DEFAULT_GLOW_COLOR = "132, 0, 255";
+
+const calculateSpotlightValues = (radius) => ({
+  proximity: radius * 0.5,
+  fadeDistance: radius * 0.75,
+});
+
+const updateCardGlowProperties = (card, mouseX, mouseY, glow, radius) => {
+  const rect = card.getBoundingClientRect();
+  const relativeX = ((mouseX - rect.left) / rect.width) * 100;
+  const relativeY = ((mouseY - rect.top) / rect.height) * 100;
+
+  card.style.setProperty("--glow-x", `${relativeX}%`);
+  card.style.setProperty("--glow-y", `${relativeY}%`);
+  card.style.setProperty("--glow-intensity", glow.toString());
+  card.style.setProperty("--glow-radius", `${radius}px`);
+};
+
 // --- Components ---
+
+const GlobalSpotlight = ({
+  gridRef,
+  disableAnimations = false,
+  enabled = true,
+  spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
+  glowColor = DEFAULT_GLOW_COLOR,
+  isDarkMode = true,
+}) => {
+  const spotlightRef = useRef(null);
+  const isInsideSection = useRef(false);
+
+  useEffect(() => {
+    if (disableAnimations || !gridRef?.current || !enabled) return;
+
+    // Create spotlight element
+    // Check if it already exists to avoid duplicates if effect runs twice
+    let spotlight = spotlightRef.current;
+    if (!spotlight) {
+        spotlight = document.createElement("div");
+        spotlight.className = "global-spotlight";
+        spotlightRef.current = spotlight;
+        document.body.appendChild(spotlight);
+    }
+    
+    spotlight.style.cssText = `
+      position: fixed;
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle,
+        rgba(${glowColor}, 0.15) 0%,
+        rgba(${glowColor}, 0.08) 15%,
+        rgba(${glowColor}, 0.04) 25%,
+        rgba(${glowColor}, 0.02) 40%,
+        rgba(${glowColor}, 0.01) 65%,
+        transparent 70%
+      );
+      z-index: 200;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: ${isDarkMode ? "screen" : "normal"};
+    `;
+
+    const handleMouseMove = (e) => {
+      if (!spotlightRef.current || !gridRef.current) return;
+
+      const section = gridRef.current; // Directly use gridRef as section
+      const rect = section?.getBoundingClientRect();
+      const mouseInside =
+        rect &&
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+
+      isInsideSection.current = mouseInside || false;
+      const cards = gridRef.current.querySelectorAll(".card");
+
+      if (!mouseInside) {
+        gsap.to(spotlightRef.current, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+        cards.forEach((card) => {
+          card.style.setProperty("--glow-intensity", "0");
+        });
+        return;
+      }
+
+      const { proximity, fadeDistance } =
+        calculateSpotlightValues(spotlightRadius);
+      let minDistance = Infinity;
+
+      cards.forEach((card) => {
+        const cardElement = card;
+        const cardRect = cardElement.getBoundingClientRect();
+        const centerX = cardRect.left + cardRect.width / 2;
+        const centerY = cardRect.top + cardRect.height / 2;
+        const distance =
+          Math.hypot(e.clientX - centerX, e.clientY - centerY) -
+          Math.max(cardRect.width, cardRect.height) / 2;
+        const effectiveDistance = Math.max(0, distance);
+
+        minDistance = Math.min(minDistance, effectiveDistance);
+
+        let glowIntensity = 0;
+        if (effectiveDistance <= proximity) {
+          glowIntensity = 1;
+        } else if (effectiveDistance <= fadeDistance) {
+          glowIntensity =
+            (fadeDistance - effectiveDistance) / (fadeDistance - proximity);
+        }
+
+        updateCardGlowProperties(
+          cardElement,
+          e.clientX,
+          e.clientY,
+          glowIntensity,
+          spotlightRadius,
+        );
+      });
+
+      gsap.to(spotlightRef.current, {
+        left: e.clientX,
+        top: e.clientY,
+        duration: 0.1,
+        ease: "power2.out",
+      });
+
+      const targetOpacity =
+        minDistance <= proximity
+          ? 0.8
+          : minDistance <= fadeDistance
+            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
+            : 0;
+
+      gsap.to(spotlightRef.current, {
+        opacity: targetOpacity,
+        duration: targetOpacity > 0 ? 0.2 : 0.5,
+        ease: "power2.out",
+      });
+    };
+
+    const handleMouseLeave = () => {
+      isInsideSection.current = false;
+      if (gridRef.current) {
+        gridRef.current.querySelectorAll(".card").forEach((card) => {
+            card.style.setProperty("--glow-intensity", "0");
+        });
+      }
+      if (spotlightRef.current) {
+        gsap.to(spotlightRef.current, {
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      }
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      if (spotlightRef.current && spotlightRef.current.parentNode) {
+        spotlightRef.current.parentNode.removeChild(spotlightRef.current);
+      }
+      spotlightRef.current = null;
+    };
+  }, [
+    gridRef,
+    disableAnimations,
+    enabled,
+    spotlightRadius,
+    glowColor,
+    isDarkMode,
+  ]);
+
+  return null;
+};
 
 const MeasuredContainer = ({ children }) => {
   const ref = useRef(null);
@@ -55,7 +239,7 @@ const BentoItem = ({
 }) => {
   return (
     <div
-      className={`relative overflow-hidden rounded-[24px] border transition-all duration-300 ${padding} ${className} group hover:-translate-y-1 ${
+      className={`relative overflow-hidden rounded-[24px] border transition-all duration-300 ${padding} ${className} card group hover:-translate-y-1 ${
         isDarkMode
           ? "bg-white/5 border-white/10 hover:bg-white/10 hover:border-purple-500/30 shadow-lg shadow-black/20 hover:shadow-purple-500/10"
           : "bg-white border-gray-200 hover:border-purple-200 shadow-xl shadow-gray-200/50 hover:shadow-purple-200/50"
@@ -63,11 +247,14 @@ const BentoItem = ({
       style={style}
     >
       <div
-        className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none ${
-          isDarkMode
-            ? "bg-[radial-gradient(circle_at_var(--mouse-x,50%)_var(--mouse-y,50%),rgba(168,85,247,0.15),transparent_50%)]"
-            : "bg-[radial-gradient(circle_at_var(--mouse-x,50%)_var(--mouse-y,50%),rgba(168,85,247,0.05),transparent_50%)]"
-        }`}
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(
+            var(--glow-radius, 0px) circle at var(--glow-x, 50%) var(--glow-y, 50%),
+            rgba(${DEFAULT_GLOW_COLOR.split(",").join(",")}, var(--glow-intensity, 0)) 0%,
+            transparent 100%
+          )`,
+        }}
       />
       {children}
     </div>
@@ -368,18 +555,7 @@ const StatisticsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { darkMode } = useDarkMode();
-
-  const handleMouseMove = (e) => {
-    const cards = document.querySelectorAll(".group");
-    for (const card of cards) {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      card.style.setProperty("--mouse-x", `${x}px`);
-      card.style.setProperty("--mouse-y", `${y}px`);
-    }
-  };
+  const gridRef = useRef(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -395,11 +571,6 @@ const StatisticsPage = () => {
     };
 
     fetchStats();
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
   }, []);
 
   if (loading) {
@@ -426,7 +597,11 @@ const StatisticsPage = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto p-4 md:p-8 max-w-[1600px] overflow-hidden">
+      <GlobalSpotlight gridRef={gridRef} isDarkMode={darkMode} />
+      <div
+        ref={gridRef}
+        className="container mx-auto p-4 md:p-8 max-w-[1600px] overflow-hidden"
+      >
         {/* Main Header */}
         <div className="text-center mb-12 mt-8">
           <h1
@@ -497,10 +672,19 @@ const StatisticsPage = () => {
                   </defs>
                   <CartesianGrid
                     strokeDasharray="3 3"
-                    vertical={false}
                     stroke={
-                      darkMode ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"
+                      darkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"
                     }
+                  />
+                  <XAxis
+                    dataKey="name"
+                    tick={{
+                      fill: darkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
+                      fontSize: 12,
+                    }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval={0}
                   />
                   <Tooltip
                     cursor={{
@@ -619,6 +803,14 @@ const StatisticsPage = () => {
                     <MeasuredContainer>
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={weeklyActivity}>
+                          <CartesianGrid
+                            strokeDasharray="3 3"
+                            stroke={
+                              darkMode
+                                ? "rgba(255,255,255,0.05)"
+                                : "rgba(0,0,0,0.05)"
+                            }
+                          />
                           <Bar
                             dataKey="tasks"
                             fill={darkMode ? "#34d399" : "#10b981"}
@@ -692,6 +884,14 @@ const StatisticsPage = () => {
                               />
                             </linearGradient>
                           </defs>
+                          <CartesianGrid
+                            strokeDasharray="3 3"
+                            stroke={
+                              darkMode
+                                ? "rgba(255,255,255,0.05)"
+                                : "rgba(0,0,0,0.05)"
+                            }
+                          />
                           <Area
                             type="monotone"
                             dataKey="coinsGained"

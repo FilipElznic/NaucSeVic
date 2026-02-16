@@ -2165,6 +2165,7 @@ exports.getUserStatistics = onCall(async (request) => {
         name: dayName, // For X-axis
         fullDate: dateStr, // For tooltip
         xp: dayData.xpGained || 0,
+        coinsGained: dayData.coinsGained || 0,
         tasks: dayData.tasksFinished || 0,
       });
     }
@@ -2198,12 +2199,14 @@ exports.getUserStatistics = onCall(async (request) => {
     });
 
     const xp = userData.profile?.xp || 0;
+    const coins = userData.profile?.coins || 0;
     const level = Math.floor(Math.sqrt(xp / 100)) + 1;
 
     return {
       weeklyActivity,
       activityHistory,
       stats: {
+        coins,
         totalXp: xp,
         currentLevel: level,
         totalTasks: totalTasksFinished,
