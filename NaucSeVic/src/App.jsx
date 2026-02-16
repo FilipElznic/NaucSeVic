@@ -154,7 +154,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/vsechny-simulace"
+            path="/geometricka-telesa"
             element={
               <ProtectedRoute>
                 <Layout>

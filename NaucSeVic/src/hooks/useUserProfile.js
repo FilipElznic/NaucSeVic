@@ -68,6 +68,7 @@ export const useUserProfile = () => {
     error,
     refreshProfile,
     xp: userProfile?.profile?.xp || 0,
+    pic: userProfile?.profile?.photoURL || 0,
     coins: userProfile?.profile?.coins || 0,
     userName:
       userProfile?.profile?.name ||

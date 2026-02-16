@@ -1204,14 +1204,14 @@ const UserDashboardUI = ({
                 <div className="flex flex-col items-center gap-4 text-center">
                   <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-1">
                     <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
-                      {photoURL ? (
+                      {photoURL == 0 || photoURL == null ? (
+                        <User size={48} className="text-gray-400" />
+                      ) : (
                         <img
                           src={photoURL}
                           alt={userStats.name}
                           className="w-full h-full object-cover"
                         />
-                      ) : (
-                        <User size={48} className="text-gray-400" />
                       )}
                     </div>
                   </div>
@@ -1269,7 +1269,7 @@ const UserDashboardUI = ({
                 <div className="mt-auto">
                   <button
                     onClick={() => navigate("/profil")}
-                    className="w-full py-2 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 rounded-xl text-sm transition-colors border border-black/5 dark:border-white/5"
+                    className="w-full py-2 bg-black/5 hover:bg-black/10 dark:bg-[#0B0C15]/50 dark:hover:bg-white/10 rounded-xl text-sm transition-colors border border-black/5 dark:border-white/5"
                   >
                     Upravit profil
                   </button>
@@ -1553,7 +1553,7 @@ const UserDashboardUI = ({
                 <div className="grid grid-cols-2 gap-3 h-full">
                   <button
                     onClick={() => navigate("/vsechny-ukoly")}
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#0B0C15]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
                   >
                     <BookOpen
                       size={20}
@@ -1564,8 +1564,8 @@ const UserDashboardUI = ({
                     </span>
                   </button>
                   <button
-                    onClick={() => navigate("/vsechny-simulace")}
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                    onClick={() => navigate("/geometricka-telesa")}
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#0B0C15]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
                   >
                     <Target
                       size={20}
@@ -1577,7 +1577,7 @@ const UserDashboardUI = ({
                   </button>
                   <button
                     onClick={() => navigate("/statistiky")}
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#0B0C15]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
                   >
                     <TrendingUp
                       size={20}
@@ -1593,7 +1593,7 @@ const UserDashboardUI = ({
                         .getElementById("zebricek")
                         ?.scrollIntoView({ behavior: "smooth" })
                     }
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#0B0C15]/50 dark:hover:bg-[#1e1b2e]/80 transition-all border border-black/5 dark:border-white/5 group"
                   >
                     <Award
                       size={20}
@@ -1631,7 +1631,7 @@ const UserDashboardUI = ({
                       <div
                         key={course.id}
                         onClick={() => handleCourseClick(course.id)}
-                        className="group flex flex-col justify-between p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
+                        className="group flex flex-col justify-between p-3 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#0B0C15]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer h-full"
                       >
                         <div className="flex items-start justify-between">
                           <div
@@ -1725,7 +1725,7 @@ const UserDashboardUI = ({
                       <div
                         key={course.id}
                         onClick={() => handleCourseClick(course.id)}
-                        className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#1e1b2e]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer min-h-[140px]"
+                        className="group flex flex-col justify-between p-4 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-[#0B0C15]/50 dark:hover:bg-[#1e1b2e]/80 border border-black/5 dark:border-white/5 transition-colors cursor-pointer min-h-[140px]"
                       >
                         <div className="flex items-start justify-between">
                           <div
@@ -2117,7 +2117,7 @@ const UserDashboardUI = ({
 
                       {/* CTA Button */}
                       <button
-                        onClick={() => navigate("/vsechny-simulace")}
+                        onClick={() => navigate("/geometricka-telesa")}
                         className={`group relative w-1/2 inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 ${
                           isDarkMode
                             ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40"
