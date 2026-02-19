@@ -31,7 +31,10 @@ const StatisticsPage = lazy(() => import("./pages/StatisticsPage"));
 const AdminGeometryManager = lazy(
   () => import("./pages/geometry/AdminGeometryManager"),
 );
-const SimulationsPage = lazy(() => import("./pages/geometry/SimulationsPage"));
+const GeometrySimulationsPage = lazy(
+  () => import("./pages/geometry/SimulationsPage"),
+);
+const PhysicsSimulationsPage = lazy(() => import("./pages/SimulationsPage"));
 const LecturePage = lazy(() => import("./pages/LecturePage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
 const UserDashboard = lazy(() => import("./pages/UserDashboard"));
@@ -94,7 +97,9 @@ const AppRoutes = () => {
             path="/prihlaseni"
             element={
               <PublicRoute>
-                <ModernLogin />
+                <Layout>
+                  <ModernLogin />
+                </Layout>
               </PublicRoute>
             }
           />
@@ -103,7 +108,10 @@ const AppRoutes = () => {
             path="/registrace"
             element={
               <PublicRoute>
-                <ModernRegister />
+                <Layout>
+                  {" "}
+                  <ModernRegister />
+                </Layout>
               </PublicRoute>
             }
           />
@@ -142,23 +150,34 @@ const AppRoutes = () => {
             }
           />
 
-          {/* Simulations Page */}
+          {/* General Simulations Page - New */}
           <Route
-            path="/geometric-simulations"
+            path="/simulace"
             element={
               <ProtectedRoute>
                 <Layout>
-                  <SimulationsPage />
+                  <PhysicsSimulationsPage />
                 </Layout>
               </ProtectedRoute>
             }
           />
           <Route
+            path="/simulation"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PhysicsSimulationsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
             path="/geometricka-telesa"
             element={
               <ProtectedRoute>
                 <Layout>
-                  <SimulationsPage />
+                  <GeometrySimulationsPage />
                 </Layout>
               </ProtectedRoute>
             }
@@ -309,23 +328,13 @@ const AppRoutes = () => {
   );
 };
 
+import ThemedToastContainer from "./components/ui/ThemedToastContainer";
+
 function App() {
   return (
     <DarkModeProvider>
       <FirebaseAuthProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          style={{ zIndex: 9999 }}
-        />
+        <ThemedToastContainer />
         <AppRoutes />
       </FirebaseAuthProvider>
     </DarkModeProvider>

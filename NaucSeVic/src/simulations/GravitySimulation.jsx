@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import FallingBall from "../../simulations/FallingBall";
+import FallingBall from "./FallingBall";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
 import { X, ArrowRight, BookOpen } from "lucide-react";
-import CharacterAssistant from "../CharacterAssistant";
+import CharacterAssistant from "../components/CharacterAssistant";
 
 const GravitySimulation = () => {
   const [open, setOpen] = useState(false);

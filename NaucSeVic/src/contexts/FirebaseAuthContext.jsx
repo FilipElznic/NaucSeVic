@@ -16,7 +16,7 @@ export const useFirebaseAuth = () => {
   const context = useContext(FirebaseAuthContext);
   if (!context) {
     throw new Error(
-      "useFirebaseAuth must be used within a FirebaseAuthProvider"
+      "useFirebaseAuth must be used within a FirebaseAuthProvider",
     );
   }
   return context;
@@ -31,11 +31,11 @@ export const FirebaseAuthProvider = ({ children }) => {
   const register = async (email, password, displayName = "") => {
     try {
       setError(null);
-      setLoading(true);
+      // Don't set global loading state on register action to avoid UI flashing
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
 
       // Update display name if provided
@@ -47,8 +47,6 @@ export const FirebaseAuthProvider = ({ children }) => {
     } catch (err) {
       setError(err.message);
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -56,14 +54,13 @@ export const FirebaseAuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setError(null);
-      setLoading(true);
+      // Don't set global loading state on login action to prevent mounting/unmounting
+      // of PublicRoute components (which causes UI flashing)
       const result = await signInWithEmailAndPassword(auth, email, password);
       return result.user;
     } catch (err) {
       setError(err.message);
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -104,7 +101,7 @@ export const FirebaseAuthProvider = ({ children }) => {
             user.uid,
             firstName,
             lastName,
-            user.email
+            user.email,
           );
         } catch (error) {
           console.error("Error ensuring user profile exists:", error);

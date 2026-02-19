@@ -43,10 +43,10 @@ const FloatingOrbs = ({ count = 6, colors = ["indigo", "purple", "pink"] }) => {
   }, []);
 
   const colorMap = {
-    indigo: "bg-indigo-500/20",
-    purple: "bg-purple-500/20",
-    pink: "bg-pink-500/20",
-    blue: "bg-blue-500/20",
+    indigo: "bg-indigo-600/20",
+    purple: "bg-purple-600/20",
+    pink: "bg-pink-600/20",
+    blue: "bg-indigo-600/20",
   };
 
   return (

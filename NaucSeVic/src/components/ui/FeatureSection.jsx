@@ -36,7 +36,7 @@ const FeatureSection = () => {
             <div className="flex justify-center">
               <StarBorder
                 as="button"
-                color="purple"
+                color="#9333ea"
                 speed="1s"
                 onClick={() => navigate("/prihlaseni")}
               >
@@ -48,7 +48,7 @@ const FeatureSection = () => {
           {/* Static cards (no animation) */}
           <div className="w-full max-w-xl grid grid-cols-1 gap-4">
             <div className="rounded-2xl border border-zinc-500 dark:border-zinc-800 p-6 bg-white dark:bg-black text-left">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg mb-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 flex items-center justify-center shadow-lg mb-4">
                 <Brain className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -61,7 +61,7 @@ const FeatureSection = () => {
             </div>
 
             <div className="rounded-2xl border border-zinc-500 dark:border-zinc-800 p-6 bg-white dark:bg-black text-left">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg mb-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 flex items-center justify-center shadow-lg mb-4">
                 <Zap className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -73,7 +73,7 @@ const FeatureSection = () => {
             </div>
 
             <div className="rounded-2xl border border-zinc-500 dark:border-zinc-800 p-6 bg-white dark:bg-black text-left">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-red-600 flex items-center justify-center shadow-lg mb-4">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 flex items-center justify-center shadow-lg mb-4">
                 <Target className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
@@ -104,7 +104,7 @@ const FeatureSection = () => {
               </p>
               <StarBorder
                 as="button"
-                color="purple"
+                color="#9333ea"
                 speed="1s"
                 onClick={() => navigate("/prihlaseni")}
               >
@@ -125,7 +125,7 @@ const FeatureSection = () => {
               <Card className="bg-white dark:bg-black border-2 dark:border-gray-500 border-zinc-800 shadow-2xl p-8 backdrop-blur-sm ">
                 <div className="flex flex-col justify-between h-full">
                   <div className="space-y-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 flex items-center justify-center shadow-lg">
                       <Brain className="w-8 h-8 text-white" />
                     </div>
                     <div>
@@ -138,7 +138,7 @@ const FeatureSection = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-semibold">
+                  <div className="flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 font-semibold">
                     <span>Více informací</span>
                     <span>→</span>
                   </div>
@@ -149,7 +149,7 @@ const FeatureSection = () => {
               <Card className="bg-white dark:bg-black border-2 dark:border-gray-500 border-zinc-800 shadow-2xl p-8 backdrop-blur-sm">
                 <div className="flex flex-col justify-between h-full">
                   <div className="space-y-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 flex items-center justify-center shadow-lg">
                       <Zap className="w-8 h-8 text-white" />
                     </div>
                     <div>
@@ -161,7 +161,7 @@ const FeatureSection = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold">
+                  <div className="flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 font-semibold">
                     <span>Více informací</span>
                     <span>→</span>
                   </div>
@@ -172,7 +172,7 @@ const FeatureSection = () => {
               <Card className="bg-white dark:bg-black border-2 dark:border-gray-500 border-zinc-800 shadow-2xl p-8 backdrop-blur-sm">
                 <div className="flex flex-col justify-between h-full">
                   <div className="space-y-6">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-red-600 flex items-center justify-center shadow-lg">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 flex items-center justify-center shadow-lg">
                       <Target className="w-8 h-8 text-white" />
                     </div>
                     <div>
@@ -184,7 +184,7 @@ const FeatureSection = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-pink-600 dark:text-pink-400 font-semibold">
+                  <div className="flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 font-semibold">
                     <span>Více informací</span>
                     <span>→</span>
                   </div>

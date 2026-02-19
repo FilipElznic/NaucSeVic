@@ -56,19 +56,22 @@ const TestimonialSection = () => {
       name: "",
       role: "",
       content: "",
-      gradient: "from-indigo-500 to-purple-500",
+      gradient:
+        "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
     {
       name: "",
       role: "",
       content: "",
-      gradient: "from-purple-500 to-pink-500",
+      gradient:
+        "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
     {
       name: "",
       role: "",
       content: "",
-      gradient: "from-pink-500 to-indigo-500",
+      gradient:
+        "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
   ];
 
@@ -100,7 +103,7 @@ const TestimonialSection = () => {
 
               {/* Quote Icon with gradient */}
               <div
-                className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br ${testimonial.gradient} rounded-lg mb-6 shadow-lg`}
+                className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${testimonial.gradient} rounded-lg mb-6 shadow-lg`}
               >
                 <Quote className="h-6 w-6 text-white" />
               </div>

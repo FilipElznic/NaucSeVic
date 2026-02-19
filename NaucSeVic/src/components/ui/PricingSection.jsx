@@ -48,8 +48,8 @@ const PricingSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 border border-purple-500/30 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-full">
-            <Sparkles className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 border border-zinc-500 dark:border-zinc-800 bg-white dark:bg-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 rounded-full">
+            <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
             <span className="text-sm font-medium">100% Zdarma</span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
@@ -67,16 +67,16 @@ const PricingSection = () => {
             className="relative border border-gray-500 dark:border-gray-800 p-12 group hover:border-purple-500/50 dark:hover:border-purple-500/50 transition-all duration-500"
           >
             {/* Gradient corners */}
-            <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-transparent" />
-            <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-purple-500/20 to-transparent" />
+            <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-600/20 via-purple-600/20 to-transparent" />
+            <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-indigo-600/20 via-purple-600/20 to-transparent" />
 
             {/* Header */}
             <div className="text-center mb-12 relative">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 rounded-xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <Sparkles className="h-8 w-8 text-white" />
               </div>
 
-              <div className="text-6xl md:text-7xl font-light text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 mb-4 tracking-tight">
+              <div className="text-6xl md:text-7xl font-light text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 mb-4 tracking-tight">
                 0 Kč
               </div>
               <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -92,7 +92,7 @@ const PricingSection = () => {
                   ref={(el) => (featuresRef.current[index] = el)}
                   className="flex items-start group/item"
                 >
-                  <div className="flex items-center justify-center w-5 h-5 rounded bg-gradient-to-br from-indigo-500 to-purple-500 mt-0.5 mr-3 flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300">
+                  <div className="flex items-center justify-center w-5 h-5 rounded bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 mt-0.5 mr-3 flex-shrink-0 group-hover/item:scale-110 transition-transform duration-300">
                     <Check className="h-3 w-3 text-white" />
                   </div>
                   <span className="text-gray-700 dark:text-gray-300">
@@ -104,7 +104,7 @@ const PricingSection = () => {
 
             {/* CTA Button */}
             <div className="text-center pt-8 border-t border-gray-500 dark:border-gray-800">
-              <button className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-medium hover:shadow-2xl hover:scale-105 transition-all duration-300">
+              <button className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 text-white font-medium hover:shadow-2xl hover:scale-105 transition-all duration-300">
                 Začít učit zdarma
                 <ArrowRight className="ml-3 h-5 w-5" />
               </button>
@@ -125,17 +125,20 @@ const PricingSection = () => {
               {
                 title: "Vzdělání pro všechny",
                 desc: "Kvalitní vzdělání by nemělo být omezeno finančními možnostmi",
-                gradient: "from-indigo-500 to-purple-500",
+                gradient:
+                  "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
               },
               {
                 title: "Globální mise",
                 desc: "Demokratizace přístupu ke vzdělání po celém světě",
-                gradient: "from-purple-500 to-pink-500",
+                gradient:
+                  "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
               },
               {
                 title: "Komunita první",
                 desc: "Růst komunity bez finančních bariér",
-                gradient: "from-pink-500 to-indigo-500",
+                gradient:
+                  "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
               },
             ].map((item, index) => (
               <div

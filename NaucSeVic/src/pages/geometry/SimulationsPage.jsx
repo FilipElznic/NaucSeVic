@@ -48,13 +48,6 @@ const SimulationsPage = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-white pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-12">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-slate-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-6 font-medium"
-          >
-            <ArrowLeft size={20} />
-            Zpět na hlavní stránku
-          </Link>
           <div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-slate-900 dark:text-white">
               Interaktivní{" "}

@@ -16,14 +16,16 @@ const StatsSection = () => {
       number: "0+",
       label: "Aktivních studentů",
       description: "Každý měsíc",
-      color: "from-indigo-500 to-purple-500",
+      color:
+        "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
     {
       icon: BookOpen,
       number: "0+",
       label: "Kurzů a lekcí",
       description: "Ve všech oblastech",
-      color: "from-purple-500 to-pink-500",
+      color:
+        "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
 
     {
@@ -31,7 +33,8 @@ const StatsSection = () => {
       number: "0",
       label: "hodin obsahu",
       description: "Připraveno k učení",
-      color: "from-purple-500 to-pink-500",
+      color:
+        "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
   ];
 
@@ -55,7 +58,7 @@ const StatsSection = () => {
               {/* Icon */}
               <div className="flex justify-center mb-4">
                 <div
-                  className={`flex items-center justify-center w-12 h-12 bg-gradient-to-br ${stat.color} rounded-lg group-hover:scale-110 transition-all duration-300 shadow-lg`}
+                  className={`flex items-center justify-center w-12 h-12 bg-gradient-to-r ${stat.color} rounded-lg group-hover:scale-110 transition-all duration-300 shadow-lg`}
                 >
                   <stat.icon className="h-6 w-6 text-white" />
                 </div>

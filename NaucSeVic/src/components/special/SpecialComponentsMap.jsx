@@ -1,5 +1,5 @@
 import React from "react";
-import GravitySimulation from "./GravitySimulation";
+import GravitySimulation from "../../simulations/GravitySimulation";
 
 export const specialComponentsMap = {
   // Fyzika

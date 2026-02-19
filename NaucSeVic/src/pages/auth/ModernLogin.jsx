@@ -7,7 +7,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../../config/firebase";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, BookOpen } from "lucide-react";
 import { gsap } from "gsap";
 import FloatingOrbs from "../../components/ui/FloatingOrbs";
@@ -150,8 +150,8 @@ const ModernLogin = () => {
               x2="100%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#a855f7" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#9333ea" stopOpacity="0.2" />
             </linearGradient>
           </defs>
           <path
@@ -168,17 +168,17 @@ const ModernLogin = () => {
 
       {/* Corner Quarter Circles */}
       <div className="absolute top-0 left-0 w-64 h-64">
-        <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-200 dark:border-indigo-900/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-600/30 dark:border-indigo-400/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
       </div>
       <div className="absolute bottom-0 right-0 w-64 h-64">
-        <div className="absolute bottom-0 right-0 w-full h-full border-4 border-purple-200 dark:border-purple-900/30 rounded-full translate-x-1/2 translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-full h-full border-4 border-purple-600/30 dark:border-purple-400/30 rounded-full translate-x-1/2 translate-y-1/2" />
       </div>
 
       <div className="max-w-md w-full space-y-8 relative z-10">
         {/* Header */}
         <div ref={headerRef} className="text-center">
           <div className="flex justify-center mb-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl shadow-lg">
+            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 rounded-2xl shadow-lg">
               <BookOpen className="h-8 w-8 text-white" />
             </div>
           </div>
@@ -195,11 +195,11 @@ const ModernLogin = () => {
         {/* Form Card */}
         <div
           ref={cardRef}
-          className="bg-white dark:bg-zinc-900 border border-gray-500 dark:border-gray-800 p-8 relative overflow-hidden group hover:border-purple-500/30 dark:hover:border-purple-500/30 transition-all duration-500"
+          className="bg-white dark:bg-zinc-900 border border-gray-500 dark:border-gray-800 p-8 relative overflow-hidden group hover:border-purple-500/50 dark:hover:border-purple-500/50 transition-all duration-500"
         >
           {/* Gradient corners */}
-          <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-500/20 to-transparent" />
-          <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-purple-500/20 to-transparent" />
+          <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-600/20 via-purple-600/20 to-transparent" />
+          <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-indigo-600/20 via-purple-600/20 to-transparent" />
 
           <form
             onSubmit={forgotPassword ? handleForgotPassword : handleEmailSignIn}
@@ -223,7 +223,7 @@ const ModernLogin = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-400 focus:border-indigo-600 dark:focus:border-indigo-400 dark:bg-zinc-700 dark:text-white transition-colors"
                   placeholder="vas@email.cz"
                 />
               </div>
@@ -248,7 +248,7 @@ const ModernLogin = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-zinc-700 dark:text-white transition-colors"
+                    className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-indigo-600 dark:focus:ring-indigo-400 focus:border-indigo-600 dark:focus:border-indigo-400 dark:bg-zinc-700 dark:text-white transition-colors"
                     placeholder="••••••••"
                   />
                   <button
@@ -270,7 +270,7 @@ const ModernLogin = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+              className="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 dark:focus:ring-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             >
               {isLoading ? (
                 <LoadingSpinner size="sm" className="border-white" />
@@ -303,7 +303,7 @@ const ModernLogin = () => {
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={isLoading}
-                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/30 dark:hover:border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/50 dark:hover:border-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
                   >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                       <path
@@ -330,7 +330,7 @@ const ModernLogin = () => {
                     type="button"
                     onClick={handleGithubSignIn}
                     disabled={isLoading}
-                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/30 dark:hover:border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                    className="w-full inline-flex justify-center items-center px-4 py-3 border border-gray-300 dark:border-gray-700 shadow-sm bg-white dark:bg-zinc-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:border-purple-500/50 dark:hover:border-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
                   >
                     <svg
                       className="w-5 h-5 mr-2"
@@ -380,7 +380,7 @@ const ModernLogin = () => {
                   Nemáte účet?{" "}
                   <Link
                     to="/registrace"
-                    className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 hover:opacity-80"
                   >
                     Zaregistrujte se
                   </Link>
@@ -389,30 +389,7 @@ const ModernLogin = () => {
             )}
           </div>
         </div>
-
-        {/* Back to Home */}
-        <div className="text-center">
-          <Link
-            to="/"
-            className="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-          >
-            ← Zpět na hlavní stránku
-          </Link>
-        </div>
       </div>
-
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </div>
   );
 };
