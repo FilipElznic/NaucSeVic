@@ -26,6 +26,8 @@ const Demo = lazy(() => import("./pages/Demo"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const TermsPage = lazy(() => import("./pages/TermsPage"));
 const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
 const TaskCreator = lazy(() => import("./components/TaskCreator"));
 const StatisticsPage = lazy(() => import("./pages/StatisticsPage"));
 const AdminGeometryManager = lazy(
@@ -307,6 +309,44 @@ const AppRoutes = () => {
               <Layout>
                 <PrivacyPage />
               </Layout>
+            }
+          />
+
+          {/* About & Contact */}
+          <Route
+            path="/onas"
+            element={
+              <Layout>
+                <AboutPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/kontakt"
+            element={
+              <Layout>
+                <ContactPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/podpora"
+            element={
+              <Layout>
+                <ContactPage />
+              </Layout>
+            }
+          />
+
+          {/* Kurzy Route */}
+          <Route
+            path="/kurzy"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <UniversalSubjectLayout />
+                </Layout>
+              </ProtectedRoute>
             }
           />
 

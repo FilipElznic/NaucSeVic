@@ -25,11 +25,7 @@ export const subjectConfig = {
     gradient: "from-blue-500 to-cyan-500",
     icon: "Calculator",
     dbBaseTag: "math",
-    stats: {
-      chapters: 10,
-      students: "1.8k+",
-      duration: "20 hodin",
-    },
+
     tags: ["Algebra", "Analýza"],
     hasSubLevels: true, // ZŠ split into 1. and 2. stupeň
     description:
@@ -121,11 +117,7 @@ export const subjectConfig = {
     gradient: "from-blue-500 to-purple-600",
     icon: "Zap",
     dbBaseTag: "physics",
-    stats: {
-      chapters: 18,
-      students: "3.2k+",
-      duration: "36 hodin",
-    },
+
     tags: ["Simulace", "Experimenty"],
     hasSubLevels: false, // Standard ZŠ/SŠ/VŠ
     description:
@@ -188,11 +180,7 @@ export const subjectConfig = {
     gradient: "from-purple-500 to-violet-600",
     icon: "Triangle",
     dbBaseTag: "geometry",
-    stats: {
-      chapters: 12,
-      students: "2.4k+",
-      duration: "24 hodin",
-    },
+
     tags: ["3D vizualizace", "Konstrukce"],
     hasSubLevels: true, // ZŠ split into 1. and 2. stupeň
     description:

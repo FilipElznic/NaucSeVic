@@ -105,19 +105,24 @@ const UniversalSubjectLayout = () => {
   // --- ROOT MODE RENDER (Subject Selection) ---
   if (isRootMode) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              Vyberte si předmět
+      <div className="min-h-screen bg-white dark:bg-black py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Background Elements if needed */}
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-20 space-y-4">
+            <h1 className="text-4xl md:text-6xl font-bold md:mt-28  text-gray-900 dark:text-white leading-tight">
+              Vyberte si{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600">
+                předmět
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
               Zvolte oblast, ve které se chcete zdokonalit. Nabízíme komplexní
               kurzy pro všechny úrovně pokročilosti.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Object.values(subjectConfig).map((subject) => {
               const SubjectIcon =
                 LucideIcons[subject.icon] || LucideIcons.HelpCircle;
@@ -125,80 +130,57 @@ const UniversalSubjectLayout = () => {
                 <Link
                   key={subject.id}
                   to={`/predmety/${subject.id}`}
-                  className="group relative bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-500 dark:border-zinc-800"
+                  className="group relative bg-white dark:bg-black rounded-2xl border border-zinc-200 dark:border-zinc-800 p-8 hover:border-indigo-500 dark:hover:border-indigo-500 transition-all duration-300 hover:shadow-2xl flex flex-col h-full"
                 >
-                  {/* Gradient Header */}
-                  <div
-                    className={`h-32 bg-gradient-to-r ${
-                      subject.gradient || "from-gray-500 to-gray-600"
-                    } p-6 relative overflow-hidden`}
-                  >
-                    <div className="absolute right-0 top-0 p-4 opacity-10 transform translate-x-1/4 -translate-y-1/4">
-                      <SubjectIcon size={150} className="text-white" />
-                    </div>
-                    <div className="relative z-10">
-                      <div className="bg-white/20 backdrop-blur-md p-3 rounded-xl inline-flex mb-3">
-                        <SubjectIcon className="w-8 h-8 text-white" />
-                      </div>
-                      <h2 className="text-2xl font-bold text-white">
-                        {subject.title}
-                      </h2>
-                    </div>
+                  {/* Icon */}
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 flex items-center justify-center shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <SubjectIcon className="w-8 h-8 text-white" />
                   </div>
 
-                  {/* Content */}
-                  <div className="p-8">
-                    <p className="text-gray-600 dark:text-gray-400 mb-6 min-h-[3rem]">
-                      {subject.description}
-                    </p>
+                  {/* Title */}
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    {subject.title}
+                  </h2>
 
-                    {/* Stats */}
-                    {subject.stats && (
-                      <div className="grid grid-cols-3 gap-4 mb-8 border-t border-b border-gray-100 dark:border-zinc-800 py-4">
-                        <div className="text-center">
-                          <div className="text-lg font-bold text-gray-900 dark:text-white">
-                            {subject.stats.chapters}
-                          </div>
-                          <div className="text-xs text-gray-500 uppercase tracking-wider">
-                            Kapitol
-                          </div>
+                  {/* Description */}
+                  <p className="text-gray-600 dark:text-gray-400 mb-8 flex-grow leading-relaxed">
+                    {subject.description}
+                  </p>
+
+                  {/* Stats (optional) */}
+                  {subject.stats && (
+                    <div className="grid grid-cols-3 gap-2 py-4 border-t border-zinc-100 dark:border-zinc-800 mb-6">
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">
+                          {subject.stats.chapters}
                         </div>
-                        <div className="text-center border-l border-r border-gray-100 dark:border-zinc-800">
-                          <div className="text-lg font-bold text-gray-900 dark:text-white">
-                            {subject.stats.students}
-                          </div>
-                          <div className="text-xs text-gray-500 uppercase tracking-wider">
-                            Studentů
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-lg font-bold text-gray-900 dark:text-white">
-                            {subject.stats.duration}
-                          </div>
-                          <div className="text-xs text-gray-500 uppercase tracking-wider">
-                            Délka
-                          </div>
+                        <div className="text-[10px] uppercase tracking-wider text-gray-500">
+                          Kapitol
                         </div>
                       </div>
-                    )}
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {subject.tags &&
-                        subject.tags.map((tag, i) => (
-                          <span
-                            key={i}
-                            className="px-3 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                      <div className="text-center border-l border-zinc-100 dark:border-zinc-800">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">
+                          {subject.stats.students}
+                        </div>
+                        <div className="text-[10px] uppercase tracking-wider text-gray-500">
+                          Studentů
+                        </div>
+                      </div>
+                      <div className="text-center border-l border-zinc-100 dark:border-zinc-800">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">
+                          {subject.stats.duration}
+                        </div>
+                        <div className="text-[10px] uppercase tracking-wider text-gray-500">
+                          Délka
+                        </div>
+                      </div>
                     </div>
+                  )}
 
-                    <div className="flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:translate-x-2 transition-transform">
-                      Začít studovat{" "}
-                      <LucideIcons.ArrowRight className="ml-2 w-4 h-4" />
-                    </div>
+                  {/* Action Link */}
+                  <div className="flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-2 transition-transform mt-auto">
+                    <span>Začít studovat</span>
+                    <LucideIcons.ArrowRight className="ml-2 w-5 h-5" />
                   </div>
                 </Link>
               );

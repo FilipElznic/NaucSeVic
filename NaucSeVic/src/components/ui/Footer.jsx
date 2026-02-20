@@ -24,36 +24,28 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/onas"
                   className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                 >
                   O nás
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/kurzy"
                   className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                 >
                   Kurzy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/kontakt"
                   className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                 >
                   Kontakt
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-                >
-                  Podpora
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

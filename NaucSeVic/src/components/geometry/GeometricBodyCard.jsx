@@ -13,7 +13,7 @@ const GeometricBodyCard = ({ body }) => {
   console.log("Rendering GeometricBodyCard for:", body);
 
   return (
-    <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200 dark:border-zinc-800 overflow-hidden flex flex-col xl:flex-row shadow-sm hover:shadow-xl transition-all duration-300 group/card">
+    <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-slate-600 dark:border-zinc-800 overflow-hidden flex flex-col xl:flex-row shadow-sm hover:shadow-xl transition-all duration-300 group/card">
       {/* Visual Section - Takes up 50% width on large screens */}
       <div className="w-full xl:w-1/2 min-h-[400px] xl:min-h-[500px] bg-slate-50 dark:bg-zinc-950 relative border-b xl:border-b-0 xl:border-r border-slate-100 dark:border-zinc-800">
         <div className="absolute top-4 left-4 z-10 pointer-events-none">
@@ -47,9 +47,9 @@ const GeometricBodyCard = ({ body }) => {
                   <img
                     src={image_url}
                     alt={name}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 "
                   />
-                  <div className="absolute inset-0 bg-white/80 dark:bg-zinc-950/80 group-hover:bg-white/60 dark:group-hover:bg-zinc-950/60 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-zinc-800/80 dark:bg-zinc-950/80 group-hover:bg-zinc-800/60 dark:group-hover:bg-zinc-950/60 transition-all duration-300" />
                 </>
               )}
               <div className="relative z-10 flex flex-col items-center">
@@ -59,10 +59,10 @@ const GeometricBodyCard = ({ body }) => {
                     fill="currentColor"
                   />
                 </div>
-                <p className="text-sm font-bold text-slate-900 dark:text-gray-100">
+                <p className="text-sm font-bold text-gray-100 dark:text-gray-100">
                   Spustit 3D Model
                 </p>
-                <p className="text-xs text-slate-500 dark:text-gray-400 mt-1 text-center font-medium max-w-[200px]">
+                <p className="text-xs text-gray-300 dark:text-gray-400 mt-1 text-center font-medium max-w-[200px]">
                   Klikněte pro načtení interaktivní simulace
                 </p>
               </div>
@@ -73,7 +73,7 @@ const GeometricBodyCard = ({ body }) => {
             <img
               src={image_url}
               alt={name}
-              className="w-full h-full object-contain p-8 bg-white dark:bg-zinc-950"
+              className="w-full h-full object-contain p-8 bg-zinc-800 dark:bg-zinc-950"
             />
           </div>
         ) : (

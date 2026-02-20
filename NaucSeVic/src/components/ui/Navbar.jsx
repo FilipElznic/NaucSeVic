@@ -22,6 +22,8 @@ import {
   PlayCircle,
   Box,
   Settings,
+  Users,
+  Mail,
 } from "lucide-react";
 
 const Navbar = () => {
@@ -141,6 +143,16 @@ const Navbar = () => {
 
   // Legal/public navigation items
   const publicItems = [
+    {
+      name: "O nás",
+      href: "/onas",
+      icon: Users,
+    },
+    {
+      name: "Kontakt",
+      href: "/kontakt",
+      icon: Mail,
+    },
     {
       name: "Podmínky",
       href: "/terms",
