@@ -43,8 +43,6 @@ const PricingSection = () => {
 
   return (
     <section className="py-32 bg-white dark:bg-black relative overflow-hidden">
-      <FloatingOrbs count={3} colors={["purple", "pink", "indigo"]} />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-20">

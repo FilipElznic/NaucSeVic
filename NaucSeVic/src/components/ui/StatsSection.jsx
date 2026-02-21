@@ -81,8 +81,8 @@ const StatsSection = () => {
             </div>
           ))}
         </div>
-        <FloatingOrbs count={1} colors={["indigo", "purple", "pink"]} />
       </div>
+      <FloatingOrbs count={3} colors={["indigo", "purple", "pink"]} />
     </section>
   );
 };

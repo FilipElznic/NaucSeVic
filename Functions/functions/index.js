@@ -354,13 +354,16 @@ exports.createEducationalTask = onCall(async (request) => {
   try {
     // Authentication required (only admins should create tasks)
     if (!request.auth || !request.auth.uid) {
-      throw new Error("Authentication required");
+      throw new HttpsError("unauthenticated", "Authentication required");
     }
 
     // Check if user is admin
     const userIsAdmin = await isAdmin(request.auth.uid);
     if (!userIsAdmin) {
-      throw new Error("Admin privileges required to create tasks");
+      throw new HttpsError(
+        "permission-denied",
+        "Admin privileges required to create tasks",
+      );
     }
 
     const {
@@ -378,41 +381,64 @@ exports.createEducationalTask = onCall(async (request) => {
     } = request.data || {};
 
     // Rate limiting per user
-    checkRateLimit(request.auth.uid, "createTask", 5, 300000); // 5 per 5min
+    try {
+      checkRateLimit(request.auth.uid, "createTask", 5, 300000); // 5 per 5min
+    } catch (e) {
+      throw new HttpsError("resource-exhausted", e.message);
+    }
 
     // Input validation
-    validateInput({ name, description, type, difficulty, xp, explanation }, [
-      "name",
-      "description",
-      "type",
-      "difficulty",
-      "xp",
-      "explanation",
-    ]);
+    try {
+      validateInput({ name, description, type, difficulty, xp, explanation }, [
+        "name",
+        "description",
+        "type",
+        "difficulty",
+        "xp",
+        "explanation",
+      ]);
+    } catch (e) {
+      throw new HttpsError("invalid-argument", e.message);
+    }
 
     // Validate type
     const allowedTypes = ["multipleChoice", "written", "multiAnswer"];
     if (!allowedTypes.includes(type)) {
-      throw new Error("Invalid task type");
+      throw new HttpsError("invalid-argument", "Invalid task type");
     }
 
     // Validate difficulty
-    const allowedDifficulties = ["easy", "medium", "hard"];
+    const allowedDifficulties = [
+      "easy",
+      "medium",
+      "hard",
+      "zakladni_1",
+      "zakladni_2",
+      "stredni",
+      "vysoka",
+    ];
     if (!allowedDifficulties.includes(difficulty)) {
-      throw new Error("Invalid difficulty level");
+      throw new HttpsError("invalid-argument", "Invalid difficulty level");
     }
 
     // Type-specific validation
     if (type === "multipleChoice" && (!options || !correctAnswer)) {
-      throw new Error(
+      throw new HttpsError(
+        "invalid-argument",
         "Multiple choice tasks require options and correctAnswer",
       );
     }
     if (type === "multiAnswer" && !correctAnswers) {
-      throw new Error("Multi answer tasks require correctAnswers array");
+      throw new HttpsError(
+        "invalid-argument",
+        "Multi answer tasks require correctAnswers array",
+      );
     }
     if (type === "written" && !correctAnswer) {
-      throw new Error("Written tasks require correctAnswer");
+      throw new HttpsError(
+        "invalid-argument",
+        "Written tasks require correctAnswer",
+      );
     }
 
     // Create task with proper structure
@@ -472,9 +498,20 @@ exports.createEducationalTask = onCall(async (request) => {
   } catch (error) {
     logger.error("Error creating educational task", {
       error: error.message,
+      stack: error.stack,
       userId: request.auth && request.auth.uid,
     });
-    throw new Error(error.message || "Failed to create educational task");
+
+    // If it's already an HttpsError, rethrow it
+    if (error.httpErrorCode || error.code?.startsWith("functions/")) {
+      throw error;
+    }
+
+    // For unknown errors, throw internal
+    throw new HttpsError(
+      "internal",
+      error.message || "Failed to create educational task",
+    );
   }
 });
 

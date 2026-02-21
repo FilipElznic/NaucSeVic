@@ -20,7 +20,6 @@ import {
   Check,
 } from "lucide-react";
 import { gsap } from "gsap";
-import FloatingOrbs from "../../components/ui/FloatingOrbs";
 import { useDarkMode } from "../../contexts/DarkModeContext";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
@@ -237,8 +236,6 @@ const ModernRegister = () => {
 
   return (
     <div className="h-screen bg-white dark:bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <FloatingOrbs count={5} colors={["indigo", "purple", "pink"]} />
-
       {/* Animated Waves - Bottom */}
       <div className="absolute bottom-0 left-0 w-full opacity-30 dark:opacity-10">
         <svg
@@ -279,7 +276,7 @@ const ModernRegister = () => {
         <div className="absolute bottom-0 right-0 w-full h-full border-4 border-purple-600/30 dark:border-purple-400/30 rounded-full translate-x-1/2 translate-y-1/2" />
       </div>
 
-      <div className="max-w-2xl w-full relative z-10 overflow-y-auto max-h-[95vh] py-4">
+      <div className="max-w-2xl w-full relative z-10 overflow-y-hidden max-h-[95vh] py-4 overflow-hidden">
         {/* Compact Header */}
         <div ref={headerRef} className="text-center mb-6">
           <div className="flex justify-center mb-4">
@@ -301,8 +298,6 @@ const ModernRegister = () => {
           className="bg-white dark:bg-zinc-900 border border-gray-500 dark:border-gray-800 p-6 relative overflow-hidden group hover:border-purple-500/50 dark:hover:border-purple-500/50 transition-all duration-500"
         >
           {/* Gradient corners */}
-          <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-indigo-600/20 via-purple-600/20 to-transparent" />
-          <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-indigo-600/20 via-purple-600/20 to-transparent" />
 
           <form onSubmit={handleEmailSignUp} className="space-y-4">
             {/* Name Fields */}

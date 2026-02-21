@@ -170,7 +170,6 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
       emerald: `rgba(16, 185, 129, ${opacity})`,
       yellow: `rgba(234, 179, 8, ${opacity})`,
       cyan: `rgba(6, 182, 212, ${opacity})`,
-      red: `rgba(239, 68, 68, ${opacity})`,
     };
     return colors[themeColor] || colors.blue;
   };

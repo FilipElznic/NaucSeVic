@@ -22,10 +22,11 @@ import {
   TrendingUp,
   Wallet,
   ListTodo,
+  Activity,
 } from "lucide-react";
 import { useDarkMode } from "../contexts/DarkModeContext";
 
-const DEFAULT_SPOTLIGHT_RADIUS = 300;
+const DEFAULT_SPOTLIGHT_RADIUS = 200;
 const DEFAULT_GLOW_COLOR = "132, 0, 255";
 
 const calculateSpotlightValues = (radius) => ({
@@ -64,12 +65,12 @@ const GlobalSpotlight = ({
     // Check if it already exists to avoid duplicates if effect runs twice
     let spotlight = spotlightRef.current;
     if (!spotlight) {
-        spotlight = document.createElement("div");
-        spotlight.className = "global-spotlight";
-        spotlightRef.current = spotlight;
-        document.body.appendChild(spotlight);
+      spotlight = document.createElement("div");
+      spotlight.className = "global-spotlight";
+      spotlightRef.current = spotlight;
+      document.body.appendChild(spotlight);
     }
-    
+
     spotlight.style.cssText = `
       position: fixed;
       width: 800px;
@@ -77,11 +78,10 @@ const GlobalSpotlight = ({
       border-radius: 50%;
       pointer-events: none;
       background: radial-gradient(circle,
-        rgba(${glowColor}, 0.15) 0%,
-        rgba(${glowColor}, 0.08) 15%,
-        rgba(${glowColor}, 0.04) 25%,
-        rgba(${glowColor}, 0.02) 40%,
-        rgba(${glowColor}, 0.01) 65%,
+        rgba(${glowColor}, 0.08) 0%,
+        rgba(${glowColor}, 0.04) 15%,
+        rgba(${glowColor}, 0.02) 25%,
+        rgba(${glowColor}, 0.01) 40%,
         transparent 70%
       );
       z-index: 200;
@@ -135,10 +135,11 @@ const GlobalSpotlight = ({
 
         let glowIntensity = 0;
         if (effectiveDistance <= proximity) {
-          glowIntensity = 1;
+          glowIntensity = 0.4;
         } else if (effectiveDistance <= fadeDistance) {
           glowIntensity =
-            (fadeDistance - effectiveDistance) / (fadeDistance - proximity);
+            ((fadeDistance - effectiveDistance) / (fadeDistance - proximity)) *
+            0.4;
         }
 
         updateCardGlowProperties(
@@ -159,9 +160,9 @@ const GlobalSpotlight = ({
 
       const targetOpacity =
         minDistance <= proximity
-          ? 0.8
+          ? 0.4
           : minDistance <= fadeDistance
-            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
+            ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.4
             : 0;
 
       gsap.to(spotlightRef.current, {
@@ -175,7 +176,7 @@ const GlobalSpotlight = ({
       isInsideSection.current = false;
       if (gridRef.current) {
         gridRef.current.querySelectorAll(".card").forEach((card) => {
-            card.style.setProperty("--glow-intensity", "0");
+          card.style.setProperty("--glow-intensity", "0");
         });
       }
       if (spotlightRef.current) {
@@ -236,13 +237,14 @@ const BentoItem = ({
   style = {},
   padding = "p-6",
   isDarkMode = true,
+  loading = false,
 }) => {
   return (
     <div
-      className={`relative overflow-hidden rounded-[24px] border transition-all duration-300 ${padding} ${className} card group hover:-translate-y-1 ${
+      className={`relative overflow-hidden rounded-[24px] border transition-all duration-300 ${padding} ${className} card group ${
         isDarkMode
-          ? "bg-white/5 border-white/10 hover:bg-white/10 hover:border-purple-500/30 shadow-lg shadow-black/20 hover:shadow-purple-500/10"
-          : "bg-white border-gray-200 hover:border-purple-200 shadow-xl shadow-gray-200/50 hover:shadow-purple-200/50"
+          ? "bg-white/5 border-white/10 shadow-lg shadow-black/20"
+          : "bg-white border-gray-200 shadow-xl shadow-gray-200/50"
       }`}
       style={style}
     >
@@ -257,11 +259,18 @@ const BentoItem = ({
         }}
       />
       {children}
+      {loading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/5 backdrop-blur-[2px] transition-all duration-300">
+          <div
+            className={`w-full h-full animate-pulse ${isDarkMode ? "bg-white/5" : "bg-gray-200/20"}`}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
-const StatCard = ({ icon: Icon, title, value, color, isDarkMode }) => (
+const StatCard = ({ icon: Icon, title, value, color, isDarkMode, loading }) => (
   <div
     className={`relative rounded-2xl overflow-hidden p-6 transition-all duration-300 transform hover:scale-[1.02] ${
       isDarkMode
@@ -294,13 +303,19 @@ const StatCard = ({ icon: Icon, title, value, color, isDarkMode }) => (
         >
           {title}
         </p>
-        <p
-          className={`text-2xl font-black mt-1 ${
-            isDarkMode ? "text-white" : "text-gray-900"
-          }`}
-        >
-          {value}
-        </p>
+        {loading ? (
+          <div
+            className={`mt-1 h-8 w-24 rounded animate-pulse ${isDarkMode ? "bg-purple-500/20" : "bg-gray-200"}`}
+          />
+        ) : (
+          <p
+            className={`text-2xl font-black mt-1 ${
+              isDarkMode ? "text-white" : "text-gray-900"
+            }`}
+          >
+            {value}
+          </p>
+        )}
       </div>
     </div>
   </div>
@@ -573,15 +588,15 @@ const StatisticsPage = () => {
     fetchStats();
   }, []);
 
-  if (loading) {
-    return (
-      <Layout>
-        <div className="flex justify-center items-center min-h-[50vh]">
-          <LoadingSpinner size="lg" />
-        </div>
-      </Layout>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Layout>
+  //       <div className="flex justify-center items-center min-h-[50vh]">
+  //         <LoadingSpinner size="lg" />
+  //       </div>
+  //     </Layout>
+  //   );
+  // }
 
   if (error) {
     return (
@@ -593,7 +608,18 @@ const StatisticsPage = () => {
     );
   }
 
-  const { weeklyActivity, stats: userStats } = stats;
+  // Define default empty structure for initial render
+  const defaultStats = {
+    weeklyActivity: Array(7).fill({
+      name: "",
+      xp: 0,
+      tasks: 0,
+      coinsGained: 0,
+    }),
+    stats: { totalTasks: 0 },
+  };
+
+  const { weeklyActivity, stats: userStats } = stats || defaultStats;
 
   return (
     <Layout>
@@ -629,98 +655,98 @@ const StatisticsPage = () => {
             className="w-full max-w-[90%] lg:max-w-[80%] h-[400px] md:h-[500px]"
             padding="p-0"
             isDarkMode={darkMode}
+            loading={loading}
           >
-            {/* Header for context */}
-            <div className="absolute top-6 left-6 z-20">
-              <div
-                className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md ${
-                  darkMode
-                    ? "bg-purple-500/10 border border-purple-500/20 text-purple-200"
-                    : "bg-white/80 border border-purple-200 text-purple-700"
-                }`}
-              >
-                <Zap size={18} />
-                <span className="font-bold">Týdenní XP Aktivita</span>
+            <div className="flex flex-col h-full relative z-10 w-full p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Activity
+                  size={18}
+                  className="text-purple-600 dark:text-purple-400"
+                />
+                <p className="text-black dark:text-white">
+                  {" "}
+                  Týdenní XP Aktivita
+                </p>
+              </h3>
+              <div className="flex-1 w-full min-h-[140px] min-w-0 relative">
+                <MeasuredContainer>
+                  <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                    minWidth={50}
+                    minHeight={50}
+                    debounce={300}
+                  >
+                    <AreaChart data={weeklyActivity}>
+                      <defs>
+                        <linearGradient
+                          id="colorXp"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="5%"
+                            stopColor="#8b5cf6"
+                            stopOpacity={0.3}
+                          />
+                          <stop
+                            offset="95%"
+                            stopColor="#8b5cf6"
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke={darkMode ? "#ffffff10" : "#00000010"}
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="name"
+                        stroke={darkMode ? "#6b7280" : "#94a3b8"}
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <YAxis
+                        stroke={darkMode ? "#6b7280" : "#94a3b8"}
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <Tooltip
+                        content={({ active, payload, label }) => {
+                          if (active && payload && payload.length) {
+                            return (
+                              <div className="bg-white/95 dark:bg-[#0B0C15]/95 border border-purple-500/30 p-2 rounded-lg shadow-lg text-xs min-w-[80px] text-center backdrop-blur-md">
+                                <p className="font-bold text-gray-800 dark:text-gray-200 mb-1">
+                                  {label}
+                                </p>
+                                <p className="text-purple-600 dark:text-purple-400 font-bold">
+                                  {payload[0].value} XP
+                                </p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                        cursor={{ stroke: "#8b5cf6", strokeWidth: 1 }}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="xp"
+                        stroke="#8b5cf6"
+                        fillOpacity={1}
+                        fill="url(#colorXp)"
+                        strokeWidth={3}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </MeasuredContainer>
               </div>
             </div>
-
-            <MeasuredContainer>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={weeklyActivity}
-                  margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-                >
-                  <defs>
-                    <linearGradient
-                      id="xpGradientBig"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop
-                        offset="0%"
-                        stopColor={darkMode ? "#a78bfa" : "#8b5cf6"}
-                        stopOpacity={0.8}
-                      />
-                      <stop
-                        offset="100%"
-                        stopColor={darkMode ? "#c084fc" : "#a855f7"}
-                        stopOpacity={0.05}
-                      />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke={
-                      darkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"
-                    }
-                  />
-                  <XAxis
-                    dataKey="name"
-                    tick={{
-                      fill: darkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)",
-                      fontSize: 12,
-                    }}
-                    axisLine={false}
-                    tickLine={false}
-                    interval={0}
-                  />
-                  <Tooltip
-                    cursor={{
-                      stroke: darkMode
-                        ? "rgba(255,255,255,0.1)"
-                        : "rgba(0,0,0,0.1)",
-                      strokeWidth: 2,
-                    }}
-                    contentStyle={{
-                      backgroundColor: darkMode
-                        ? "rgba(15, 16, 22, 0.9)"
-                        : "rgba(255, 255, 255, 0.9)",
-                      border: darkMode
-                        ? "1px solid rgba(168, 139, 250, 0.2)"
-                        : "1px solid rgba(229, 231, 235, 1)",
-                      borderRadius: "12px",
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-                      backdropFilter: "blur(8px)",
-                    }}
-                    itemStyle={{
-                      color: darkMode ? "#fff" : "#000",
-                      fontWeight: 700,
-                    }}
-                    labelStyle={{ display: "none" }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="xp"
-                    stroke={darkMode ? "#a78bfa" : "#8b5cf6"}
-                    strokeWidth={4}
-                    fill="url(#xpGradientBig)"
-                    animationDuration={1500}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </MeasuredContainer>
           </BentoItem>
         </div>
 
@@ -755,7 +781,13 @@ const StatisticsPage = () => {
                     }`}
                   >
                     Splněné úkoly <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
+                    <span
+                      className={`mb-4 pb-4 ${
+                        darkMode
+                          ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-300 to-fuchsia-300"
+                          : "text-transparent bg-clip-text bg-gradient-to-r from-purple-700 via-violet-700 to-fuchsia-700"
+                      }`}
+                    >
                       každý týden
                     </span>
                   </h3>
@@ -775,8 +807,9 @@ const StatisticsPage = () => {
                       icon={CheckCircle}
                       title="Hotové úkoly"
                       value={userStats.totalTasks}
-                      color={darkMode ? "text-emerald-400" : "text-emerald-600"}
+                      color={darkMode ? "text-purple-400" : "text-purple-600"}
                       isDarkMode={darkMode}
+                      loading={loading}
                     />
                   </div>
                 </div>
@@ -786,11 +819,12 @@ const StatisticsPage = () => {
                   className="min-h-[400px] flex flex-col gap-6 order-1 lg:order-2"
                   padding="p-6 md:p-8"
                   isDarkMode={darkMode}
+                  loading={loading}
                 >
                   <div className="flex-1 flex flex-col">
                     <div className="flex items-center gap-3 mb-4">
                       <div
-                        className={`p-2 rounded-lg ${darkMode ? "bg-emerald-500/20 text-emerald-300" : "bg-emerald-100 text-emerald-600"}`}
+                        className={`p-2 rounded-lg ${darkMode ? "bg-purple-500/20 text-purple-300" : "bg-purple-100 text-purple-600"}`}
                       >
                         <ListTodo size={20} />
                       </div>
@@ -805,32 +839,45 @@ const StatisticsPage = () => {
                         <BarChart data={weeklyActivity}>
                           <CartesianGrid
                             strokeDasharray="3 3"
-                            stroke={
-                              darkMode
-                                ? "rgba(255,255,255,0.05)"
-                                : "rgba(0,0,0,0.05)"
-                            }
+                            stroke={darkMode ? "#ffffff10" : "#00000010"}
+                            vertical={false}
                           />
                           <Bar
                             dataKey="tasks"
-                            fill={darkMode ? "#34d399" : "#10b981"}
-                            radius={[8, 8, 0, 0]}
+                            fill={darkMode ? "#a78bfa" : "#8b5cf6"}
+                            radius={[4, 4, 0, 0]}
                           />
                           <XAxis
                             dataKey="name"
-                            tick={{
-                              fill: darkMode ? "#9ca3af" : "#4b5563",
-                              fontSize: 12,
-                            }}
+                            stroke={darkMode ? "#6b7280" : "#94a3b8"}
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                          />
+                          <YAxis
+                            allowDecimals={false}
+                            domain={[0, "dataMax + 1"]}
+                            stroke={darkMode ? "#6b7280" : "#94a3b8"}
+                            fontSize={12}
                             tickLine={false}
                             axisLine={false}
                           />
                           <Tooltip
                             cursor={{ fill: "transparent" }}
-                            contentStyle={{
-                              backgroundColor: darkMode ? "#1f2937" : "#fff",
-                              borderColor: darkMode ? "#374151" : "#e5e7eb",
-                              borderRadius: "8px",
+                            content={({ active, payload, label }) => {
+                              if (active && payload && payload.length) {
+                                return (
+                                  <div className="bg-white/95 dark:bg-[#0B0C15]/95 border border-purple-500/30 p-2 rounded-lg shadow-lg text-xs min-w-[80px] text-center backdrop-blur-md">
+                                    <p className="font-bold text-gray-800 dark:text-gray-200 mb-1">
+                                      {label}
+                                    </p>
+                                    <p className="text-purple-600 dark:text-purple-400 font-bold">
+                                      {payload[0].value} Úkolů
+                                    </p>
+                                  </div>
+                                );
+                              }
+                              return null;
                             }}
                           />
                         </BarChart>
@@ -847,11 +894,12 @@ const StatisticsPage = () => {
                   className="min-h-[400px] flex flex-col gap-6 order-1"
                   padding="p-6 md:p-8"
                   isDarkMode={darkMode}
+                  loading={loading}
                 >
                   <div className="flex-1 flex flex-col">
                     <div className="flex items-center gap-3 mb-4">
                       <div
-                        className={`p-2 rounded-lg ${darkMode ? "bg-amber-500/20 text-amber-300" : "bg-amber-100 text-amber-600"}`}
+                        className={`p-2 rounded-lg ${darkMode ? "bg-purple-500/20 text-purple-300" : "bg-purple-100 text-purple-600"}`}
                       >
                         <Wallet size={20} />
                       </div>
@@ -874,46 +922,59 @@ const StatisticsPage = () => {
                             >
                               <stop
                                 offset="5%"
-                                stopColor="#fbbf24"
-                                stopOpacity={0.8}
+                                stopColor="#8b5cf6"
+                                stopOpacity={0.3}
                               />
                               <stop
                                 offset="95%"
-                                stopColor="#fbbf24"
+                                stopColor="#8b5cf6"
                                 stopOpacity={0}
                               />
                             </linearGradient>
                           </defs>
                           <CartesianGrid
                             strokeDasharray="3 3"
-                            stroke={
-                              darkMode
-                                ? "rgba(255,255,255,0.05)"
-                                : "rgba(0,0,0,0.05)"
-                            }
+                            stroke={darkMode ? "#ffffff10" : "#00000010"}
+                            vertical={false}
                           />
                           <Area
                             type="monotone"
                             dataKey="coinsGained"
-                            stroke="#fbbf24"
+                            stroke="#8b5cf6"
                             fill="url(#coinsGradient)"
+                            fillOpacity={1}
                             strokeWidth={3}
                           />
                           <XAxis
                             dataKey="name"
-                            tick={{
-                              fill: darkMode ? "#9ca3af" : "#4b5563",
-                              fontSize: 12,
-                            }}
-                            axisLine={false}
+                            stroke={darkMode ? "#6b7280" : "#94a3b8"}
+                            fontSize={12}
                             tickLine={false}
+                            axisLine={false}
+                          />
+                          <YAxis
+                            stroke={darkMode ? "#6b7280" : "#94a3b8"}
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
                           />
                           <Tooltip
-                            contentStyle={{
-                              backgroundColor: darkMode ? "#1f2937" : "#fff",
-                              borderColor: darkMode ? "#374151" : "#e5e7eb",
-                              borderRadius: "8px",
+                            content={({ active, payload, label }) => {
+                              if (active && payload && payload.length) {
+                                return (
+                                  <div className="bg-white/95 dark:bg-[#0B0C15]/95 border border-purple-500/30 p-2 rounded-lg shadow-lg text-xs min-w-[80px] text-center backdrop-blur-md">
+                                    <p className="font-bold text-gray-800 dark:text-gray-200 mb-1">
+                                      {label}
+                                    </p>
+                                    <p className="text-purple-600 dark:text-purple-400 font-bold">
+                                      {payload[0].value} Mincí
+                                    </p>
+                                  </div>
+                                );
+                              }
+                              return null;
                             }}
+                            cursor={{ stroke: "#8b5cf6", strokeWidth: 1 }}
                           />
                         </AreaChart>
                       </ResponsiveContainer>
@@ -929,7 +990,13 @@ const StatisticsPage = () => {
                     }`}
                   >
                     Sbírání mincí <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">
+                    <span
+                      className={`text-transparent bg-clip-text bg-gradient-to-r ${
+                        darkMode
+                          ? "from-purple-300 via-violet-300 to-fuchsia-300"
+                          : "from-purple-700 via-violet-700 to-fuchsia-700"
+                      }`}
+                    >
                       za aktivitu
                     </span>
                   </h3>
@@ -952,8 +1019,9 @@ const StatisticsPage = () => {
                         (acc, cur) => acc + (cur.coinsGained || 0),
                         0,
                       )}
-                      color={darkMode ? "text-amber-400" : "text-amber-600"}
+                      color={darkMode ? "text-purple-400" : "text-purple-600"}
                       isDarkMode={darkMode}
+                      loading={loading}
                     />
                   </div>
                 </div>

@@ -4525,7 +4525,7 @@ export const mathSS = {
                 heading: "Bod vs. Vektor",
                 text: "Jaký je rozdíl mezi bodem a vektorem? \n- Bod $A[1; 2]$ je špendlík zapíchnutý v mapě. Říká: 'Tady jsem'.\n- Vektor $\\vec{u} = (2; 3)$ je instrukce k pohybu. Říká: 'Jdi o 2 doprava a o 3 nahoru'.\nVektor nemá pevné místo. Je to jen směr a velikost. Můžeme ho umístit kamkoliv.",
                 image:
-                  "[Image showing difference between fixed points on a grid and a floating vector arrow]",
+                  "[Image showing difference between fixed points on a grid and a  vector arrow]",
               },
               {
                 heading: "Výpočet souřadnic",

@@ -52,7 +52,7 @@ const FloatingOrbs = ({ count = 6, colors = ["indigo", "purple", "pink"] }) => {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 overflow-hidden pointer-events-none"
+      className="absolute inset-0  overflow-hidden pointer-events-none w-full h-full"
     >
       {Array.from({ length: count }).map((_, index) => {
         const color = colors[index % colors.length];

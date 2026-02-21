@@ -1,12 +1,13 @@
 import React, { Suspense, lazy } from "react";
 import ModernHeroSection from "../components/ui/ModernHeroSection";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
+import FloatingOrbs from "../components/ui/FloatingOrbs";
 
 // Lazy load sections below the fold
 const FeatureSection = lazy(() => import("../components/ui/FeatureSection"));
 const StatsSection = lazy(() => import("../components/ui/StatsSection"));
-const TestimonialSection = lazy(() =>
-  import("../components/ui/TestimonialSection")
+const TestimonialSection = lazy(
+  () => import("../components/ui/TestimonialSection"),
 );
 const PricingSection = lazy(() => import("../components/ui/PricingSection"));
 
@@ -23,6 +24,7 @@ function LandingPage() {
       >
         <FeatureSection />
         <StatsSection />
+
         <TestimonialSection />
         <PricingSection />
       </Suspense>
