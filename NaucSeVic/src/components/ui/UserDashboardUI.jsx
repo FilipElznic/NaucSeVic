@@ -843,10 +843,16 @@ const UserDashboardUI = ({
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const padding = Array.from({ length: startingDayIndex }, () => null);
 
-  // Simulated active days for calendar visual (could come from activityData history in future)
-  const activeDays = activityData
-    .filter((d) => d.xp > 0)
-    .map((d) => new Date(d.date).getDate());
+  // Active days for calendar – use full month progress so dates older than 7 days show up
+  const monthProgress = data?.monthProgress || {};
+  const activeDays = Object.entries(monthProgress)
+    .filter(([, dayData]) =>
+      dayData.loginTime ||
+      (dayData.xpGained || 0) > 0 ||
+      (dayData.coinsGained || 0) > 0 ||
+      (dayData.tasksFinished || 0) > 0
+    )
+    .map(([dateStr]) => new Date(dateStr).getDate());
 
   // Wrapper for consistency
   const BentoItem = ({

@@ -1952,6 +1952,23 @@ exports.getHomeData = onCall(async (request) => {
     const level = Math.floor(Math.sqrt(xp / 100)) + 1;
     const nextLevelXp = Math.pow(level, 2) * 100; // XP needed for next level
 
+    // 6. Month Progress (for calendar display)
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; // 1-based
+    const monthProgress = {};
+    if (userData.progress) {
+      Object.entries(userData.progress).forEach(([dateStr, dayData]) => {
+        const parts = dateStr.split("-");
+        if (
+          parseInt(parts[0]) === currentYear &&
+          parseInt(parts[1]) === currentMonth
+        ) {
+          monthProgress[dateStr] = dayData;
+        }
+      });
+    }
+
     // Construct response
     return {
       userStats: {
@@ -1970,6 +1987,7 @@ exports.getHomeData = onCall(async (request) => {
       inventory: userData.inventory || {},
       favoriteCourses: favoriteCourses,
       progress: userData.progress?.[today] || {},
+      monthProgress: monthProgress,
     };
   } catch (error) {
     console.error("Error fetching home data:", error);
