@@ -37,6 +37,7 @@ const ProfilePage = () => {
   const [resetSuccess, setResetSuccess] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoImgError, setPhotoImgError] = useState(false);
   const fileInputRef = useRef(null);
 
   // Edit form state
@@ -204,6 +205,7 @@ const ProfilePage = () => {
           photoURL: downloadURL,
         },
       }));
+      setPhotoImgError(false); // reset error so new photo renders
 
       toast.success("Profilová fotka byla úspěšně změněna");
     } catch (error) {
@@ -245,12 +247,12 @@ const ProfilePage = () => {
     (p) => p?.providerId === "google.com",
   );
 
-  // Prefer Google account photo for users signed in via Google,
-  // otherwise use stored profile photo or Firebase user photo.
+  // Prefer custom uploaded photo, then Google photo, then auth photo.
   const photoURL =
-    (isGoogleUser && googleProvider?.photoURL) ||
     userProfile?.profile?.photoURL ||
-    user?.photoURL;
+    (isGoogleUser && googleProvider?.photoURL) ||
+    user?.photoURL ||
+    null;
 
   // Custom styles for particle cards to match dashboard design
   const cardStyle = {
@@ -296,11 +298,12 @@ const ProfilePage = () => {
               <div className="w-full flex flex-col items-center">
                 <div className="relative group mb-6 mt-8">
                   <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-500/20 to-purple-600/20 dark:from-purple-500/30 dark:to-purple-600/30 border-2 border-purple-500/30 dark:border-purple-500/50 flex items-center justify-center overflow-hidden">
-                    {photoURL ? (
+                    {photoURL && !photoImgError ? (
                       <img
                         src={photoURL}
                         alt={displayName}
                         className="w-full h-full object-cover"
+                        onError={() => setPhotoImgError(true)}
                       />
                     ) : (
                       <User

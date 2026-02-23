@@ -40,6 +40,7 @@ const Navbar = () => {
   const userDropdownRef = useRef(null);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [photoError, setPhotoError] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -328,11 +329,18 @@ const Navbar = () => {
                     )}
                   </div>
                   <div className="h-9 w-9 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
-                    {pic ? (
+                    {pic && !photoError ? (
                       <img
                         src={pic}
                         alt="Profile"
                         className="h-full w-full rounded-full object-cover"
+                        onError={(e) => {
+                          console.error(
+                            "[Navbar] Profile img failed:",
+                            e.target.src,
+                          );
+                          setPhotoError(true);
+                        }}
                       />
                     ) : (
                       <User className="h-5 w-5" />
@@ -475,11 +483,12 @@ const Navbar = () => {
                   {/* User Profile Section (Mobile) */}
                   <div className="flex items-center space-x-4 p-4 rounded-xl bg-gray-50 dark:bg-[#0B0C15]/50 border border-gray-100 dark:border-gray-700">
                     <div className="h-12 w-12 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 flex-shrink-0">
-                      {pic ? (
+                      {pic && !photoError ? (
                         <img
                           src={pic}
                           alt="Profile"
                           className="h-full w-full rounded-full object-cover"
+                          onError={() => setPhotoError(true)}
                         />
                       ) : (
                         <User className="h-6 w-6" />

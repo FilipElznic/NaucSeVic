@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { cloudFunctionsService } from "../../services/cloudFunctions";
 import { subjectConfig } from "../../config/subjectConfig";
 import { useFirebaseAuth } from "../../contexts/FirebaseAuthContext";
+import { useUserProfile } from "../../hooks/useUserProfile";
 import {
   XAxis,
   YAxis,
@@ -629,6 +630,7 @@ const UserDashboardUI = ({
   const shouldDisableAnimations = disableAnimations || isMobile;
 
   const { user } = useFirebaseAuth();
+  const { pic } = useUserProfile();
   const navigate = useNavigate();
 
   const isGoogleUser = user?.providerData?.some(
@@ -637,7 +639,17 @@ const UserDashboardUI = ({
   const googleProvider = user?.providerData?.find(
     (p) => p?.providerId === "google.com",
   );
-  const photoURL = (isGoogleUser && googleProvider?.photoURL) || user?.photoURL;
+
+  // Logic to determine photoURL:
+  // 1. Prefer database photo (pic) if available
+  // 2. Fallback to Google photo if Google user
+  // 3. Fallback to Auth user photo
+  const googlePhoto = isGoogleUser && googleProvider?.photoURL;
+  const authPhoto = user?.photoURL;
+
+  // pic from useUserProfile already falls back to user.photoURL, so use it directly
+  const photoURL = pic || googlePhoto || authPhoto || null;
+  const [photoImgError, setPhotoImgError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [showAllCourses, setShowAllCourses] = useState(false);
@@ -846,11 +858,12 @@ const UserDashboardUI = ({
   // Active days for calendar – use full month progress so dates older than 7 days show up
   const monthProgress = data?.monthProgress || {};
   const activeDays = Object.entries(monthProgress)
-    .filter(([, dayData]) =>
-      dayData.loginTime ||
-      (dayData.xpGained || 0) > 0 ||
-      (dayData.coinsGained || 0) > 0 ||
-      (dayData.tasksFinished || 0) > 0
+    .filter(
+      ([, dayData]) =>
+        dayData.loginTime ||
+        (dayData.xpGained || 0) > 0 ||
+        (dayData.coinsGained || 0) > 0 ||
+        (dayData.tasksFinished || 0) > 0,
     )
     .map(([dateStr]) => new Date(dateStr).getDate());
 
@@ -1210,14 +1223,21 @@ const UserDashboardUI = ({
                 <div className="flex flex-col items-center gap-4 text-center">
                   <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-1">
                     <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
-                      {photoURL == 0 || photoURL == null ? (
-                        <User size={48} className="text-gray-400" />
-                      ) : (
+                      {photoURL && !photoImgError ? (
                         <img
                           src={photoURL}
                           alt={userStats.name}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            console.error(
+                              "[Dashboard] Profile img failed:",
+                              e.target.src,
+                            );
+                            setPhotoImgError(true);
+                          }}
                         />
+                      ) : (
+                        <User size={48} className="text-gray-400" />
                       )}
                     </div>
                   </div>
@@ -1286,11 +1306,12 @@ const UserDashboardUI = ({
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-fuchsia-600 p-0.5">
                     <div className="w-full h-full rounded-full bg-blue-50 dark:bg-[#0B0C15] flex items-center justify-center overflow-hidden">
-                      {photoURL ? (
+                      {photoURL && !photoImgError ? (
                         <img
                           src={photoURL}
                           alt={userStats.name}
                           className="w-full h-full object-cover"
+                          onError={() => setPhotoImgError(true)}
                         />
                       ) : (
                         <User size={24} className="text-gray-400" />

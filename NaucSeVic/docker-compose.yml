@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:80"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
     restart: unless-stopped
@@ -17,6 +19,8 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "5173:5173"
+    env_file:
+      - .env
     volumes:
       - .:/app
       - nauc-se-vic-node-modules:/app/node_modules
