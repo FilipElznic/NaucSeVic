@@ -1725,7 +1725,7 @@ const UserDashboardUI = ({
               onClick={() => setShowAllCourses(false)}
             >
               <div
-                className="bg-white dark:bg-[#0B0C15] w-full max-w-2xl rounded-2xl border border-white/10 p-6 shadow-2xl relative overflow-hidden flex flex-col max-h-[80vh] dark:text-white"
+                className="bg-white dark:bg-[#0B0C15]/50 w-full max-w-2xl rounded-2xl border border-white/10 p-6 shadow-2xl relative overflow-hidden flex flex-col max-h-[80vh] dark:text-white"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex justify-between items-center mb-6">
@@ -2164,7 +2164,11 @@ const UserDashboardUI = ({
                   <BentoItem
                     className={`min-h-[320px] relative overflow-hidden group transition-all duration-300 }`}
                   >
-                    {/* Decorative corner accents */}
+                    <img
+                      src="deltoid.webp"
+                      alt="Deltoid"
+                      className="w-full h-auto rounded-lg"
+                    />
                   </BentoItem>
 
                   {/* Statistics Info Section */}
@@ -2308,21 +2312,23 @@ const UserDashboardUI = ({
       {/* Shop Modal */}
       {showShop && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-in fade-in duration-200"
           onClick={() => setShowShop(false)}
         >
           <div
-            className="bg-white dark:bg-[#0B0C15] w-full max-w-md rounded-2xl border border-white/10 p-6 shadow-2xl relative dark:text-white"
-            onClick={(e) => e.stopPropagation()}
+            className="bg-white dark:bg-[#0B0C15]/50 w-full max-w-md rounded-2xl border border-purple-500/20 p-6 shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative dark:text-white"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold flex items-center gap-2">
+            <div className="flex justify-between items-center mb-6 ">
+              <h2 className="text-xl font-bold flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
                 <Zap className="text-amber-500" />
                 Obchod s boostery
               </h2>
               <button
                 onClick={() => setShowShop(false)}
-                className="p-2 hover:bg-white/5 rounded-full transition-colors"
+                className="p-2 hover:bg-white/5 rounded-full transition-colors text-gray-400 hover:text-white"
                 disabled={loadingAction}
               >
                 <X size={20} />
@@ -2331,37 +2337,41 @@ const UserDashboardUI = ({
 
             <div className="space-y-3">
               {shopItems.map((item) => (
-                <div
+                <button
                   key={item.id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5"
+                  disabled={loadingAction || userStats.coins < item.price}
+                  onClick={() => handleBuyBooster(item.id)}
+                  className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all ${
+                    userStats.coins >= item.price
+                      ? "bg-purple-900/10 hover:bg-purple-900/20 border-purple-500/20 hover:border-purple-500/40 cursor-pointer"
+                      : "bg-gray-800/20 border-white/5 opacity-50 cursor-not-allowed"
+                  }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${item.color}`}>
                       <item.icon size={20} />
                     </div>
-                    <div>
+                    <div className="text-left">
                       <h3 className="font-bold text-sm">{item.name}</h3>
                       <p className="text-xs opacity-60">{item.duration}</p>
                     </div>
                   </div>
-                  <button
-                    disabled={loadingAction || userStats.coins < item.price}
-                    onClick={() => handleBuyBooster(item.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                  <div
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${
                       userStats.coins >= item.price
-                        ? "bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-500/20"
-                        : "bg-gray-200 dark:bg-gray-800 text-gray-400 cursor-not-allowed"
+                        ? "bg-purple-500/20 text-purple-300"
+                        : "bg-gray-700/50 text-gray-400"
                     }`}
                   >
                     {item.price} <Star size={10} className="fill-current" />
-                  </button>
-                </div>
+                  </div>
+                </button>
               ))}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-500 dark:border-gray-800 flex justify-between items-center text-sm">
+            <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-sm">
               <span className="opacity-60">Vaše mince:</span>
-              <span className="font-bold flex items-center gap-1 text-amber-500">
+              <span className="font-bold flex items-center gap-1 text-amber-400">
                 {userStats.coins} <Star size={14} className="fill-current" />
               </span>
             </div>
@@ -2372,23 +2382,27 @@ const UserDashboardUI = ({
       {/* Use Booster Modal */}
       {selectedBooster && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-in fade-in duration-200"
           onClick={() => setSelectedBooster(null)}
         >
           <div
-            className="bg-white dark:bg-[#0B0C15] w-full max-w-sm rounded-2xl border border-white/10 p-6 shadow-2xl relative text-center dark:text-white"
-            onClick={(e) => e.stopPropagation()}
+            className="bg-white dark:bg-[#0B0C15]/50 w-full max-w-sm rounded-2xl border border-purple-500/20 p-6 shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative text-center dark:text-white"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center text-purple-500 border border-purple-500/30">
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 flex items-center justify-center text-purple-400 border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)]">
                 <Zap size={32} />
               </div>
             </div>
 
-            <h3 className="text-xl font-bold mb-2">Použít booster?</h3>
-            <p className="text-sm opacity-60 mb-6">
+            <h3 className="text-xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
+              Použít booster?
+            </h3>
+            <p className="text-sm opacity-60 mb-8 leading-relaxed">
               Chcete aktivovat{" "}
-              <strong>
+              <strong className="text-purple-300">
                 {shopItems.find((i) => i.id === selectedBooster)?.name ||
                   "Booster"}
               </strong>
@@ -2399,14 +2413,14 @@ const UserDashboardUI = ({
               <button
                 onClick={() => setSelectedBooster(null)}
                 disabled={loadingAction}
-                className="flex-1 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 font-semibold text-sm hover:opacity-80 transition-opacity"
+                className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10 border border-white/5 font-semibold text-sm transition-all"
               >
                 Zrušit
               </button>
               <button
                 onClick={handleUseBooster}
                 disabled={loadingAction}
-                className="flex-1 py-2.5 rounded-xl bg-purple-600 text-white font-semibold text-sm hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/20"
+                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-semibold text-sm transition-all shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40"
               >
                 {loadingAction ? "Aktivuji..." : "Aktivovat"}
               </button>

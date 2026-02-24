@@ -81,11 +81,6 @@ const TestPage = () => {
     try {
       const sanitized = sanitizeContent(courseContentDatabase);
 
-      // Remove matematika from upload to prevent overwriting
-      if (sanitized.matematika) {
-        delete sanitized.matematika;
-      }
-
       console.log("Content sanitized. Sending to database...");
       const seedDatabase = httpsCallable(functions, "seedDatabase");
       const response = await seedDatabase({ content: sanitized });

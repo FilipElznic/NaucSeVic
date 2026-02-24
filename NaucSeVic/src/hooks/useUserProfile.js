@@ -25,25 +25,6 @@ export const useUserProfile = () => {
         const profile = await userService.getUserProfile(user.uid);
 
         if (isMounted) {
-          // DEBUG: profile picture resolution
-          console.group("[useUserProfile] Photo debug");
-          console.log(
-            "DB profile.photoURL:",
-            profile?.profile?.photoURL ?? "(none)",
-          );
-          console.log("Auth user.photoURL:", user?.photoURL ?? "(none)");
-          console.log(
-            "Provider data:",
-            user?.providerData?.map((p) => ({
-              provider: p.providerId,
-              photoURL: p.photoURL,
-            })),
-          );
-          console.log(
-            "Resolved pic:",
-            profile?.profile?.photoURL || user?.photoURL || null,
-          );
-          console.groupEnd();
           setUserProfile(profile);
         }
       } catch (err) {
