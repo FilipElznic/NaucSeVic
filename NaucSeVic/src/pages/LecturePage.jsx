@@ -463,7 +463,7 @@ const LecturePage = () => {
                     </h2>
 
                     {currentLecture.content?.splineUrl && (
-                      <div className="w-full max-w-4xl mx-auto mb-8 h-[500px]">
+                      <div className="w-full max-w-4xl mx-auto mb-8 h-[500px] ">
                         <SplineViewer url={currentLecture.content.splineUrl} />
                       </div>
                     )}
@@ -496,7 +496,7 @@ const LecturePage = () => {
                                       <img
                                         src={section.image}
                                         alt={section.heading || "Obrázek lekce"}
-                                        className="w-full h-auto object-cover max-h-[500px]"
+                                        className="w-full h-auto object-contain max-h-[500px] bg-zinc-800"
                                         loading="lazy"
                                         onError={(e) => {
                                           e.target.style.display = "none";
