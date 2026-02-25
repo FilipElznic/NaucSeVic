@@ -175,8 +175,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 bg-transparent transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
+      className={`fixed top-0 left-0 w-full z-[2000] bg-transparent transition-transform duration-300 ${
+        isVisible || mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
