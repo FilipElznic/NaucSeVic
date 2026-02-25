@@ -63,14 +63,6 @@ const ContactPage = () => {
               <div className="w-14 h-14 rounded-2xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <Phone className="w-7 h-7 text-purple-600 dark:text-purple-400" />
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-gray-900 dark:text-white text-lg mb-1">
-                  Telefon
-                </p>
-                <p className="text-lg text-gray-600 dark:text-gray-400">
-                  +420 123 456 789
-                </p>
-              </div>
             </div>
           </div>
 

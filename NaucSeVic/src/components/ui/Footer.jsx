@@ -56,9 +56,9 @@ const Footer = () => {
               Kontakt
             </h4>
             <ul className="space-y-2 text-sm">
-              <li>info@naucsevic.cz</li>
-              <li>+420 123 456 789</li>
-              <li>Praha, Česká republika</li>
+              <li>elznicfilip@gmail.com</li>
+
+              <li>Ústí nad Labem, Česká republika</li>
             </ul>
           </div>
         </div>
