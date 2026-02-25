@@ -99,34 +99,6 @@ setGlobalOptions({
   enforceAppCheck: false, // Set to true when App Check is configured
 });
 
-// SECURED: Hello World function with validation
-exports.helloWorld = onCall(async (request) => {
-  try {
-    // Input validation
-    const { name } = request.data || {};
-    const sanitizedName = sanitizeString(name || "World");
-
-    // Rate limiting
-    const clientIP = (request.rawRequest && request.rawRequest.ip) || "unknown";
-    await checkRateLimit(clientIP, "helloWorld", 5, 60000); // 5 requests per minute
-
-    logger.info("Hello function called", {
-      name: sanitizedName,
-      ip: clientIP,
-      timestamp: new Date().toISOString(),
-    });
-
-    return {
-      message: `Hello ${sanitizedName} from Firebase Cloud Functions!`,
-      timestamp: new Date().toISOString(),
-      version: "1.0.0",
-    };
-  } catch (error) {
-    logger.error("Hello World function error", error);
-    throw new Error("Function execution failed");
-  }
-});
-
 // SECURED: API endpoint with proper validation
 exports.api = onRequest({ cors: true }, async (request, response) => {
   try {
