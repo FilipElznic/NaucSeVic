@@ -1,10 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 import { ArrowLeft, Users, Target, Award, Brain } from "lucide-react";
 
 const AboutPage = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-black py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEO
+        title="O Nás | NaucSeVic"
+        description="Jsme tým, který mění způsob výuky. Zjistěte více o naší misi zpřístupnit vzdělání všem."
+      />
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-20 space-y-4">

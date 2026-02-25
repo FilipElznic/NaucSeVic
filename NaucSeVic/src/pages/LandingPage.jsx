@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from "react";
+import SEO from "../components/SEO";
 import ModernHeroSection from "../components/ui/ModernHeroSection";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import FloatingOrbs from "../components/ui/FloatingOrbs";
@@ -14,6 +15,10 @@ const PricingSection = lazy(() => import("../components/ui/PricingSection"));
 function LandingPage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-white dark:bg-black">
+      <SEO
+        title="NaucSeVic - Zábavná Matematika a Fyzika"
+        description="Nejlepší online platforma pro výuku matematiky a fyziky. Interaktivní simulace, testy a kurzy pro studenty všech úrovní."
+      />
       <ModernHeroSection />
       <Suspense
         fallback={

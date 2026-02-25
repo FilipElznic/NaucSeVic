@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 import { ArrowLeft, Mail, MapPin, Phone } from "lucide-react";
 
 const ContactPage = () => {
@@ -13,6 +14,10 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEO
+        title="Kontakt | NaucSeVic"
+        description="Máte otázky? Kontaktujte nás. Jsme tu pro vás a rádi vám pomůžeme s čímkoli ohledně platformy NaucSeVic."
+      />
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-20 space-y-4">

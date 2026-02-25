@@ -23,6 +23,7 @@ import { gsap } from "gsap";
 import { useDarkMode } from "../../contexts/DarkModeContext";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import SEO from "../../components/SEO";
 
 const ModernRegister = () => {
   const [formData, setFormData] = useState({
@@ -236,6 +237,10 @@ const ModernRegister = () => {
 
   return (
     <div className="h-screen bg-white dark:bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEO
+        title="Registrace | NaucSeVic"
+        description="Zaregistrujte se zdarma a získejte přístup k interaktivním kurzům matematiky a fyziky."
+      />
       {/* Animated Waves - Bottom */}
       <div className="absolute bottom-0 left-0 w-full opacity-30 dark:opacity-10">
         <svg

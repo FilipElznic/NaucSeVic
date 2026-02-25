@@ -13,6 +13,7 @@ import { gsap } from "gsap";
 
 import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import SEO from "../../components/SEO";
 
 const ModernLogin = () => {
   const [email, setEmail] = useState("");
@@ -132,6 +133,10 @@ const ModernLogin = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEO
+        title="Přihlášení | NaucSeVic"
+        description="Přihlaste se do vašeho účtu a pokračujte ve výuce."
+      />
       {/* Animated Waves - Bottom */}
       <div className="absolute bottom-0 left-0 w-full opacity-30 dark:opacity-10">
         <svg

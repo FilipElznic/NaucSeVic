@@ -13,6 +13,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import CharacterAssistant from "../components/CharacterAssistant";
 import { useDarkMode } from "../contexts/DarkModeContext";
+import SEO from "../components/SEO";
 
 // --- MOCK DATA ---
 
@@ -466,6 +467,10 @@ function Demo() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors duration-300 p-4 md:p-8">
+      <SEO
+        title="Demo Verze | NaucSeVic"
+        description="Vyzkoušejte si zdarma ukázkovou lekci a zjistěte, jak funguje naše výuka."
+      />
       <div className="max-w-5xl mx-auto">
         {/* Course Header */}
         <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-500 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">

@@ -1,9 +1,14 @@
 import React from "react";
 import { FileText } from "lucide-react";
+import SEO from "../components/SEO";
 
 const TermsPage = () => {
   return (
     <div className="min-h-screen bg-purple-50 dark:bg-black py-12 px-4 sm:px-6 lg:px-8">
+      <SEO
+        title="Podmínky Použití | NaucSeVic"
+        description="Přečtěte si podmínky použití pro vzdělávací platformu NaucSeVic."
+      />
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">

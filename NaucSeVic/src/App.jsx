@@ -12,6 +12,8 @@ import {
   FirebaseAuthProvider,
   useFirebaseAuth,
 } from "./contexts/FirebaseAuthContext";
+// import { HelmetProvider } from "react-helmet-async";
+import SEO from "./components/SEO";
 import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./components/guards/ProtectedRoute";
 import AdminRoute from "./components/guards/AdminRoute";
@@ -45,8 +47,6 @@ const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const UniversalSubjectLayout = lazy(
   () => import("./components/layout/UniversalSubjectLayout"),
 );
-
-// Protected Route component is now imported from components
 
 // Public Route component (for auth pages)
 const PublicRoute = ({ children }) => {
@@ -372,12 +372,15 @@ import ThemedToastContainer from "./components/ui/ThemedToastContainer";
 
 function App() {
   return (
+    // <HelmetProvider>
     <DarkModeProvider>
       <FirebaseAuthProvider>
+        <SEO />
         <ThemedToastContainer />
         <AppRoutes />
       </FirebaseAuthProvider>
     </DarkModeProvider>
+    // </HelmetProvider>
   );
 }
 
