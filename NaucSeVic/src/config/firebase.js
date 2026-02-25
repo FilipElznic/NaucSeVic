@@ -31,9 +31,14 @@ export const functions = getFunctions(app, "europe-west1");
 // Initialize Cloud Storage and get a reference to the service
 export const storage = getStorage(app);
 
-// Connect to Functions emulator in development
-if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATOR === "true") {
+// Connect to Emulators in development
+if (import.meta.env.VITE_USE_EMULATOR === "true") {
+  // eslint-disable-next-line no-console
+  console.log("Using Firebase Emulators");
   connectFunctionsEmulator(functions, "localhost", 5001);
+  // connectFirestoreEmulator(db, 'localhost', 8080);
+  // connectAuthEmulator(auth, 'http://localhost:9099');
+  // connectStorageEmulator(storage, 'localhost', 9199);
 }
 
 export default app;

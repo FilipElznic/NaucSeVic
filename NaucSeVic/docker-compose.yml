@@ -26,8 +26,33 @@ services:
       - nauc-se-vic-node-modules:/app/node_modules
     environment:
       - NODE_ENV=development
+      - VITE_USE_EMULATOR=true
     restart: unless-stopped
     container_name: nauc-se-vic-dev
+    profiles:
+      - dev
+    depends_on:
+      - firebase-emulators
+
+  # Firebase Emulators Service
+  firebase-emulators:
+    build:
+      context: ../Functions
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000" # UI
+      - "5001:5001" # Functions
+      - "8080:8080" # Firestore
+      - "9199:9199" # Storage
+      # Add other ports if needed (9099 Auth, 9000 Database)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      - GCLOUD_PROJECT=naucsevic-local
+    container_name: firebase-emulators
     profiles:
       - dev
 
