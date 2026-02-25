@@ -421,7 +421,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="xl:hidden flex items-center space-x-2">
+          <div className="xl:hidden flex items-center space-x-2 ">
             {/* Dark Mode Toggle Mobile */}
             <button
               onClick={toggleDarkMode}
@@ -476,7 +476,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="xl:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-300 ease-in-out z-40 overflow-hidden">
+          <div className="xl:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-black backdrop-blur-md border-t border-gray-200 dark:border-gray-800 shadow-xl transition-all duration-300 ease-in-out z-40 overflow-hidden">
             <div className="px-4 py-6 space-y-4">
               {user ? (
                 <>

@@ -2023,8 +2023,8 @@ const UserDashboardUI = ({
                       <div className="space-y-3 mb-8">
                         {[
                           "Detailní XP historie",
-                          "Analýza výkonnosti",
-                          "Personalizované tipy",
+                          "Analýza denní aktivity",
+                          "Grafy a přehledy",
                         ].map((feature, i) => (
                           <div key={i} className="flex items-center gap-3">
                             <div
@@ -2165,9 +2165,9 @@ const UserDashboardUI = ({
                     className={`min-h-[320px] relative overflow-hidden group transition-all duration-300 }`}
                   >
                     <img
-                      src="deltoid.webp"
+                      src={isDarkMode ? "deltoid.webp" : "deltoidlight.webp"}
                       alt="Deltoid"
-                      className="w-full h-auto rounded-lg"
+                      className="w-full h-auto rounded-lg "
                     />
                   </BentoItem>
 
@@ -2343,8 +2343,8 @@ const UserDashboardUI = ({
                   onClick={() => handleBuyBooster(item.id)}
                   className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all ${
                     userStats.coins >= item.price
-                      ? "bg-purple-900/10 hover:bg-purple-900/20 border-purple-500/20 hover:border-purple-500/40 cursor-pointer"
-                      : "bg-gray-800/20 border-white/5 opacity-50 cursor-not-allowed"
+                      ? "bg-purple-900 hover:bg-purple-900/20 border-purple-500/20 hover:border-purple-500/40 cursor-pointer"
+                      : "bg-gray-800 border-white/5 opacity-100 cursor-not-allowed"
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -2353,7 +2353,7 @@ const UserDashboardUI = ({
                     </div>
                     <div className="text-left">
                       <h3 className="font-bold text-sm">{item.name}</h3>
-                      <p className="text-xs opacity-60">{item.duration}</p>
+                      <p className="text-xs opacity-80">{item.duration}</p>
                     </div>
                   </div>
                   <div
@@ -2370,7 +2370,7 @@ const UserDashboardUI = ({
             </div>
 
             <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-sm">
-              <span className="opacity-60">Vaše mince:</span>
+              <span className="opacity-100">Vaše mince:</span>
               <span className="font-bold flex items-center gap-1 text-amber-400">
                 {userStats.coins} <Star size={14} className="fill-current" />
               </span>

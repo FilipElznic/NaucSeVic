@@ -218,7 +218,6 @@ const AllTasks = () => {
 
         userCompletedTasks = await userService.getCompletedTasks(user.uid);
         setCompletedTaskIds(userCompletedTasks);
-        console.log("User completed tasks:", userCompletedTasks);
       }
 
       // Try to call getTasks cloud function
@@ -226,8 +225,6 @@ const AllTasks = () => {
         limit: 100,
         includeCompleted: true,
       });
-
-      console.log("Tasks loaded from API:", response);
 
       // Handle response format - adjust based on actual API response
       const tasksData = response.tasks || response.data || response || [];
@@ -256,7 +253,6 @@ const AllTasks = () => {
 
       if (formattedTasks.length > 0) {
         setTasks(formattedTasks);
-        console.log("Successfully loaded tasks from API");
       } else {
         console.log("No tasks returned from API, using sample data");
         setTasks(sampleTasks);

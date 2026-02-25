@@ -10,7 +10,6 @@ const GeometricBodyCard = ({ body }) => {
   const image_url =
     body.image || body.image_url || assets?.image || assets?.image_url;
   const [showModel, setShowModel] = useState(false);
-  console.log("Rendering GeometricBodyCard for:", body);
 
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-slate-600 dark:border-zinc-800 overflow-hidden flex flex-col xl:flex-row shadow-sm hover:shadow-xl transition-all duration-300 group/card">
