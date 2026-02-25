@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "firebase-functions-rate-limiter": "^3.9.1"
+  }
+}

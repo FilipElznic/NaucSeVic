@@ -125,7 +125,7 @@ docker-compose --profile dev up --build
 2. **Přístup ke službám:**
 
 - **Frontend**: [http://localhost:5173](http://localhost:5173)
-- **Firebase Emulator UI**: [http://localhost:4000](http://localhost:4000)
+- http://localhost:3000
 
 ## Instalace (Manuální)
 

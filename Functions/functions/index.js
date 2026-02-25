@@ -46,24 +46,50 @@ const isAdmin = async (uid) => {
   }
 };
 
-// Rate limiting helper (basic implementation)
-const rateLimitMap = new Map();
-const checkRateLimit = (userId, action, maxRequests = 10, windowMs = 60000) => {
-  const key = `${userId}-${action}`;
-  const now = Date.now();
-  const userRequests = rateLimitMap.get(key) || [];
+// Rate limiting helper using Firestore backend
+const {
+  FirebaseFunctionsRateLimiter,
+} = require("firebase-functions-rate-limiter");
 
-  // Clean old requests
-  const validRequests = userRequests.filter(
-    (timestamp) => now - timestamp < windowMs,
-  );
+// Store limiters in memory to reuse instances
+const limiters = new Map();
 
-  if (validRequests.length >= maxRequests) {
-    throw new Error("Rate limit exceeded. Please try again later.");
+const getLimiter = (action, maxRequests, windowMs) => {
+  const key = `${action}_${maxRequests}_${windowMs}`;
+  if (!limiters.has(key)) {
+    limiters.set(
+      key,
+      FirebaseFunctionsRateLimiter.withFirestoreBackend(
+        {
+          name: `rate_limits_${action}`, // Each action gets its own tracking collection
+          maxCalls: maxRequests,
+          periodSeconds: Math.ceil(windowMs / 1000),
+        },
+        admin.firestore(),
+      ),
+    );
   }
+  return limiters.get(key);
+};
 
-  validRequests.push(now);
-  rateLimitMap.set(key, validRequests);
+const checkRateLimit = async (
+  qualifier,
+  action,
+  maxRequests = 10,
+  windowMs = 60000,
+) => {
+  try {
+    const limiter = getLimiter(action, maxRequests, windowMs);
+    await limiter.rejectOnQuotaExceededOrRecordUsage(qualifier || "anonymous");
+  } catch (e) {
+    if (e.message.includes("quota exceeded")) {
+      throw new HttpsError(
+        "resource-exhausted",
+        "Rate limit exceeded. Please try again later.",
+      );
+    }
+    throw e;
+  }
 };
 
 // Security configuration with cost control
@@ -82,7 +108,7 @@ exports.helloWorld = onCall(async (request) => {
 
     // Rate limiting
     const clientIP = (request.rawRequest && request.rawRequest.ip) || "unknown";
-    checkRateLimit(clientIP, "helloWorld", 5, 60000); // 5 requests per minute
+    await checkRateLimit(clientIP, "helloWorld", 5, 60000); // 5 requests per minute
 
     logger.info("Hello function called", {
       name: sanitizedName,
@@ -176,7 +202,7 @@ exports.createUserProfile = onCall(async (request) => {
     const { name, surname } = request.data || {};
 
     // Rate limiting per user
-    checkRateLimit(request.auth.uid, "createProfile", 3, 300000); // 3 per 5min
+    await checkRateLimit(request.auth.uid, "createProfile", 3, 300000); // 3 per 5min
 
     // Check if profile already exists
     const existingProfile = await admin
@@ -260,7 +286,7 @@ exports.recordTaskAttempt = onCall(async (request) => {
       request.data || {};
 
     // Rate limiting per user
-    checkRateLimit(request.auth.uid, "recordTaskAttempt", 100, 60000); // 100 per minute
+    await checkRateLimit(request.auth.uid, "recordTaskAttempt", 100, 60000); // 100 per minute
 
     // Input validation
     validateInput({ taskId, isCorrect, userAnswer, type }, [
@@ -382,7 +408,7 @@ exports.createEducationalTask = onCall(async (request) => {
 
     // Rate limiting per user
     try {
-      checkRateLimit(request.auth.uid, "createTask", 5, 300000); // 5 per 5min
+      await checkRateLimit(request.auth.uid, "createTask", 5, 300000); // 5 per 5min
     } catch (e) {
       throw new HttpsError("resource-exhausted", e.message);
     }
@@ -526,7 +552,7 @@ exports.getTasks = onCall(async (request) => {
     const { difficulty, subject, limit = 10 } = request.data || {};
 
     // Rate limiting per user
-    checkRateLimit(request.auth.uid, "getTasks", 50, 60000); // 50 per minute
+    await checkRateLimit(request.auth.uid, "getTasks", 50, 60000); // 50 per minute
 
     let query = admin
       .firestore()
@@ -601,7 +627,7 @@ exports.submitTaskAnswer = onCall(async (request) => {
     });
 
     // Rate limiting per user
-    checkRateLimit(request.auth.uid, "submitTaskAnswer", 60, 60000); // 60 per minute
+    await checkRateLimit(request.auth.uid, "submitTaskAnswer", 60, 60000); // 60 per minute
 
     // Input validation
     validateInput({ taskId, userAnswer }, ["taskId", "userAnswer"]);
@@ -777,7 +803,7 @@ exports.activateBooster = onCall(async (request) => {
     const { boosterId } = request.data || {};
     const userId = request.auth.uid;
     validateInput({ boosterId }, ["boosterId"]);
-    checkRateLimit(userId, "activateBooster", 10, 60000);
+    await checkRateLimit(userId, "activateBooster", 10, 60000);
 
     const boostDefinitions = {
       xp_boost_1h: { durationHours: 1, type: "xp", multiplier: 2.0 },
@@ -855,7 +881,7 @@ exports.buyBooster = onCall(async (request) => {
     const { boosterId } = request.data || {};
     const userId = request.auth.uid;
     validateInput({ boosterId }, ["boosterId"]);
-    checkRateLimit(userId, "buyBooster", 10, 60000);
+    await checkRateLimit(userId, "buyBooster", 10, 60000);
 
     const shopItems = {
       xp_boost_1h: { price: 100, name: "XP Boost (1h)" },
@@ -976,7 +1002,7 @@ exports.initializeUserProfile = onCall(async (request) => {
     const { firstName, lastName } = request.data || {};
 
     // Rate limiting per user
-    checkRateLimit(userId, "initializeProfile", 3, 300000); // 3 per 5min
+    await checkRateLimit(userId, "initializeProfile", 3, 300000); // 3 per 5min
 
     logger.info("Initializing user profile", {
       userId,
@@ -1066,7 +1092,7 @@ exports.updateUserProfile = onCall(async (request) => {
     const { firstName, lastName, email } = request.data || {};
 
     // Rate limiting per user
-    checkRateLimit(userId, "updateProfile", 10, 60000); // 10 per minute
+    await checkRateLimit(userId, "updateProfile", 10, 60000); // 10 per minute
 
     logger.info("Updating user profile", {
       userId,
@@ -1210,7 +1236,7 @@ exports.deleteAccount = onCall(async (request) => {
     const userId = request.auth.uid;
 
     // Rate limiting
-    checkRateLimit(userId, "deleteAccount", 1, 3600000); // 1 per hour
+    await checkRateLimit(userId, "deleteAccount", 1, 3600000); // 1 per hour
 
     logger.info("Starting account deletion process", { userId });
 
@@ -1638,7 +1664,7 @@ exports.submitQuiz = onCall(async (request) => {
 
   // Rate limiting
   const clientIP = (request.rawRequest && request.rawRequest.ip) || "unknown";
-  checkRateLimit(request.auth.uid, "submitQuiz", 10, 60000); // 10 requests per minute per user
+  await checkRateLimit(request.auth.uid, "submitQuiz", 10, 60000); // 10 requests per minute per user
 
   const { lessonId, userAnswers } = request.data;
   const userId = request.auth.uid;
@@ -2006,7 +2032,7 @@ exports.completeLesson = onCall(async (request) => {
   const db = admin.firestore();
 
   // Rate limiting
-  checkRateLimit(userId, "completeLesson", 20, 60000);
+  await checkRateLimit(userId, "completeLesson", 20, 60000);
 
   try {
     const userRef = db.collection("users").doc(userId);
@@ -2192,6 +2218,10 @@ exports.getUserStatistics = onCall(async (request) => {
   }
 
   const userId = request.auth.uid;
+
+  // Rate limiting (20 requests per minute)
+  await checkRateLimit(userId, "getUserStatistics", 20, 60000);
+
   const db = admin.firestore();
 
   try {
