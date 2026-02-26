@@ -53,23 +53,25 @@ const TestimonialSection = () => {
 
   const testimonials = [
     {
-      name: "",
-      role: "",
-      content: "",
+      name: "Vojtas",
+      role: "Student",
+      content:
+        "Stránka vypadá vzhledově velice dobře, nadchnul mě celkový design a možnost přepínat mezi světlým a tmavým režimem.",
       gradient:
         "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
     {
-      name: "",
-      role: "",
-      content: "",
+      name: "Jakub",
+      role: "Student",
+      content:
+        "Velice mě baví možnost použítí fyzických simulací a přehlednost předmětů.",
       gradient:
         "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
     {
-      name: "",
-      role: "",
-      content: "",
+      name: "Nela",
+      role: "Studenta",
+      content: "Naučila jsem se nové věci a navíc se mi líbí, že je to design",
       gradient:
         "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },

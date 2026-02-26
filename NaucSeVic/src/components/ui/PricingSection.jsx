@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
+import { Link } from "react-router-dom";
 import FloatingOrbs from "./FloatingOrbs";
 
 const PricingSection = () => {
@@ -101,15 +102,20 @@ const PricingSection = () => {
             </div>
 
             {/* CTA Button */}
-            <div className="text-center pt-8 border-t border-gray-500 dark:border-gray-800">
-              <button className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 text-white font-medium hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                Začít učit zdarma
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </button>
-              <p className="mt-4 text-sm text-gray-500 dark:text-gray-500">
-                Registrace trvá méně než minutu
-              </p>
-            </div>
+            <Link
+              to="/registrace"
+              className="text-center pt-8 border-t border-gray-500 dark:border-gray-800"
+            >
+              <div className="text-center pt-8 border-t border-gray-500 dark:border-gray-800">
+                <button className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600 text-white font-medium hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                  Začít učit
+                  <ArrowRight className="ml-3 h-5 w-5" />
+                </button>
+              </div>
+            </Link>
+            <p className="mt-4 text-sm text-gray-500 dark:text-gray-500">
+              Registrace trvá méně než minutu
+            </p>
           </div>
         </div>
 

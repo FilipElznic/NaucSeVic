@@ -269,7 +269,7 @@ const LocalQuiz = ({ quizData, onComplete, onReset }) => {
   if (showResult) {
     const passed = score / quizData.length >= 0.5;
     return (
-      <div className="bg-white  dark:bg-zinc-800 rounded-2xl p-8 text-center border border-gray-500 dark:border-zinc-700 shadow-xl max-w-xl mx-auto  animate-in zoom-in-50">
+      <div className="bg-white  dark:bg-zinc-800 rounded-2xl p-8 text-center border border-gray-500 dark:border-zinc-700 shadow-xl max-w-xl mx-auto  animate-in zoom-in-50 ">
         <div
           className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${passed ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400" : "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"}`}
         >
@@ -292,7 +292,7 @@ const LocalQuiz = ({ quizData, onComplete, onReset }) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto ">
       {/* Progress */}
       <div className="flex items-center gap-4 mb-6">
         <div className="flex-1 h-2 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
@@ -473,10 +473,10 @@ function Demo() {
       />
       <div className="max-w-5xl mx-auto">
         {/* Course Header */}
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-500 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">
+        <div className="bg-white mt-20 dark:bg-zinc-900 rounded-3xl p-8 border border-gray-500 dark:border-zinc-800 shadow-xl mb-10 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
-          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
+          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center ">
             <div className="w-24 h-24 rounded-2xl bg-purple-500/10 text-purple-600 flex items-center justify-center shadow-lg shrink-0">
               <BookOpen size={48} />
             </div>

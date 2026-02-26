@@ -1,38 +1,38 @@
 import React from "react";
 import {
   TrendingUp,
-  Users,
+  Box,
   BookOpen,
   Trophy,
   Target,
-  Clock,
+  CircleHelp,
 } from "lucide-react";
 import FloatingOrbs from "./FloatingOrbs";
 
 const StatsSection = () => {
   const stats = [
     {
-      icon: Users,
-      number: "0+",
-      label: "Aktivních studentů",
-      description: "Každý měsíc",
+      icon: Box,
+      number: "20+",
+      label: "Geometrichých těles",
+
       color:
         "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
     {
       icon: BookOpen,
-      number: "0+",
-      label: "Kurzů a lekcí",
-      description: "Ve všech oblastech",
+      number: "308+",
+      label: "Lekcí",
+
       color:
         "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },
 
     {
-      icon: Clock,
-      number: "0",
-      label: "hodin obsahu",
-      description: "Připraveno k učení",
+      icon: CircleHelp,
+      number: "1500+",
+      label: "otázek",
+
       color:
         "from-indigo-600 via-purple-600 to-indigo-800 dark:from-indigo-400 dark:via-purple-400 dark:to-indigo-600",
     },

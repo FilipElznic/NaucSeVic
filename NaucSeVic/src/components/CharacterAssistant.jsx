@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 function CharacterAssistant({
@@ -66,6 +67,9 @@ function CharacterAssistant({
 
   if (!isVisible) return null;
 
+  // Ensure the portal target exists (SSR safety)
+  const portalTarget = typeof document !== "undefined" ? document.body : null;
+
   const labels = {
     cs: { hide: "Skrýt", previous: "Předchozí", next: "Další" },
     en: { hide: "Hide", previous: "Previous", next: "Next" },
@@ -73,24 +77,28 @@ function CharacterAssistant({
 
   const currentLabels = labels[language] || labels.cs;
 
-  // Position mapping
+  // Position mapping — each entry has explicit non-conflicting classes per breakpoint.
+  // Mobile (unprefixed): full-width bar pinned to bottom.
+  // Desktop (md:): specific corner, auto-width. md: breakpoint classes always win over
+  // unprefixed ones in Tailwind's generated CSS, so no conflict-free resets are needed
+  // as long as we never have two md:-prefixed utilities for the same property.
   const getPositionClasses = (position) => {
-    // Base classes for mobile (bottom fixed) -> Desktop overrides
-    const baseClasses =
-      "bottom-4 left-4 right-4 md:w-auto md:right-auto md:left-auto md:bottom-auto";
-
     const positionMap = {
-      "top-left": `${baseClasses} md:top-8 md:left-8`,
-      "top-right": `${baseClasses} md:top-8 md:right-8`,
-      "bottom-left": `${baseClasses} md:bottom-8 md:left-8`,
-      "bottom-right": `${baseClasses} md:bottom-8 md:right-8`,
+      "top-left":
+        "bottom-4 left-4 right-4 md:w-auto md:bottom-auto md:right-auto md:top-8 md:left-8",
+      "top-right":
+        "bottom-4 left-4 right-4 md:w-auto md:bottom-auto md:left-auto md:top-8 md:right-8",
+      "bottom-left":
+        "bottom-4 left-4 right-4 md:w-auto md:right-auto md:bottom-8 md:left-8",
+      "bottom-right":
+        "bottom-4 left-4 right-4 md:w-auto md:left-auto md:bottom-8 md:right-8",
       center:
         "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-auto",
     };
     return positionMap[position] || positionMap["bottom-right"];
   };
 
-  return (
+  const content = (
     <AnimatePresence>
       {/* Blur Background */}
       {enableBlur && (
@@ -99,7 +107,7 @@ function CharacterAssistant({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9999]"
           onClick={handleHide}
         />
       )}
@@ -110,7 +118,7 @@ function CharacterAssistant({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.4 }}
-        className={`fixed ${getPositionClasses(currentPosition)} z-50 md:max-w-md`}
+        className={`fixed ${getPositionClasses(currentPosition)} z-[10000] md:max-w-md`}
         role="complementary"
         aria-label={language === "cs" ? "Asistent" : "Assistant"}
       >
@@ -254,6 +262,8 @@ function CharacterAssistant({
       </motion.div>
     </AnimatePresence>
   );
+
+  return portalTarget ? createPortal(content, portalTarget) : content;
 }
 
 export default CharacterAssistant;

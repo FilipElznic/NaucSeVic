@@ -1,6 +1,9 @@
 import React, { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import GravitySimulation from "../simulations/GravitySimulation";
+import LightSimulation from "../simulations/LightSimulation";
+import PendulumSimulation from "../simulations/PendulumSimulation";
+import PhysicsLab from "../simulations/PhysicsLab";
 
 const SimulationsPage = () => {
   return (
@@ -35,6 +38,9 @@ const SimulationsPage = () => {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <GravitySimulation />
+              <LightSimulation />
+              <PendulumSimulation />
+              <PhysicsLab />
             </div>
           </Suspense>
         </div>
