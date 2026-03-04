@@ -1,5 +1,17 @@
 import React, { useState } from "react";
-import { Plus, Save, X, AlertCircle, CheckCircle, Shield } from "lucide-react";
+import {
+  Plus,
+  Save,
+  X,
+  AlertCircle,
+  CheckCircle,
+  Shield,
+  Upload,
+  ChevronDown,
+  ChevronUp,
+  FileJson,
+  Loader2,
+} from "lucide-react";
 import { cloudFunctionsService } from "../services/cloudFunctions";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import { useAdminCheck } from "../hooks/useAdminCheck";
@@ -10,6 +22,15 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
   const { user } = useFirebaseAuth();
   const { isAdmin, loading: adminLoading } = useAdminCheck();
   const [loading, setLoading] = useState(false);
+
+  // Bulk import state
+  const [bulkJson, setBulkJson] = useState("");
+  const [bulkLoading, setBulkLoading] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState(null); // { done, total, results }
+  const [bulkJsonError, setBulkJsonError] = useState(null);
+  const [showExamples, setShowExamples] = useState(false);
+  const [activeExample, setActiveExample] = useState("multipleChoice");
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -57,18 +78,7 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
     },
   ];
 
-  const subjects = [
-    "Matematika",
-    "Čeština",
-    "Angličtina",
-    "Fyzika",
-    "Chemie",
-    "Biologie",
-    "Dějepis",
-    "Zeměpis",
-    "Informatika",
-    "Ostatní",
-  ];
+  const subjects = ["Matematika", "Geometrie", "Fyzika", "Ostatní"];
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -346,6 +356,211 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const VALID_SUBJECTS = ["Matematika", "Geometrie", "Fyzika", "Ostatní"];
+  const VALID_DIFFICULTIES = ["zakladni_1", "zakladni_2", "stredni", "vysoka"];
+  const VALID_TYPES = ["multipleChoice", "written", "multiAnswer"];
+
+  const BULK_EXAMPLES = {
+    multipleChoice: [
+      {
+        name: "Kolik je 7 × 8?",
+        description: "Vypočítejte součin čísel 7 a 8.",
+        type: "multipleChoice",
+        difficulty: "zakladni_1",
+        subject: "Matematika",
+        xp: 10,
+        explanation: "7 × 8 = 56. Jde o základní násobilku.",
+        hints: ["Zkus použít násobilku sedmičky."],
+        correctAnswer: "56",
+        options: ["48", "54", "56", "64"],
+      },
+    ],
+    written: [
+      {
+        name: "Hlavní město České republiky",
+        description: "Napište název hlavního města České republiky.",
+        type: "written",
+        difficulty: "zakladni_1",
+        subject: "Zeměpis",
+        xp: 5,
+        explanation: "Hlavním městem České republiky je Praha.",
+        hints: ["Leží na řece Vltavě."],
+        correctAnswer: "Praha",
+      },
+    ],
+    multiAnswer: [
+      {
+        name: "Která čísla jsou prvočísla?",
+        description: "Vyberte všechna prvočísla ze seznamu.",
+        type: "multiAnswer",
+        difficulty: "zakladni_2",
+        subject: "Matematika",
+        xp: 15,
+        explanation: "Prvočísla jsou 2, 3 a 7. Čísla 4 a 9 jsou složená.",
+        hints: ["Prvočíslo je dělitelné pouze 1 a sebou samým."],
+        correctAnswers: ["2", "3", "7"],
+        options: ["2", "3", "4", "7", "9"],
+      },
+    ],
+  };
+
+  const validateBulkTask = (task) => {
+    const errors = [];
+    if (!task.name?.trim()) errors.push("name je povinný");
+    if (!task.description?.trim()) errors.push("description je povinný");
+    if (!task.explanation?.trim()) errors.push("explanation je povinný");
+    if (!task.subject?.trim()) errors.push("subject je povinný");
+    else if (!VALID_SUBJECTS.includes(task.subject.trim()))
+      errors.push(`subject musí být jeden z: ${VALID_SUBJECTS.join(", ")}`);
+    if (!task.type) errors.push("type je povinný");
+    else if (!VALID_TYPES.includes(task.type))
+      errors.push(`type musí být: ${VALID_TYPES.join(", ")}`);
+    if (task.difficulty && !VALID_DIFFICULTIES.includes(task.difficulty))
+      errors.push(`difficulty musí být: ${VALID_DIFFICULTIES.join(", ")}`);
+
+    if (task.type === "multipleChoice") {
+      if (!task.correctAnswer?.trim()) errors.push("correctAnswer je povinný");
+      if (
+        !Array.isArray(task.options) ||
+        task.options.filter((o) => o?.trim()).length < 2
+      )
+        errors.push("options musí obsahovat alespoň 2 možnosti");
+      else {
+        const validOpts = task.options.map((o) => o.trim().toLowerCase());
+        if (!validOpts.includes(task.correctAnswer?.trim().toLowerCase()))
+          errors.push("correctAnswer musí být jednou z options");
+      }
+    } else if (task.type === "written") {
+      if (!task.correctAnswer?.trim()) errors.push("correctAnswer je povinný");
+    } else if (task.type === "multiAnswer") {
+      if (
+        !Array.isArray(task.correctAnswers) ||
+        task.correctAnswers.filter((a) => a?.trim()).length < 1
+      )
+        errors.push("correctAnswers musí obsahovat alespoň 1 odpověď");
+      if (
+        !Array.isArray(task.options) ||
+        task.options.filter((o) => o?.trim()).length < 2
+      )
+        errors.push("options musí obsahovat alespoň 2 možnosti");
+      else if (Array.isArray(task.correctAnswers)) {
+        const validOpts = task.options.map((o) => o.trim().toLowerCase());
+        const missing = task.correctAnswers.filter(
+          (ans) => !validOpts.includes(ans?.trim().toLowerCase()),
+        );
+        if (missing.length > 0)
+          errors.push(
+            `Tyto correctAnswers nejsou v options: ${missing.join(", ")}`,
+          );
+      }
+    }
+    return errors;
+  };
+
+  const buildBulkTaskData = (task) => {
+    const base = {
+      name: task.name.trim(),
+      description: task.description.trim(),
+      type: task.type,
+      difficulty: task.difficulty || "zakladni_1",
+      subject: task.subject.trim(),
+      xp: parseInt(task.xp) || 10,
+      explanation: task.explanation.trim(),
+      hints: Array.isArray(task.hints)
+        ? task.hints.filter((h) => h?.trim()).map((h) => h.trim())
+        : [],
+    };
+    if (task.type === "multipleChoice") {
+      base.correctAnswer = task.correctAnswer.trim();
+      base.options = task.options.filter((o) => o?.trim()).map((o) => o.trim());
+    } else if (task.type === "written") {
+      base.correctAnswer = task.correctAnswer.trim();
+    } else if (task.type === "multiAnswer") {
+      base.correctAnswers = task.correctAnswers
+        .filter((a) => a?.trim())
+        .map((a) => a.trim());
+      base.options = task.options.filter((o) => o?.trim()).map((o) => o.trim());
+    }
+    return base;
+  };
+
+  const handleBulkSubmit = async () => {
+    if (!user) {
+      toast.error("Musíte být přihlášeni");
+      return;
+    }
+    setBulkJsonError(null);
+    setBulkProgress(null);
+
+    let tasks;
+    try {
+      const parsed = JSON.parse(bulkJson);
+      tasks = Array.isArray(parsed) ? parsed : [parsed];
+    } catch {
+      setBulkJsonError("Neplatný JSON formát. Zkontrolujte syntaxi.");
+      return;
+    }
+
+    if (tasks.length === 0) {
+      setBulkJsonError("JSON neobsahuje žádné úlohy.");
+      return;
+    }
+    if (tasks.length > 100) {
+      setBulkJsonError("Maximálně 100 úloh najednou.");
+      return;
+    }
+
+    // Validate all first
+    const validationErrors = [];
+    tasks.forEach((task, i) => {
+      const errs = validateBulkTask(task);
+      if (errs.length > 0)
+        validationErrors.push({
+          index: i,
+          name: task.name || `Úloha ${i + 1}`,
+          errors: errs,
+        });
+    });
+    if (validationErrors.length > 0) {
+      setBulkJsonError(validationErrors);
+      return;
+    }
+
+    setBulkLoading(true);
+    const results = [];
+    setBulkProgress({ done: 0, total: tasks.length, results: [] });
+
+    for (let i = 0; i < tasks.length; i++) {
+      const taskData = buildBulkTaskData(tasks[i]);
+      try {
+        await cloudFunctionsService.createEducationalTask(taskData);
+        results.push({ index: i, name: taskData.name, success: true });
+      } catch (err) {
+        results.push({
+          index: i,
+          name: taskData.name,
+          success: false,
+          error: err.message,
+        });
+      }
+      setBulkProgress({
+        done: i + 1,
+        total: tasks.length,
+        results: [...results],
+      });
+    }
+
+    setBulkLoading(false);
+    const successCount = results.filter((r) => r.success).length;
+    const failCount = results.filter((r) => !r.success).length;
+    if (successCount > 0)
+      toast.success(`${successCount} úloh bylo úspěšně vytvořeno!`);
+    if (failCount > 0) toast.error(`${failCount} úloh se nepodařilo vytvořit.`);
+    if (onTaskCreated && successCount > 0)
+      onTaskCreated(results.filter((r) => r.success));
+    if (failCount === 0) setBulkJson("");
   };
 
   return (
@@ -769,6 +984,255 @@ const TaskCreator = ({ onTaskCreated, onClose }) => {
               </button>
             </div>
           </form>
+        </div>
+      </div>
+
+      {/* ── Bulk JSON Import ── */}
+      <div className="max-w-4xl mx-auto mt-6">
+        <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg border border-gray-500 dark:border-zinc-700 p-6">
+          <div className="flex items-center mb-4">
+            <div className="flex items-center justify-center w-10 h-10 bg-violet-600 rounded-lg mr-3">
+              <FileJson className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Hromadný import úloh (JSON)
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-zinc-400">
+                Vložte JSON pole s úlohami — až 100 najednou
+              </p>
+            </div>
+          </div>
+
+          {/* Example toggle */}
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={() => setShowExamples((v) => !v)}
+              className="flex items-center gap-2 text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline"
+            >
+              {showExamples ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
+              {showExamples
+                ? "Skrýt příklady JSON"
+                : "Zobrazit příklady JSON pro každý typ"}
+            </button>
+
+            {showExamples && (
+              <div className="mt-3 border border-gray-200 dark:border-zinc-600 rounded-lg overflow-hidden">
+                <div className="flex border-b border-gray-200 dark:border-zinc-600 bg-gray-50 dark:bg-zinc-700">
+                  {["multipleChoice", "written", "multiAnswer"].map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setActiveExample(t)}
+                      className={`px-4 py-2 text-sm font-medium transition-colors ${
+                        activeExample === t
+                          ? "bg-violet-600 text-white"
+                          : "text-gray-600 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-600"
+                      }`}
+                    >
+                      {t === "multipleChoice"
+                        ? "📝 Výběr z možností"
+                        : t === "written"
+                          ? "✍️ Psaná odpověď"
+                          : "✅ Více odpovědí"}
+                    </button>
+                  ))}
+                </div>
+                <div className="relative">
+                  <pre className="p-4 text-xs bg-gray-900 text-green-400 overflow-auto max-h-64 font-mono leading-relaxed">
+                    {JSON.stringify(BULK_EXAMPLES[activeExample], null, 2)}
+                  </pre>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const example = JSON.stringify(
+                        BULK_EXAMPLES[activeExample],
+                        null,
+                        2,
+                      );
+                      setBulkJson((prev) => {
+                        if (!prev.trim()) return example;
+                        try {
+                          const existing = JSON.parse(prev);
+                          const arr = Array.isArray(existing)
+                            ? existing
+                            : [existing];
+                          return JSON.stringify(
+                            [...arr, ...BULK_EXAMPLES[activeExample]],
+                            null,
+                            2,
+                          );
+                        } catch {
+                          return example;
+                        }
+                      });
+                      setBulkJsonError(null);
+                      setBulkProgress(null);
+                    }}
+                    className="absolute top-2 right-2 px-2 py-1 bg-violet-600 text-white text-xs rounded hover:bg-violet-700 transition-colors"
+                  >
+                    + Vložit do editoru
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* JSON textarea */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+              JSON pole úloh
+            </label>
+            <textarea
+              value={bulkJson}
+              onChange={(e) => {
+                setBulkJson(e.target.value);
+                setBulkJsonError(null);
+                setBulkProgress(null);
+              }}
+              rows={12}
+              spellCheck={false}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg font-mono text-xs focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 dark:bg-zinc-900 dark:text-green-300 bg-gray-900 text-green-400"
+              placeholder={`[\n  {\n    "name": "Název úlohy",\n    "type": "multipleChoice",\n    ...\n  }\n]`}
+            />
+          </div>
+
+          {/* Validation errors */}
+          {bulkJsonError && typeof bulkJsonError === "string" && (
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-red-700 dark:text-red-300">
+                {bulkJsonError}
+              </p>
+            </div>
+          )}
+          {bulkJsonError && Array.isArray(bulkJsonError) && (
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                <p className="text-sm font-medium text-red-700 dark:text-red-300">
+                  Nalezeny chyby v {bulkJsonError.length} úloh(ách):
+                </p>
+              </div>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {bulkJsonError.map((e) => (
+                  <div
+                    key={e.index}
+                    className="text-xs text-red-600 dark:text-red-400 border-l-2 border-red-400 pl-2"
+                  >
+                    <span className="font-semibold">
+                      #{e.index + 1} {e.name}:
+                    </span>{" "}
+                    {e.errors.join(" · ")}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Progress */}
+          {bulkProgress && (
+            <div className="mb-4 p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg border border-gray-200 dark:border-zinc-600">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-zinc-300">
+                  {bulkLoading ? "Nahrávám..." : "Dokončeno"} —{" "}
+                  {bulkProgress.done} / {bulkProgress.total}
+                </span>
+                <span className="text-sm text-gray-500 dark:text-zinc-400">
+                  ✅ {bulkProgress.results.filter((r) => r.success).length}{" "}
+                  {bulkProgress.results.filter((r) => !r.success).length >
+                    0 && (
+                    <span className="text-red-500">
+                      · ❌{" "}
+                      {bulkProgress.results.filter((r) => !r.success).length}
+                    </span>
+                  )}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 dark:bg-zinc-600 rounded-full h-2 mb-3">
+                <div
+                  className="bg-violet-600 h-2 rounded-full transition-all duration-300"
+                  style={{
+                    width: `${(bulkProgress.done / bulkProgress.total) * 100}%`,
+                  }}
+                />
+              </div>
+              <div className="max-h-48 overflow-y-auto space-y-1">
+                {bulkProgress.results.map((r) => (
+                  <div
+                    key={r.index}
+                    className={`flex items-center gap-2 text-xs ${r.success ? "text-green-600 dark:text-green-400" : "text-red-500 dark:text-red-400"}`}
+                  >
+                    {r.success ? (
+                      <CheckCircle className="w-3 h-3 flex-shrink-0" />
+                    ) : (
+                      <AlertCircle className="w-3 h-3 flex-shrink-0" />
+                    )}
+                    <span>
+                      #{r.index + 1} {r.name}
+                    </span>
+                    {!r.success && (
+                      <span className="text-red-400">— {r.error}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Submit bulk */}
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-gray-400 dark:text-zinc-500">
+              Podporované typy:{" "}
+              <code className="bg-gray-100 dark:bg-zinc-700 px-1 rounded">
+                multipleChoice
+              </code>{" "}
+              <code className="bg-gray-100 dark:bg-zinc-700 px-1 rounded">
+                written
+              </code>{" "}
+              <code className="bg-gray-100 dark:bg-zinc-700 px-1 rounded">
+                multiAnswer
+              </code>
+            </p>
+            <div className="flex gap-2">
+              {bulkJson.trim() && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBulkJson("");
+                    setBulkJsonError(null);
+                    setBulkProgress(null);
+                  }}
+                  className="px-4 py-2 text-sm text-gray-500 dark:text-zinc-400 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
+                >
+                  Vymazat
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleBulkSubmit}
+                disabled={bulkLoading || !bulkJson.trim()}
+                className="px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium transition-colors"
+              >
+                {bulkLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Nahrávám...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4" />
+                    Importovat úlohy
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

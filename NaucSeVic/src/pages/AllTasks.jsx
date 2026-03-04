@@ -19,6 +19,8 @@ import {
   Send,
   X,
   Lightbulb,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { cloudFunctionsService } from "../services/cloudFunctions";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
@@ -43,6 +45,9 @@ const AllTasks = () => {
   const [showHints, setShowHints] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [activeBoost, setActiveBoost] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const TASKS_PER_PAGE = 12;
 
   const subjects = [
     { value: "all", label: "Všechny předměty" },
@@ -413,6 +418,11 @@ const AllTasks = () => {
     return typeData ? typeData.icon : "📋";
   };
 
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedSubject, selectedDifficulty, selectedType, sortBy]);
+
   // Filter and sort tasks
   const filteredTasks = tasks
     .filter((task) => {
@@ -445,8 +455,14 @@ const AllTasks = () => {
       }
     });
 
+  const totalPages = Math.ceil(filteredTasks.length / TASKS_PER_PAGE);
+  const paginatedTasks = filteredTasks.slice(
+    (currentPage - 1) * TASKS_PER_PAGE,
+    currentPage * TASKS_PER_PAGE,
+  );
+
   return (
-    <div className="min-h-screen h-[200vh] pt-[100px] bg-white dark:bg-zinc-950 py-8">
+    <div className="min-h-screen pt-[100px] bg-white dark:bg-zinc-950 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -554,7 +570,7 @@ const AllTasks = () => {
         ) : (
           <>
             {/* Results count */}
-            <div className="mb-6">
+            <div className="mb-6 flex items-center justify-between">
               <p className="text-gray-600 dark:text-zinc-400">
                 Nalezeno{" "}
                 <span className="font-semibold text-indigo-600 dark:text-indigo-400">
@@ -562,10 +578,15 @@ const AllTasks = () => {
                 </span>{" "}
                 úkolů
               </p>
+              {totalPages > 1 && (
+                <p className="text-sm text-gray-500 dark:text-zinc-500">
+                  Stránka {currentPage} z {totalPages}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTasks.map((task) => {
+              {paginatedTasks.map((task) => {
                 const diffStyle = getDifficultyStyle(task.difficulty);
 
                 return (
@@ -648,6 +669,73 @@ const AllTasks = () => {
                 );
               })}
             </div>
+
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center space-x-2 mt-10">
+                <button
+                  onClick={() => {
+                    setCurrentPage((p) => Math.max(1, p - 1));
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-indigo-50 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter(
+                    (page) =>
+                      page === 1 ||
+                      page === totalPages ||
+                      Math.abs(page - currentPage) <= 2,
+                  )
+                  .reduce((acc, page, idx, arr) => {
+                    if (idx > 0 && page - arr[idx - 1] > 1) {
+                      acc.push("...");
+                    }
+                    acc.push(page);
+                    return acc;
+                  }, [])
+                  .map((item, idx) =>
+                    item === "..." ? (
+                      <span
+                        key={`ellipsis-${idx}`}
+                        className="px-2 text-gray-400 dark:text-zinc-500"
+                      >
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={item}
+                        onClick={() => {
+                          setCurrentPage(item);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                        className={`w-10 h-10 rounded-xl border text-sm font-medium transition-all ${
+                          currentPage === item
+                            ? "bg-indigo-600 border-indigo-600 text-white shadow-lg"
+                            : "border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-indigo-50 dark:hover:bg-zinc-700"
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    ),
+                  )}
+
+                <button
+                  onClick={() => {
+                    setCurrentPage((p) => Math.min(totalPages, p + 1));
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-xl border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-gray-700 dark:text-zinc-300 hover:bg-indigo-50 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            )}
 
             {/* Empty state */}
             {filteredTasks.length === 0 && (

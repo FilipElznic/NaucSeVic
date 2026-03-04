@@ -61,7 +61,7 @@ const getLimiter = (action, maxRequests, windowMs) => {
       key,
       FirebaseFunctionsRateLimiter.withFirestoreBackend(
         {
-          name: `rate_limits_${action}`, // Each action gets its own tracking collection
+          name: `rate_limits_${action}_${maxRequests}`, // Each action+limit gets its own tracking collection
           maxCalls: maxRequests,
           periodSeconds: Math.ceil(windowMs / 1000),
         },
@@ -380,7 +380,7 @@ exports.createEducationalTask = onCall(async (request) => {
 
     // Rate limiting per user
     try {
-      await checkRateLimit(request.auth.uid, "createTask", 5, 300000); // 5 per 5min
+      await checkRateLimit(request.auth.uid, "createTask", 500, 300000); // 500 per 5min
     } catch (e) {
       throw new HttpsError("resource-exhausted", e.message);
     }
