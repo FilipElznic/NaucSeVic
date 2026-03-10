@@ -15,6 +15,69 @@ import CharacterAssistant from "../components/CharacterAssistant";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import SEO from "../components/SEO";
 
+// Simple HTML sanitizer: only allow safe tags for lesson content
+const sanitizeHtml = (html) => {
+  if (typeof html !== "string") return "";
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const allowedTags = new Set([
+    "P",
+    "BR",
+    "B",
+    "I",
+    "EM",
+    "STRONG",
+    "U",
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "UL",
+    "OL",
+    "LI",
+    "BLOCKQUOTE",
+    "CODE",
+    "PRE",
+    "SPAN",
+    "DIV",
+    "A",
+    "SUB",
+    "SUP",
+    "TABLE",
+    "THEAD",
+    "TBODY",
+    "TR",
+    "TH",
+    "TD",
+    "HR",
+    "IMG",
+  ]);
+  const clean = (node) => {
+    [...node.childNodes].forEach((child) => {
+      if (child.nodeType === 1) {
+        if (!allowedTags.has(child.tagName)) {
+          child.remove();
+          return;
+        }
+        // Remove event handler attributes and javascript: hrefs
+        [...child.attributes].forEach((attr) => {
+          if (
+            attr.name.startsWith("on") ||
+            (attr.name === "href" &&
+              attr.value.trim().toLowerCase().startsWith("javascript:"))
+          ) {
+            child.removeAttribute(attr.name);
+          }
+        });
+        clean(child);
+      }
+    });
+  };
+  clean(doc.body);
+  return doc.body.innerHTML;
+};
+
 // --- MOCK DATA ---
 
 const DEMO_COURSE = {
@@ -444,7 +507,11 @@ function Demo() {
           </header>
 
           <div className="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-300 mb-12">
-            <div dangerouslySetInnerHTML={{ __html: currentLesson.content }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(currentLesson.content),
+              }}
+            />
           </div>
 
           {/* QUIZ SECTION */}

@@ -68,8 +68,11 @@ const ModernLogin = () => {
       await login(email, password);
       toast.success("Přihlášení bylo úspěšné!");
 
-      // Redirect to intended page or home
-      const from = location.state?.from?.pathname || "/";
+      // Redirect to intended page or home (validate path is internal)
+      let from = location.state?.from?.pathname || "/";
+      if (!from.startsWith("/") || from.startsWith("//")) {
+        from = "/";
+      }
       navigate(from, { replace: true });
     } catch (err) {
       toast.error(`Přihlášení selhalo: ${err.message}`);
@@ -105,7 +108,8 @@ const ModernLogin = () => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       toast.success("Přihlášení přes Google bylo úspěšné!");
-      const from = location.state?.from?.pathname || "/";
+      let from = location.state?.from?.pathname || "/";
+      if (!from.startsWith("/") || from.startsWith("//")) from = "/";
       navigate(from, { replace: true });
     } catch (err) {
       toast.error(`Přihlášení přes Google selhalo: ${err.message}`);
@@ -121,7 +125,8 @@ const ModernLogin = () => {
       const provider = new OAuthProvider("github.com");
       await signInWithPopup(auth, provider);
       toast.success("Přihlášení přes GitHub bylo úspěšné!");
-      const from = location.state?.from?.pathname || "/";
+      let from = location.state?.from?.pathname || "/";
+      if (!from.startsWith("/") || from.startsWith("//")) from = "/";
       navigate(from, { replace: true });
     } catch (err) {
       toast.error(`Přihlášení přes GitHub selhalo: ${err.message}`);

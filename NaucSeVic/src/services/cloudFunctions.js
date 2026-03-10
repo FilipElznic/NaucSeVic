@@ -162,18 +162,6 @@ class CloudFunctionsService {
     }
   }
 
-  // DEBUG: Add booster (Test only)
-  async debugAddBooster(boosterId, amount = 1) {
-    try {
-      const addFunction = httpsCallable(functions, "debugAddBooster");
-      const result = await addFunction({ boosterId, amount });
-      return result.data;
-    } catch (error) {
-      console.error("Error adding booster:", error);
-      throw error;
-    }
-  }
-
   // Get leaderboard data
   async getLeaderboard(limit = 10) {
     try {

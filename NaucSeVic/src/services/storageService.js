@@ -6,11 +6,27 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
 class StorageService {
+  // Allowed image MIME types and max file size
+  static ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+  static MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
   // Upload profile picture
   async uploadProfilePicture(file, userId) {
     try {
       if (!userId) throw new Error("User ID is required");
       if (!file) throw new Error("File is required");
+
+      // Validate file type
+      if (!StorageService.ALLOWED_TYPES.includes(file.type)) {
+        throw new Error(
+          "Invalid file type. Only JPEG, PNG, WebP, and GIF images are allowed.",
+        );
+      }
+
+      // Validate file size
+      if (file.size > StorageService.MAX_FILE_SIZE) {
+        throw new Error("File is too large. Maximum size is 5MB.");
+      }
 
       // Create a reference to the file location
       // Using a fixed name 'profile.jpg' or similar for each user to overwrite old one automatically

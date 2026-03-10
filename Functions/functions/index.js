@@ -96,7 +96,7 @@ const checkRateLimit = async (
 setGlobalOptions({
   maxInstances: 10,
   region: "europe-west1", // EU region (Belgium)
-  enforceAppCheck: false, // Set to true when App Check is configured
+  enforceAppCheck: false, // Set to true after registering reCAPTCHA in Firebase Console → App Check
 });
 
 // SECURED: API endpoint with proper validation
@@ -105,7 +105,8 @@ exports.api = onRequest({ cors: true }, async (request, response) => {
     // CORS and security headers
     response.set("X-Content-Type-Options", "nosniff");
     response.set("X-Frame-Options", "DENY");
-    response.set("X-XSS-Protection", "1; mode=block");
+    response.set("X-XSS-Protection", "0");
+    response.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
     logger.info("API endpoint called", {
       method: request.method,
@@ -246,24 +247,22 @@ exports.createUserProfile = onCall(async (request) => {
   }
 });
 
-// SECURED: Record task attempt and update user progress
+// SECURED: Record task attempt and update user progress (server-side validation)
 exports.recordTaskAttempt = onCall(async (request) => {
   try {
     // Authentication required
     if (!request.auth || !request.auth.uid) {
-      throw new Error("Authentication required");
+      throw new HttpsError("unauthenticated", "Authentication required");
     }
 
-    const { taskId, taskRef, isCorrect, userAnswer, type, xpEarned } =
-      request.data || {};
+    const { taskId, taskRef, userAnswer, type } = request.data || {};
 
     // Rate limiting per user
     await checkRateLimit(request.auth.uid, "recordTaskAttempt", 100, 60000); // 100 per minute
 
     // Input validation
-    validateInput({ taskId, isCorrect, userAnswer, type }, [
+    validateInput({ taskId, userAnswer, type }, [
       "taskId",
-      "isCorrect",
       "userAnswer",
       "type",
     ]);
@@ -272,17 +271,52 @@ exports.recordTaskAttempt = onCall(async (request) => {
     const now = admin.firestore.FieldValue.serverTimestamp();
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
 
-    // Calculate XP and coins earned
-    const finalXpEarned = xpEarned || (isCorrect ? 10 : 5); // Default XP values
-    const coinsEarned = isCorrect ? 5 : 0; // Coins only for correct answers
+    // Server-side validation: fetch the task and validate the answer
+    const taskDoc = await admin
+      .firestore()
+      .collection("tasks")
+      .doc(taskId)
+      .get();
+
+    let isCorrect = false;
+    let finalXpEarned = 5; // Default XP for incorrect
+
+    if (taskDoc.exists) {
+      const taskData = taskDoc.data();
+      // Validate answer server-side based on task type
+      if (taskData.type === "multipleChoice" || taskData.type === "written") {
+        isCorrect =
+          sanitizeString(String(userAnswer)).toLowerCase() ===
+          sanitizeString(String(taskData.correctAnswer)).toLowerCase();
+      } else if (taskData.type === "multiAnswer") {
+        const userAnswers = Array.isArray(userAnswer)
+          ? userAnswer
+          : [userAnswer];
+        const correctAnswers = taskData.correctAnswers || [];
+        isCorrect =
+          userAnswers.length === correctAnswers.length &&
+          userAnswers.every((answer) =>
+            correctAnswers.some(
+              (correct) =>
+                sanitizeString(String(answer)).toLowerCase() ===
+                sanitizeString(String(correct)).toLowerCase(),
+            ),
+          );
+      }
+      finalXpEarned = isCorrect
+        ? taskData.xp || 10
+        : Math.floor((taskData.xp || 10) * 0.2);
+    }
+
+    const coinsEarned = isCorrect ? 5 : 0;
 
     // Create task attempt record
     const taskAttempt = {
       attemptedAt: now,
-      isCorrect: !!isCorrect,
+      isCorrect: isCorrect,
       taskRef: taskRef || null,
       type: sanitizeString(type),
-      userAnswer: parseInt(userAnswer) || 0,
+      userAnswer: userAnswer,
       xpEarned: finalXpEarned,
     };
 
@@ -293,7 +327,7 @@ exports.recordTaskAttempt = onCall(async (request) => {
       const userDoc = await transaction.get(userRef);
 
       if (!userDoc.exists) {
-        throw new Error("User profile not found");
+        throw new HttpsError("not-found", "User profile not found");
       }
 
       const userData = userDoc.data();
@@ -336,14 +370,15 @@ exports.recordTaskAttempt = onCall(async (request) => {
       taskAttempt,
       xpEarned: finalXpEarned,
       coinsEarned,
-      isCorrect: !!isCorrect,
+      isCorrect: isCorrect,
     };
   } catch (error) {
     logger.error("Error recording task attempt", {
       error: error.message,
       userId: request.auth && request.auth.uid,
     });
-    throw new Error(error.message || "Failed to record task attempt");
+    if (error instanceof HttpsError) throw error;
+    throw new HttpsError("internal", "Failed to record task attempt");
   }
 });
 
@@ -380,7 +415,7 @@ exports.createEducationalTask = onCall(async (request) => {
 
     // Rate limiting per user
     try {
-      await checkRateLimit(request.auth.uid, "createTask", 500, 300000); // 500 per 5min
+      await checkRateLimit(request.auth.uid, "createTask", 5, 300000); // 5 per 5min
     } catch (e) {
       throw new HttpsError("resource-exhausted", e.message);
     }
@@ -927,54 +962,16 @@ exports.buyBooster = onCall(async (request) => {
   }
 });
 
-// DEBUG: Add booster to user inventory (FOR TESTING ONLY)
-exports.debugAddBooster = onCall(async (request) => {
-  try {
-    if (!request.auth || !request.auth.uid) {
-      throw new Error("Authentication required");
-    }
-
-    const { boosterId, amount = 1 } = request.data || {};
-    const userId = request.auth.uid;
-    validateInput({ boosterId }, ["boosterId"]);
-
-    // Check if boosterId is valid
-    const validBoosters = ["xp_boost_1h", "xp_boost_12h", "xp_boost_24h"];
-    if (!validBoosters.includes(boosterId)) {
-      throw new Error("Invalid booster ID");
-    }
-
-    const userRef = admin.firestore().collection("users").doc(userId);
-
-    await userRef.update({
-      [`inventory.${boosterId}`]: admin.firestore.FieldValue.increment(amount),
-    });
-
-    logger.info("Debug: Added booster to inventory", {
-      userId,
-      boosterId,
-      amount,
-    });
-    return { success: true, message: `Added ${amount} x ${boosterId}` };
-  } catch (error) {
-    logger.error("Error adding booster (debug)", error);
-    throw new Error(error.message || "Failed to add booster");
-  }
-});
-
 // SECURED: Initialize user profile after registration
 exports.initializeUserProfile = onCall(async (request) => {
   try {
     // Authentication required
     if (!request.auth || !request.auth.uid) {
-      throw new Error("Authentication required");
+      throw new HttpsError("unauthenticated", "Authentication required");
     }
 
     const userId = request.auth.uid;
     const { firstName, lastName } = request.data || {};
-
-    // Rate limiting per user
-    await checkRateLimit(userId, "initializeProfile", 3, 300000); // 3 per 5min
 
     logger.info("Initializing user profile", {
       userId,
@@ -997,6 +994,9 @@ exports.initializeUserProfile = onCall(async (request) => {
         profile: existingUser.data().profile,
       };
     }
+
+    // Rate limiting per user only for actual profile creation
+    await checkRateLimit(userId, "initializeProfile", 5, 300000); // 5 creates per 5min
 
     // Sanitize input data
     const sanitizedFirstName = firstName ? sanitizeString(firstName) : "";
@@ -1048,7 +1048,13 @@ exports.initializeUserProfile = onCall(async (request) => {
       error: error.message,
       userId: request.auth && request.auth.uid,
     });
-    throw new Error(error.message || "Failed to initialize profile");
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    throw new HttpsError(
+      "internal",
+      error.message || "Failed to initialize profile",
+    );
   }
 });
 
@@ -1216,7 +1222,27 @@ exports.deleteAccount = onCall(async (request) => {
     const userRef = admin.firestore().collection("users").doc(userId);
     await userRef.delete();
 
-    // 2. Delete user from Firebase Auth
+    // 2. Delete profile pictures from Storage
+    try {
+      const bucket = admin.storage().bucket();
+      const [files] = await bucket.getFiles({
+        prefix: `profile_pics/${userId}/`,
+      });
+      if (files.length > 0) {
+        await Promise.all(files.map((file) => file.delete()));
+      }
+      logger.info("Profile pictures deleted", {
+        userId,
+        fileCount: files.length,
+      });
+    } catch (storageError) {
+      logger.warn("Error deleting profile pictures (non-fatal)", {
+        userId,
+        error: storageError.message,
+      });
+    }
+
+    // 3. Delete user from Firebase Auth
     await admin.auth().deleteUser(userId);
 
     logger.info("Account deleted successfully", { userId });
@@ -1227,7 +1253,7 @@ exports.deleteAccount = onCall(async (request) => {
       error: error.message,
       userId: request.auth && request.auth.uid,
     });
-    throw new Error(error.message || "Failed to delete account");
+    throw new HttpsError("internal", "Failed to delete account");
   }
 });
 
@@ -1635,7 +1661,6 @@ exports.submitQuiz = onCall(async (request) => {
   }
 
   // Rate limiting
-  const clientIP = (request.rawRequest && request.rawRequest.ip) || "unknown";
   await checkRateLimit(request.auth.uid, "submitQuiz", 10, 60000); // 10 requests per minute per user
 
   const { lessonId, userAnswers } = request.data;
@@ -2099,13 +2124,16 @@ exports.completeLesson = onCall(async (request) => {
 
 // Fetch Leaderboard Data (Secure)
 exports.getLeaderboard = onCall(async (request) => {
-  // Optional: Check if user is authenticated
+  // Authentication required
   if (!request.auth) {
-    // throw new HttpsError('unauthenticated', 'The function must be called while authenticated.');
+    throw new HttpsError("unauthenticated", "Authentication required");
   }
 
+  // Rate limiting
+  await checkRateLimit(request.auth.uid, "getLeaderboard", 30, 60000); // 30 per minute
+
   try {
-    const limit = request.data.limit || 10;
+    const limit = Math.min(parseInt(request.data.limit) || 10, 50); // Cap at 50
     const usersRef = admin.firestore().collection("users");
 
     // Create query: top XP

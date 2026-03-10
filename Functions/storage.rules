@@ -12,22 +12,29 @@ service firebase.storage {
     function isOwner(userId) {
       return request.auth.uid == userId;
     }
+
+    // Helper: validate image file type and size
+    function isValidImage() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp|gif)')
+             && request.resource.size < 5 * 1024 * 1024; // Max 5MB
+    }
     
     // -------------------------------------------------------------------------
     // 1. Profile Pictures (profile_pics/{userId}/...)
     // -------------------------------------------------------------------------
     // - Read: Public (everyone can view profile pics for leaderboards etc.)
     // - Write: Only the authenticated user can upload to their own folder
+    //          with valid image type and size limit
     match /profile_pics/{userId}/{allPaths=**} {
       allow read: if true;
-      allow write: if isAuthenticated() && isOwner(userId);
+      allow write: if isAuthenticated() && isOwner(userId) && isValidImage();
     }
 
     // -------------------------------------------------------------------------
-    // 2. Geometric Bodies (goemetricBodies/... and corrected geometricBodies/...)
+    // 2. Geometric Bodies (geometricBodies/... and legacy goemetricBodies/...)
     // -------------------------------------------------------------------------
     // - Read: Public
-    // - Write: Admin only (implicitly denied for users)
+    // - Write: Denied (admin uploads via Admin SDK which bypasses rules)
     match /geometricBodies/{allPaths=**} {
       allow read: if true;
       allow write: if false;
@@ -42,12 +49,11 @@ service firebase.storage {
     // -------------------------------------------------------------------------
     // 3. Lecture Pictures (MathCH1, MathCH2, etc.)
     // -------------------------------------------------------------------------
-    // Matches top-level folders starting with "MathCH" followed by one or more digits
-    // - Read: Public
-    // - Write: Admin only
+    // - Read: Public for lecture content
+    // - Write: Denied (admin uploads via Admin SDK)
     match /{folderName}/{allPaths=**} {
       allow read: if folderName.matches('MathCH[0-9]+');
-      // No write allowed here, so admin only
+      allow write: if false;
     }
     
     // Default deny for everything else is implicit if no match

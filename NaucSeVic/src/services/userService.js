@@ -35,13 +35,8 @@ class UserService {
 
   // Check if user profile exists
   async checkProfileExists(userId) {
-    try {
-      const profile = await this.getUserProfile(userId);
-      return profile !== null;
-    } catch (error) {
-      console.error("Error checking profile existence:", error);
-      return false;
-    }
+    const profile = await this.getUserProfile(userId);
+    return profile !== null;
   }
 
   // Create user profile if it doesn't exist
@@ -96,6 +91,14 @@ class UserService {
       return true;
     } catch (error) {
       console.error("Error ensuring profile exists:", error);
+      // Permission-denied usually means Firestore/App Check enforcement mismatch.
+      // Surface this error instead of retrying profile creation loops.
+      if (
+        error?.code === "permission-denied" ||
+        error?.message?.includes("insufficient permissions")
+      ) {
+        throw error;
+      }
       throw error;
     }
   }

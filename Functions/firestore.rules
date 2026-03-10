@@ -41,19 +41,13 @@ service cloud.firestore {
     
     // Tasks collection
     match /tasks/{taskId} {
-      // Anyone can read tasks (even unauthenticated users for demo)
-      allow read: if true;
+      // Authenticated users can read tasks
+      allow read: if isAuthenticated();
       
-      // Only authenticated users can create tasks
-      allow create: if isAuthenticated();
-      
-      // Only task owner or admin can update
-      allow update: if isAuthenticated() && 
-                      (resource.data.userId == request.auth.uid || isAdmin());
-      
-      // Only task owner or admin can delete
-      allow delete: if isAuthenticated() && 
-                      (resource.data.userId == request.auth.uid || isAdmin());
+      // Only admins can create, update, and delete tasks
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
     
     // User progress tracking (subcollection or separate collection)
@@ -73,6 +67,24 @@ service cloud.firestore {
     // Admin-only collections
     match /adminData/{document=**} {
       allow read, write: if isAdmin();
+    }
+
+    // Rate limiting documents (rate_limits_* collections) are managed
+    // exclusively by Cloud Functions via Admin SDK, which bypasses rules.
+    // The default deny-all rule at the bottom blocks any client access.
+
+    // Subject, Chapter, Lesson collections (managed by Cloud Functions)
+    match /subject/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    match /chapter/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    match /lesson/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
     }
 
     // Geometric Bodies collection
