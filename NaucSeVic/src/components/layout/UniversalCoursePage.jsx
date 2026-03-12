@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as LucideIcons from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCourseData } from "../../hooks/useCourseData";
@@ -19,10 +19,10 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
   );
   const { userProfile, refreshProfile } = useUserProfile();
 
-  // State for loading animation on the button
   const [updatingFavorite, setUpdatingFavorite] = useState(false);
   const [expandedChapter, setExpandedChapter] = useState(null);
   const [progress, setProgress] = useState(0);
+  const progressWriteTimer = useRef(null);
 
   // 1. Generate a stable Course ID based on props
   const courseId = subLevel
@@ -57,16 +57,21 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
           : 0;
       setProgress(newProgress);
 
-      // Save to DB if different from what's stored
+      // Debounce the DB write to avoid multiple rapid writes
       const storedProgress = userProfile.courseProgress?.[courseId]?.progress;
-      const user = getAuth().currentUser; // Get current user directly to be safe
+      const user = getAuth().currentUser;
 
       if (user && storedProgress !== newProgress) {
-        userService
-          .updateCourseProgress(user.uid, courseId, newProgress, completedCount)
-          .catch((err) => console.error("Failed to update progress", err));
+        clearTimeout(progressWriteTimer.current);
+        progressWriteTimer.current = setTimeout(() => {
+          userService
+            .updateCourseProgress(user.uid, courseId, newProgress, completedCount)
+            .catch((err) => console.error("Failed to update progress", err));
+        }, 1000);
       }
     }
+
+    return () => clearTimeout(progressWriteTimer.current);
   }, [courseData, userProfile, courseId]);
 
   const toggleChapter = (chapterId) => {

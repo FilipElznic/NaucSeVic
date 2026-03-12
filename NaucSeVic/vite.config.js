@@ -10,6 +10,16 @@ export default defineConfig({
         manualChunks: {
           "three-vendor": ["three", "@react-three/fiber", "@react-three/drei"],
           "ui-vendor": ["framer-motion", "gsap", "lucide-react"],
+          "firebase-vendor": [
+            "firebase/app",
+            "firebase/auth",
+            "firebase/firestore",
+            "firebase/functions",
+            "firebase/storage",
+          ],
+          "charts-vendor": ["recharts"],
+          "spline-vendor": ["@splinetool/react-spline"],
+          "katex-vendor": ["katex", "react-katex"],
         },
       },
     },

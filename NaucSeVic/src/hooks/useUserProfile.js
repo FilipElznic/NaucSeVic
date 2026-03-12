@@ -50,14 +50,12 @@ export const useUserProfile = () => {
   const refreshProfile = async () => {
     if (user?.uid) {
       try {
-        setLoading(true);
+        userService.invalidateProfileCache(user.uid);
         const profile = await userService.getUserProfile(user.uid);
         setUserProfile(profile);
       } catch (err) {
         console.error("Error refreshing user profile:", err);
         setError(err.message);
-      } finally {
-        setLoading(false);
       }
     }
   };

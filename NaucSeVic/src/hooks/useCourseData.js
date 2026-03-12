@@ -1,7 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../config/firebase";
 import { toast } from "react-toastify";
+
+// Module-level cache for course data to persist across component mounts
+const courseDataCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 export const useCourseData = (subjectId, levelId, subLevelId) => {
   const [courseData, setCourseData] = useState(null);
@@ -11,6 +15,14 @@ export const useCourseData = (subjectId, levelId, subLevelId) => {
   useEffect(() => {
     const fetchCourseData = async () => {
       if (!subjectId || !levelId) {
+        setLoading(false);
+        return;
+      }
+
+      const cacheKey = `${subjectId}_${levelId}_${subLevelId || ""}`;
+      const cached = courseDataCache.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        setCourseData(cached.data);
         setLoading(false);
         return;
       }
@@ -26,6 +38,10 @@ export const useCourseData = (subjectId, levelId, subLevelId) => {
           subLevelId: subLevelId || null,
         });
 
+        courseDataCache.set(cacheKey, {
+          data: response.data,
+          timestamp: Date.now(),
+        });
         setCourseData(response.data);
       } catch (err) {
         console.error("Error fetching course data:", err);

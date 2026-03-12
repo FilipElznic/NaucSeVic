@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import SplineViewer from "../ui/SplineViewer";
+import React, { Suspense, lazy, useState } from "react";
 import { BlockMath } from "react-katex";
 import { Box, Play, RotateCw } from "lucide-react";
 import "katex/dist/katex.min.css";
+import LoadingSpinner from "../ui/LoadingSpinner";
+
+const SplineViewer = lazy(() => import("../ui/SplineViewer"));
 
 const GeometricBodyCard = ({ body }) => {
   const { name, description, formulas, type, assets } = body;
@@ -24,7 +26,15 @@ const GeometricBodyCard = ({ body }) => {
         {spline_url ? (
           showModel ? (
             <div className="w-full h-full relative group/viewer">
-              <SplineViewer url={spline_url} />
+              <Suspense
+                fallback={
+                  <div className="w-full h-full flex items-center justify-center">
+                    <LoadingSpinner size="lg" />
+                  </div>
+                }
+              >
+                <SplineViewer url={spline_url} />
+              </Suspense>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -46,6 +56,7 @@ const GeometricBodyCard = ({ body }) => {
                   <img
                     src={image_url}
                     alt={name}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 "
                   />
                   <div className="absolute inset-0 bg-zinc-800/80 dark:bg-zinc-950/80 group-hover:bg-zinc-800/60 dark:group-hover:bg-zinc-950/60 transition-all duration-300" />
@@ -72,6 +83,7 @@ const GeometricBodyCard = ({ body }) => {
             <img
               src={image_url}
               alt={name}
+              loading="lazy"
               className="w-full h-full object-contain p-8 bg-zinc-800 dark:bg-zinc-950"
             />
           </div>

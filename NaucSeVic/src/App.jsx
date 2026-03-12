@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -44,6 +44,9 @@ const TestPage = lazy(() => import("./pages/TestPage"));
 const UserDashboard = lazy(() => import("./pages/UserDashboard"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
+// Preload UserDashboard chunk during auth check so it's ready when user is resolved
+const preloadUserDashboard = () => import("./pages/UserDashboard");
+
 const UniversalSubjectLayout = lazy(
   () => import("./components/layout/UniversalSubjectLayout"),
 );
@@ -66,6 +69,13 @@ const PublicRoute = ({ children }) => {
 // App Routes component that uses the auth context
 const AppRoutes = () => {
   const { user, loading } = useFirebaseAuth();
+
+  // Preload UserDashboard while auth is still loading
+  useEffect(() => {
+    if (loading) {
+      preloadUserDashboard();
+    }
+  }, [loading]);
 
   return (
     <Router>

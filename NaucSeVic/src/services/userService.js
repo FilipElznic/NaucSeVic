@@ -11,25 +11,59 @@ import { cloudFunctionsService } from "./cloudFunctions";
 
 // User service for NaucSeVic
 class UserService {
-  // Get user profile from the new 'users' collection
+  constructor() {
+    this._profileCache = new Map();
+    this._pendingRequests = new Map();
+    this._CACHE_TTL = 10000; // 10 seconds
+  }
+
+  // Get user profile with short-lived cache to prevent duplicate requests
   async getUserProfile(userId) {
     try {
       if (!userId) {
         throw new Error("User ID is required");
       }
 
-      const userRef = doc(db, "users", userId);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        return userDoc.data();
-      } else {
-        console.log("No user profile found");
-        return null;
+      // Check cache first
+      const cached = this._profileCache.get(userId);
+      if (cached && Date.now() - cached.timestamp < this._CACHE_TTL) {
+        return cached.data;
       }
+
+      // Deduplicate in-flight requests
+      if (this._pendingRequests.has(userId)) {
+        return this._pendingRequests.get(userId);
+      }
+
+      const request = (async () => {
+        const userRef = doc(db, "users", userId);
+        const userDoc = await getDoc(userRef);
+
+        const data = userDoc.exists() ? userDoc.data() : null;
+        this._profileCache.set(userId, { data, timestamp: Date.now() });
+        this._pendingRequests.delete(userId);
+
+        if (!data) {
+          console.log("No user profile found");
+        }
+        return data;
+      })();
+
+      this._pendingRequests.set(userId, request);
+      return request;
     } catch (error) {
+      this._pendingRequests.delete(userId);
       console.error("Error getting user profile:", error);
       throw error;
+    }
+  }
+
+  // Invalidate the cache (call after writes)
+  invalidateProfileCache(userId) {
+    if (userId) {
+      this._profileCache.delete(userId);
+    } else {
+      this._profileCache.clear();
     }
   }
 
@@ -119,6 +153,7 @@ class UserService {
       });
 
       await updateDoc(userRef, formattedUpdates);
+      this.invalidateProfileCache(userId);
       return true;
     } catch (error) {
       console.error("Error updating user profile:", error);
@@ -141,6 +176,7 @@ class UserService {
       };
 
       await updateDoc(userRef, updateData);
+      this.invalidateProfileCache(userId);
       return true;
     } catch (error) {
       console.error("Error toggling favorite course:", error);
@@ -165,6 +201,7 @@ class UserService {
       };
 
       await updateDoc(userRef, updates);
+      this.invalidateProfileCache(userId);
       return true;
     } catch (error) {
       console.error("Error updating course progress:", error);
@@ -188,6 +225,7 @@ class UserService {
       });
 
       await updateDoc(userRef, updates);
+      this.invalidateProfileCache(userId);
       return true;
     } catch (error) {
       console.error("Error updating daily progress:", error);

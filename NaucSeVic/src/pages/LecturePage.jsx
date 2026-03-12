@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { Suspense, lazy, useMemo, useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import * as LucideIcons from "lucide-react";
 import { subjectConfig, levelsConfig } from "../config/subjectConfig";
@@ -6,10 +6,11 @@ import { useCourseData } from "../hooks/useCourseData";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { useDarkMode } from "../contexts/DarkModeContext";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
-import QuizComponent from "../components/lecture/QuizComponent";
 import ErrorBoundary from "../components/guards/ErrorBoundary";
-import SplineViewer from "../components/ui/SplineViewer";
 import LatexRenderer from "../components/shared/LatexRenderer";
+
+const SplineViewer = lazy(() => import("../components/ui/SplineViewer"));
+const QuizComponent = lazy(() => import("../components/lecture/QuizComponent"));
 
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../config/firebase";
@@ -439,14 +440,22 @@ const LecturePage = () => {
                         Zpět k lekci
                       </button>
                     </div>
-                    <QuizComponent
-                      tasks={currentLecture.content.tasks}
-                      lessonId={currentLecture.id}
-                      activeBoost={activeBoost}
-                      onComplete={async () => {
-                        await refreshProfile();
-                      }}
-                    />
+                    <Suspense
+                      fallback={
+                        <div className="py-12 flex justify-center">
+                          <LoadingSpinner size="lg" />
+                        </div>
+                      }
+                    >
+                      <QuizComponent
+                        tasks={currentLecture.content.tasks}
+                        lessonId={currentLecture.id}
+                        activeBoost={activeBoost}
+                        onComplete={async () => {
+                          await refreshProfile();
+                        }}
+                      />
+                    </Suspense>
                   </div>
                 ) : (
                   <>
@@ -464,7 +473,17 @@ const LecturePage = () => {
 
                     {currentLecture.content?.splineUrl && (
                       <div className="w-full max-w-4xl mx-auto mb-8 h-[500px] ">
-                        <SplineViewer url={currentLecture.content.splineUrl} />
+                        <Suspense
+                          fallback={
+                            <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-zinc-800 rounded-2xl">
+                              <LoadingSpinner size="lg" />
+                            </div>
+                          }
+                        >
+                          <SplineViewer
+                            url={currentLecture.content.splineUrl}
+                          />
+                        </Suspense>
                       </div>
                     )}
 

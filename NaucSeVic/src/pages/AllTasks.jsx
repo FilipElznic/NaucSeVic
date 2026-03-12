@@ -196,49 +196,47 @@ const AllTasks = () => {
     setLoading(true);
 
     try {
-      // Load user's completed tasks if logged in
+      // Load user data and tasks in parallel for faster loading
       let userCompletedTasks = {};
-      if (user) {
-        // Fetch user profile to get active boosts
-        const userProfile = await userService.getUserProfile(user.uid);
-        if (userProfile?.activeBoosts?.xp) {
-          const xpBoost = userProfile.activeBoosts.xp;
-          const now = Date.now();
-          const endsAt = xpBoost.endsAt?.toMillis
-            ? xpBoost.endsAt.toMillis()
-            : 0;
 
-          if (endsAt > now) {
-            setActiveBoost({
-              multiplier: xpBoost.multiplier,
-              endsAt: new Date(endsAt),
-            });
-            console.log("Active XP Boost detected:", xpBoost);
-          } else {
-            setActiveBoost(null);
-          }
+      const [userProfile, response] = await Promise.all([
+        user ? userService.getUserProfile(user.uid) : Promise.resolve(null),
+        cloudFunctionsService
+          .getTasks({ limit: 100, includeCompleted: true })
+          .catch(() => null),
+      ]);
+
+      if (user && userProfile?.activeBoosts?.xp) {
+        const xpBoost = userProfile.activeBoosts.xp;
+        const now = Date.now();
+        const endsAt = xpBoost.endsAt?.toMillis
+          ? xpBoost.endsAt.toMillis()
+          : 0;
+
+        if (endsAt > now) {
+          setActiveBoost({
+            multiplier: xpBoost.multiplier,
+            endsAt: new Date(endsAt),
+          });
         } else {
           setActiveBoost(null);
         }
+      } else {
+        setActiveBoost(null);
+      }
 
-        userCompletedTasks = await userService.getCompletedTasks(user.uid);
+      if (user && userProfile) {
+        userCompletedTasks = userProfile.completedTasks || {};
         setCompletedTaskIds(userCompletedTasks);
       }
 
-      // Try to call getTasks cloud function
-      const response = await cloudFunctionsService.getTasks({
-        limit: 100,
-        includeCompleted: true,
-      });
-
       // Handle response format - adjust based on actual API response
-      const tasksData = response.tasks || response.data || response || [];
+      const tasksData = response?.tasks || response?.data || response || [];
 
       // Convert API data to match our expected format
       const formattedTasks = Array.isArray(tasksData)
         ? tasksData.map((task) => ({
             ...task,
-            // Ensure required fields exist
             id: task.id || task.taskId,
             name: task.name || task.title,
             description: task.description || "",
@@ -250,7 +248,6 @@ const AllTasks = () => {
             rating: task.rating || 4.5,
             createdAt: task.createdAt ? new Date(task.createdAt) : new Date(),
             isCompleted: task.isCompleted || false,
-            // Check if user has completed this specific task
             isCompletedByUser:
               user && userCompletedTasks[task.id]?.isCorrect === true,
           }))
@@ -259,17 +256,11 @@ const AllTasks = () => {
       if (formattedTasks.length > 0) {
         setTasks(formattedTasks);
       } else {
-        console.log("No tasks returned from API, using sample data");
         setTasks(sampleTasks);
       }
     } catch (error) {
       console.error("Error loading tasks:", error);
-      console.log("API error, falling back to sample data");
-
-      // Always use sample data on API error
       setTasks(sampleTasks);
-
-      // Show user-friendly message
       toast.error(
         "Načítání úkolů z databáze se nezdařilo. Zobrazuji ukázková data.",
       );
