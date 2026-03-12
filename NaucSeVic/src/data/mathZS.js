@@ -23,7 +23,7 @@ export const mathZS = {
                 heading: "První kroky: Čísla 0 až 10",
                 text: "Všechno začíná nulou. 0 znamená 'nic' – jako prázdná miska na bonbóny. Když přidáme první bonbón, máme 1. Pak přidáváme další a počítáme stejně, jako máš prsty na rukou: 1, 2, 3, 4, 5 (jedna ruka), 6, 7, 8, 9... až dojdeme k číslu 10. \n\n\n\nČísla od 0 do 9 se nazývají jednociferná, protože se píší jen jedním znakem. Ale číslo 10 je speciální – je to první číslo dvojciferné (píše se pomocí jedničky a nuly). Desítka je jako plný balíček, máme plné obě ruce prstů!",
                 image:
-                  "https://firebasestorage.googleapis.com/v0/b/naucsevic.firebasestorage.app/o/mattCh1l1.png?alt=media&token=c44442fb-0f89-4a87-b76a-3065b4fd21a2",
+                  "https://firebasestorage.googleapis.com/v0/b/naucsevic.firebasestorage.app/o/MathCH1%2FmattCh1l1.webp?alt=media&token=0a41b59b-cf76-4b7e-b7ad-a0dd76b91e8d",
               },
               {
                 heading: "Výprava za desítku: 11 až 20",
@@ -275,7 +275,8 @@ export const mathZS = {
               {
                 heading: "Hladový krokodýl (< a >)",
                 text: "Když vidíme dvě různá čísla, chceme zjistit, které je větší a které menší. Používáme k tomu znaménka, která vypadají jako šipky: $<$ a $>$. Aby se ti to nikdy nepletlo, představ si, že to není obyčejná šipka, ale otevřená tlama hladového krokodýla.\n\n\n\nKrokodýl je velký jedlík a vždycky se otočí tam, kde je více jídla (větší číslo). \n* Když máme $5$ a $10$, krokodýl otevře pusu na desítku: $5 < 10$.\n* Když máme $20$ a $3$, otočí se na dvacítku: $20 > 3$.\n\nPamatuj, že čteme vždy zleva doprava (jako v knížce). Zobáček nám ukazuje, která strana je 'menší' (tam, kde je špička) a která 'větší' (tam, kde je otevřeno).",
-                image: "",
+                image:
+                  "https://firebasestorage.googleapis.com/v0/b/naucsevic.firebasestorage.app/o/MathCH1%2FSn%C3%ADmek%20obrazovky%202026-01-14%20094340.webp?alt=media&token=f2cbc45c-aa2e-4510-871c-38c0a3f88251",
               },
               {
                 heading: "Když je to stejně (=)",
@@ -367,7 +368,8 @@ export const mathZS = {
               {
                 heading: "Jak vyřešit každou záhadu (Postup)",
                 text: "Aby ses v úloze neztratil, dodržuj vždy těchto 5 kroků:\n\n1.  Přečti si zadání: Klidně dvakrát. Musíš vědět, o čem se tam píše.\n2.  Najdi čísla: Co víme? (Např. *Petr má 5 autíček*).\n3.  Na co se ptáme? Co musíme zjistit? (Např. *Kolik jich má teď?*).\n4.  Vymysli příklad: Převeď slova na čísla ($5 + 3$).\n5.  Odpověz: Každá slovní úloha končí větou. Nestačí jen číslo 8, musíme říct: *Petr má teď 8 autíček.*\n\n\n\nZkus si to hned na dalším úkolu!",
-                image: "",
+                image:
+                  "https://firebasestorage.googleapis.com/v0/b/naucsevic.firebasestorage.app/o/MathCH1%2FSn%C3%ADmek%20obrazovky%202026-01-14%20094235.webp?alt=media&token=1efd2df3-84e4-4b80-ad44-3ae3010db9df",
               },
             ],
             tasks: [

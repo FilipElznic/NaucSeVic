@@ -65,7 +65,12 @@ const UniversalCoursePage = ({ subject, level, subLevel }) => {
         clearTimeout(progressWriteTimer.current);
         progressWriteTimer.current = setTimeout(() => {
           userService
-            .updateCourseProgress(user.uid, courseId, newProgress, completedCount)
+            .updateCourseProgress(
+              user.uid,
+              courseId,
+              newProgress,
+              completedCount,
+            )
             .catch((err) => console.error("Failed to update progress", err));
         }, 1000);
       }

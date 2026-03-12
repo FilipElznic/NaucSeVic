@@ -58,6 +58,15 @@ class UserService {
     }
   }
 
+  // Get cached profile synchronously (no fetch)
+  getCachedProfile(userId) {
+    const cached = this._profileCache.get(userId);
+    if (cached && Date.now() - cached.timestamp < this._CACHE_TTL) {
+      return cached.data;
+    }
+    return null;
+  }
+
   // Invalidate the cache (call after writes)
   invalidateProfileCache(userId) {
     if (userId) {

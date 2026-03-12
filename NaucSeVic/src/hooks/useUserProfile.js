@@ -1,11 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import { userService } from "../services/userService";
 
 export const useUserProfile = () => {
   const { user } = useFirebaseAuth();
-  const [userProfile, setUserProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState(() => {
+    // Initialize from cache if available to avoid loading flash
+    if (user?.uid) {
+      return userService.getCachedProfile(user.uid) || null;
+    }
+    return null;
+  });
+  const [loading, setLoading] = useState(() => {
+    // If we have cached data, start with loading=false
+    if (user?.uid && userService.getCachedProfile(user.uid)) {
+      return false;
+    }
+    return true;
+  });
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -47,7 +59,7 @@ export const useUserProfile = () => {
     };
   }, [user?.uid]);
 
-  const refreshProfile = async () => {
+  const refreshProfile = useCallback(async () => {
     if (user?.uid) {
       try {
         userService.invalidateProfileCache(user.uid);
@@ -58,7 +70,7 @@ export const useUserProfile = () => {
         setError(err.message);
       }
     }
-  };
+  }, [user?.uid]);
 
   return {
     userProfile,

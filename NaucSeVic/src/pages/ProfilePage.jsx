@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 import { useDarkMode } from "../contexts/DarkModeContext";
-import { userService } from "../services/userService";
+import { useUserProfile } from "../hooks/useUserProfile";
 import { cloudFunctionsService } from "../services/cloudFunctions";
 import { storageService } from "../services/storageService";
 import {
@@ -28,17 +28,17 @@ import {
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user, resetPassword } = useFirebaseAuth();
-  const { darkMode } = useDarkMode(); // Get dark mode state
-  const gridRef = useRef(null); // Ref for global spotlight
+  const { darkMode } = useDarkMode();
+  const { userProfile, loading, refreshProfile } = useUserProfile();
+  const gridRef = useRef(null);
 
-  const [userProfile, setUserProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [resetLoading, setResetLoading] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoImgError, setPhotoImgError] = useState(false);
   const fileInputRef = useRef(null);
+  const [localPhotoURL, setLocalPhotoURL] = useState(null);
 
   // Edit form state
   const [editForm, setEditForm] = useState({
@@ -47,34 +47,21 @@ const ProfilePage = () => {
     email: "",
   });
 
+  // Initialize form when profile loads
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (!user) {
-        navigate("/prihlaseni");
-        return;
-      }
+    if (!user && !loading) {
+      navigate("/prihlaseni");
+      return;
+    }
 
-      try {
-        setLoading(true);
-        const profile = await userService.getUserProfile(user.uid);
-        setUserProfile(profile);
-
-        // Initialize edit form with current values
-        setEditForm({
-          firstName: profile?.profile?.name || "",
-          lastName: profile?.profile?.surname || "",
-          email: user?.email || "",
-        });
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-        toast.error("Nepodařilo se načíst profil");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserProfile();
-  }, [user, navigate]);
+    if (userProfile) {
+      setEditForm({
+        firstName: userProfile?.profile?.name || "",
+        lastName: userProfile?.profile?.surname || "",
+        email: user?.email || "",
+      });
+    }
+  }, [userProfile, user, loading, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -104,9 +91,8 @@ const ProfilePage = () => {
       if (result.success) {
         toast.success("Profil byl úspěšně aktualizován!");
 
-        // Refresh user profile
-        const updatedProfile = await userService.getUserProfile(user.uid);
-        setUserProfile(updatedProfile);
+        // Refresh user profile via hook
+        await refreshProfile();
 
         // If email changed, inform user they need to re-login
         if (editForm.email !== user.email) {
@@ -197,15 +183,12 @@ const ProfilePage = () => {
         user.uid,
       );
 
-      // Update local state immediately
-      setUserProfile((prev) => ({
-        ...prev,
-        profile: {
-          ...prev.profile,
-          photoURL: downloadURL,
-        },
-      }));
-      setPhotoImgError(false); // reset error so new photo renders
+      // Update local photo URL immediately for instant feedback
+      setLocalPhotoURL(downloadURL);
+      setPhotoImgError(false);
+
+      // Refresh profile in background
+      refreshProfile();
 
       toast.success("Profilová fotka byla úspěšně změněna");
     } catch (error) {
@@ -247,8 +230,9 @@ const ProfilePage = () => {
     (p) => p?.providerId === "google.com",
   );
 
-  // Prefer custom uploaded photo, then Google photo, then auth photo.
+  // Prefer locally uploaded photo, then custom uploaded, then Google photo, then auth photo.
   const photoURL =
+    localPhotoURL ||
     userProfile?.profile?.photoURL ||
     (isGoogleUser && googleProvider?.photoURL) ||
     user?.photoURL ||

@@ -3,6 +3,33 @@ import { functions } from "../config/firebase";
 
 // Cloud Functions service for NaucSeVic
 class CloudFunctionsService {
+  constructor() {
+    this._cache = new Map();
+    this._pendingRequests = new Map();
+  }
+
+  // Generic cached request helper
+  async _cachedCall(key, ttl, fn) {
+    const cached = this._cache.get(key);
+    if (cached && Date.now() - cached.timestamp < ttl) {
+      return cached.data;
+    }
+
+    // Deduplicate in-flight requests
+    if (this._pendingRequests.has(key)) {
+      return this._pendingRequests.get(key);
+    }
+
+    const request = (async () => {
+      const data = await fn();
+      this._cache.set(key, { data, timestamp: Date.now() });
+      this._pendingRequests.delete(key);
+      return data;
+    })();
+
+    this._pendingRequests.set(key, request);
+    return request;
+  }
   // Hello World function example
   async callHelloWorld(name) {
     try {
@@ -162,28 +189,38 @@ class CloudFunctionsService {
     }
   }
 
-  // Get leaderboard data
+  // Get leaderboard data (cached 2 minutes)
   async getLeaderboard(limit = 10) {
     try {
-      const getLeaderboardFunction = httpsCallable(functions, "getLeaderboard");
-      const result = await getLeaderboardFunction({ limit });
-      return result.data;
+      return await this._cachedCall(
+        `leaderboard_${limit}`,
+        2 * 60 * 1000,
+        async () => {
+          const getLeaderboardFunction = httpsCallable(
+            functions,
+            "getLeaderboard",
+          );
+          const result = await getLeaderboardFunction({ limit });
+          return result.data;
+        },
+      );
     } catch (error) {
       console.error("Error fetching leaderboard:", error);
-      // Return empty array on error to prevent breakages
       return { leaderboard: [] };
     }
   }
 
-  // Get user statistics
+  // Get user statistics (cached 1 minute)
   async getUserStatistics() {
     try {
-      const getStatisticsFunction = httpsCallable(
-        functions,
-        "getUserStatistics",
-      );
-      const result = await getStatisticsFunction();
-      return result.data;
+      return await this._cachedCall("userStatistics", 60 * 1000, async () => {
+        const getStatisticsFunction = httpsCallable(
+          functions,
+          "getUserStatistics",
+        );
+        const result = await getStatisticsFunction();
+        return result.data;
+      });
     } catch (error) {
       console.error("Error fetching user statistics:", error);
       throw error;

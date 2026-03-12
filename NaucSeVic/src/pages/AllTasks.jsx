@@ -209,9 +209,7 @@ const AllTasks = () => {
       if (user && userProfile?.activeBoosts?.xp) {
         const xpBoost = userProfile.activeBoosts.xp;
         const now = Date.now();
-        const endsAt = xpBoost.endsAt?.toMillis
-          ? xpBoost.endsAt.toMillis()
-          : 0;
+        const endsAt = xpBoost.endsAt?.toMillis ? xpBoost.endsAt.toMillis() : 0;
 
         if (endsAt > now) {
           setActiveBoost({
@@ -615,22 +613,10 @@ const AllTasks = () => {
                     </p>
 
                     {/* Stats */}
-                    <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                      <div className="flex items-center text-gray-600 dark:text-zinc-400">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {task.estimatedTime} min
-                      </div>
+                    <div className="flex items-center gap-4 mb-4 text-sm">
                       <div className="flex items-center text-gray-600 dark:text-zinc-400">
                         <Trophy className="h-4 w-4 mr-1" />
                         {task.xp} XP
-                      </div>
-                      <div className="flex items-center text-gray-600 dark:text-zinc-400">
-                        <Users className="h-4 w-4 mr-1" />
-                        {task.completedBy}
-                      </div>
-                      <div className="flex items-center text-gray-600 dark:text-zinc-400">
-                        <Star className="h-4 w-4 mr-1" />
-                        {task.rating}
                       </div>
                     </div>
 

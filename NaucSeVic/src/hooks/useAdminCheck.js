@@ -1,17 +1,27 @@
 import { useState, useEffect } from "react";
 import { useFirebaseAuth } from "../contexts/FirebaseAuthContext";
 
-/**
- * Custom hook to check if the current user has admin privileges
- * @returns {Object} - Admin status and loading state
- */
+// Module-level cache to avoid repeated token refreshes
+let adminCache = { uid: null, isAdmin: false, timestamp: 0 };
+const ADMIN_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 export const useAdminCheck = () => {
   const { user } = useFirebaseAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+
+  const hasFreshCache =
+    user?.uid &&
+    adminCache.uid === user.uid &&
+    Date.now() - adminCache.timestamp < ADMIN_CACHE_TTL;
+
+  const [isAdmin, setIsAdmin] = useState(
+    hasFreshCache ? adminCache.isAdmin : false,
+  );
+  const [loading, setLoading] = useState(!hasFreshCache);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const checkAdminStatus = async () => {
       if (!user) {
         setIsAdmin(false);
@@ -19,27 +29,55 @@ export const useAdminCheck = () => {
         return;
       }
 
+      // Use cache if fresh
+      if (
+        adminCache.uid === user.uid &&
+        Date.now() - adminCache.timestamp < ADMIN_CACHE_TTL
+      ) {
+        if (isMounted) {
+          setIsAdmin(adminCache.isAdmin);
+          setLoading(false);
+        }
+        return;
+      }
+
       try {
-        setLoading(true);
-        setError(null);
+        if (isMounted) {
+          setLoading(true);
+          setError(null);
+        }
 
-        // Get the user's ID token with custom claims (force refresh to get latest claims)
-        const idTokenResult = await user.getIdTokenResult(true);
-
-        // Check if user has admin custom claim
+        // First try without forcing refresh (faster), fall back to forced if needed
+        const idTokenResult = await user.getIdTokenResult(false);
         const adminClaim = idTokenResult.claims.admin === true;
 
-        setIsAdmin(adminClaim);
+        adminCache = {
+          uid: user.uid,
+          isAdmin: adminClaim,
+          timestamp: Date.now(),
+        };
+
+        if (isMounted) {
+          setIsAdmin(adminClaim);
+        }
       } catch (err) {
         console.error("Error checking admin status:", err);
-        setError(err.message);
-        setIsAdmin(false);
+        if (isMounted) {
+          setError(err.message);
+          setIsAdmin(false);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     checkAdminStatus();
+
+    return () => {
+      isMounted = false;
+    };
   }, [user]);
 
   return { isAdmin, loading, error };

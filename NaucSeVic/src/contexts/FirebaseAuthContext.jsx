@@ -88,29 +88,23 @@ export const FirebaseAuthProvider = ({ children }) => {
 
   // Listen for authentication state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // Ensure user profile exists when user logs in
-        try {
-          const displayName = user.displayName || "";
-          const nameParts = displayName.split(" ");
-          const firstName = nameParts[0] || "";
-          const lastName = nameParts.slice(1).join(" ") || "";
-
-          await userService.ensureProfileExists(
-            user.uid,
-            firstName,
-            lastName,
-            user.email,
-          );
-        } catch (error) {
-          console.error("Error ensuring user profile exists:", error);
-          // Don't block login if profile creation fails
-        }
-      }
-
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
+
+      // Ensure profile exists in background — don't block auth resolution
+      if (user) {
+        const displayName = user.displayName || "";
+        const nameParts = displayName.split(" ");
+        const firstName = nameParts[0] || "";
+        const lastName = nameParts.slice(1).join(" ") || "";
+
+        userService
+          .ensureProfileExists(user.uid, firstName, lastName, user.email)
+          .catch((error) =>
+            console.error("Error ensuring user profile exists:", error),
+          );
+      }
     });
 
     return unsubscribe;

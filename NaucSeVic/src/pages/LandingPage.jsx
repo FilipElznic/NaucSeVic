@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import SEO from "../components/SEO";
 import ModernHeroSection from "../components/ui/ModernHeroSection";
-import LoadingSpinner from "../components/ui/LoadingSpinner";
 import FloatingOrbs from "../components/ui/FloatingOrbs";
 
 // Lazy load sections below the fold
@@ -20,17 +19,16 @@ function LandingPage() {
         description="Nejlepší online platforma pro výuku matematiky a fyziky. Interaktivní simulace, testy a kurzy pro studenty všech úrovní."
       />
       <ModernHeroSection />
-      <Suspense
-        fallback={
-          <div className="py-20 flex justify-center items-center">
-            <LoadingSpinner size="lg" />
-          </div>
-        }
-      >
+      <Suspense fallback={null}>
         <FeatureSection />
+      </Suspense>
+      <Suspense fallback={null}>
         <StatsSection />
-
+      </Suspense>
+      <Suspense fallback={null}>
         <TestimonialSection />
+      </Suspense>
+      <Suspense fallback={null}>
         <PricingSection />
       </Suspense>
     </div>
