@@ -1,0 +1,72 @@
+# NaucSeVic — Licence pro nekomerční použití s podmínkou souhlasu autora
+
+Copyright (c) 2026 Filip Elznic. Všechna práva vyhrazena.
+
+1. DEFINICE
+
+   „Dílo" označuje veškerý zdrojový kód, dokumentaci, grafiku, data a další
+   soubory obsažené v tomto repozitáři.
+
+   „Autor" označuje Filipa Elznice (elznicfilip@gmail.com).
+
+   „Komerční použití" označuje jakékoliv použití Díla nebo jeho části za účelem
+   přímého či nepřímého finančního zisku, včetně, ale nejen: prodeje, pronájmu,
+   poskytování jako placené služby (SaaS), začlenění do komerčního produktu,
+   monetizace prostřednictvím reklam nebo jiných příjmových modelů.
+
+   „Nekomerční použití" označuje použití výhradně pro osobní, vzdělávací,
+   výzkumné nebo jiné nekomerční účely.
+
+2. UDĚLENÍ LICENCE PRO NEKOMERČNÍ POUŽITÍ
+
+   Autor tímto uděluje bezúplatnou, nevýhradní, celosvětovou licenci k:
+
+   a) Prohlížení a studiu zdrojového kódu.
+   b) Použití, kopírování a úpravám Díla pro nekomerční účely.
+   c) Sdílení a redistribuci Díla (včetně upravených verzí) za podmínky, že:
+   - je uveden původní autor a odkaz na původní repozitář,
+   - redistribuce probíhá pod stejnými licenčními podmínkami,
+   - redistribuce není prováděna za účelem komerčního použití.
+
+3. OMEZENÍ KOMERČNÍHO POUŽITÍ
+
+   Jakékoliv Komerční použití Díla nebo jeho části je výslovně ZAKÁZÁNO
+   bez předchozího písemného souhlasu Autora.
+
+   To zahrnuje, ale není omezeno na:
+   a) Prodej nebo pronájem Díla či jeho derivátů.
+   b) Nasazení Díla jako součásti placené služby nebo produktu.
+   c) Použití Díla v interních nástrojích společnosti generující zisk.
+   d) Monetizaci Díla prostřednictvím reklam či sponzorství.
+   e) Poskytování Díla jako služby (SaaS) za úplatu.
+
+   Pro získání komerční licence kontaktujte Autora na: elznicfilip@gmail.com
+
+4. PŘÍSPĚVKY
+
+   Odesláním příspěvku (pull request, patch apod.) do tohoto repozitáře
+   přispěvatel souhlasí s tím, že jeho příspěvek bude licencován pod stejnými
+   podmínkami jako zbytek Díla a že Autor získává nevýhradní právo k použití
+   příspěvku včetně komerčního využití.
+
+5. ZÁRUKA A ODPOVĚDNOST
+
+   DÍLO JE POSKYTOVÁNO „TAK JAK JE" (AS IS), BEZ JAKÝCHKOLIV ZÁRUK, AŤ UŽ
+   VÝSLOVNÝCH NEBO IMPLICITNÍCH, VČETNĚ, ALE NEJEN, ZÁRUK OBCHODOVATELNOSTI,
+   VHODNOSTI PRO KONKRÉTNÍ ÚČEL A NEPORUŠENÍ PRÁV TŘETÍCH STRAN.
+
+   V ŽÁDNÉM PŘÍPADĚ NEBUDE AUTOR ODPOVĚDNÝ ZA JAKÉKOLIV NÁROKY, ŠKODY NEBO
+   JINOU ODPOVĚDNOST, AŤ UŽ V RÁMCI SMLUVNÍHO VZTAHU, DELIKTU NEBO JINAK,
+   VYPLÝVAJÍCÍ Z DÍLA NEBO V SOUVISLOSTI S NÍM ČI JEHO POUŽITÍM.
+
+6. UKONČENÍ
+
+   Tato licence se automaticky ukončuje v případě porušení kterékoliv z jejích
+   podmínek. Po ukončení licence musí příjemce přestat Dílo používat a odstranit
+   všechny jeho kopie.
+
+7. KONTAKT
+
+   Filip Elznic
+   Email: elznicfilip@gmail.com
+   GitHub: https://github.com/FilipElznic

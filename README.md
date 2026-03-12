@@ -40,6 +40,8 @@ NaucSeVic je komplexní webová vzdělávací platforma navržená pro studenty 
 
 Aplikace **neobsahuje žádnou vestavěnou umělou inteligenci (AI)** — veškerý obsah je tvořen ručně a ověřen. Kombinuje moderní React frontend s robustním Firebase backendem a je plně kontejnerizovatelná pomocí Dockeru.
 
+> **Poznámka:** Tento GitHub repozitář je **veřejný** (public). Zdrojový kód je volně dostupný k prohlížení, studiu a nekomerčnímu použití. Jakékoliv komerční využití vyžaduje předchozí písemný souhlas autora — viz sekce [Licence](#licence).
+
 ---
 
 ## Technický Stack
@@ -918,4 +920,32 @@ VITE_USE_EMULATOR=false
 
 ## Licence
 
-Tento projekt je soukromý a není veřejně licencován.
+Tento projekt je licencován pod vlastní licencí **CC BY-NC 4.0 s dodatkem o komerčním použití**.
+
+### Povoleno (bez souhlasu autora):
+
+- Prohlížení a studium zdrojového kódu
+- Použití pro osobní, vzdělávací a nekomerční účely
+- Forkování a úpravy pro nekomerční využití
+- Sdílení s uvedením původního autora
+
+### Vyžaduje písemný souhlas autora:
+
+- **Jakékoliv komerční použití** — prodej, monetizace, nasazení v komerčním produktu
+- Použití v placených službách nebo produktech
+- Distribuce jako součást komerčního softwaru
+- Poskytování jako placená služba (SaaS)
+
+### Kontakt pro komerční licence
+
+Pro získání souhlasu ke komerčnímu využití kontaktujte autora:
+
+- **Autor**: Filip Elznic
+- **Email**: elznicfilip@gmail.com
+- **GitHub**: [FilipElznic](https://github.com/FilipElznic)
+
+Úplné znění licence naleznete v souboru [LICENSE](LICENSE).
+
+---
+
+© 2026 Filip Elznic. Všechna práva vyhrazena pro komerční použití.
