@@ -2316,19 +2316,40 @@ const UserDashboardUI = ({
           onClick={() => setShowShop(false)}
         >
           <div
-            className="bg-white dark:bg-[#0B0C15]/50 w-full max-w-md rounded-2xl border border-purple-500/20 p-6 shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative dark:text-white"
+            className="w-full max-w-md rounded-2xl border border-purple-500/20 p-6 shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative"
+            style={{
+              background: isDarkMode ? "rgba(11,12,21,0.85)" : "#ffffff",
+              color: isDarkMode ? "#ffffff" : "#0f172a",
+            }}
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            <div className="flex justify-between items-center mb-6 ">
+            <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
                 <Zap className="text-amber-500" />
                 Obchod s boostery
               </h2>
               <button
                 onClick={() => setShowShop(false)}
-                className="p-2 hover:bg-white/5 rounded-full transition-colors text-gray-400 hover:text-white"
+                className="p-2 rounded-full transition-colors"
+                style={{
+                  color: isDarkMode ? "#9ca3af" : "#6b7280",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = isDarkMode
+                    ? "rgba(255,255,255,0.08)"
+                    : "rgba(0,0,0,0.07)";
+                  e.currentTarget.style.color = isDarkMode
+                    ? "#ffffff"
+                    : "#111827";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = isDarkMode
+                    ? "#9ca3af"
+                    : "#6b7280";
+                }}
                 disabled={loadingAction}
               >
                 <X size={20} />
@@ -2341,11 +2362,28 @@ const UserDashboardUI = ({
                   key={item.id}
                   disabled={loadingAction || userStats.coins < item.price}
                   onClick={() => handleBuyBooster(item.id)}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all ${
-                    userStats.coins >= item.price
-                      ? "bg-purple-900 hover:bg-purple-900/20 border-purple-500/20 hover:border-purple-500/40 cursor-pointer"
-                      : "bg-gray-800 border-white/5 opacity-100 cursor-not-allowed"
-                  }`}
+                  className="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
+                  style={{
+                    background:
+                      userStats.coins >= item.price
+                        ? isDarkMode
+                          ? "rgba(88,28,135,0.35)"
+                          : "rgba(233,213,255,0.5)"
+                        : isDarkMode
+                          ? "rgba(31,31,31,0.6)"
+                          : "rgba(241,245,249,0.8)",
+                    borderColor:
+                      userStats.coins >= item.price
+                        ? isDarkMode
+                          ? "rgba(168,85,247,0.25)"
+                          : "rgba(168,85,247,0.35)"
+                        : isDarkMode
+                          ? "rgba(255,255,255,0.05)"
+                          : "rgba(0,0,0,0.08)",
+                    cursor:
+                      userStats.coins >= item.price ? "pointer" : "not-allowed",
+                    opacity: userStats.coins < item.price ? 0.6 : 1,
+                  }}
                 >
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${item.color}`}>
@@ -2353,15 +2391,38 @@ const UserDashboardUI = ({
                     </div>
                     <div className="text-left">
                       <h3 className="font-bold text-sm">{item.name}</h3>
-                      <p className="text-xs opacity-80">{item.duration}</p>
+                      <p
+                        className="text-xs"
+                        style={{
+                          color: isDarkMode
+                            ? "rgba(255,255,255,0.6)"
+                            : "rgba(0,0,0,0.55)",
+                        }}
+                      >
+                        {item.duration}
+                      </p>
                     </div>
                   </div>
                   <div
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 ${
-                      userStats.coins >= item.price
-                        ? "bg-purple-500/20 text-purple-300"
-                        : "bg-gray-700/50 text-gray-400"
-                    }`}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1"
+                    style={{
+                      background:
+                        userStats.coins >= item.price
+                          ? isDarkMode
+                            ? "rgba(168,85,247,0.2)"
+                            : "rgba(168,85,247,0.15)"
+                          : isDarkMode
+                            ? "rgba(55,65,81,0.5)"
+                            : "rgba(203,213,225,0.5)",
+                      color:
+                        userStats.coins >= item.price
+                          ? isDarkMode
+                            ? "#d8b4fe"
+                            : "#7c3aed"
+                          : isDarkMode
+                            ? "#9ca3af"
+                            : "#64748b",
+                    }}
                   >
                     {item.price} <Star size={10} className="fill-current" />
                   </div>
@@ -2369,8 +2430,21 @@ const UserDashboardUI = ({
               ))}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-sm">
-              <span className="opacity-100">Vaše mince:</span>
+            <div
+              className="mt-6 pt-4 flex justify-between items-center text-sm"
+              style={{
+                borderTop: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+              }}
+            >
+              <span
+                style={{
+                  color: isDarkMode
+                    ? "rgba(255,255,255,0.8)"
+                    : "rgba(0,0,0,0.7)",
+                }}
+              >
+                Vaše mince:
+              </span>
               <span className="font-bold flex items-center gap-1 text-amber-400">
                 {userStats.coins} <Star size={14} className="fill-current" />
               </span>
@@ -2386,7 +2460,11 @@ const UserDashboardUI = ({
           onClick={() => setSelectedBooster(null)}
         >
           <div
-            className="bg-white dark:bg-[#0B0C15]/50 w-full max-w-sm rounded-2xl border border-purple-500/20 p-6 shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative text-center dark:text-white"
+            className="w-full max-w-sm rounded-2xl border border-purple-500/20 p-6 shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative text-center"
+            style={{
+              background: isDarkMode ? "rgba(11,12,21,0.85)" : "#ffffff",
+              color: isDarkMode ? "#ffffff" : "#0f172a",
+            }}
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -2400,9 +2478,16 @@ const UserDashboardUI = ({
             <h3 className="text-xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-400">
               Použít booster?
             </h3>
-            <p className="text-sm opacity-60 mb-8 leading-relaxed">
+            <p
+              className="text-sm mb-8 leading-relaxed"
+              style={{
+                color: isDarkMode
+                  ? "rgba(255,255,255,0.55)"
+                  : "rgba(0,0,0,0.55)",
+              }}
+            >
               Chcete aktivovat{" "}
-              <strong className="text-purple-300">
+              <strong style={{ color: isDarkMode ? "#d8b4fe" : "#7c3aed" }}>
                 {shopItems.find((i) => i.id === selectedBooster)?.name ||
                   "Booster"}
               </strong>
@@ -2413,7 +2498,14 @@ const UserDashboardUI = ({
               <button
                 onClick={() => setSelectedBooster(null)}
                 disabled={loadingAction}
-                className="flex-1 py-3 rounded-xl bg-white/5 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10 border border-white/5 font-semibold text-sm transition-all"
+                className="flex-1 py-3 rounded-xl font-semibold text-sm transition-all"
+                style={{
+                  background: isDarkMode
+                    ? "rgba(255,255,255,0.05)"
+                    : "rgba(0,0,0,0.05)",
+                  border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)"}`,
+                  color: isDarkMode ? "rgba(255,255,255,0.8)" : "#374151",
+                }}
               >
                 Zrušit
               </button>
